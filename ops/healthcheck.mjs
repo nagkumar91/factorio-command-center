@@ -6,7 +6,7 @@ import os from 'node:os';
 import {fileURLToPath} from 'node:url';
 
 export const pages={commands:'Command library',crates:'Crate builder',blueprints:'Blueprint library',coverage:'Every craftable item',production:'Production planner',files:'Source files',setup:'Game setup'};
-export const sites={github:'https://nagkumar91.github.io/factorio-command-center/',pi:'http://127.0.0.1:18090/'};
+export const sites={github:'https://nagkumar91.github.io/factorio-command-center/',pi:'http://100.71.219.83:18090/'};
 export async function checkSite(browser,site,base,route){
  const started=Date.now(),errors=[];
  const result={id:randomUUID(),ts:new Date().toISOString(),site,route,url:base+'#'+route,synthetic:true,ok:false,httpStatus:null};
@@ -14,6 +14,7 @@ export async function checkSite(browser,site,base,route){
  await context.addInitScript(()=>{localStorage.setItem('factorio-analytics-opt-out','1');Object.defineProperty(navigator,'doNotTrack',{get:()=> '1'});});
  const page=await context.newPage();
  page.on('pageerror',error=>errors.push(error.message.slice(0,300)));
+ page.on('requestfailed',request=>{if(['document','script','stylesheet'].includes(request.resourceType()))errors.push('Failed to load '+new URL(request.url()).pathname);});
  page.on('response',response=>{if(response.status()>=400&&['document','script','stylesheet'].includes(response.request().resourceType()))errors.push('HTTP '+response.status()+' loading '+new URL(response.url()).pathname);});
  try{
   const response=await page.goto(result.url,{waitUntil:'networkidle',timeout:30000});
