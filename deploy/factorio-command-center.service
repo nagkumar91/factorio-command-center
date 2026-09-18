@@ -1,0 +1,16 @@
+[Unit]
+Description=Factorio Command Center static website
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/clawd/workspaces/factorio-command-center/current
+Environment=PORT=18090
+Environment=HOST=0.0.0.0
+ExecStart=/usr/local/bin/node scripts/serve.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target
