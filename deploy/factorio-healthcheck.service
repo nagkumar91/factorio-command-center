@@ -1,0 +1,17 @@
+[Unit]
+Description=Hourly Factorio browser healthcheck and Codex repair
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/clawd/workspaces/factorio-site-repair/source
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+Environment=BROWSER_EXECUTABLE=/usr/bin/chromium
+Environment="GIT_SSH_COMMAND=ssh -i /home/openclaw/.ssh/factorio-repair -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes"
+ExecStart=/usr/bin/python3 ops/watchdog.py
+TimeoutStartSec=2400
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

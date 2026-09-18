@@ -5,6 +5,7 @@ import path from 'node:path';
 import http from 'node:http';
 import {pathToFileURL} from 'node:url';
 import {createStore} from '../analytics/store.mjs';
+import {checkSite} from '../ops/healthcheck.mjs';
 import {createHandlers,loadLabels} from '../analytics/server.mjs';
 
 const store=createStore({dbPath:':memory:',labels:await loadLabels(path.resolve('site'))});
@@ -12,14 +13,15 @@ const dashboard=await fs.readFile('analytics/dashboard.html','utf8');
 const payloads=[],errors=[];
 let handlers,base;
 const server=http.createServer(async(req,res)=>{
+ if(req.url==='/broken/'){res.setHeader('Content-Type','text/html');res.end('<h1>Every craftable item</h1><script>throw new Error("broken fixture")</script>');return;}
  if(req.url.startsWith('/collect')){let body='';for await(const chunk of req)body+=chunk;payloads.push(JSON.parse(body));try{store.ingest(JSON.parse(body),base);res.writeHead(202);}catch{res.writeHead(400);}res.end();return;}
  if(req.url.startsWith('/api/')||req.url==='/dashboard'){if(req.url==='/dashboard')req.url='/';return handlers.admin(req,res);}
  if(req.url==='/analytics-config.js'){res.setHeader('Content-Type','text/javascript');res.end('globalThis.FactorioAnalyticsConfig='+JSON.stringify({endpoint:base+'/collect',origins:[base]})+';');return;}
- try{const name=new URL(req.url,base).pathname;const file=path.join('site',name==='/'?'index.html':name);const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.woff2':'font/woff2'};res.setHeader('Content-Type',types[path.extname(file)]||'text/plain');res.end(await fs.readFile(file));}catch{res.writeHead(404);res.end();}
+ try{const name=new URL(req.url,base).pathname;const file=path.join('site',name==='/'?'index.html':name);const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.woff2':'font/woff2'};res.setHeader('Content-Type',types[path.extname(file)]||'text/plain');res.end(await fs.readFile(file));}catch{res.writeHead(404);res.end('Not found');}
 });
 await new Promise(r=>server.listen(0,'127.0.0.1',r));base='http://127.0.0.1:'+server.address().port;
 handlers=createHandlers({store,allowedOrigins:[base],dashboard});
-const browser=await chromium.launch({channel:'chrome',headless:true});
+const browser=await chromium.launch({...(process.env.BROWSER_EXECUTABLE?{executablePath:process.env.BROWSER_EXECUTABLE}:{channel:'chrome'}),headless:true});
 const context=await browser.newContext({viewport:{width:1440,height:1000},permissions:['clipboard-read','clipboard-write']});
 const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
 async function flush(){await page.evaluate(()=>FactorioAnalytics.flush());await new Promise(r=>setTimeout(r,100));}
@@ -34,6 +36,11 @@ try{
  for(const name of ['page_view','search_used','blueprint_open','blueprint_copy','construction_crate','command_copy','production_plan','plan_export'])assert.ok(collected.some(e=>e.event===name),name);
  assert.ok(!JSON.stringify(payloads).includes('this text must stay private'));assert.ok(!JSON.stringify(payloads).includes('/c '));assert.equal(store.report().summary.visitors,1);
  assert.equal(store.report().summary.sessions,1,'session persists through navigation');
+ const trafficBefore=payloads.length;
+ const healthy=await checkSite(browser,'github',base+'/','coverage');assert.equal(healthy.ok,true,healthy.error);
+ assert.equal(payloads.length,trafficBefore,'synthetic visits do not increase visitor analytics');
+ const broken=await checkSite(browser,'pi',base+'/broken/','coverage');assert.equal(broken.httpStatus,200);assert.equal(broken.ok,false);assert.match(broken.error,/broken fixture/);
+ const missing=await checkSite(browser,'pi',base+'/missing/','coverage');assert.equal(missing.httpStatus,404);assert.equal(missing.ok,false);
  await page.locator('[data-action="analytics-settings"]').click();await page.getByRole('button',{name:'Turn off usage analytics'}).click();
  assert.equal(await page.evaluate(()=>localStorage.getItem('factorio-analytics-visitor')),null);
  const before=payloads.length;await page.locator('[data-action="close-modal"]').click();await page.goto(base+'/#blueprints');await flush();assert.equal(payloads.length,before,'opt out persists through reload');

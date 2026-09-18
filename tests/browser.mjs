@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 const base = process.env.TEST_URL || pathToFileURL(path.resolve('index.html')).href;
 await fs.mkdir('test-results', { recursive: true });
-const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const browser = await chromium.launch({ ...(process.env.BROWSER_EXECUTABLE ? {executablePath: process.env.BROWSER_EXECUTABLE} : {channel: 'chrome'}), headless: true });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, permissions: ['clipboard-read', 'clipboard-write'] });
 if (base.startsWith('file:')) await context.setOffline(true);
 const page = await context.newPage();

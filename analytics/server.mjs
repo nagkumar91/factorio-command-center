@@ -11,7 +11,7 @@ export async function loadLabels(siteDir){
  const blueprints=[...library.blueprints,...community.blueprints,...atlas.blueprints];
  return{blueprints:Object.fromEntries(blueprints.map(b=>[b.id,b.name])),products:Object.fromEntries([...catalog.items,...catalog.fluids,...atlas.coverage.items.filter(i=>i.internal)].map(i=>[i.id,i.name])),files:Object.fromEntries([...library.files.map(f=>[f.url,f.name]),...blueprints.flatMap(b=>(b.sources||[]).filter(s=>s.startsWith('sources/')).map(s=>[s,b.name])),...atlas.sources.map(s=>['sources/collections/'+s.id+'.txt',s.id]),['sources/Autosaved/AllBlueprints.txt','Autosaved complete book']])};
 }
-export function createHandlers({store,allowedOrigins,dashboard,adminHosts=['127.0.0.1','localhost','[::1]'],now=Date.now}){
+export function createHandlers({store,allowedOrigins,dashboard,adminHosts=['127.0.0.1','localhost','[::1]'],readObservability=async()=>null,now=Date.now}){
  const origins=new Set(allowedOrigins),limits=new Map();
  const send=(res,status,data,headers={})=>{res.writeHead(status,{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...headers});res.end(data);};
  const json=(res,status,data,headers={})=>send(res,status,JSON.stringify(data),{'Content-Type':'application/json; charset=utf-8',...headers});
@@ -42,6 +42,11 @@ export function createHandlers({store,allowedOrigins,dashboard,adminHosts=['127.
   if(!adminHosts.includes(hostname)){json(res,403,{error:'Host not allowed'});return;}
   const url=new URL(req.url,'http://localhost');
   if(req.method!=='GET'){json(res,405,{error:'GET required'});return;}
+  if(url.pathname==='/observability'){
+   const report=await readObservability();
+   if(!report){json(res,404,{error:'No observability report has been published yet'});return;}
+   send(res,200,report,{'Content-Type':'text/html; charset=utf-8','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'"});return;
+  }
   if(url.pathname==='/api/report'){json(res,200,store.report(url.searchParams.get('days')));return;}
   if(url.pathname==='/'||url.pathname==='/index.html'){send(res,200,dashboard,{'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'"});return;}
   json(res,404,{error:'Not found'});
@@ -57,7 +62,9 @@ async function main(){
  const adminHost=process.env.ANALYTICS_ADMIN_HOST||'127.0.0.1';
  if(['0.0.0.0','::'].includes(adminHost))throw new Error('Bind the analytics dashboard to loopback or a Tailscale address.');
  const adminHosts=[adminHost,...(process.env.ANALYTICS_ADMIN_NAMES||'localhost').split(',')];
- const handlers=createHandlers({store,allowedOrigins,dashboard,adminHosts});
+ const reportFile=path.join(path.dirname(dbPath),'observability/latest.html');
+ const readObservability=async()=>{try{return await fs.readFile(reportFile,'utf8');}catch{return null;}};
+ const handlers=createHandlers({store,allowedOrigins,dashboard,adminHosts,readObservability});
  const collector=http.createServer(handlers.collector),admin=http.createServer(handlers.admin);
  collector.listen(Number(process.env.ANALYTICS_COLLECTOR_PORT||18092),'127.0.0.1');
  admin.listen(Number(process.env.ANALYTICS_ADMIN_PORT||18091),adminHost);
