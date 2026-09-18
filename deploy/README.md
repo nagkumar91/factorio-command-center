@@ -25,3 +25,33 @@ curl -I http://127.0.0.1:18090/
 The Pi's LAN address with port 18090 reaches the website. Its Tailscale address works on the same port. To roll back, point `current` to the previous release and restart only this service. User lingering must be enabled to run the service after logout and reboot.
 
 For local preview: `npm run serve`. Do not place secrets or private workspace files inside `site/`.
+
+## Visitor analytics
+
+The public website remains on GitHub Pages and the Pi. A separate Node.js 24+ service collects a small set of usage events and serves a private dashboard:
+
+- Public collector: `https://openclaw-pi5.tailacf455.ts.net/factorio-metrics/collect` (POST only).
+- Dashboard: `http://100.71.219.83:18091/`, accessible while connected to the Pi's Tailscale network. It is not hosted on GitHub Pages or exposed through Funnel.
+- Collector listener: `127.0.0.1:18092`. An added `/factorio-metrics` handler on the existing port 443 Funnel proxies to this listener. Preserve the existing `/`, `/gmail-pubsub`, and other port handlers.
+- Database: `~/.local/share/factorio-command-center/analytics.sqlite`, outside the website and release folders. The adjacent `.salt` file must stay with the database. Both are private runtime state and must never be committed or publicly served.
+
+Include `analytics/` in each Pi release alongside `site/` and `scripts/serve.mjs`. Install `deploy/factorio-analytics.service` into `~/.config/systemd/user/` and run:
+
+```sh
+systemctl --user daemon-reload
+systemctl --user enable --now factorio-analytics.service
+systemctl --user restart factorio-analytics.service
+curl http://127.0.0.1:18092/healthz
+```
+
+When initially adding the public collector, use a path-specific Tailscale handler, never `serve reset`. Inspect `tailscale serve status --json` before and after to confirm that existing OpenClaw routes and Funnel settings remain unchanged. The dashboard binds only to the configured Tailscale address, rejects unexpected Host headers, and has no public collector route for reading reports. Tailnet access controls determine who can reach it.
+
+For a different host, update `site/analytics-config.js` and the server's `ANALYTICS_ORIGINS`, `ANALYTICS_ADMIN_HOST`, and `ANALYTICS_ADMIN_NAMES` settings together. Optional variables include `ANALYTICS_DB`, `ANALYTICS_COLLECTOR_PORT`, `ANALYTICS_ADMIN_PORT`, and `SITE_DIR`. The dashboard defaults to loopback for local development. Use `npm run serve:analytics`; local website analytics remain disabled unless explicitly configured for a test.
+
+Reports include browser counts, sessions, views by page, action counts, blueprint opens/copies/construction crates, daily traffic, referring domains, broad screen-size categories, and recent actions. Choose 7, 30, or 90 days and export a JSON report. No historical data is inferred; counting starts after deployment. "Seen in last 5 min" means a browser sent an event recently, not a continuous presence check.
+
+The client uses a random ID in localStorage that expires after 30 days and a sessionStorage ID that expires after 30 minutes of inactivity. The server hashes these IDs with its private salt. No cookies, account names, search text, crate contents, command strings, full URLs, or stored IP addresses are used. IP addresses are used transiently for request rate limits only. Event records expire after 90 days, with pruning on ingestion and dashboard reads. Visitors can opt out in the website footer; Do Not Track and Global Privacy Control also disable collection. Local files, localhost previews, and unknown hostnames do not send analytics. Visitor counts are approximate: separate browsers, site origins, and 30-day ID rotations can count a person more than once; blocking, opt-outs, offline use, or downtime can miss visits. Public events are not authenticated and should not be treated as an audit log.
+
+The SQLite database persists across release changes. For a consistent backup, use SQLite's backup API or stop **only** `factorio-analytics.service` before copying its data directory. Website and OpenClaw services can stay running. Removing analytics requires disabling the client config, stopping its service, and removing only its path-specific Tailscale handler; retain unrelated routes.
+
+Validation: `npm test`, `npm run test:analytics-browser`, the existing browser suites, and `npm run build`. Browser analytics tests use an in-memory database; they do not send traffic to the live collector.

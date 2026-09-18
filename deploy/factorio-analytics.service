@@ -1,0 +1,17 @@
+[Unit]
+Description=Factorio visitor analytics and private dashboard
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/clawd/workspaces/factorio-command-center/current
+Environment=ANALYTICS_ADMIN_HOST=100.71.219.83
+Environment=ANALYTICS_ADMIN_NAMES=openclaw-pi5.tailacf455.ts.net
+ExecStart=/usr/local/bin/node analytics/server.mjs
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

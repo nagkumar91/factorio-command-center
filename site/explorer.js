@@ -1,6 +1,7 @@
 (() => {
 'use strict';
 function create(ui) {
+  const track = (event, target) => globalThis.FactorioAnalytics?.track(event, target);
   const { catalog, library, community, production, atlas, esc, image, svg, number, heading, searchField, empty, showModal, notify, addRows, renderPage, download } = ui;
   const goods = new Map([...catalog.items, ...catalog.fluids, ...atlas.coverage.items.filter(i => i.internal)].map(i => [i.id, i]));
   const recipes = new Map(production.recipes.map(r => [r.id, r]));
@@ -80,6 +81,7 @@ function create(ui) {
     }).join('')}</div>${b.entries.some(r => r.id === 'requester-chest') && !b.entries.some(r => r.id === 'roboport') ? `<div class="delivery-support"><h4>Robot delivery support</h4><p class="small muted">Connect the requesters to your existing powered logistics network. To extend it, click an item for its recipe and matching blueprints.</p><div class="token-wrap">${tokens(['roboport', 'logistic-robot', 'passive-provider-chest'], Infinity, true)}</div></div>` : ''}</section>`;
   }
   function blueprintDialog(b) {
+    track('blueprint_open', b.id);
     const a = b.analysis;
     const column = (label, ids, extra, cls = '') => `<section class="flow-column ${cls}"><div class="eyebrow">${label}</div><div class="flow-products">${tokens(ids, Infinity, true)}</div>${extra.length ? `<ul class="service-list">${extra.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}${!ids.length && !extra.length ? '<p class="small muted">No fixed recipe products identified.</p>' : ''}</section>`;
     showModal(b.name, `<div class="blueprint-explainer">
@@ -118,20 +120,24 @@ function create(ui) {
     else if (action === 'plan-blueprint') {
       const b = library.blueprints.find(b => b.id === id);
       s.targets = productsOf(b).filter(id => goods.has(id)).map(id => ({ id, count: 1 }));
+      track('production_plan', 'products');
       s.supplied = b.analysis.inputs; s.boundary = 'blueprint'; s.fromBlueprint = b.name; s.planNote = ''; s.error = '';
       goProduction(); return true;
     } else if (action === 'plan-blueprint-inputs' || action === 'plan-supply') {
       const b = action === 'plan-blueprint-inputs' ? library.blueprints.find(b => b.id === id) : null;
       s.targets = b ? supplyTargets(b).map(t => ({...t})) : [supplyBatch(id)];
+      track('production_plan', 'supplies');
       s.supplied = []; s.boundary = 'raw'; s.fromBlueprint = ''; s.error = '';
       s.planNote = b?.startup ? `Operating supply plan for ${b.name}. Starts with tested stock: ${b.startup.targets.map(t => number(t.count) + ' ' + name(t.id)).join(' and ')}. Adjust as needed; fuel is consumed and coolant circulates. ${b.startup.note}` : `Operating supply plan${b ? ' for ' + b.name : ': ' + name(id)}. Start with one recipe batch per supply, then set the stock you want. Quantities are a material budget, not a production-rate estimate.`;
       goProduction(); return true;
     } else if (action === 'production-preset') {
       const kits = { solar: [['solar-panel', 100], ['accumulator', 84], ['substation', 8]], robots: [['construction-robot', 50], ['logistic-robot', 50], ['roboport', 4], ['passive-provider-chest', 8], ['storage-chest', 8]], circuits: [['electronic-circuit', 100], ['advanced-circuit', 100], ['processing-unit', 100]] };
+      track('production_plan', id);
       s.targets = kits[id].map(([id, count]) => ({ id, count })); s.boundary = 'raw'; s.planNote = ''; s.error = ''; save();
     } else if (action === 'production-remove') { s.targets.splice(Number(id), 1); save(); }
     else if (action === 'production-clear') { s.targets = []; s.planNote = ''; save(); }
     else if (action === 'product-path') {
+      track('product_view', id);
       const recipe = recipes.get(production.defaults[id]) || recipes.get(atlas.coverage.items.find(i => i.id === id)?.recipes[0]);
       const itemCoverage = atlas.coverage.items.find(i => i.id === id);
       const builds = itemCoverage ? itemCoverage.builds.slice(0, 12).map(id => byId.get(id)) : library.blueprints.filter(b => !b.isBook && productsOf(b).includes(id)).slice(0, 12);
@@ -146,6 +152,7 @@ function create(ui) {
       if (!solids.length) { notify('These inputs are fluids. Supply them with pipes and tanks.'); return true; }
       const result = addRows(solids.map(r => ({ id: r.id, count: Math.ceil(r.count), quality: 'normal' })));
       if (result === false) return true;
+      track('crate_pack', id);
       location.hash = 'crates';
       notify(`Added ${solids.length} solid item types.${fluids.length ? ` ${fluids.length} fluids remain in your production plan; use pipes or tanks.` : ''}`);
       return true;
@@ -161,6 +168,7 @@ function create(ui) {
   function handleChange(field) {
     const mapping = { 'coverage-group': 'coverageGroup', 'blueprint-category': 'category', 'blueprint-source': 'source', 'blueprint-kind': 'kind', 'blueprint-direction': 'direction', 'production-boundary': 'boundary' };
     if (!mapping[field.id]) return false;
+    if (field.id === 'production-boundary' && ['raw', 'plates'].includes(field.value)) track('production_plan', field.value);
     s[mapping[field.id]] = field.value; s.page = 0; save(); renderPage(); return true;
   }
   document.addEventListener('submit', event => {
@@ -170,7 +178,7 @@ function create(ui) {
     const item = [...goods.values()].find(i => i.id === value || i.name.toLowerCase() === value.toLowerCase());
     if (!item) s.error = 'Choose an available item or fluid from the list.';
     else if (s.targets.length >= 100) s.error = 'Use 100 products or fewer per plan.';
-    else { const old = s.targets.find(t => t.id === item.id); if (old) old.count = Math.min(1000000, Number(old.count) + 1); else s.targets.push({ id: item.id, count: 1 }); s.error = ''; save(); }
+    else { const old = s.targets.find(t => t.id === item.id); if (old) old.count = Math.min(1000000, Number(old.count) + 1); else s.targets.push({ id: item.id, count: 1 }); s.error = ''; save(); track('production_plan', 'custom'); }
     renderPage(); document.querySelector('#production-item')?.focus();
   });
   return { blueprintsPage, blueprintDialog, productionPage, coveragePage, handleClick, handleInput, handleChange };

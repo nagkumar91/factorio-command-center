@@ -9,7 +9,9 @@ A static Factorio 2.0.77 / Space Age blueprint library, recipe planner, and cons
 
 ## Open the website
 
-[Live GitHub Pages site](https://nagkumar91.github.io/factorio-command-center/#coverage). Open `site/index.html` for offline use, or run `npm run serve` for a local web server on port 18090. The website has no backend, accounts, analytics, or external runtime dependencies. Saved crate loadouts stay in your browser.
+[Live GitHub Pages site](https://nagkumar91.github.io/factorio-command-center/#coverage). Open `site/index.html` for offline use, or run `npm run serve` for a local web server on port 18090. The toolkit works without an account or backend. The public site sends limited usage analytics to the owner’s Pi; local and offline copies do not. Saved crate loadouts stay in your browser. Visitors can turn analytics off using **Usage analytics** in the footer.
+
+The private [visitor dashboard](http://100.71.219.83:18091/) is available while connected to Tailscale. It shows visits, popular pages and blueprints, copies, crate generation, and planner actions. Collection starts with deployment; there is no historical data. See [analytics hosting and privacy](deploy/README.md#visitor-analytics).
 
 ## Development and validation
 
@@ -19,6 +21,7 @@ npm test
 npm run build
 npm run test:browser
 npm run test:atlas-browser
+npm run test:analytics-browser
 ```
 
 `npm run index:atlas` rebuilds the imported collection index and recipe coverage. `npm run generate:cells` creates the gap-filling cells; `npm run test:cells` runs the installed Factorio executable in an isolated save and writes reports tied to blueprint SHA-256 hashes. Generating cells needs a vanilla Space Age data dump, supplied through `FACTORIO_RAW` or the documented test cache path. Serving and CI builds use the checked-in catalogue and do not need Factorio installed.
