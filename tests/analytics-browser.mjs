@@ -26,6 +26,27 @@ const context=await browser.newContext({viewport:{width:1440,height:1000},permis
 const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
 async function flush(){await page.evaluate(()=>FactorioAnalytics.flush());await new Promise(r=>setTimeout(r,100));}
 try{
+ // A stalled analytics download must not hold the application or navigation.
+ const delayed=await browser.newContext();
+ await delayed.addInitScript(()=>localStorage.setItem('factorio-analytics-opt-out','1'));
+ let releaseDownload;const downloadGate=new Promise(resolve=>{releaseDownload=resolve;});
+ await delayed.route('**/analytics-config.js',async route=>{await downloadGate;await route.continue();});
+ const earlyPage=await delayed.newPage();
+ await earlyPage.goto(base+'/#coverage',{waitUntil:'commit'});
+ await earlyPage.getByRole('heading',{name:'Every craftable item',exact:true}).waitFor({timeout:5000});
+ assert.equal(await earlyPage.evaluate(()=>typeof globalThis.FactorioAnalytics),'undefined');
+ await earlyPage.locator('#coverage-search').fill('tesla ammo');assert.ok(await earlyPage.locator('.coverage-item').count()>0);
+ await earlyPage.locator('nav a[href="#blueprints"]').click();await earlyPage.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ releaseDownload();await earlyPage.waitForFunction(()=>Boolean(globalThis.FactorioAnalytics));await delayed.close();
+ // A collector that never responds must not hold the application either.
+ const stalled=await browser.newContext();let releaseCollector,collectorSeen;
+ const collectorGate=new Promise(resolve=>{releaseCollector=resolve;}),seen=new Promise(resolve=>{collectorSeen=resolve;});
+ await stalled.route('**/collect',async route=>{collectorSeen();await collectorGate;await route.abort();});
+ const stalledPage=await stalled.newPage();await stalledPage.goto(base+'/#coverage');await stalledPage.evaluate(()=>FactorioAnalytics.flush());await seen;
+ await stalledPage.locator('nav a[href="#production"]').click();await stalledPage.getByRole('heading',{name:'Production planner',exact:true}).waitFor({timeout:5000});
+ await stalledPage.evaluate(()=>FactorioAnalytics.setEnabled(false));
+ const failedCollection=stalledPage.waitForEvent('requestfailed',request=>request.url()===base+'/collect');
+ releaseCollector();await failedCollection;await stalled.close();assert.equal(payloads.length,0,'isolated performance checks never reach the collector');
  await page.goto(base+'/#coverage');await page.locator('#coverage-search').fill('this text must stay private');await page.locator('#coverage-search').fill('tesla ammo');
  await page.locator('.coverage-item [data-action="blueprint-details"]').click();
  await page.locator('[data-action="copy-blueprint"]').click();
