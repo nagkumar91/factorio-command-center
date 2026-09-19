@@ -452,7 +452,7 @@ function mixedInputBus(state, { id, gridX, top, bottom, material, result, laneRa
   return { id, gridX, top, bottom, materials, laneMaterials, cells, laneRates, role, mixedLane: true };
 }
 
-function outputPath(state, { row, hasC, collectorX, blockId, result, sideOutput = false, sideOutputWithC = false, outputRow = row }) {
+function outputPath(state, { row, hasC, collectorX, blockId, result, sideOutput = false, sideOutputWithC = false, outputRow = row, outputArms = 1 }) {
   if (sideOutputWithC) {
     // The result arm drops onto the mixed C/result lane at x=3.  A filtered
     // transfer at x=4 pulls only the result into the x=5 collector.
@@ -473,12 +473,13 @@ function outputPath(state, { row, hasC, collectorX, blockId, result, sideOutput 
     // collector.  This avoids the north output head that forces five-tile
     // pitch: with pitch three, the next machine body no longer overlaps the
     // previous row's output corridor.
+    const lastDropRow = row + outputArms - 2;
     return {
       row,
-      gridY: row,
+      gridY: lastDropRow,
       horizontal: [],
       tunnel: null,
-      sideLoad: { from: { x: 3, y: row }, to: { x: collectorX, y: row }, direction: DIRECTIONS.south },
+      sideLoad: { from: { x: 3, y: lastDropRow }, to: { x: collectorX, y: lastDropRow }, direction: DIRECTIONS.south },
       collectorX,
       result: result.id,
       sideOutput: true
@@ -665,7 +666,7 @@ export function makeCompactRecipeBlock({
     const row = index * pitch;
     const rowAssignments = assignments.map(input => ({ ...input }));
     const rowInfo = addMachineRow(state, { machine, recipe: normalized, rate: perMachine, row, assignments: rowAssignments, outputArms, blockId: id, sideOutput, sideOutputWithC });
-    const path = outputPath(state, { row, hasC: Boolean(eastAssignment), collectorX, blockId: id, result: { ...normalized.result, rate: perMachine.outputPerSecond }, sideOutput, sideOutputWithC, outputRow: row + outputRowOffset });
+    const path = outputPath(state, { row, hasC: Boolean(eastAssignment), collectorX, blockId: id, result: { ...normalized.result, rate: perMachine.outputPerSecond }, sideOutput, sideOutputWithC, outputRow: row + outputRowOffset, outputArms });
     rows.push({ index, row, machine: rowInfo, output: path });
   }
 
