@@ -1,0 +1,95 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-light-armor",
+      "blueprintSha256": "70acc4ed94cefb7b38d5592596bb3837bf45cb32395bf17413ce3118c0ec7b73",
+      "portConfigurationSha256": "2f8b00325676cedc78bfe05bb1e962aafff5f863ee4058188b3067116e57bdd2",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 4500,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 1,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "light-armor": 1
+      },
+      "outputPorts": {
+        "10": 1
+      },
+      "inputItems": {
+        "iron-ore": 394,
+        "coal": 73
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 1064,
+          "blueprintEntity": 1,
+          "position": {
+            "y": 0,
+            "x": -3
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "full_output",
+          "products": 354,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 1068,
+          "blueprintEntity": 7,
+          "position": {
+            "y": 0.5,
+            "x": 4.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 80
+            }
+          ],
+          "recipe": "light-armor",
+          "status": "full_output",
+          "products": 3,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 2,
+        "poweredConsumers": 6
+      },
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

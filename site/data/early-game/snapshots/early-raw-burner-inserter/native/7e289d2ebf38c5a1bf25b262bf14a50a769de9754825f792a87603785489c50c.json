@@ -1,0 +1,110 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-burner-inserter",
+      "blueprintSha256": "44f4f047eae3ea3160f93fc0bc41e6af61997cc753c426b2816b551b0d87d6e3",
+      "portConfigurationSha256": "e38e6b2f3b2b083e9b4fb874db086804b494eb1943cf02940aab2f328936b58f",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 1260,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "logistics",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 50,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "burner-inserter": 50
+      },
+      "outputPorts": {
+        "18": 50
+      },
+      "inputItems": {
+        "iron-ore": 600,
+        "coal": 81
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 62,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -3,
+            "x": -3
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "full_output",
+          "products": 560,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 66,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -2.5,
+            "x": 5.5
+          },
+          "inventory": {},
+          "recipe": "iron-gear-wheel",
+          "status": "full_output",
+          "products": 141,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 69,
+          "blueprintEntity": 14,
+          "position": {
+            "y": 5.5,
+            "x": 5.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 3
+            }
+          ],
+          "recipe": "burner-inserter",
+          "status": "full_output",
+          "products": 103,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 4,
+        "poweredConsumers": 10
+      },
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

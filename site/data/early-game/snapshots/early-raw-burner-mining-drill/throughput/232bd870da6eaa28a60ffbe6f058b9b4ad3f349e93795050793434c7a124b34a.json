@@ -1,0 +1,221 @@
+{
+  "gameVersion": "2.0.77",
+  "mapSeed": 12345,
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Exterior belts receive continuous supply on both lanes up to their saved capacity; fluid supply is continuous. Every saved pole and electric consumer is checked for connection to P. Only the listed production research is enabled. Imported input-display icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Outputs are collected each second after the 15-minute warmup; output rates use collected totals over the following 30 minutes. Input rates record actual recipe and burner consumption during the same measurement window.",
+  "builds": [
+    {
+      "id": "early-raw-burner-mining-drill",
+      "blueprintSha256": "67bf1da19e732e7dc6fa1bea9ccdff59d105535c0a789e3c6c721a8981639ec0",
+      "portConfigurationSha256": "cba6e90d492db13a3c8b10788c33f9302fb62ac98d45c59c495566792e89e99c",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 2700,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "logistics",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal",
+        "stone"
+      ],
+      "removedAtHalfTime": 0,
+      "restartedAfterCollection": false,
+      "delivered": {
+        "burner-mining-drill": 125
+      },
+      "outputPorts": {
+        "26": 125
+      },
+      "inputItems": {
+        "iron-ore": 1741,
+        "coal": 137,
+        "stone": 1561
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 341,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -4,
+            "x": -2
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "working",
+          "products": 1684,
+          "energy": 1600,
+          "measuredCrafts": 1125,
+          "statusSeconds": {
+            "working": 1800
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 345,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -3.5,
+            "x": 6.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-gear-wheel",
+          "status": "item_ingredient_shortage",
+          "products": 539,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 375,
+          "statusSeconds": {
+            "item_ingredient_shortage": 1575,
+            "working": 225
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 348,
+          "blueprintEntity": 14,
+          "position": {
+            "y": 4.5,
+            "x": 6.5
+          },
+          "inventory": [
+            {
+              "name": "stone",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "stone-furnace",
+          "status": "full_output",
+          "products": 286,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 125,
+          "statusSeconds": {
+            "item_ingredient_shortage": 450,
+            "working": 75,
+            "full_output": 1275
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 351,
+          "blueprintEntity": 21,
+          "position": {
+            "y": 4.5,
+            "x": -1.5
+          },
+          "inventory": [
+            {
+              "name": "stone-furnace",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 6
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "recipe": "burner-mining-drill",
+          "status": "item_ingredient_shortage",
+          "products": 178,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 125,
+          "statusSeconds": {
+            "working": 350,
+            "item_ingredient_shortage": 1450
+          }
+        }
+      ],
+      "inputPerMinute": {
+        "iron-ore": 37.5,
+        "coal": 1.3333333333333333,
+        "stone": 20.833333333333332
+      },
+      "throughput": {
+        "warmupMinutes": 15,
+        "measuredMinutes": 30,
+        "period": {
+          "startTick": 54000,
+          "endTick": 162000,
+          "warmupMinutes": 15,
+          "measuredMinutes": 30,
+          "unit": "per-minute"
+        },
+        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "collected": {
+          "burner-mining-drill": 125
+        },
+        "warmupCollected": {
+          "burner-mining-drill": 53
+        },
+        "perMinute": {
+          "burner-mining-drill": 4.166666666666667
+        },
+        "inputPerMinute": {
+          "iron-ore": 37.5,
+          "coal": 1.3333333333333333,
+          "stone": 20.833333333333332
+        },
+        "inputCounts": {
+          "iron-ore": 1125,
+          "coal": 40,
+          "stone": 625
+        }
+      },
+      "firstProductTicks": {
+        "burner-mining-drill": 2700
+      },
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 6,
+        "poweredConsumers": 14
+      },
+      "drainedPorts": {},
+      "restartedPorts": {},
+      "inputDisplays": {
+        "verified": 3,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ],
+  "mode": "throughput",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "period": {
+    "startTick": 54000,
+    "endTick": 162000,
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "unit": "per-minute"
+  },
+  "rateBasis": "Input rates use the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics sampled at warmup and final tick. For fluid ingredients marked ignored_by_stats, measured completed-recipe and active-craft boundary adjustments are added; an unignored fluid boundary is only a defensive fallback when its counter is absent. Rates measure actual recipe and burner-fuel consumption rather than exterior feed acceptance; initial inventory is removed by the boundary delta. Output rates are collected continuously after warmup. Raw materials are supplied continuously to both lanes of each declared exterior belt, fluids and electricity are external, and no intermediate input, robots, direct machine inventory injection, speed modules, or extra research are used."
+}

@@ -1,0 +1,141 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-underground-belt",
+      "blueprintSha256": "3af9ea03125989587cecfa173465646842223cd5c69bc880aea22487ced26776",
+      "portConfigurationSha256": "c3333fdfbe6c6e3a628664af3a82df7ed300e9f7b7f38f4cc76c19e35f044dc7",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 5040,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "logistics",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 50,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "underground-belt": 50
+      },
+      "outputPorts": {
+        "26": 50
+      },
+      "inputItems": {
+        "iron-ore": 1462,
+        "coal": 112
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 1663,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -4,
+            "x": -3
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "full_output",
+          "products": 1422,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 1667,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -3.5,
+            "x": 5.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-gear-wheel",
+          "status": "full_output",
+          "products": 216,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 1670,
+          "blueprintEntity": 14,
+          "position": {
+            "y": 4.5,
+            "x": 5.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "transport-belt",
+          "status": "full_output",
+          "products": 178,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 1674,
+          "blueprintEntity": 22,
+          "position": {
+            "y": 4.5,
+            "x": -2.5
+          },
+          "inventory": [
+            {
+              "name": "transport-belt",
+              "quality": "normal",
+              "count": 7
+            },
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "underground-belt",
+          "status": "full_output",
+          "products": 52,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 4,
+        "poweredConsumers": 14
+      },
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

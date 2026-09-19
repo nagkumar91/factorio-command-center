@@ -1,0 +1,178 @@
+{
+  "gameVersion": "2.0.77",
+  "mapSeed": 12345,
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; Fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-steel-chest",
+      "blueprintSha256": "93b93b6b6123e698f5f50059daeff885eaa815d544c478b294c849f2d71357fd",
+      "portConfigurationSha256": "44623ef9ce7c4bca9c9801827a4f8247275eaa4d197da798e3984029909954bc",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 5160,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 0,
+      "restartedAfterCollection": false,
+      "delivered": {
+        "steel-chest": 28
+      },
+      "outputPorts": {
+        "16": 28
+      },
+      "inputItems": {
+        "iron-ore": 1726,
+        "coal": 231
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 2473,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -2,
+            "x": -2
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "working",
+          "products": 1685,
+          "energy": 1600,
+          "measuredCrafts": 1125,
+          "statusSeconds": {
+            "working": 1800
+          }
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 2477,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -2,
+            "x": 4
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 4
+            }
+          ],
+          "recipe": "steel-plate",
+          "status": "working",
+          "products": 335,
+          "energy": 1600,
+          "measuredCrafts": 225,
+          "statusSeconds": {
+            "working": 1800
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 2481,
+          "blueprintEntity": 13,
+          "position": {
+            "y": 5.5,
+            "x": 4.5
+          },
+          "inventory": [
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 6
+            }
+          ],
+          "recipe": "steel-chest",
+          "status": "item_ingredient_shortage",
+          "products": 41,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 28,
+          "statusSeconds": {
+            "item_ingredient_shortage": 1772,
+            "working": 28
+          }
+        }
+      ],
+      "inputPerMinute": {
+        "iron-ore": 37.5,
+        "coal": 2.7
+      },
+      "throughput": {
+        "warmupMinutes": 15,
+        "measuredMinutes": 30,
+        "period": {
+          "startTick": 54000,
+          "endTick": 162000,
+          "warmupMinutes": 15,
+          "measuredMinutes": 30,
+          "unit": "per-minute"
+        },
+        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "collected": {
+          "steel-chest": 28
+        },
+        "warmupCollected": {
+          "steel-chest": 13
+        },
+        "perMinute": {
+          "steel-chest": 0.9333333333333333
+        },
+        "inputPerMinute": {
+          "iron-ore": 37.5,
+          "coal": 2.7
+        },
+        "inputCounts": {
+          "iron-ore": 1125,
+          "coal": 81
+        }
+      },
+      "firstProductTicks": {
+        "steel-chest": 5160
+      },
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 3,
+        "poweredConsumers": 9
+      },
+      "drainedPorts": {},
+      "restartedPorts": {},
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ],
+  "mode": "throughput",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "period": {
+    "startTick": 54000,
+    "endTick": 162000,
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "unit": "per-minute"
+  },
+  "rateBasis": "Input rates use the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics sampled at warmup and final tick. For fluid ingredients marked ignored_by_stats, measured completed-recipe and active-craft boundary adjustments are added; an unignored fluid boundary is only a defensive fallback when its counter is absent. Rates measure actual recipe and burner-fuel consumption rather than exterior feed acceptance; initial inventory is removed by the boundary delta. Output rates are collected continuously after warmup. Raw materials are supplied continuously to both lanes of each declared exterior belt, fluids and electricity are external, and no intermediate input, robots, direct machine inventory injection, speed modules, or extra research are used."
+}

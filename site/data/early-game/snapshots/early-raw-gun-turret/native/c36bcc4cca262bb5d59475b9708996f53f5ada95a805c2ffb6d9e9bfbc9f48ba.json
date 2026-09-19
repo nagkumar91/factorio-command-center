@@ -1,0 +1,143 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-gun-turret",
+      "blueprintSha256": "c834b4ae2c39521c8ba26f86cf15de55e373b908250a128f4c43c522d37bf1ee",
+      "portConfigurationSha256": "6a2f0b9af67fae6c19f8bad0086a972de9de5d8cc8627787b9f26b5d6fc48982",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 5940,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "gun-turret",
+        "logistic-science-pack",
+        "logistics",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal",
+        "copper-ore"
+      ],
+      "removedAtHalfTime": 20,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "gun-turret": 21
+      },
+      "outputPorts": {
+        "25": 21
+      },
+      "inputItems": {
+        "iron-ore": 1767,
+        "coal": 369,
+        "copper-ore": 769
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 630,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -3,
+            "x": -6
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "working",
+          "products": 1682,
+          "energy": 1600
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 634,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -2.5,
+            "x": 2.5
+          },
+          "inventory": {},
+          "recipe": "iron-gear-wheel",
+          "status": "item_ingredient_shortage",
+          "products": 419,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 637,
+          "blueprintEntity": 14,
+          "position": {
+            "y": -3,
+            "x": 10
+          },
+          "inventory": [
+            {
+              "name": "copper-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "copper-plate",
+          "status": "full_output",
+          "products": 565,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 641,
+          "blueprintEntity": 20,
+          "position": {
+            "y": 5.5,
+            "x": 10.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 16
+            },
+            {
+              "name": "copper-plate",
+              "quality": "normal",
+              "count": 20
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 8
+            }
+          ],
+          "recipe": "gun-turret",
+          "status": "item_ingredient_shortage",
+          "products": 41,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 6,
+        "poweredConsumers": 14
+      },
+      "inputDisplays": {
+        "verified": 3,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

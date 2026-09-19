@@ -1,0 +1,275 @@
+{
+  "gameVersion": "2.0.77",
+  "mapSeed": 12345,
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; Fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-sulfuric-acid-barrel",
+      "blueprintSha256": "70895eeb5924d5f1799834b3416759845d32b552fb4ba2078acabcf6d214214d",
+      "portConfigurationSha256": "c8cf685ab8c6529d90c218895be7003dfcf8977aa7ae825bfed83b38035860bb",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 4500,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "engine",
+        "fluid-handling",
+        "logistic-science-pack",
+        "logistics",
+        "oil-gathering",
+        "oil-processing",
+        "steam-power",
+        "steel-processing",
+        "sulfur-processing"
+      ],
+      "rawInputs": [
+        "crude-oil",
+        "water",
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 0,
+      "restartedAfterCollection": false,
+      "delivered": {
+        "sulfuric-acid-barrel": 187
+      },
+      "outputPorts": {
+        "48": 187
+      },
+      "inputItems": {
+        "iron-ore": 1875,
+        "coal": 407
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "oil-refinery",
+          "entity": 5655,
+          "blueprintEntity": 1,
+          "position": {
+            "y": 9.5,
+            "x": -8.5
+          },
+          "inventory": {},
+          "recipe": "basic-oil-processing",
+          "status": "working",
+          "products": 539,
+          "energy": 7715.555555555555,
+          "measuredCrafts": 360,
+          "statusSeconds": {
+            "working": 1800
+          }
+        },
+        {
+          "id": "chemical-plant",
+          "entity": 5658,
+          "blueprintEntity": 8,
+          "position": {
+            "y": 0.5,
+            "x": 9.5
+          },
+          "inventory": {},
+          "recipe": "sulfur",
+          "status": "full_output",
+          "products": 800,
+          "energy": 3857.7777777777774,
+          "measuredCrafts": 532,
+          "statusSeconds": {
+            "working": 531,
+            "fluid_ingredient_shortage": 720,
+            "full_output": 549
+          }
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 5662,
+          "blueprintEntity": 16,
+          "position": {
+            "y": -9,
+            "x": 9
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "working",
+          "products": 1678,
+          "energy": 1600,
+          "measuredCrafts": 1125,
+          "statusSeconds": {
+            "working": 1800
+          }
+        },
+        {
+          "id": "chemical-plant",
+          "entity": 5666,
+          "blueprintEntity": 22,
+          "position": {
+            "y": 0.5,
+            "x": -8.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 3
+            },
+            {
+              "name": "sulfur",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "sulfuric-acid",
+          "status": "full_output",
+          "products": 288,
+          "energy": 3857.7777777777774,
+          "measuredCrafts": 188,
+          "statusSeconds": {
+            "item_ingredient_shortage": 711,
+            "working": 188,
+            "full_output": 901
+          }
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 5671,
+          "blueprintEntity": 31,
+          "position": {
+            "y": 0,
+            "x": 0
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 3
+            }
+          ],
+          "recipe": "steel-plate",
+          "status": "working",
+          "products": 259,
+          "energy": 1600,
+          "measuredCrafts": 187,
+          "statusSeconds": {
+            "working": 1501,
+            "no_ingredients": 299
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 5675,
+          "blueprintEntity": 37,
+          "position": {
+            "y": -8.5,
+            "x": 0.5
+          },
+          "inventory": {},
+          "recipe": "barrel",
+          "status": "item_ingredient_shortage",
+          "products": 258,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 187,
+          "statusSeconds": {
+            "item_ingredient_shortage": 1539,
+            "working": 261
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 5678,
+          "blueprintEntity": 44,
+          "position": {
+            "y": -8.5,
+            "x": -8.5
+          },
+          "inventory": {},
+          "recipe": "sulfuric-acid-barrel",
+          "status": "item_ingredient_shortage",
+          "products": 257,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 187,
+          "statusSeconds": {
+            "item_ingredient_shortage": 1763,
+            "working": 37
+          }
+        }
+      ],
+      "inputPerMinute": {
+        "crude-oil": 1200,
+        "water": 1159.6666666666667,
+        "iron-ore": 37.5,
+        "coal": 2.5
+      },
+      "throughput": {
+        "warmupMinutes": 15,
+        "measuredMinutes": 30,
+        "period": {
+          "startTick": 54000,
+          "endTick": 162000,
+          "warmupMinutes": 15,
+          "measuredMinutes": 30,
+          "unit": "per-minute"
+        },
+        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "collected": {
+          "sulfuric-acid-barrel": 187
+        },
+        "warmupCollected": {
+          "sulfuric-acid-barrel": 70
+        },
+        "perMinute": {
+          "sulfuric-acid-barrel": 6.233333333333333
+        },
+        "inputPerMinute": {
+          "crude-oil": 1200,
+          "water": 1159.6666666666667,
+          "iron-ore": 37.5,
+          "coal": 2.5
+        },
+        "inputCounts": {
+          "crude-oil": 36000,
+          "water": 34790,
+          "iron-ore": 1125,
+          "coal": 75
+        }
+      },
+      "firstProductTicks": {
+        "sulfuric-acid-barrel": 4500
+      },
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 7,
+        "poweredConsumers": 18
+      },
+      "drainedPorts": {},
+      "restartedPorts": {},
+      "inputDisplays": {
+        "verified": 4,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ],
+  "mode": "throughput",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "period": {
+    "startTick": 54000,
+    "endTick": 162000,
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "unit": "per-minute"
+  },
+  "rateBasis": "Input rates use the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics, sampled at the warmup boundary and final tick. They measure actual recipe and burner-fuel consumption rather than exterior feed acceptance; initial inventory is removed by the boundary delta. Output rates are collected continuously after warmup. Raw materials are supplied continuously to both lanes of each declared exterior belt, fluids and electricity are external, and no intermediate input, robots, direct machine inventory injection, speed modules, or extra research are used."
+}

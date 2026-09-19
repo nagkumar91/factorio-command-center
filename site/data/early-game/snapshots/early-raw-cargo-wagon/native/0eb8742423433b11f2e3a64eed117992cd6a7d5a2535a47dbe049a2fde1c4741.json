@@ -1,0 +1,149 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-cargo-wagon",
+      "blueprintSha256": "575624eac7b88912f3c5a279ef6a767b773ded97e67d61232e853fea6eb67c34",
+      "portConfigurationSha256": "6773c0148ecce71380f21f9a773b3d42bccf9342ddd893890951a6cc1fc33c1d",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 29520,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "engine",
+        "logistic-science-pack",
+        "logistics",
+        "logistics-2",
+        "railway",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 3,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "cargo-wagon": 5
+      },
+      "outputPorts": {
+        "25": 5
+      },
+      "inputItems": {
+        "iron-ore": 1745,
+        "coal": 369
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 3962,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -5,
+            "x": -2
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "working",
+          "products": 1680,
+          "energy": 1600
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 3966,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -4.5,
+            "x": 6.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-gear-wheel",
+          "status": "full_output",
+          "products": 229,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 3969,
+          "blueprintEntity": 14,
+          "position": {
+            "y": 3,
+            "x": 6
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "recipe": "steel-plate",
+          "status": "working",
+          "products": 178,
+          "energy": 1600
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 3973,
+          "blueprintEntity": 20,
+          "position": {
+            "y": 3.5,
+            "x": -1.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 40
+            },
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 17
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 20
+            }
+          ],
+          "recipe": "cargo-wagon",
+          "status": "item_ingredient_shortage",
+          "products": 8,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 6,
+        "poweredConsumers": 14
+      },
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

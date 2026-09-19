@@ -1,0 +1,212 @@
+{
+  "gameVersion": "2.0.77",
+  "mapSeed": 12345,
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; Fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-fast-transport-belt",
+      "blueprintSha256": "b4f6fb8c33f7fa8a44d8c01cf76d18ed8740ab0a3f506a83c6d81713f8ae3131",
+      "portConfigurationSha256": "b39385fdf199924360fb0165b1e16d8eb1ba203d7fc0f4170dcb7c43bf4d483f",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 5160,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "logistics",
+        "logistics-2",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 0,
+      "restartedAfterCollection": false,
+      "delivered": {
+        "fast-transport-belt": 98
+      },
+      "outputPorts": {
+        "26": 98
+      },
+      "inputItems": {
+        "iron-ore": 1726,
+        "coal": 121
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 2839,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -4,
+            "x": -4
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "working",
+          "products": 1685,
+          "energy": 1600,
+          "measuredCrafts": 1125,
+          "statusSeconds": {
+            "working": 1800
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 2843,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -3.5,
+            "x": 4.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-gear-wheel",
+          "status": "item_ingredient_shortage",
+          "products": 763,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 539,
+          "statusSeconds": {
+            "item_ingredient_shortage": 1476,
+            "working": 324
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 2846,
+          "blueprintEntity": 14,
+          "position": {
+            "y": 4.5,
+            "x": 4.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "recipe": "transport-belt",
+          "status": "full_output",
+          "products": 108,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 48,
+          "statusSeconds": {
+            "full_output": 1748,
+            "working": 38,
+            "item_ingredient_shortage": 14
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 2850,
+          "blueprintEntity": 22,
+          "position": {
+            "y": 4.5,
+            "x": -3.5
+          },
+          "inventory": [
+            {
+              "name": "transport-belt",
+              "quality": "normal",
+              "count": 3
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 4
+            }
+          ],
+          "recipe": "fast-transport-belt",
+          "status": "item_ingredient_shortage",
+          "products": 126,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 98,
+          "statusSeconds": {
+            "item_ingredient_shortage": 1741,
+            "working": 59
+          }
+        }
+      ],
+      "inputPerMinute": {
+        "iron-ore": 37.5,
+        "coal": 1.3333333333333333
+      },
+      "throughput": {
+        "warmupMinutes": 15,
+        "measuredMinutes": 30,
+        "period": {
+          "startTick": 54000,
+          "endTick": 162000,
+          "warmupMinutes": 15,
+          "measuredMinutes": 30,
+          "unit": "per-minute"
+        },
+        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "collected": {
+          "fast-transport-belt": 98
+        },
+        "warmupCollected": {
+          "fast-transport-belt": 28
+        },
+        "perMinute": {
+          "fast-transport-belt": 3.2666666666666666
+        },
+        "inputPerMinute": {
+          "iron-ore": 37.5,
+          "coal": 1.3333333333333333
+        },
+        "inputCounts": {
+          "iron-ore": 1125,
+          "coal": 40
+        }
+      },
+      "firstProductTicks": {
+        "fast-transport-belt": 5160
+      },
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 4,
+        "poweredConsumers": 14
+      },
+      "drainedPorts": {},
+      "restartedPorts": {},
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ],
+  "mode": "throughput",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "period": {
+    "startTick": 54000,
+    "endTick": 162000,
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "unit": "per-minute"
+  },
+  "rateBasis": "Input rates use the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics, sampled at the warmup boundary and final tick. They measure actual recipe and burner-fuel consumption rather than exterior feed acceptance; initial inventory is removed by the boundary delta. Output rates are collected continuously after warmup. Raw materials are supplied continuously to both lanes of each declared exterior belt, fluids and electricity are external, and no intermediate input, robots, direct machine inventory injection, speed modules, or extra research are used."
+}

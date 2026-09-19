@@ -1,0 +1,89 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-copper-cable",
+      "blueprintSha256": "e9118292172ee713783b42aa02e29fb0e8019cc8d9e0d7ed4081aac56feeb591",
+      "portConfigurationSha256": "d0de32d5da788756ff11c0b38b206ccd9aef96a63db67df6630f0950c465d787",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 540,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "copper-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 200,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "copper-cable": 200
+      },
+      "outputPorts": {
+        "10": 200
+      },
+      "inputItems": {
+        "copper-ore": 350,
+        "coal": 72
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 390,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -1,
+            "x": -3
+          },
+          "inventory": [
+            {
+              "name": "copper-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "copper-plate",
+          "status": "full_output",
+          "products": 318,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 394,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -0.5,
+            "x": 4.5
+          },
+          "inventory": {},
+          "recipe": "copper-cable",
+          "status": "full_output",
+          "products": 204,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 2,
+        "poweredConsumers": 6
+      },
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

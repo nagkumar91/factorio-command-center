@@ -1,0 +1,102 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-explosives",
+      "blueprintSha256": "35b27147310710843aa861927751f2c1c8cb87bc6b32b21a87592cf065845b00",
+      "portConfigurationSha256": "08150585db8a0c44684793d472508b65c4bfa9b5fe58425079305a433876e481",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 1800,
+      "testedTechnologies": [
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "engine",
+        "explosives",
+        "fluid-handling",
+        "logistic-science-pack",
+        "oil-gathering",
+        "oil-processing",
+        "steam-power",
+        "steel-processing",
+        "sulfur-processing"
+      ],
+      "rawInputs": [
+        "crude-oil",
+        "water",
+        "coal"
+      ],
+      "removedAtHalfTime": 50,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "explosives": 50
+      },
+      "outputPorts": {
+        "21": 50
+      },
+      "inputItems": {
+        "coal": 201
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "oil-refinery",
+          "entity": 4260,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -0.5,
+            "x": 0.5
+          },
+          "inventory": {},
+          "recipe": "basic-oil-processing",
+          "status": "full_output",
+          "products": 112,
+          "energy": 7715.555555555555
+        },
+        {
+          "id": "chemical-plant",
+          "entity": 4263,
+          "blueprintEntity": 8,
+          "position": {
+            "y": -0.5,
+            "x": 7.5
+          },
+          "inventory": {},
+          "recipe": "sulfur",
+          "status": "full_output",
+          "products": 119,
+          "energy": 3857.7777777777774
+        },
+        {
+          "id": "chemical-plant",
+          "entity": 4267,
+          "blueprintEntity": 16,
+          "position": {
+            "y": -0.5,
+            "x": -6.5
+          },
+          "inventory": {},
+          "recipe": "explosives",
+          "status": "full_output",
+          "products": 54,
+          "energy": 3857.7777777777774
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 3,
+        "poweredConsumers": 7
+      },
+      "inputDisplays": {
+        "verified": 3,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

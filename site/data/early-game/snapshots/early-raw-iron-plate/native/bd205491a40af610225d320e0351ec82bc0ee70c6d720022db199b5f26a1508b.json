@@ -1,0 +1,73 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-iron-plate",
+      "blueprintSha256": "6da0a76a61a53ee2190e684636222c1633d0635aab2ec16211acaa2fedd73548",
+      "portConfigurationSha256": "7ad9ae7157497fad13d4b07e1eba1332fd725a3a91047e44965d4d4e5b681d34",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 360,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 100,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "iron-plate": 100
+      },
+      "outputPorts": {
+        "5": 100
+      },
+      "inputItems": {
+        "iron-ore": 340,
+        "coal": 71
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 1071,
+          "blueprintEntity": 1,
+          "position": {
+            "y": 0,
+            "x": 1
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "full_output",
+          "products": 300,
+          "energy": 100
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 1,
+        "poweredConsumers": 3
+      },
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-train-stop",
+      "blueprintSha256": "8a20ee684e5a01bb73c5d1b8bb03c2f973a2a5a12c0d28521a29a9464ed04899",
+      "portConfigurationSha256": "ee97cbc7edeb305b4ae1f5c33d41e69ca74b09be73a91fd9e1e80fb2183dd926",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 13080,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automated-rail-transportation",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "engine",
+        "logistic-science-pack",
+        "logistics",
+        "logistics-2",
+        "railway",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal",
+        "copper-ore"
+      ],
+      "removedAtHalfTime": 10,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "train-stop": 10
+      },
+      "outputPorts": {
+        "47": 10
+      },
+      "inputItems": {
+        "iron-ore": 1767,
+        "coal": 452,
+        "copper-ore": 666
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 4172,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -7,
+            "x": -6
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "working",
+          "products": 1682,
+          "energy": 1600
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 4176,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -7,
+            "x": 2
+          },
+          "inventory": [
+            {
+              "name": "copper-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "copper-plate",
+          "status": "full_output",
+          "products": 526,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 4180,
+          "blueprintEntity": 13,
+          "position": {
+            "y": -6.5,
+            "x": 10.5
+          },
+          "inventory": {},
+          "recipe": "copper-cable",
+          "status": "full_output",
+          "products": 408,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 4183,
+          "blueprintEntity": 20,
+          "position": {
+            "y": 1.5,
+            "x": 10.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 3
+            },
+            {
+              "name": "copper-cable",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "electronic-circuit",
+          "status": "full_output",
+          "products": 257,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 4187,
+          "blueprintEntity": 28,
+          "position": {
+            "y": 1.5,
+            "x": 2.5
+          },
+          "inventory": {},
+          "recipe": "iron-stick",
+          "status": "full_output",
+          "products": 125,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 4190,
+          "blueprintEntity": 35,
+          "position": {
+            "y": 1,
+            "x": -6
+          },
+          "inventory": {},
+          "recipe": "steel-plate",
+          "status": "working",
+          "products": 197,
+          "energy": 1600
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 4194,
+          "blueprintEntity": 41,
+          "position": {
+            "y": 9.5,
+            "x": -5.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 13
+            },
+            {
+              "name": "iron-stick",
+              "quality": "normal",
+              "count": 13
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 11
+            }
+          ],
+          "recipe": "train-stop",
+          "status": "full_output",
+          "products": 23,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 8,
+        "poweredConsumers": 25
+      },
+      "inputDisplays": {
+        "verified": 3,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

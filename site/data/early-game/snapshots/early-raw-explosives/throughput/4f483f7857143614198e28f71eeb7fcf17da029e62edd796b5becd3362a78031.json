@@ -1,0 +1,180 @@
+{
+  "gameVersion": "2.0.77",
+  "mapSeed": 12345,
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; Fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-explosives",
+      "blueprintSha256": "35b27147310710843aa861927751f2c1c8cb87bc6b32b21a87592cf065845b00",
+      "portConfigurationSha256": "08150585db8a0c44684793d472508b65c4bfa9b5fe58425079305a433876e481",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 1800,
+      "testedTechnologies": [
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "engine",
+        "explosives",
+        "fluid-handling",
+        "logistic-science-pack",
+        "oil-gathering",
+        "oil-processing",
+        "steam-power",
+        "steel-processing",
+        "sulfur-processing"
+      ],
+      "rawInputs": [
+        "crude-oil",
+        "water",
+        "coal"
+      ],
+      "removedAtHalfTime": 0,
+      "restartedAfterCollection": false,
+      "delivered": {
+        "explosives": 900
+      },
+      "outputPorts": {
+        "21": 900
+      },
+      "inputItems": {
+        "coal": 818
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "oil-refinery",
+          "entity": 6453,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -0.5,
+            "x": 0.5
+          },
+          "inventory": {},
+          "recipe": "basic-oil-processing",
+          "status": "full_output",
+          "products": 317,
+          "energy": 7715.555555555555,
+          "measuredCrafts": 150,
+          "statusSeconds": {
+            "full_output": 1050,
+            "working": 750
+          }
+        },
+        {
+          "id": "chemical-plant",
+          "entity": 6456,
+          "blueprintEntity": 8,
+          "position": {
+            "y": -0.5,
+            "x": 7.5
+          },
+          "inventory": {},
+          "recipe": "sulfur",
+          "status": "full_output",
+          "products": 427,
+          "energy": 3857.7777777777774,
+          "measuredCrafts": 225,
+          "statusSeconds": {
+            "full_output": 1575,
+            "working": 225
+          }
+        },
+        {
+          "id": "chemical-plant",
+          "entity": 6460,
+          "blueprintEntity": 16,
+          "position": {
+            "y": -0.5,
+            "x": -6.5
+          },
+          "inventory": [
+            {
+              "name": "coal",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "sulfur",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "recipe": "explosives",
+          "status": "working",
+          "products": 668,
+          "energy": 3857.7777777777774,
+          "measuredCrafts": 450,
+          "statusSeconds": {
+            "working": 1800
+          }
+        }
+      ],
+      "inputPerMinute": {
+        "crude-oil": 500,
+        "water": 375,
+        "coal": 15
+      },
+      "throughput": {
+        "warmupMinutes": 15,
+        "measuredMinutes": 30,
+        "period": {
+          "startTick": 54000,
+          "endTick": 162000,
+          "warmupMinutes": 15,
+          "measuredMinutes": 30,
+          "unit": "per-minute"
+        },
+        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "collected": {
+          "explosives": 900
+        },
+        "warmupCollected": {
+          "explosives": 436
+        },
+        "perMinute": {
+          "explosives": 30
+        },
+        "inputPerMinute": {
+          "crude-oil": 500,
+          "water": 375,
+          "coal": 15
+        },
+        "inputCounts": {
+          "crude-oil": 15000,
+          "water": 11250,
+          "coal": 450
+        }
+      },
+      "firstProductTicks": {
+        "explosives": 1800
+      },
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 3,
+        "poweredConsumers": 7
+      },
+      "drainedPorts": {},
+      "restartedPorts": {},
+      "inputDisplays": {
+        "verified": 3,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ],
+  "mode": "throughput",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "period": {
+    "startTick": 54000,
+    "endTick": 162000,
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "unit": "per-minute"
+  },
+  "rateBasis": "Input rates use the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics sampled at warmup and final tick. For fluid ingredients marked ignored_by_stats, measured completed-recipe and active-craft boundary adjustments are added; an unignored fluid boundary is only a defensive fallback when its counter is absent. Rates measure actual recipe and burner-fuel consumption rather than exterior feed acceptance; initial inventory is removed by the boundary delta. Output rates are collected continuously after warmup. Raw materials are supplied continuously to both lanes of each declared exterior belt, fluids and electricity are external, and no intermediate input, robots, direct machine inventory injection, speed modules, or extra research are used."
+}

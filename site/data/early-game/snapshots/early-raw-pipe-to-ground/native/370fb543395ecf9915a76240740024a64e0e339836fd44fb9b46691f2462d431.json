@@ -1,0 +1,110 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-pipe-to-ground",
+      "blueprintSha256": "f97d98ccd2e4a5461e494ae7fa7d03c57fe70a07d5561e9069ab629a342ad891",
+      "portConfigurationSha256": "52161ceb0267e6144fc3f01f140be9e0c4f14be8ca1c47964679b7b332191d24",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 2940,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "logistics",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 50,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "pipe-to-ground": 50
+      },
+      "outputPorts": {
+        "18": 50
+      },
+      "inputItems": {
+        "iron-ore": 1075,
+        "coal": 98
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 1153,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -3,
+            "x": -3
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "full_output",
+          "products": 1035,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 1157,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -2.5,
+            "x": 5.5
+          },
+          "inventory": {},
+          "recipe": "pipe",
+          "status": "full_output",
+          "products": 589,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 1160,
+          "blueprintEntity": 14,
+          "position": {
+            "y": 5.5,
+            "x": 5.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 11
+            }
+          ],
+          "recipe": "pipe-to-ground",
+          "status": "full_output",
+          "products": 53,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 4,
+        "poweredConsumers": 10
+      },
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

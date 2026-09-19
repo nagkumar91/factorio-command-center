@@ -1,0 +1,858 @@
+{
+  "id": "transport-blue",
+  "file": "transport-blue.txt",
+  "name": "Blue transport workshop · from raw materials",
+  "colour": "Blue",
+  "order": 2,
+  "products": [
+    "express-transport-belt",
+    "express-underground-belt",
+    "express-splitter"
+  ],
+  "sideProducts": [
+    "solid-fuel"
+  ],
+  "author": "Factorio Command Center",
+  "sourceURL": "sources/transport-workshops/README.md",
+  "sourceTitle": "Original transport workshops",
+  "category": "Blue transport",
+  "kind": "production",
+  "rawOnly": true,
+  "workshop": true,
+  "requires": [
+    "logistics-3",
+    "circuit-network",
+    "fast-inserter",
+    "electric-energy-distribution-1"
+  ],
+  "unlock": "logistics-3",
+  "unlockName": "Logistics 3",
+  "researchClosure": [
+    "advanced-circuit",
+    "advanced-material-processing",
+    "advanced-material-processing-2",
+    "advanced-oil-processing",
+    "automation",
+    "automation-2",
+    "automation-science-pack",
+    "chemical-science-pack",
+    "circuit-network",
+    "electric-energy-distribution-1",
+    "electronics",
+    "engine",
+    "fast-inserter",
+    "fluid-handling",
+    "logistic-science-pack",
+    "logistics",
+    "logistics-2",
+    "logistics-3",
+    "lubricant",
+    "modules",
+    "oil-gathering",
+    "oil-processing",
+    "plastics",
+    "production-science-pack",
+    "productivity-module",
+    "railway",
+    "steam-power",
+    "steel-processing",
+    "sulfur-processing"
+  ],
+  "rawInputs": [
+    "iron-ore",
+    "copper-ore",
+    "coal",
+    "water",
+    "crude-oil"
+  ],
+  "surface": {
+    "name": "Nauvis",
+    "properties": {
+      "pressure": 1000
+    }
+  },
+  "setupNotes": [
+    "Connect external electricity to the big electric pole marked P. Medium electric poles power the machines and inserters.",
+    "Research Logistics 3, Circuit network, Fast inserter, Electric Energy Distribution 1. Circuit network is required for production: keep the green wires, belt reader and item limits intact.",
+    "Feed only Iron ore, Copper ore, Coal, Water, Crude oil at the labeled left-side ports. All smelting and intermediate products are made inside. No robots required.",
+    "Each input has an item/fluid display directly above its belt or pipe. Connect from the left; both belt lanes take the shown material. Press Alt to see the labels. Display panels need Circuit network research: leave their ghosts unbuilt until then; production works without the signs.",
+    "Uses assembling machine 2, steel furnaces, yellow circulating belts and filtered fast inserters.",
+    "The circulating belt shares ingredients between machines. 3 iron furnaces supply the chain. The controls limit circulating stock and reserve ingredients for other recipes.",
+    "Collect the three transport products from their separate numbered wooden chests. Each chest holds one stack. Empty it or connect an output belt to continue making that item.",
+    "Light oil is cracked to petroleum gas. Plastic and sulfur use it first; a controlled pump sends surplus to solid fuel. Collect the solid-fuel byproduct from chest 4 as well, so a full fuel chest does not eventually stop refining."
+  ],
+  "changes": [
+    "Shared smelting and a controlled circulating belt feed all three transport outputs.",
+    "Every intermediate is made inside from raw resources."
+  ],
+  "ports": [],
+  "recipes": [
+    "iron-plate",
+    "iron-plate",
+    "iron-plate",
+    "iron-gear-wheel",
+    "iron-gear-wheel",
+    "transport-belt",
+    "fast-transport-belt",
+    "underground-belt",
+    "fast-underground-belt",
+    "copper-plate",
+    "copper-plate",
+    "copper-cable",
+    "electronic-circuit",
+    "splitter",
+    "fast-splitter",
+    "advanced-circuit",
+    "express-splitter",
+    "advanced-oil-processing",
+    "lubricant",
+    "express-transport-belt",
+    "express-underground-belt",
+    "plastic-bar",
+    "light-oil-cracking",
+    "solid-fuel-from-petroleum-gas"
+  ],
+  "machineCounts": {
+    "iron-plate": 3,
+    "iron-gear-wheel": 2,
+    "transport-belt": 1,
+    "fast-transport-belt": 1,
+    "underground-belt": 1,
+    "fast-underground-belt": 1,
+    "copper-plate": 2,
+    "copper-cable": 1,
+    "electronic-circuit": 1,
+    "splitter": 1,
+    "fast-splitter": 1,
+    "advanced-circuit": 1,
+    "express-splitter": 1,
+    "advanced-oil-processing": 1,
+    "lubricant": 1,
+    "express-transport-belt": 1,
+    "express-underground-belt": 1,
+    "plastic-bar": 1,
+    "light-oil-cracking": 1,
+    "solid-fuel-from-petroleum-gas": 1
+  },
+  "layoutOptions": {
+    "columns": 4,
+    "pitch": 6,
+    "splitInputFilters": true,
+    "minimumStock": 2,
+    "inputReserveByRecipe": {
+      "iron-gear-wheel": {
+        "iron-plate": 40
+      },
+      "splitter": {
+        "electronic-circuit": 8
+      },
+      "fast-splitter": {
+        "electronic-circuit": 8
+      },
+      "fast-underground-belt": {
+        "iron-gear-wheel": 20
+      },
+      "express-underground-belt": {
+        "iron-gear-wheel": 20
+      },
+      "express-transport-belt": {
+        "iron-gear-wheel": 5
+      },
+      "express-splitter": {
+        "iron-gear-wheel": 5
+      }
+    }
+  },
+  "machineCount": 24,
+  "inputDisplays": {
+    "optional": true,
+    "requiredTechnology": "circuit-network"
+  },
+  "powerNetwork": {
+    "connection": "big-electric-pole",
+    "distribution": "medium-electric-pole",
+    "research": "electric-energy-distribution-1"
+  },
+  "loopControl": {
+    "reader": 4,
+    "controlled": [
+      243,
+      246,
+      249,
+      251,
+      252,
+      254,
+      255,
+      259,
+      263,
+      267,
+      269,
+      271,
+      274,
+      277,
+      280,
+      284,
+      286,
+      288,
+      290,
+      292,
+      296,
+      299,
+      305,
+      310,
+      316,
+      328,
+      336,
+      344
+    ],
+    "loop": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239,
+      240
+    ],
+    "limits": {
+      "iron-ore": 48,
+      "copper-ore": 48,
+      "coal": 16,
+      "iron-plate": 100,
+      "iron-gear-wheel": 160,
+      "transport-belt": 10,
+      "underground-belt": 4,
+      "copper-plate": 64,
+      "copper-cable": 80,
+      "electronic-circuit": 20,
+      "splitter": 2,
+      "plastic-bar": 4,
+      "fast-splitter": 2,
+      "advanced-circuit": 20,
+      "fast-transport-belt": 2,
+      "fast-underground-belt": 4
+    },
+    "requiredTechnology": "circuit-network"
+  },
+  "footprint": {
+    "width": 48,
+    "height": 44
+  },
+  "collection": "Transport workshops",
+  "section": "Blue transport workshop · from raw materials",
+  "isBook": false,
+  "icons": [
+    "express-transport-belt",
+    "express-underground-belt",
+    "express-splitter"
+  ],
+  "sources": [
+    "sources/transport-workshops/README.md",
+    "data/transport-workshops/snapshots/transport-blue/code/dc5973e07f00daa85d1c588a5b64464c18b51957a68951fc3cc2a9c9d5b50f67.txt"
+  ],
+  "entries": [
+    {
+      "id": "transport-belt",
+      "count": 261,
+      "quality": "normal"
+    },
+    {
+      "id": "pipe",
+      "count": 60,
+      "quality": "normal"
+    },
+    {
+      "id": "fast-inserter",
+      "count": 55,
+      "quality": "normal"
+    },
+    {
+      "id": "pipe-to-ground",
+      "count": 54,
+      "quality": "normal"
+    },
+    {
+      "id": "medium-electric-pole",
+      "count": 28,
+      "quality": "normal"
+    },
+    {
+      "id": "assembling-machine-2",
+      "count": 14,
+      "quality": "normal"
+    },
+    {
+      "id": "steel-furnace",
+      "count": 5,
+      "quality": "normal"
+    },
+    {
+      "id": "display-panel",
+      "count": 5,
+      "quality": "normal"
+    },
+    {
+      "id": "wooden-chest",
+      "count": 4,
+      "quality": "normal"
+    },
+    {
+      "id": "chemical-plant",
+      "count": 4,
+      "quality": "normal"
+    },
+    {
+      "id": "oil-refinery",
+      "count": 1,
+      "quality": "normal"
+    },
+    {
+      "id": "storage-tank",
+      "count": 1,
+      "quality": "normal"
+    },
+    {
+      "id": "pump",
+      "count": 1,
+      "quality": "normal"
+    },
+    {
+      "id": "big-electric-pole",
+      "count": 1,
+      "quality": "normal"
+    }
+  ],
+  "excluded": [],
+  "entityCount": 494,
+  "tileCount": 0,
+  "blueprintCount": 1,
+  "code": "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",
+  "blueprintSha256": "dc5973e07f00daa85d1c588a5b64464c18b51957a68951fc3cc2a9c9d5b50f67",
+  "analysis": {
+    "kind": "Production",
+    "inputs": [
+      "coal",
+      "copper-ore",
+      "crude-oil",
+      "iron-ore",
+      "water"
+    ],
+    "outputs": [
+      "express-splitter",
+      "express-transport-belt",
+      "express-underground-belt",
+      "solid-fuel"
+    ],
+    "netOutputs": [],
+    "internal": [
+      "advanced-circuit",
+      "copper-cable",
+      "copper-plate",
+      "electronic-circuit",
+      "fast-splitter",
+      "fast-transport-belt",
+      "fast-underground-belt",
+      "heavy-oil",
+      "iron-gear-wheel",
+      "iron-plate",
+      "light-oil",
+      "lubricant",
+      "petroleum-gas",
+      "plastic-bar",
+      "splitter",
+      "transport-belt",
+      "underground-belt"
+    ],
+    "seeds": [],
+    "recipes": [
+      {
+        "id": "iron-plate",
+        "count": 3
+      },
+      {
+        "id": "iron-gear-wheel",
+        "count": 2
+      },
+      {
+        "id": "transport-belt",
+        "count": 1
+      },
+      {
+        "id": "fast-transport-belt",
+        "count": 1
+      },
+      {
+        "id": "underground-belt",
+        "count": 1
+      },
+      {
+        "id": "fast-underground-belt",
+        "count": 1
+      },
+      {
+        "id": "copper-plate",
+        "count": 2
+      },
+      {
+        "id": "copper-cable",
+        "count": 1
+      },
+      {
+        "id": "electronic-circuit",
+        "count": 1
+      },
+      {
+        "id": "splitter",
+        "count": 1
+      },
+      {
+        "id": "fast-splitter",
+        "count": 1
+      },
+      {
+        "id": "advanced-circuit",
+        "count": 1
+      },
+      {
+        "id": "express-splitter",
+        "count": 1
+      },
+      {
+        "id": "advanced-oil-processing",
+        "count": 1
+      },
+      {
+        "id": "lubricant",
+        "count": 1
+      },
+      {
+        "id": "express-transport-belt",
+        "count": 1
+      },
+      {
+        "id": "express-underground-belt",
+        "count": 1
+      },
+      {
+        "id": "plastic-bar",
+        "count": 1
+      },
+      {
+        "id": "light-oil-cracking",
+        "count": 1
+      },
+      {
+        "id": "solid-fuel-from-petroleum-gas",
+        "count": 1
+      }
+    ],
+    "missing": [],
+    "serviceInputs": [
+      "Power for machines and inserters"
+    ],
+    "serviceOutputs": [],
+    "notes": [
+      "Inputs are recipe ingredients and recognized machine fuels or fluids supplied from outside. Outputs are products not consumed by another included process. Check belt, pipe, and robot connections in-game; this analysis does not simulate routing or throughput.",
+      "5 furnaces/recyclers have labeled processing feeds in this layout. The analysis includes those recipes; the machines select their actual recipe from the supplied ingredient."
+    ]
+  },
+  "starter": false,
+  "connectionPorts": [
+    {
+      "kind": "output",
+      "index": 1,
+      "label": "OUT 1 · express-transport-belt",
+      "entity": 307,
+      "items": [
+        "express-transport-belt"
+      ],
+      "x": 24.5,
+      "y": 34.5
+    },
+    {
+      "kind": "output",
+      "index": 2,
+      "label": "OUT 2 · express-underground-belt",
+      "entity": 312,
+      "items": [
+        "express-underground-belt"
+      ],
+      "x": 6.5,
+      "y": 43.5
+    },
+    {
+      "kind": "output",
+      "index": 3,
+      "label": "OUT 3 · express-splitter",
+      "entity": 300,
+      "items": [
+        "express-splitter"
+      ],
+      "x": 6.5,
+      "y": 34.5
+    },
+    {
+      "kind": "output",
+      "index": 4,
+      "label": "OUT 4 · solid-fuel",
+      "entity": 319,
+      "items": [
+        "solid-fuel"
+      ],
+      "x": 24.5,
+      "y": 43.5
+    },
+    {
+      "kind": "input",
+      "label": "A · iron ore",
+      "items": [
+        "iron-ore"
+      ],
+      "entity": 321,
+      "x": -7.5,
+      "y": 2.5,
+      "externalSide": "west",
+      "direction": 4,
+      "displayEntity": 461
+    },
+    {
+      "kind": "input",
+      "label": "B · copper ore",
+      "items": [
+        "copper-ore"
+      ],
+      "entity": 329,
+      "x": -7.5,
+      "y": 5.5,
+      "externalSide": "west",
+      "direction": 4,
+      "displayEntity": 462
+    },
+    {
+      "kind": "input",
+      "label": "C · coal",
+      "items": [
+        "coal"
+      ],
+      "entity": 337,
+      "x": -7.5,
+      "y": 8.5,
+      "externalSide": "west",
+      "direction": 4,
+      "displayEntity": 463
+    },
+    {
+      "kind": "fluid",
+      "label": "F · water",
+      "items": [
+        "water"
+      ],
+      "x": -7.5,
+      "y": 17.5,
+      "externalSide": "west",
+      "entity": 397,
+      "displayEntity": 464
+    },
+    {
+      "kind": "fluid",
+      "label": "G · crude oil",
+      "items": [
+        "crude-oil"
+      ],
+      "x": -7.5,
+      "y": 20.5,
+      "externalSide": "west",
+      "entity": 408,
+      "displayEntity": 465
+    },
+    {
+      "kind": "power",
+      "label": "P · External power",
+      "items": [],
+      "entity": 466,
+      "x": -6,
+      "y": 1
+    }
+  ],
+  "validation": {
+    "status": "game-tested",
+    "kind": "production",
+    "blueprintSha256": "dc5973e07f00daa85d1c588a5b64464c18b51957a68951fc3cc2a9c9d5b50f67",
+    "report": "data/transport-workshops/snapshots/transport-blue/native/5cd8dac8769cd471c1c358154037a28ae76ef5a8dd4bf3950a9d479a128f72cc.json",
+    "firstOutputSeconds": 613,
+    "note": "Passed 45 simulated minutes in Factorio 2.0.77 with only the labeled raw materials and electricity at P. Every recipe ran and each transport output reached its own chest. Each emptied output chest replenished. All poles, electric machines and inserters were connected to P; input display icons and text were verified."
+  },
+  "benchmark": {
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "collected": {
+      "express-transport-belt": 53,
+      "express-underground-belt": 10,
+      "express-splitter": 5,
+      "solid-fuel": 238
+    },
+    "warmupCollected": {
+      "express-transport-belt": 1,
+      "express-underground-belt": 2,
+      "express-splitter": 1,
+      "solid-fuel": 654
+    },
+    "perMinute": {
+      "express-transport-belt": 1.7666666666666666,
+      "express-underground-belt": 0.3333333333333333,
+      "express-splitter": 0.16666666666666666,
+      "solid-fuel": 7.933333333333334
+    },
+    "gameVersion": "2.0.77",
+    "report": "data/transport-workshops/snapshots/transport-blue/throughput/11f57171755ce86cc17d78d4a97e2e27a2aef9f3ffa5e17d42f0eac5595d089a.json"
+  },
+  "preview": "data/transport-workshops/snapshots/transport-blue/preview/38181ad9e23857f62a8de45fc84af2c9d4ca4936b127c5449c1dee711a868529.png",
+  "publication": {
+    "schemaVersion": 1,
+    "snapshots": {
+      "code": "data/transport-workshops/snapshots/transport-blue/code/dc5973e07f00daa85d1c588a5b64464c18b51957a68951fc3cc2a9c9d5b50f67.txt",
+      "preview": "data/transport-workshops/snapshots/transport-blue/preview/38181ad9e23857f62a8de45fc84af2c9d4ca4936b127c5449c1dee711a868529.png",
+      "native": "data/transport-workshops/snapshots/transport-blue/native/5cd8dac8769cd471c1c358154037a28ae76ef5a8dd4bf3950a9d479a128f72cc.json",
+      "throughput": "data/transport-workshops/snapshots/transport-blue/throughput/11f57171755ce86cc17d78d4a97e2e27a2aef9f3ffa5e17d42f0eac5595d089a.json"
+    },
+    "snapshotSha256": {
+      "code": "dc5973e07f00daa85d1c588a5b64464c18b51957a68951fc3cc2a9c9d5b50f67",
+      "preview": "38181ad9e23857f62a8de45fc84af2c9d4ca4936b127c5449c1dee711a868529",
+      "native": "5cd8dac8769cd471c1c358154037a28ae76ef5a8dd4bf3950a9d479a128f72cc",
+      "throughput": "11f57171755ce86cc17d78d4a97e2e27a2aef9f3ffa5e17d42f0eac5595d089a"
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "gameVersion": "2.0.77",
+  "mapSeed": 12345,
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Exterior belts receive continuous supply on both lanes up to their saved capacity; fluid supply is continuous. Every saved pole and electric consumer is checked for connection to P. Only the listed production research is enabled. Imported input-display icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Outputs are collected each second after the 15-minute warmup; output rates use collected totals over the following 30 minutes. Input rates record actual recipe and burner consumption during the same measurement window.",
+  "builds": [
+    {
+      "id": "early-raw-concrete",
+      "blueprintSha256": "96dd87d10178ddc6bd70f206201398041c56e3bf9cf523787fc0a342aef8d22d",
+      "portConfigurationSha256": "7ac309b23efac657fae0277c0ef960d01665554aa7d184b7e51183c8393f5072",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 2220,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "concrete",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "logistics",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "stone",
+        "coal",
+        "water",
+        "iron-ore"
+      ],
+      "removedAtHalfTime": 0,
+      "restartedAfterCollection": false,
+      "delivered": {
+        "concrete": 1350
+      },
+      "outputPorts": {
+        "12": 1350
+      },
+      "inputItems": {
+        "stone": 2397,
+        "coal": 102,
+        "iron-ore": 372
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 5811,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -1,
+            "x": -3
+          },
+          "inventory": {},
+          "recipe": "stone-brick",
+          "status": "working",
+          "products": 1162,
+          "energy": 1600,
+          "measuredCrafts": 743,
+          "statusSeconds": {
+            "working": 1190,
+            "no_ingredients": 583,
+            "full_output": 27
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 5815,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -0.5,
+            "x": 5.5
+          },
+          "inventory": [
+            {
+              "name": "stone-brick",
+              "quality": "normal",
+              "count": 10
+            },
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "recipe": "concrete",
+          "status": "working",
+          "products": 200,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 135,
+          "statusSeconds": {
+            "working": 1800
+          }
+        }
+      ],
+      "inputPerMinute": {
+        "stone": 49.53333333333333,
+        "coal": 0.8666666666666668,
+        "water": 450,
+        "iron-ore": 4.5
+      },
+      "throughput": {
+        "warmupMinutes": 15,
+        "measuredMinutes": 30,
+        "period": {
+          "startTick": 54000,
+          "endTick": 162000,
+          "warmupMinutes": 15,
+          "measuredMinutes": 30,
+          "unit": "per-minute"
+        },
+        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "collected": {
+          "concrete": 1350
+        },
+        "warmupCollected": {
+          "concrete": 649
+        },
+        "perMinute": {
+          "concrete": 45
+        },
+        "inputPerMinute": {
+          "stone": 49.53333333333333,
+          "coal": 0.8666666666666668,
+          "water": 450,
+          "iron-ore": 4.5
+        },
+        "inputCounts": {
+          "stone": 1486,
+          "coal": 26,
+          "water": 13500,
+          "iron-ore": 135
+        }
+      },
+      "firstProductTicks": {
+        "concrete": 2220
+      },
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 3,
+        "poweredConsumers": 7
+      },
+      "drainedPorts": {},
+      "restartedPorts": {},
+      "inputDisplays": {
+        "verified": 4,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ],
+  "mode": "throughput",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "period": {
+    "startTick": 54000,
+    "endTick": 162000,
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "unit": "per-minute"
+  },
+  "rateBasis": "Input rates use the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics sampled at warmup and final tick. For fluid ingredients marked ignored_by_stats, measured completed-recipe and active-craft boundary adjustments are added; an unignored fluid boundary is only a defensive fallback when its counter is absent. Rates measure actual recipe and burner-fuel consumption rather than exterior feed acceptance; initial inventory is removed by the boundary delta. Output rates are collected continuously after warmup. Raw materials are supplied continuously to both lanes of each declared exterior belt, fluids and electricity are external, and no intermediate input, robots, direct machine inventory injection, speed modules, or extra research are used."
+}

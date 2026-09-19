@@ -1,0 +1,138 @@
+{
+  "gameVersion": "2.0.77",
+  "mapSeed": 12345,
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; Fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-solid-fuel",
+      "blueprintSha256": "1f714961ea663fb69466a552981275e68574aba3a679efad9ec8c3e21113acd0",
+      "portConfigurationSha256": "d2afb12498f3da3d8a7a09ecd6e284361046727e771127750a948ad1ce9ce782",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 420,
+      "testedTechnologies": [
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "engine",
+        "fluid-handling",
+        "logistic-science-pack",
+        "oil-gathering",
+        "oil-processing",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "crude-oil"
+      ],
+      "removedAtHalfTime": 0,
+      "restartedAfterCollection": false,
+      "delivered": {
+        "solid-fuel": 810
+      },
+      "outputPorts": {
+        "11": 810
+      },
+      "inputItems": {},
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "oil-refinery",
+          "entity": 5838,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -0.5,
+            "x": -2.5
+          },
+          "inventory": {},
+          "recipe": "basic-oil-processing",
+          "status": "working",
+          "products": 539,
+          "energy": 7715.555555555555,
+          "measuredCrafts": 360,
+          "statusSeconds": {
+            "working": 1800
+          }
+        },
+        {
+          "id": "chemical-plant",
+          "entity": 5841,
+          "blueprintEntity": 8,
+          "position": {
+            "y": -0.5,
+            "x": 2.5
+          },
+          "inventory": {},
+          "recipe": "solid-fuel-from-petroleum-gas",
+          "status": "fluid_ingredient_shortage",
+          "products": 1212,
+          "energy": 3857.7777777777774,
+          "measuredCrafts": 810,
+          "statusSeconds": {
+            "working": 810,
+            "fluid_ingredient_shortage": 990
+          }
+        }
+      ],
+      "inputPerMinute": {
+        "crude-oil": 1200
+      },
+      "throughput": {
+        "warmupMinutes": 15,
+        "measuredMinutes": 30,
+        "period": {
+          "startTick": 54000,
+          "endTick": 162000,
+          "warmupMinutes": 15,
+          "measuredMinutes": 30,
+          "unit": "per-minute"
+        },
+        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "collected": {
+          "solid-fuel": 810
+        },
+        "warmupCollected": {
+          "solid-fuel": 402
+        },
+        "perMinute": {
+          "solid-fuel": 27
+        },
+        "inputPerMinute": {
+          "crude-oil": 1200
+        },
+        "inputCounts": {
+          "crude-oil": 36000
+        }
+      },
+      "firstProductTicks": {
+        "solid-fuel": 420
+      },
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 1,
+        "poweredConsumers": 3
+      },
+      "drainedPorts": {},
+      "restartedPorts": {},
+      "inputDisplays": {
+        "verified": 1,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ],
+  "mode": "throughput",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "period": {
+    "startTick": 54000,
+    "endTick": 162000,
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "unit": "per-minute"
+  },
+  "rateBasis": "Input rates use the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics sampled at warmup and final tick. For fluid ingredients marked ignored_by_stats, measured completed-recipe and active-craft boundary adjustments are added; an unignored fluid boundary is only a defensive fallback when its counter is absent. Rates measure actual recipe and burner-fuel consumption rather than exterior feed acceptance; initial inventory is removed by the boundary delta. Output rates are collected continuously after warmup. Raw materials are supplied continuously to both lanes of each declared exterior belt, fluids and electricity are external, and no intermediate input, robots, direct machine inventory injection, speed modules, or extra research are used."
+}

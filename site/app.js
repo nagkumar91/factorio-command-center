@@ -28,6 +28,7 @@ const symbols = {
 };
 const svg = (name, cls = '') => `<svg class="ui-icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${symbols[name] || symbols.grid}</svg>`;
 let catalog, library, itemMap, explorer;
+let openBlueprint;
 let toastTimer;
 const state = { page: 'commands', query: '', category: 'All', history: false, favoritesOnly: false, itemQuery: '', itemGroup: 'All', chest: 'passive-provider-chest', quality: 'normal', rows: [], cratePage: 0, blueprintQuery: '', fileQuery: '', fileType: 'All', favorites: [], saved: [], menu: false };
 const routes = ['commands', 'crates', 'blueprints', 'coverage', 'production', 'files', 'setup'];
@@ -124,7 +125,7 @@ function renderManifest() {
   const chest = catalog.chests.find(c => c.id === state.chest);
   const page = Math.max(0, Math.min(state.cratePage, (plan?.chests || 1) - 1));
   const slots = plan ? crateSlots(plan, catalog, page) : [];
-  return `<div class="manifest-header"><div><span class="eyebrow">PACKING MANIFEST</span><h2>Your loadout <span class="tag">${state.rows.length}</span></h2></div><button class="icon-button" data-action="clear-crate" aria-label="Clear loadout" ${state.rows.length ? '' : 'disabled'}>${svg('trash')}</button></div><div class="chest-selector"><label for="chest-type">Destination chest</label><div class="chest-select-line">${image(state.chest)}<select id="chest-type">${catalog.chests.map(c => `<option value="${c.id}" ${state.chest === c.id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select></div><p class="chest-help ${['requester-chest', 'steel-chest'].includes(state.chest) ? 'amber-text' : ''}">${esc(CHEST_HELP[state.chest])}</p></div><div class="manifest-items">${state.rows.length ? state.rows.map((r, i) => `<div class="manifest-row">${image(r.id)}<div class="manifest-item-name"><strong>${esc(itemMap.get(r.id)?.name || r.id)}</strong><select aria-label="Quality for ${esc(itemMap.get(r.id)?.name)}" data-row-quality="${i}">${qualityOptions(r.quality)}</select></div><input class="quantity-input" id="quantity-${i}" type="number" min="1" max="1000000" step="1" value="${esc(r.count)}" data-quantity="${i}" aria-label="Amount of ${esc(itemMap.get(r.id)?.name)}"><button class="icon-button remove-row" data-action="remove-item" data-id="${i}" aria-label="Remove ${esc(itemMap.get(r.id)?.name)}">${svg('close')}</button></div>`).join('') : `<div class="empty-crate">${image('passive-provider-chest')}<h3>A blank canvas. In a chest.</h3><p>Add items or choose a supply kit<br>to start packing.</p></div>`}</div><div class="crate-preview"><div class="preview-label"><span>${svg('box')} ${plan?.chests ? `Chest ${page + 1} of ${plan.chests}` : 'Chest preview'}</span><span>${chest.slots} slots · normal chest</span></div><div class="inventory-grid">${Array.from({ length: chest.slots }, (_, i) => { const slot = slots[i]; return `<div class="inventory-slot" ${slot ? `title="${esc(itemMap.get(slot.id).name)} × ${slot.count} · ${slot.quality}"` : ''}>${slot ? image(slot.id) + `<span>${slot.count}</span>` + (slot.quality !== 'normal' ? `<i class="quality-dot quality-${slot.quality}"></i>` : '') : ''}</div>`; }).join('')}</div>${(plan?.chests || 0) > 1 ? `<div class="preview-pages"><button class="text-button" data-action="crate-prev" ${page === 0 ? 'disabled' : ''}>← Previous</button><span>${page + 1} / ${plan.chests}</span><button class="text-button" data-action="crate-next" ${page + 1 >= plan.chests ? 'disabled' : ''}>Next →</button></div>` : ''}</div><div class="manifest-summary"><div><span>Total items</span><strong>${number(plan?.count || 0)}</strong></div><div><span>Slots used</span><strong>${number(plan?.slots || 0)} <small>/ ${number(plan?.capacity || chest.slots)}</small></strong></div><div class="total-chests"><span>Chests to spawn</span><strong>${plan?.chests || 0} <span class="status-dot"></span></strong></div></div>${error ? `<div class="validation-error" role="alert">${esc(error)}</div>` : ''}<div class="manifest-actions"><button class="button primary full" data-action="generate" ${!state.rows.length || error ? 'disabled' : ''}>${svg('code')} Generate command ${svg('arrow')}</button><div class="manifest-secondary"><button class="text-button" data-action="save-loadout" ${!state.rows.length || error ? 'disabled' : ''}>${svg('star')} Save</button><button class="text-button" data-action="export-loadout" ${!state.rows.length || error ? 'disabled' : ''}>${svg('download')} Export</button><button class="text-button" data-action="import-loadout">${svg('plus')} Import</button></div><input type="file" id="import-file" accept=".json,application/json" hidden><p class="manifest-note">Spawns near you. Automatic overflow.<br>Connect to a powered roboport network.</p></div>`;
+  return `<div class="manifest-header"><div><span class="eyebrow">PACKING MANIFEST</span><h2>Your loadout <span class="tag">${state.rows.length}</span></h2></div><button class="icon-button" data-action="clear-crate" aria-label="Clear loadout" ${state.rows.length ? '' : 'disabled'}>${svg('trash')}</button></div><div class="chest-selector"><label for="chest-type">Destination chest</label><div class="chest-select-line">${image(state.chest)}<select id="chest-type">${catalog.chests.map(c => `<option value="${c.id}" ${state.chest === c.id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select></div><p class="chest-help ${['requester-chest', 'steel-chest'].includes(state.chest) ? 'amber-text' : ''}">${esc(CHEST_HELP[state.chest])}</p></div><div class="manifest-items">${state.rows.length ? state.rows.map((r, i) => `<div class="manifest-row">${image(r.id)}<div class="manifest-item-name"><strong>${esc(itemMap.get(r.id)?.name || r.id)}</strong><select aria-label="Quality for ${esc(itemMap.get(r.id)?.name)}" data-row-quality="${i}">${qualityOptions(r.quality)}</select></div><input class="quantity-input" id="quantity-${i}" type="number" min="1" max="1000000" step="1" value="${esc(r.count)}" data-quantity="${i}" aria-label="Amount of ${esc(itemMap.get(r.id)?.name)}"><button class="icon-button remove-row" data-action="remove-item" data-id="${i}" aria-label="Remove ${esc(itemMap.get(r.id)?.name)}">${svg('close')}</button></div>`).join('') : `<div class="empty-crate">${image('passive-provider-chest')}<h3>A blank canvas. In a chest.</h3><p>Add items or choose a supply kit<br>to start packing.</p></div>`}</div><div class="crate-preview"><div class="preview-label"><span>${svg('box')} ${plan?.chests ? `Chest ${page + 1} of ${plan.chests}` : 'Chest preview'}</span><span>${chest.slots} slots · normal chest</span></div><div class="inventory-grid">${Array.from({ length: chest.slots }, (_, i) => { const slot = slots[i]; return `<div class="inventory-slot" ${slot ? `title="${esc(itemMap.get(slot.id).name)} × ${slot.count} · ${slot.quality}"` : ''}>${slot ? image(slot.id) + `<span>${slot.count}</span>` + (slot.quality !== 'normal' ? `<i class="quality-dot quality-${slot.quality}"></i>` : '') : ''}</div>`; }).join('')}</div>${(plan?.chests || 0) > 1 ? `<div class="preview-pages"><button class="text-button" data-action="crate-prev" ${page === 0 ? 'disabled' : ''}>← Previous</button><span>${page + 1} / ${plan.chests}</span><button class="text-button" data-action="crate-next" ${page + 1 >= plan.chests ? 'disabled' : ''}>Next →</button></div>` : ''}</div><div class="manifest-summary"><div><span>Total items</span><strong>${number(plan?.count || 0)}</strong></div><div><span>Slots used</span><strong>${number(plan?.slots || 0)} <small>/ ${number(plan?.capacity || chest.slots)}</small></strong></div><div class="total-chests"><span>Chests to spawn</span><strong>${plan?.chests || 0} <span class="status-dot"></span></strong></div></div>${error ? `<div class="validation-error" role="alert">${esc(error)}</div>` : ''}<div class="manifest-actions"><button class="button primary full" data-action="generate" ${!state.rows.length || error ? 'disabled' : ''}>${svg('code')} Generate command ${svg('arrow')}</button><div class="manifest-secondary"><button class="text-button" data-action="save-loadout" ${!state.rows.length || error ? 'disabled' : ''}>${svg('star')} Save</button><button class="text-button" data-action="export-loadout" ${!state.rows.length || error ? 'disabled' : ''}>${svg('download')} Export</button><button class="text-button" data-action="import-loadout">${svg('plus')} Import</button></div><input type="file" id="import-file" accept=".json,application/json" hidden><p class="manifest-note">Spawns near you. Automatic overflow.<br>${state.chest === 'steel-chest' ? 'Collect the materials by hand.' : 'Connect to a powered roboport network.'}</p></div>`;
 }
 
 function blueprintsPage() { return explorer.blueprintsPage(); }
@@ -146,7 +147,24 @@ function generateDialog(rows = state.rows, chest = state.chest, title = 'Your lo
     track(blueprintId ? 'construction_crate' : 'crate_generate', blueprintId);
   } catch (e) { notify(e.message); }
 }
-function blueprintDialog(b) { explorer.blueprintDialog(b); }
+function blueprintDialog(b) { openBlueprint = b; explorer.blueprintDialog(b); }
+function applyBlueprintRecords(records) {
+  const merged = new Map(library.blueprints.map(blueprint => [blueprint.id, blueprint]));
+  for (const record of records || []) {
+    if (record && typeof record.id === 'string' && record.id) merged.set(record.id, record);
+  }
+  library.blueprints = [...merged.values()];
+  const atlas = globalThis.FactorioData?.atlas;
+  if (atlas?.blueprints) {
+    const tested = new Map(atlas.blueprints.map(blueprint => [blueprint.id, blueprint]));
+    for (const record of records || []) {
+      if (record && typeof record.id === 'string' && record.id) tested.set(record.id, record);
+    }
+    atlas.blueprints = [...tested.values()];
+  }
+  explorer?.refreshBlueprints?.();
+  renderPage();
+}
 function addRows(rows) { try { state.rows = normalizeEntries([...state.rows, ...rows], catalog); state.cratePage = 0; persist(); renderPage(); return true; } catch (e) { notify(e.message); return false; } }
 function toolDialog(kind) {
   const research = kind === 'research';
@@ -160,7 +178,8 @@ document.addEventListener('click', async event => {
   const { action, id } = button.dataset;
   if (await explorer.handleClick(action, id)) return;
   const command = library?.commands.find(c => c.id === id);
-  const blueprint = library?.blueprints.find(b => b.id === id);
+  const latestBlueprint = library?.blueprints.find(b => b.id === id);
+  const blueprint = openBlueprint?.id === id && ['copy-blueprint', 'crate-blueprint', 'pack-blueprint', 'confirm-pack-blueprint'].includes(action) ? openBlueprint : latestBlueprint;
   if (action === 'close-modal') $('#modal').close();
   else if (action === 'menu') { state.menu = !state.menu; $('.sidebar').classList.toggle('open', state.menu); }
   else if (action === 'command') commandDialog(command);
@@ -199,7 +218,7 @@ document.addEventListener('click', async event => {
   else if (action === 'delete-saved') { state.saved = state.saved.filter(s => s.id !== id); persist(); savedDialog(); }
   else if (action === 'blueprint-details') blueprintDialog(blueprint);
   else if (action === 'copy-blueprint') { if (await copy(blueprint.code, 'Blueprint string copied. Paste it into Factorio’s blueprint import dialog.')) track('blueprint_copy', blueprint.id); }
-  else if (action === 'crate-blueprint' && blueprint && !blueprint.isBook && !blueprint.excluded.length) generateDialog(blueprint.entries, 'passive-provider-chest', 'Construction crate · ' + blueprint.name, blueprint.id);
+  else if (action === 'crate-blueprint' && blueprint && !blueprint.isBook && !blueprint.excluded.length) generateDialog(blueprint.entries, blueprint.starter ? 'steel-chest' : 'passive-provider-chest', 'Construction crate · ' + blueprint.name, blueprint.id);
   else if (action === 'pack-blueprint') { if (blueprint.isBook || blueprint.excluded.length) { showModal('Review blueprint materials', `<p>${esc(blueprint.name)}</p>${blueprint.isBook ? `<p>This book contains ${blueprint.blueprintCount} blueprints. All of their materials will be added, including alternative designs.</p>` : ''}${blueprint.excluded.length ? `<p class="amber-text">Excluded from the loadout: ${blueprint.excluded.map(esc).join(', ')}. These types have no available placement item in your game.</p>` : ''}<p>Requested modules and item qualities are included. Existing loadout items are kept.</p><button class="button primary full" data-action="confirm-pack-blueprint" data-id="${blueprint.id}">Add ${number(blueprint.entries.reduce((n,r)=>n+r.count,0))} items to loadout ${svg('arrow')}</button>`); } else packBlueprint(blueprint); }
   else if (action === 'confirm-pack-blueprint') packBlueprint(blueprint);
   else if (action === 'manual-grant') { if (await copy('/starter_init_grant')) track('command_copy'); }
@@ -212,7 +231,7 @@ function analyticsDialog() {
   showModal('Usage analytics', `<p>Usage counts help improve the blueprint library. On the public site, the owner can see visits, pages viewed, blueprint opens and copies, crate generation, and planner actions.</p><p>Only a random browser ID, a session ID, the page, action, selected public blueprint or item, screen-size category, and referring website’s domain are sent to the owner’s Pi. Your browser ID resets after 30 days; event records expire after 90 days.</p><p>Search text, commands, crate contents, names, and full referring URLs are not collected. IP addresses are not stored by the analytics service. Saved loadouts stay in your browser. Counts are approximate and cannot identify who visited.</p><p role="status"><strong>${message}</strong></p>${status.supported && !status.privacySignal ? `<button class="button secondary" data-action="analytics-toggle">${status.enabled ? 'Turn off' : 'Turn on'} usage analytics</button>` : ''}<p class="small muted">Your choice applies to this browser on this site. Do Not Track and Global Privacy Control are respected. Offline copies never send analytics.</p>`);
 }
 function savedDialog() { showModal('Saved loadouts', state.saved.length ? `<p>Loading a saved loadout replaces the current selection.</p><div class="saved-list">${state.saved.map(s => `<div><span><strong>${esc(s.name)}</strong><small>${s.rows.length} item / quality pairs</small></span><button class="button secondary compact" data-action="load-saved" data-id="${esc(s.id)}">Load</button><button class="icon-button" data-action="delete-saved" data-id="${esc(s.id)}" aria-label="Delete ${esc(s.name)}">${svg('trash')}</button></div>`).join('')}</div>` : empty('No saved loadouts yet', 'Add some items, then choose Save in the packing manifest.')); }
-function packBlueprint(blueprint) { if (!addRows(blueprint.entries)) return; track('crate_pack', 'blueprint'); $('#modal').close(); location.hash = 'crates'; if (state.page === 'crates') renderPage(); notify('Blueprint materials added, with original qualities.'); }
+function packBlueprint(blueprint) { if (!addRows(blueprint.entries)) return; if (blueprint.starter) { state.chest = 'steel-chest'; persist(); } track('crate_pack', 'blueprint'); $('#modal').close(); location.hash = 'crates'; if (state.page === 'crates') renderPage(); notify('Blueprint materials added, with original qualities.'); }
 
 document.addEventListener('input', event => {
   const field = event.target;
@@ -237,6 +256,7 @@ document.addEventListener('change', async event => {
 window.addEventListener('hashchange', () => { state.page = routes.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'commands'; state.menu = false; renderShell(); window.scrollTo({ top: 0 }); });
 document.addEventListener('keydown', event => { if (event.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) && !$('#modal').open) { const input = $('#main input[type="search"]'); if (input) { event.preventDefault(); input.focus(); } } });
 $('#modal').addEventListener('click', event => { if (event.target === $('#modal')) { const r = $('#modal').getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) $('#modal').close(); } });
+$('#modal').addEventListener('close', () => { openBlueprint = undefined; explorer?.clearDisplayedBlueprint?.(); });
 
 try {
   ({ catalog, library } = globalThis.FactorioData || {});
@@ -249,6 +269,7 @@ try {
   hydrate();
   state.page = routes.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'commands';
   renderShell();
+  globalThis.FactorioBlueprintUpdates?.start({ applyRecords: applyBlueprintRecords, blueprints: library.blueprints });
 } catch (error) { $('#app').innerHTML = `<div class="loading"><h1>The library could not be loaded.</h1><p>${esc(error.message)}</p><p>Keep the website folder together, including its data, assets, and scripts, then reopen <code>index.html</code>.</p><button class="button primary" onclick="location.reload()">Try again</button></div>`; }
 
 })();

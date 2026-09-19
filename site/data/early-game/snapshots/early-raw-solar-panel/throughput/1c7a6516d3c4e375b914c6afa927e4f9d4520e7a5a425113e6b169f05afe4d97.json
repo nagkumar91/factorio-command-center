@@ -1,0 +1,267 @@
+{
+  "gameVersion": "2.0.77",
+  "mapSeed": 12345,
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Exterior belts receive continuous supply on both lanes up to their saved capacity; fluid supply is continuous. Every saved pole and electric consumer is checked for connection to P. Only the listed production research is enabled. Imported input-display icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Outputs are collected each second after the 15-minute warmup; output rates use collected totals over the following 30 minutes. Input rates record actual recipe and burner consumption during the same measurement window.",
+  "builds": [
+    {
+      "id": "early-raw-solar-panel",
+      "blueprintSha256": "13f9743a27cd41ad6fa2e4235723759d78062dfdd53efdaa1f64497282139c1f",
+      "portConfigurationSha256": "8ff11c7df2b7bc6b3875fa624ad36795fdeed31969d04449bf7aa26611cf0efd",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 7500,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "logistics",
+        "solar-energy",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal",
+        "copper-ore"
+      ],
+      "removedAtHalfTime": 0,
+      "restartedAfterCollection": false,
+      "delivered": {
+        "solar-panel": 26
+      },
+      "outputPorts": {
+        "39": 26
+      },
+      "inputItems": {
+        "iron-ore": 1767,
+        "coal": 512,
+        "copper-ore": 1563
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 5029,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -4,
+            "x": -10
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "working",
+          "products": 1682,
+          "energy": 1600,
+          "measuredCrafts": 1125,
+          "statusSeconds": {
+            "working": 1800
+          }
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 5033,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -4,
+            "x": -2
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 3
+            }
+          ],
+          "status": "no_ingredients",
+          "products": 184,
+          "energy": 100,
+          "measuredCrafts": 130,
+          "statusSeconds": {
+            "working": 1035,
+            "no_ingredients": 765
+          }
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 5037,
+          "blueprintEntity": 13,
+          "position": {
+            "y": -4,
+            "x": 6
+          },
+          "inventory": [
+            {
+              "name": "copper-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "copper-plate",
+          "status": "working",
+          "products": 1359,
+          "energy": 1600,
+          "measuredCrafts": 807,
+          "statusSeconds": {
+            "working": 1294,
+            "full_output": 386,
+            "no_ingredients": 120
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 5041,
+          "blueprintEntity": 19,
+          "position": {
+            "y": -3.5,
+            "x": 14.5
+          },
+          "inventory": {},
+          "recipe": "copper-cable",
+          "status": "full_output",
+          "products": 967,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 620,
+          "statusSeconds": {
+            "full_output": 1208,
+            "working": 384,
+            "item_ingredient_shortage": 208
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 5044,
+          "blueprintEntity": 26,
+          "position": {
+            "y": 4.5,
+            "x": 14.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 3
+            }
+          ],
+          "recipe": "electronic-circuit",
+          "status": "full_output",
+          "products": 633,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 406,
+          "statusSeconds": {
+            "item_ingredient_shortage": 1059,
+            "working": 158,
+            "full_output": 583
+          }
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 5048,
+          "blueprintEntity": 34,
+          "position": {
+            "y": 4.5,
+            "x": 6.5
+          },
+          "inventory": [
+            {
+              "name": "copper-plate",
+              "quality": "normal",
+              "count": 10
+            },
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 3
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 30
+            }
+          ],
+          "recipe": "solar-panel",
+          "status": "item_ingredient_shortage",
+          "products": 36,
+          "energy": 2755.5555555555557,
+          "measuredCrafts": 26,
+          "statusSeconds": {
+            "item_ingredient_shortage": 1444,
+            "working": 356
+          }
+        }
+      ],
+      "inputPerMinute": {
+        "iron-ore": 37.5,
+        "coal": 3.1,
+        "copper-ore": 26.9
+      },
+      "throughput": {
+        "warmupMinutes": 15,
+        "measuredMinutes": 30,
+        "period": {
+          "startTick": 54000,
+          "endTick": 162000,
+          "warmupMinutes": 15,
+          "measuredMinutes": 30,
+          "unit": "per-minute"
+        },
+        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "collected": {
+          "solar-panel": 26
+        },
+        "warmupCollected": {
+          "solar-panel": 10
+        },
+        "perMinute": {
+          "solar-panel": 0.8666666666666668
+        },
+        "inputPerMinute": {
+          "iron-ore": 37.5,
+          "coal": 3.1,
+          "copper-ore": 26.9
+        },
+        "inputCounts": {
+          "iron-ore": 1125,
+          "coal": 93,
+          "copper-ore": 807
+        }
+      },
+      "firstProductTicks": {
+        "solar-panel": 7500
+      },
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 7,
+        "poweredConsumers": 21
+      },
+      "drainedPorts": {},
+      "restartedPorts": {},
+      "inputDisplays": {
+        "verified": 3,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ],
+  "mode": "throughput",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "period": {
+    "startTick": 54000,
+    "endTick": 162000,
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "unit": "per-minute"
+  },
+  "rateBasis": "Input rates use the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics sampled at warmup and final tick. For fluid ingredients marked ignored_by_stats, measured completed-recipe and active-craft boundary adjustments are added; an unignored fluid boundary is only a defensive fallback when its counter is absent. Rates measure actual recipe and burner-fuel consumption rather than exterior feed acceptance; initial inventory is removed by the boundary delta. Output rates are collected continuously after warmup. Raw materials are supplied continuously to both lanes of each declared exterior belt, fluids and electricity are external, and no intermediate input, robots, direct machine inventory injection, speed modules, or extra research are used."
+}

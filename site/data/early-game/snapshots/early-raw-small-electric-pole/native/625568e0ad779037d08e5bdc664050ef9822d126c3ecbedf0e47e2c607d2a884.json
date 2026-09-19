@@ -1,0 +1,116 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-small-electric-pole",
+      "blueprintSha256": "f5a654fac861fa715afde7c07fe09a50236c36ed6dd29e6b77553de80147f937",
+      "portConfigurationSha256": "4d869d101eb8fa0020908f747c2786b4a866511807d99b1bc346e2941c3d24be",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 960,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "copper-ore",
+        "coal",
+        "wood"
+      ],
+      "removedAtHalfTime": 50,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "small-electric-pole": 50
+      },
+      "outputPorts": {
+        "18": 50
+      },
+      "inputItems": {
+        "copper-ore": 220,
+        "coal": 67,
+        "wood": 142
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 916,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -4,
+            "x": -3
+          },
+          "inventory": [
+            {
+              "name": "copper-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "copper-plate",
+          "status": "full_output",
+          "products": 188,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 920,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -3.5,
+            "x": 4.5
+          },
+          "inventory": {},
+          "recipe": "copper-cable",
+          "status": "full_output",
+          "products": 74,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 923,
+          "blueprintEntity": 14,
+          "position": {
+            "y": 4.5,
+            "x": 4.5
+          },
+          "inventory": [
+            {
+              "name": "wood",
+              "quality": "normal",
+              "count": 3
+            },
+            {
+              "name": "copper-cable",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "small-electric-pole",
+          "status": "full_output",
+          "products": 53,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 3,
+        "poweredConsumers": 10
+      },
+      "inputDisplays": {
+        "verified": 3,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

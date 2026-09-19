@@ -1,0 +1,95 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-firearm-magazine",
+      "blueprintSha256": "5ea1887cedad2973e89cdc1b8be26e67d8ba6bbc6245768954310695e9368006",
+      "portConfigurationSha256": "c93090b8e351d76281d8c793a77002cf2262a63ad7286ab4710468eaf5e150f6",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 900,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "logistic-science-pack",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 100,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "firearm-magazine": 100
+      },
+      "outputPorts": {
+        "10": 100
+      },
+      "inputItems": {
+        "iron-ore": 963,
+        "coal": 94
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 449,
+          "blueprintEntity": 1,
+          "position": {
+            "y": 0,
+            "x": -3
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "full_output",
+          "products": 923,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 453,
+          "blueprintEntity": 7,
+          "position": {
+            "y": 0.5,
+            "x": 4.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "firearm-magazine",
+          "status": "full_output",
+          "products": 202,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 2,
+        "poweredConsumers": 6
+      },
+      "inputDisplays": {
+        "verified": 2,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

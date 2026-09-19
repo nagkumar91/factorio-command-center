@@ -1,0 +1,178 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-sulfuric-acid-barrel",
+      "blueprintSha256": "70895eeb5924d5f1799834b3416759845d32b552fb4ba2078acabcf6d214214d",
+      "portConfigurationSha256": "c8cf685ab8c6529d90c218895be7003dfcf8977aa7ae825bfed83b38035860bb",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 4560,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "engine",
+        "fluid-handling",
+        "logistic-science-pack",
+        "logistics",
+        "oil-gathering",
+        "oil-processing",
+        "steam-power",
+        "steel-processing",
+        "sulfur-processing"
+      ],
+      "rawInputs": [
+        "crude-oil",
+        "water",
+        "iron-ore",
+        "coal"
+      ],
+      "removedAtHalfTime": 10,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "sulfuric-acid-barrel": 10
+      },
+      "outputPorts": {
+        "48": 10
+      },
+      "inputItems": {
+        "iron-ore": 1868,
+        "coal": 408
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "oil-refinery",
+          "entity": 2594,
+          "blueprintEntity": 1,
+          "position": {
+            "y": 9.5,
+            "x": -8.5
+          },
+          "inventory": {},
+          "recipe": "basic-oil-processing",
+          "status": "full_output",
+          "products": 228,
+          "energy": 7715.555555555555
+        },
+        {
+          "id": "chemical-plant",
+          "entity": 2597,
+          "blueprintEntity": 8,
+          "position": {
+            "y": 0.5,
+            "x": 9.5
+          },
+          "inventory": {},
+          "recipe": "sulfur",
+          "status": "full_output",
+          "products": 223,
+          "energy": 3857.7777777777774
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 2601,
+          "blueprintEntity": 16,
+          "position": {
+            "y": -9,
+            "x": 9
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "full_output",
+          "products": 1672,
+          "energy": 100
+        },
+        {
+          "id": "chemical-plant",
+          "entity": 2605,
+          "blueprintEntity": 22,
+          "position": {
+            "y": 0.5,
+            "x": -8.5
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 3
+            },
+            {
+              "name": "sulfur",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "sulfuric-acid",
+          "status": "full_output",
+          "products": 57,
+          "energy": 3857.7777777777774
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 2610,
+          "blueprintEntity": 31,
+          "position": {
+            "y": 0,
+            "x": 0
+          },
+          "inventory": {},
+          "recipe": "steel-plate",
+          "status": "full_output",
+          "products": 264,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 2614,
+          "blueprintEntity": 37,
+          "position": {
+            "y": -8.5,
+            "x": 0.5
+          },
+          "inventory": {},
+          "recipe": "barrel",
+          "status": "full_output",
+          "products": 104,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 2617,
+          "blueprintEntity": 44,
+          "position": {
+            "y": -8.5,
+            "x": -8.5
+          },
+          "inventory": {},
+          "recipe": "sulfuric-acid-barrel",
+          "status": "full_output",
+          "products": 26,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 7,
+        "poweredConsumers": 18
+      },
+      "inputDisplays": {
+        "verified": 4,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

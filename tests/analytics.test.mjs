@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
+import fs from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
 import {createStore} from '../analytics/store.mjs';
 import {createHandlers,loadLabels} from '../analytics/server.mjs';
@@ -78,7 +79,11 @@ test('public collector enforces origins and limits; private reports stay on a se
 
 test('collector recognizes the published blueprint, internal item and source catalogue',async()=>{
  const actual=await loadLabels(new URL('../site',import.meta.url).pathname);
- assert.equal(Object.keys(actual.blueprints).length,840);
+ const collections=await Promise.all(['library','community','atlas'].map(async name=>JSON.parse(await fs.readFile(new URL('../site/data/'+name+'.json',import.meta.url)))));
+ const ids=new Set(collections.flatMap(c=>c.blueprints.map(b=>b.id)));
+ assert.deepEqual(Object.keys(actual.blueprints).sort(),[...ids].sort());
+ assert.ok(actual.blueprints['early-belts-inserters']);
+ assert.ok(actual.files['sources/collections/early-game.txt']);
  assert.ok(actual.products['rocket-part']);
  assert.ok(actual.files['sources/Autosaved/AllBlueprints.txt']);
 });
