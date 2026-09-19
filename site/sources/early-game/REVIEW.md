@@ -22,7 +22,7 @@ The search compared its results with a deterministic shortest-path control. Both
 | Rail signal v2 | 134 → 132 | 2 | 6.2333 → 6.2667 |
 | Rail chain signal v2 | 134 → 132 | 2 | 6.2333 → 6.2667 |
 
-These are modest construction savings with unchanged footprints. Two yellow belts cost three iron plates in the standard recipe chain. The one-item difference in each signal's 30-minute collection window is not treated as a higher sustained capacity.
+These are modest construction savings. Both signal modules shrink from 27 × 17 to 27 × 16 tiles, reducing their area by 5.9%; the other three footprints stay unchanged. Two yellow belts cost three iron plates in the standard recipe chain. The one-item difference in each signal's 30-minute collection window is not treated as a higher sustained capacity.
 
 All five revised strings passed the 45-minute native functional test and the 15-minute-warmup/30-minute benchmark in Factorio 2.0.77, seed 12345. Only declared raw inputs and external power were supplied. Every recipe ran, the output was collected, production restarted, and every electric consumer connected to P. The generator replay was checked byte-for-byte against the five tested strings.
 

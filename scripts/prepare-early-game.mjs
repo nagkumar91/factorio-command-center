@@ -116,6 +116,12 @@ for(const c of candidates.sort((a,b)=>stages.indexOf(a.stage)-stages.indexOf(b.s
  await fs.writeFile(root+'/'+file,encodeBlueprint({blueprint:layout.blueprint})+'\n');
  manifest.push({id,file,name:layout.blueprint.label,author:'Factorio Command Center',sourceURL:'sources/early-game/README.md',sourceTitle:'Original raw-material research modules',category:String(stageNumber).padStart(2,'0')+' · '+name(c.stage),kind:'production',order:manifest.length+1,requires,unlock:c.stage,unlockName:name(c.stage),researchClosure:[...c.technology].sort(),products:[c.product],rawInputs:inputs,rawOnly:true,setupNotes,changes:['Original layout generated from the installed vanilla recipes and research tree.','All intermediates are manufactured inside. One dedicated output keeps each module independent.'],ports:layout.ports,recipes:c.nodes.map(n=>n.recipe.name),machineCount:layout.machines});
  Object.assign(manifest.at(-1),{inputDisplays:displays.inputDisplays,setupNotes:displays.setupNotes,compaction,powerNetwork:{connection:'big-electric-pole',distribution:'medium-electric-pole',research:'electric-energy-distribution-1'}});
+ if(c.product==='military-science-pack'){
+  // Preserve the exact natively tested string above; catalogue metadata uses
+  // the accepted revision's public name instead of its scratch label.
+  Object.assign(manifest.at(-1),{name:'Military science pack · compact iron-priority raw layout',reviewReport:'sources/early-game/REVIEW.md'});
+  manifest.at(-1).changes.push('Compact raw-layout candidate: 34 x 30 footprint, 392 entities, and 286 regular belts after transport compression.','Iron-plate splitter outlets are assigned grenade first, then steel plate, then firearm magazine so the three consumers receive the measured balanced allocation needed for the baseline 4.6667/min science rate.');
+ }
  if(corridorOptimization){
   manifest.at(-1).changes.push(`Verified belt-corridor revision removes ${corridorOptimization.beltsSaved} yellow belts while preserving machines, ports, underground endpoints and power.`);
   manifest.at(-1).reviewReport='sources/early-game/REVIEW.md';
