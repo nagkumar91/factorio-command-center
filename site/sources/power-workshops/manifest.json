@@ -1,0 +1,696 @@
+[
+  {
+    "id": "power-poles-substation",
+    "file": "power-poles-substation.txt",
+    "name": "Raw electric power poles and substation",
+    "author": "Factorio Command Center",
+    "sourceURL": "sources/power-workshops/README.md",
+    "sourceTitle": "Raw-input electric power workshops",
+    "category": "Power workshops",
+    "kind": "production",
+    "workshop": true,
+    "rawOnly": true,
+    "order": 1,
+    "requires": [
+      "electric-energy-distribution-2",
+      "advanced-material-processing-2",
+      "automation-2",
+      "logistics",
+      "circuit-network",
+      "oil-processing",
+      "plastics",
+      "advanced-circuit"
+    ],
+    "unlock": "electric-energy-distribution-2",
+    "unlockName": "electric-energy-distribution-2",
+    "researchClosure": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "chemical-science-pack",
+      "circuit-network",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electronics",
+      "engine",
+      "fluid-handling",
+      "logistic-science-pack",
+      "logistics",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing"
+    ],
+    "products": [
+      "medium-electric-pole",
+      "big-electric-pole",
+      "substation"
+    ],
+    "rawInputs": [
+      "iron-ore",
+      "copper-ore",
+      "coal",
+      "crude-oil"
+    ],
+    "setupNotes": [
+      "Connect external electricity to the big electric pole marked P. Medium poles distribute power to every electric furnace, assembler, inserter, refinery and chemical plant.",
+      "Feed Iron ore, Copper ore, Coal and Crude oil into the labeled west entrances. Coal and crude oil are required by the vanilla advanced-circuit chain used for substations; no plates, circuits, gears or plastic are imported.",
+      "Each input has an item/fluid display directly above its belt or pipe. Connect from the left; both belt lanes take the shown material. Press Alt to see the labels. Display panels need Circuit network research: leave their ghosts unbuilt until then; production works without the signs.",
+      "All smelting uses electric furnaces. The three output chests are independent: Medium electric pole, Big electric pole and Substation.",
+      "Input display panels are static optional signs and require Circuit network research to build. Empty each output chest when full so production can resume."
+    ],
+    "changes": [
+      "One shared compact layout makes medium poles, big poles and substations from raw inputs.",
+      "Electric furnaces replace burner fuel; coal and crude remain explicit raw ports because vanilla plastic requires both."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Iron ore",
+        "entity": 92,
+        "items": [
+          "iron-ore"
+        ],
+        "x": -18.5,
+        "y": -20.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 633
+      },
+      {
+        "kind": "input",
+        "label": "B · Copper ore",
+        "entity": 93,
+        "items": [
+          "copper-ore"
+        ],
+        "x": -18.5,
+        "y": -17.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 634
+      },
+      {
+        "kind": "input",
+        "label": "C · Coal",
+        "entity": 95,
+        "items": [
+          "coal"
+        ],
+        "x": -18.5,
+        "y": -14.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 635
+      },
+      {
+        "kind": "fluid",
+        "label": "D · Crude oil",
+        "entity": 94,
+        "items": [
+          "crude-oil"
+        ],
+        "x": -18.5,
+        "y": -2.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 636
+      },
+      {
+        "kind": "power",
+        "label": "P · External power",
+        "items": [],
+        "entity": 11,
+        "x": -8,
+        "y": -7
+      },
+      {
+        "kind": "output",
+        "label": "OUT · medium-electric-pole",
+        "entity": 35,
+        "items": [
+          "medium-electric-pole"
+        ],
+        "x": -7.5,
+        "y": 6.5
+      },
+      {
+        "kind": "output",
+        "label": "OUT · big-electric-pole",
+        "entity": 45,
+        "items": [
+          "big-electric-pole"
+        ],
+        "x": 16.5,
+        "y": 18.5
+      },
+      {
+        "kind": "output",
+        "label": "OUT · substation",
+        "entity": 87,
+        "items": [
+          "substation"
+        ],
+        "x": 16.5,
+        "y": -17.5
+      }
+    ],
+    "recipes": [
+      "iron-plate",
+      "iron-stick",
+      "steel-plate",
+      "copper-plate",
+      "copper-cable",
+      "medium-electric-pole",
+      "big-electric-pole",
+      "electronic-circuit",
+      "basic-oil-processing",
+      "plastic-bar",
+      "advanced-circuit",
+      "substation"
+    ],
+    "machineCount": 12,
+    "inputDisplays": {
+      "optional": true,
+      "requiredTechnology": "circuit-network"
+    },
+    "compaction": {
+      "before": {
+        "width": 37,
+        "height": 45
+      },
+      "after": {
+        "width": 37,
+        "height": 45
+      },
+      "cuts": {
+        "columns": 0,
+        "rows": 0
+      }
+    },
+    "powerNetwork": {
+      "connection": "big-electric-pole",
+      "distribution": "medium-electric-pole",
+      "research": "electric-energy-distribution-1",
+      "bigPoles": 1,
+      "mediumPoles": 48
+    },
+    "fuelPolicy": {
+      "furnaceFuel": "electricity"
+    }
+  },
+  {
+    "id": "solar-raw-am2",
+    "file": "solar-raw-am2.txt",
+    "name": "Solar (AM2) · raw electric workshop",
+    "author": "Factorio Command Center",
+    "sourceURL": "https://autosaved.org/factorio/blueprints",
+    "sourceTitle": "Solar (AM2) · https://autosaved.org/factorio/blueprints",
+    "category": "Power workshops",
+    "kind": "production",
+    "workshop": true,
+    "rawOnly": true,
+    "order": 2,
+    "requires": [
+      "solar-energy",
+      "electric-energy-accumulators",
+      "advanced-material-processing-2",
+      "electric-energy-distribution-2",
+      "automation-2",
+      "circuit-network",
+      "logistics",
+      "oil-processing",
+      "plastics",
+      "advanced-circuit",
+      "battery"
+    ],
+    "unlock": "solar-energy",
+    "unlockName": "solar-energy",
+    "researchClosure": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "battery",
+      "chemical-science-pack",
+      "circuit-network",
+      "electric-energy-accumulators",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electronics",
+      "engine",
+      "fluid-handling",
+      "logistic-science-pack",
+      "logistics",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "solar-energy",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing"
+    ],
+    "products": [
+      "accumulator",
+      "solar-panel",
+      "substation"
+    ],
+    "rawInputs": [
+      "iron-ore",
+      "copper-ore",
+      "coal",
+      "water",
+      "crude-oil"
+    ],
+    "setupNotes": [
+      "Connect external electricity to P. The saved medium poles distribute power to every electric furnace, assembler, inserter, refinery and chemical plant.",
+      "Feed Iron ore, Copper ore, Coal, Water and Crude oil into the labeled west entrances. Water, coal and crude are required by the internal battery/plastic/advanced-circuit chains; no plates, circuits, batteries or plastic are imported.",
+      "Each input has an item/fluid display directly above its belt or pipe. Connect from the left; both belt lanes take the shown material. Press Alt to see the labels. Display panels need Circuit network research: leave their ghosts unbuilt until then; production works without the signs.",
+      "The three output chests are independent: Accumulator, Solar panel and Substation. Empty each chest when full so production can resume.",
+      "This is a raw-input regeneration of Solar (AM2)/(AM3), preserving their three-output product scope and recipe families while using electric furnaces."
+    ],
+    "changes": [
+      "Copied product scope and recipe family from Solar (AM2) (autosaved-614f2f4c2ed1acc9) at https://autosaved.org/factorio/blueprints.",
+      "Regenerated the layout as a raw-input workshop with ore, coal, water and crude-oil entrances; processed plates, circuits, batteries, plastic and sulfuric acid are internal.",
+      "Replaced every smelting stage with electric-furnace production and removed burner-fuel assumptions.",
+      "Kept assembling-machine-2 for final and intermediate assembly stages.",
+      "Original imported entity profile: {\"pipe\":40,\"pipe-to-ground\":48,\"fast-inserter\":75,\"chemical-plant\":20,\"transport-belt\":313,\"medium-electric-pole\":31,\"underground-belt\":12,\"inserter\":21,\"long-handed-inserter\":32,\"splitter\":3,\"assembling-machine-2\":29,\"passive-provider-chest\":3,\"roboport\":1,\"fast-transport-belt\":33,\"fast-splitter\":3,\"fast-underground-belt\":2}."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Iron ore",
+        "entity": 110,
+        "items": [
+          "iron-ore"
+        ],
+        "x": -18.5,
+        "y": -22.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 721
+      },
+      {
+        "kind": "input",
+        "label": "B · Copper ore",
+        "entity": 113,
+        "items": [
+          "copper-ore"
+        ],
+        "x": -18.5,
+        "y": -19.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 722
+      },
+      {
+        "kind": "input",
+        "label": "C · Coal",
+        "entity": 114,
+        "items": [
+          "coal"
+        ],
+        "x": -18.5,
+        "y": -16.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 723
+      },
+      {
+        "kind": "fluid",
+        "label": "water",
+        "entity": 112,
+        "items": [
+          "water"
+        ],
+        "x": -18.5,
+        "y": -7.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 724
+      },
+      {
+        "kind": "fluid",
+        "label": "D · Crude oil",
+        "entity": 111,
+        "items": [
+          "crude-oil"
+        ],
+        "x": -18.5,
+        "y": -4.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 725
+      },
+      {
+        "kind": "power",
+        "label": "P · External power",
+        "items": [],
+        "entity": 4,
+        "x": -13,
+        "y": -22
+      },
+      {
+        "kind": "output",
+        "label": "OUT · accumulator",
+        "entity": 48,
+        "items": [
+          "accumulator"
+        ],
+        "x": -7.5,
+        "y": 0.5
+      },
+      {
+        "kind": "output",
+        "label": "OUT · solar-panel",
+        "entity": 78,
+        "items": [
+          "solar-panel"
+        ],
+        "x": 2.5,
+        "y": 10.5
+      },
+      {
+        "kind": "output",
+        "label": "OUT · substation",
+        "entity": 105,
+        "items": [
+          "substation"
+        ],
+        "x": 2.5,
+        "y": 20.5
+      }
+    ],
+    "recipes": [
+      "iron-plate",
+      "basic-oil-processing",
+      "sulfur",
+      "sulfuric-acid",
+      "copper-plate",
+      "battery",
+      "accumulator",
+      "steel-plate",
+      "copper-cable",
+      "electronic-circuit",
+      "solar-panel",
+      "plastic-bar",
+      "advanced-circuit",
+      "substation"
+    ],
+    "machineCount": 14,
+    "inputDisplays": {
+      "optional": true,
+      "requiredTechnology": "circuit-network"
+    },
+    "compaction": {
+      "before": {
+        "width": 45,
+        "height": 41,
+        "entities": 666
+      },
+      "after": {
+        "width": 37,
+        "height": 50
+      },
+      "cuts": {
+        "columns": 0,
+        "rows": 0
+      },
+      "originalId": "autosaved-614f2f4c2ed1acc9"
+    },
+    "powerNetwork": {
+      "connection": "big-electric-pole",
+      "distribution": "medium-electric-pole",
+      "research": "electric-energy-distribution-1",
+      "bigPoles": 1,
+      "mediumPoles": 50
+    },
+    "fuelPolicy": {
+      "furnaceFuel": "electricity"
+    },
+    "sourceId": "autosaved-614f2f4c2ed1acc9",
+    "powerAttempt": 2,
+    "originalProductScope": [
+      "accumulator",
+      "solar-panel",
+      "substation"
+    ]
+  },
+  {
+    "id": "solar-raw-am3",
+    "file": "solar-raw-am3.txt",
+    "name": "Solar (AM3) · raw electric workshop",
+    "author": "Factorio Command Center",
+    "sourceURL": "https://autosaved.org/factorio/blueprints",
+    "sourceTitle": "Solar (AM3) · https://autosaved.org/factorio/blueprints",
+    "category": "Power workshops",
+    "kind": "production",
+    "workshop": true,
+    "rawOnly": true,
+    "order": 3,
+    "requires": [
+      "solar-energy",
+      "electric-energy-accumulators",
+      "advanced-material-processing-2",
+      "electric-energy-distribution-2",
+      "automation-2",
+      "circuit-network",
+      "logistics",
+      "oil-processing",
+      "plastics",
+      "advanced-circuit",
+      "battery",
+      "automation-3"
+    ],
+    "unlock": "solar-energy",
+    "unlockName": "solar-energy",
+    "researchClosure": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "automation",
+      "automation-2",
+      "automation-3",
+      "automation-science-pack",
+      "battery",
+      "chemical-science-pack",
+      "circuit-network",
+      "electric-energy-accumulators",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "fluid-handling",
+      "logistic-science-pack",
+      "logistics",
+      "logistics-2",
+      "lubricant",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "solar-energy",
+      "speed-module",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing"
+    ],
+    "products": [
+      "accumulator",
+      "solar-panel",
+      "substation"
+    ],
+    "rawInputs": [
+      "iron-ore",
+      "copper-ore",
+      "coal",
+      "water",
+      "crude-oil"
+    ],
+    "setupNotes": [
+      "Connect external electricity to P. The saved medium poles distribute power to every electric furnace, assembler, inserter, refinery and chemical plant.",
+      "Feed Iron ore, Copper ore, Coal, Water and Crude oil into the labeled west entrances. Water, coal and crude are required by the internal battery/plastic/advanced-circuit chains; no plates, circuits, batteries or plastic are imported.",
+      "Each input has an item/fluid display directly above its belt or pipe. Connect from the left; both belt lanes take the shown material. Press Alt to see the labels. Display panels need Circuit network research: leave their ghosts unbuilt until then; production works without the signs.",
+      "The three output chests are independent: Accumulator, Solar panel and Substation. Empty each chest when full so production can resume.",
+      "This is a raw-input regeneration of Solar (AM2)/(AM3), preserving their three-output product scope and recipe families while using electric furnaces."
+    ],
+    "changes": [
+      "Copied product scope and recipe family from Solar (AM3) (autosaved-7ebdfc78270f2c20) at https://autosaved.org/factorio/blueprints.",
+      "Regenerated the layout as a raw-input workshop with ore, coal, water and crude-oil entrances; processed plates, circuits, batteries, plastic and sulfuric acid are internal.",
+      "Replaced every smelting stage with electric-furnace production and removed burner-fuel assumptions.",
+      "Kept assembling-machine-3 for final and intermediate assembly stages.",
+      "Original imported entity profile: {\"pipe\":40,\"pipe-to-ground\":48,\"fast-inserter\":75,\"chemical-plant\":20,\"transport-belt\":313,\"medium-electric-pole\":31,\"underground-belt\":12,\"long-handed-inserter\":32,\"inserter\":21,\"splitter\":3,\"assembling-machine-3\":29,\"passive-provider-chest\":3,\"roboport\":1,\"fast-transport-belt\":33,\"fast-splitter\":3,\"fast-underground-belt\":2}."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Iron ore",
+        "entity": 110,
+        "items": [
+          "iron-ore"
+        ],
+        "x": -18.5,
+        "y": -22.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 721
+      },
+      {
+        "kind": "input",
+        "label": "B · Copper ore",
+        "entity": 113,
+        "items": [
+          "copper-ore"
+        ],
+        "x": -18.5,
+        "y": -19.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 722
+      },
+      {
+        "kind": "input",
+        "label": "C · Coal",
+        "entity": 114,
+        "items": [
+          "coal"
+        ],
+        "x": -18.5,
+        "y": -16.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 723
+      },
+      {
+        "kind": "fluid",
+        "label": "water",
+        "entity": 112,
+        "items": [
+          "water"
+        ],
+        "x": -18.5,
+        "y": -7.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 724
+      },
+      {
+        "kind": "fluid",
+        "label": "D · Crude oil",
+        "entity": 111,
+        "items": [
+          "crude-oil"
+        ],
+        "x": -18.5,
+        "y": -4.5,
+        "direction": 4,
+        "externalSide": "west",
+        "displayEntity": 725
+      },
+      {
+        "kind": "power",
+        "label": "P · External power",
+        "items": [],
+        "entity": 4,
+        "x": -13,
+        "y": -22
+      },
+      {
+        "kind": "output",
+        "label": "OUT · accumulator",
+        "entity": 48,
+        "items": [
+          "accumulator"
+        ],
+        "x": -7.5,
+        "y": 0.5
+      },
+      {
+        "kind": "output",
+        "label": "OUT · solar-panel",
+        "entity": 78,
+        "items": [
+          "solar-panel"
+        ],
+        "x": 2.5,
+        "y": 10.5
+      },
+      {
+        "kind": "output",
+        "label": "OUT · substation",
+        "entity": 105,
+        "items": [
+          "substation"
+        ],
+        "x": 2.5,
+        "y": 20.5
+      }
+    ],
+    "recipes": [
+      "iron-plate",
+      "basic-oil-processing",
+      "sulfur",
+      "sulfuric-acid",
+      "copper-plate",
+      "battery",
+      "accumulator",
+      "steel-plate",
+      "copper-cable",
+      "electronic-circuit",
+      "solar-panel",
+      "plastic-bar",
+      "advanced-circuit",
+      "substation"
+    ],
+    "machineCount": 14,
+    "inputDisplays": {
+      "optional": true,
+      "requiredTechnology": "circuit-network"
+    },
+    "compaction": {
+      "before": {
+        "width": 45,
+        "height": 41,
+        "entities": 666
+      },
+      "after": {
+        "width": 37,
+        "height": 50
+      },
+      "cuts": {
+        "columns": 0,
+        "rows": 0
+      },
+      "originalId": "autosaved-7ebdfc78270f2c20"
+    },
+    "powerNetwork": {
+      "connection": "big-electric-pole",
+      "distribution": "medium-electric-pole",
+      "research": "electric-energy-distribution-1",
+      "bigPoles": 1,
+      "mediumPoles": 50
+    },
+    "fuelPolicy": {
+      "furnaceFuel": "electricity"
+    },
+    "sourceId": "autosaved-7ebdfc78270f2c20",
+    "powerAttempt": 2,
+    "originalProductScope": [
+      "accumulator",
+      "solar-panel",
+      "substation"
+    ]
+  }
+]

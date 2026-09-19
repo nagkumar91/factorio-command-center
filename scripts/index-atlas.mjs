@@ -2,6 +2,10 @@ import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import {decodeBlueprint,encodeBlueprint,blueprintMaterials} from './blueprints.mjs';
 import {blueprintPreview} from './blueprint-preview.mjs';
+import {indexStarterCollections} from './index-starters.mjs';
+import {indexTransportWorkshops} from './index-transport-workshops.mjs';
+import {indexScienceFactories} from './index-science-factories.mjs';
+import {indexPowerWorkshops} from './index-power-workshops.mjs';
 import {blueprintCoverage} from './blueprint-coverage.mjs';
 import {writeData} from './write-data.mjs';
 import '../site/lib/production.js';
@@ -36,6 +40,14 @@ for(const info of manifest){
  blueprints.push({...info,name:clean(b.label),collection:'Recipe cells',category:info.category||'Robot production cells',section:'Compact single-recipe production',isBook:false,icons:[info.product],sources:[localSource,'sources/recipe-cells/README.md'],...blueprintMaterials(object,catalog),code:encodeBlueprint(object),analysis:analyze(object,production),products:[info.product],validation:test?{status:'game-tested',note:`Produced ${test.produced} ${info.product} in an isolated Factorio ${validation.gameVersion} production test using the saved inserters and feed connections.`}:{status:'untested',note:'Generated recipe cell; in-game production verification pending.'},preview:await blueprintPreview(b,info.id,production)});
 }
 try{await fs.copyFile('blueprint-sources/generated/README.md','site/sources/recipe-cells/README.md');}catch(e){if(e.code!=='ENOENT')throw e;}
+const starters=await indexStarterCollections(catalog,production);
+blueprints.push(...starters.blueprints);sources.push(...starters.sources);
+const transport=await indexTransportWorkshops(catalog,production);
+blueprints.push(...transport.blueprints);sources.push(...transport.sources);
+const science=await indexScienceFactories(catalog,production);
+blueprints.push(...science.blueprints);sources.push(...science.sources);
+const power=await indexPowerWorkshops(catalog,production);
+blueprints.push(...power.blueprints);sources.push(...power.sources);
 const coverage=blueprintCoverage(catalog,production,[...existing,...blueprints]);
-await writeData('library',library);await writeData('community',community);await writeData('atlas',{sources,blueprints,coverage,updatedAt:new Date().toISOString()});
+await writeData('library',library);await writeData('community',community);await writeData('atlas',{sources,blueprints,coverage,starterResearch:starters.research,updatedAt:new Date().toISOString()});
 console.log(JSON.stringify({added:blueprints.length,community:blueprints.filter(b=>b.collection==='Community additions').length,cells:manifest.length,covered:coverage.covered,total:coverage.total,missing:coverage.missing},null,2));

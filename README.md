@@ -2,16 +2,44 @@
 
 A static Factorio 2.0.77 / Space Age blueprint library, recipe planner, and construction-crate command builder.
 
-- 840 blueprint entries: 50 local builds, 632 Autosaved layouts, 98 additional community layouts, and 60 original recipe cells.
+- 961 blueprint entries: 50 local builds, 632 Autosaved layouts, 98 additional community layouts, 60 original recipe cells, 14 community starter references, 104 independent raw-input modules, and three combined transport workshops.
 - Coverage index for all 273 craftable inventory items, including rocket parts retained in the silo. Mining-only resources and noncraftable tools are listed separately. Quality variants share recipes.
 - Copy an importable blueprint, generate its construction crate, and trace the ingredients needed to operate it.
-- All 60 new cells passed native five-minute production tests using saved item transport and fluid connections. Imported community layouts are recipe-reviewed, not individually simulated.
+- All 104 raw-input modules have native 45-minute delivery tests, including research requirements and restarting after collection. The 60 recipe cells and 14 community starter references retain their native five-minute evidence. Other imported community layouts are recipe-reviewed.
 
 ## Open the website
 
 [Live GitHub Pages site](https://nagkumar91.github.io/factorio-command-center/#coverage). Open `site/index.html` for offline use, or run `npm run serve` for a local web server on port 18090. The toolkit works without an account or backend. The public site sends limited usage analytics to the owner’s Pi; local and offline copies do not. Saved crate loadouts stay in your browser. Visitors can turn analytics off using **Usage analytics** in the footer.
 
 The private [visitor dashboard](http://100.71.219.83:18091/) is available while connected to Tailscale. It shows visits, popular pages and blueprints, copies, crate generation, and planner actions. Collection starts with deployment; there is no historical data. See [analytics hosting and privacy](deploy/README.md#visitor-analytics).
+
+## Early game without robots
+
+Run `npm run serve`, then open [the local starter collection](http://127.0.0.1:18090/?collection=early-game#blueprints), or select **Early game · no robots** in the blueprint library. This collection is added locally first; the public and Pi deployments are separate.
+
+The 104 modules make individual products from raw materials and external power, with smelting and every intermediate included. The 29 research packs cover Nauvis recipes reachable with red and green science. Production uses assembling machine 2 and steel furnaces, requiring Automation 2 and Advanced material processing where those machines are present. Every module uses big and medium electric poles, requiring Electric energy distribution 1. Connect power to the big pole marked P. Raw entrances follow the A–G order for iron ore, copper ore, coal, stone, wood, water and crude oil, with variable spacing to keep layouts compact; follow the labeled preview. Each module only needs the inputs listed on its card.
+
+The latest layouts reduce the combined footprint by 13.6%: 100 modules are smaller, and four keep the same area. They use 726 poles instead of 1,809. Fresh native tests verify that all electric machines and inserters connect to P, along with raw-input delivery and production.
+
+Open **Choose a research unlock** to filter or download its pack, or **Download starter book** for the complete nested book. Each module includes labeled connections, footprint, required research, construction materials and native test evidence. Build it by hand, supply its raw ports and power, then collect its finished output. The 14 earlier community references remain in a separate collection.
+
+Each raw entrance has an in-game display with its item/fluid icon, name and a downward arrow to the belt or pipe below. Feed from the left and press **Alt** for labels. The 299 signs are optional until **Circuit network** is researched; leave their ghosts unbuilt to run earlier modules at their listed unlocks. Website diagrams connect the same icons to the exact entrances.
+
+See [sources, adaptations, and native test details](blueprint-sources/early-game/README.md). Rebuild with `npm run prepare:early-game`, `npm run test:early-game`, and `npm run index:atlas`. Run `npm run test:early-game-browser` to verify previews, copying, starter filters, crates, and mobile layouts.
+
+The bottom of each raw-module card now shows measured input consumption and output per minute, including fuel and fluids. Details include the 15-minute warmup, 30-minute measurement window, and exact native report. Run `npm run benchmark:early-game` to measure saved layouts, then review and retain the matching report before reindexing. See [measurement, compaction, and versioned updates](docs/blueprint-evaluation.md).
+
+## Combined transport workshops
+
+Open [the local transport collection](http://127.0.0.1:18090/?collection=transport#blueprints) for the verified yellow, red and blue combined workshops. Green is being tested separately. Each produces its belt, underground belt and splitter from raw materials, with all smelting and intermediates inside. Input displays, numbered output chests, construction crates, required research and measured rates are included.
+
+These use assembling machine 2, steel furnaces, big and medium poles, and circuit-controlled circulating belts. No robots are required. Blue adds water and crude oil. Collect its solid-fuel byproduct to keep refining. These remain a local addition; deployment is separate.
+
+See [connections and reproduction commands](blueprint-sources/transport-workshops/README.md) and [design reviews](blueprint-sources/transport-workshops/REVIEW.md). Native functional tests check collection and replenishment; a separate benchmark measures simultaneous output after warmup. Reports match the exact blueprint hashes.
+
+Workshop releases can be published individually with `npm run publish:transport -- transport-yellow`. The HTTP website checks a small version index every 30 seconds and when its tab regains focus. It downloads changed records and offers **Blueprint updates available**; applying them keeps the current page, filters and crate contents. There is no automatic page reload. An already-open copy of the older application acquires this feature only when you choose to load the updated application.
+
+Each published version retains its blueprint, preview and native evidence at immutable URLs. The index switches only after those files are ready, so a page cannot combine a new blueprint with an old preview or test report. The bundled catalogue remains available offline. See the [publication workflow and storage contract](blueprint-sources/transport-workshops/README.md#publish-one-workshop).
 
 ## Development and validation
 

@@ -1,0 +1,1038 @@
+[
+  {
+    "id": "early-steam",
+    "file": "early-steam.txt",
+    "name": "Starter steam power",
+    "sourceId": "steam",
+    "author": "Nilaus · book curated by Yoyo Ma",
+    "sourceURL": "https://www.factorio.school/view/-Kn2afLokZdBO-uHcIAF",
+    "sourceTitle": "☀️ Power Book ☢️ - Compact, Tileable, No Waste Nuclear, Solar, Steam",
+    "category": "01 · Power and mining",
+    "kind": "power",
+    "order": 1,
+    "requires": [
+      "steam-power",
+      "electronics"
+    ],
+    "products": [],
+    "setupNotes": [
+      "Connect an offshore pump to both water pipe entrances at the top. One pump can supply both through a branched pipe.",
+      "Feed coal into the bottom of the central belt. Burner inserters start the boilers without an existing power supply.",
+      "Connect the small poles to your factory. Four boilers and eight engines; no offshore pump is included."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Removed optional lamps and recipe-label combinators; connection labels are shown in the website preview.",
+      "Used burner inserters so coal feeding can start before the grid has power."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Coal",
+        "entity": 36,
+        "items": [
+          "coal"
+        ],
+        "x": -0.5,
+        "y": 3.5,
+        "direction": 0
+      },
+      {
+        "kind": "fluid",
+        "label": "B · Water",
+        "entity": 41,
+        "items": [
+          "water"
+        ],
+        "x": -2.5,
+        "y": -4.5,
+        "direction": 0
+      },
+      {
+        "kind": "fluid",
+        "label": "C · Water",
+        "entity": 42,
+        "items": [
+          "water"
+        ],
+        "x": 1.5,
+        "y": -4.5,
+        "direction": 0
+      }
+    ]
+  },
+  {
+    "id": "early-mining",
+    "file": "early-mining.txt",
+    "name": "Small electric mining strip",
+    "sourceId": "mining",
+    "author": "Nilaus",
+    "sourceURL": "https://www.factorio.school/view/-KoluN5jvWgI0egykK_W",
+    "sourceTitle": "Basic Mining and Smelting",
+    "category": "01 · Power and mining",
+    "kind": "mining",
+    "order": 2,
+    "requires": [
+      "electric-mining-drill"
+    ],
+    "products": [],
+    "setupNotes": [
+      "Place the drills over iron ore, copper ore, coal, or stone and connect electricity. The test uses an iron-ore patch.",
+      "The output belt leaves the right edge. Connect it to the matching smelter or coal supply."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Removed optional lamps and recipe-label combinators; connection labels are shown in the website preview.",
+      "Joined the two drill rows with one small pole so a single grid connection powers every drill."
+    ],
+    "ports": [
+      {
+        "kind": "output",
+        "label": "OUT · Ore",
+        "entity": 45,
+        "items": [
+          "iron-ore"
+        ],
+        "x": 11.5,
+        "y": -0.5,
+        "direction": 4
+      }
+    ],
+    "resource": "iron-ore"
+  },
+  {
+    "id": "early-smelting-iron",
+    "file": "early-smelting-iron.txt",
+    "name": "Iron plates from ore",
+    "sourceId": "smelting",
+    "author": "Nilaus",
+    "sourceURL": "https://www.factorio.school/view/-KoluN5jvWgI0egykK_W",
+    "sourceTitle": "Basic Mining and Smelting",
+    "category": "02 · Smelting",
+    "kind": "production",
+    "order": 3,
+    "requires": [
+      "logistics"
+    ],
+    "products": [
+      "iron-plate"
+    ],
+    "setupNotes": [
+      "Feed coal into entrance A on the left and the labeled ore or stone into entrance B just below it. Use separate full belts.",
+      "The middle belt carries finished plates or bricks out of the right edge. Connect the small poles to electricity for the inserters.",
+      "Uses eight stone furnaces. Place the same layout again for another material; do not mix iron, copper, or stone in one smelting line."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Removed optional lamps and recipe-label combinators; connection labels are shown in the website preview.",
+      "Shortened the original 24-furnace line to eight furnaces for a compact, inexpensive start."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Coal",
+        "entity": 168,
+        "items": [
+          "coal"
+        ],
+        "x": -6.5,
+        "y": -1.5,
+        "direction": 4
+      },
+      {
+        "kind": "input",
+        "label": "B · iron-ore",
+        "entity": 169,
+        "items": [
+          "iron-ore"
+        ],
+        "x": -6.5,
+        "y": 0.5,
+        "direction": 4
+      },
+      {
+        "kind": "output",
+        "label": "OUT · iron-plate",
+        "entity": 76,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 6.5,
+        "y": -0.5,
+        "direction": 4
+      }
+    ]
+  },
+  {
+    "id": "early-smelting-copper",
+    "file": "early-smelting-copper.txt",
+    "name": "Copper plates from ore",
+    "sourceId": "smelting",
+    "author": "Nilaus",
+    "sourceURL": "https://www.factorio.school/view/-KoluN5jvWgI0egykK_W",
+    "sourceTitle": "Basic Mining and Smelting",
+    "category": "02 · Smelting",
+    "kind": "production",
+    "order": 4,
+    "requires": [
+      "logistics"
+    ],
+    "products": [
+      "copper-plate"
+    ],
+    "setupNotes": [
+      "Feed coal into entrance A on the left and the labeled ore or stone into entrance B just below it. Use separate full belts.",
+      "The middle belt carries finished plates or bricks out of the right edge. Connect the small poles to electricity for the inserters.",
+      "Uses eight stone furnaces. Place the same layout again for another material; do not mix iron, copper, or stone in one smelting line."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Removed optional lamps and recipe-label combinators; connection labels are shown in the website preview.",
+      "Shortened the original 24-furnace line to eight furnaces for a compact, inexpensive start."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Coal",
+        "entity": 168,
+        "items": [
+          "coal"
+        ],
+        "x": -6.5,
+        "y": -1.5,
+        "direction": 4
+      },
+      {
+        "kind": "input",
+        "label": "B · copper-ore",
+        "entity": 169,
+        "items": [
+          "copper-ore"
+        ],
+        "x": -6.5,
+        "y": 0.5,
+        "direction": 4
+      },
+      {
+        "kind": "output",
+        "label": "OUT · copper-plate",
+        "entity": 76,
+        "items": [
+          "copper-plate"
+        ],
+        "x": 6.5,
+        "y": -0.5,
+        "direction": 4
+      }
+    ]
+  },
+  {
+    "id": "early-smelting-bricks",
+    "file": "early-smelting-bricks.txt",
+    "name": "Stone bricks from stone",
+    "sourceId": "smelting",
+    "author": "Nilaus",
+    "sourceURL": "https://www.factorio.school/view/-KoluN5jvWgI0egykK_W",
+    "sourceTitle": "Basic Mining and Smelting",
+    "category": "02 · Smelting",
+    "kind": "production",
+    "order": 5,
+    "requires": [
+      "logistics"
+    ],
+    "products": [
+      "stone-brick"
+    ],
+    "setupNotes": [
+      "Feed coal into entrance A on the left and the labeled ore or stone into entrance B just below it. Use separate full belts.",
+      "The middle belt carries finished plates or bricks out of the right edge. Connect the small poles to electricity for the inserters.",
+      "Uses eight stone furnaces. Place the same layout again for another material; do not mix iron, copper, or stone in one smelting line."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Removed optional lamps and recipe-label combinators; connection labels are shown in the website preview.",
+      "Shortened the original 24-furnace line to eight furnaces for a compact, inexpensive start."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Coal",
+        "entity": 168,
+        "items": [
+          "coal"
+        ],
+        "x": -6.5,
+        "y": -1.5,
+        "direction": 4
+      },
+      {
+        "kind": "input",
+        "label": "B · stone",
+        "entity": 169,
+        "items": [
+          "stone"
+        ],
+        "x": -6.5,
+        "y": 0.5,
+        "direction": 4
+      },
+      {
+        "kind": "output",
+        "label": "OUT · stone-brick",
+        "entity": 76,
+        "items": [
+          "stone-brick"
+        ],
+        "x": 6.5,
+        "y": -0.5,
+        "direction": 4
+      }
+    ]
+  },
+  {
+    "id": "early-steel",
+    "file": "early-steel.txt",
+    "name": "Steel from iron ore",
+    "sourceId": "steel",
+    "author": "Nilaus",
+    "sourceURL": "https://www.factorio.school/view/-KoluN5jvWgI0egykK_W",
+    "sourceTitle": "Basic Mining and Smelting",
+    "category": "02 · Smelting",
+    "kind": "production",
+    "order": 6,
+    "requires": [
+      "logistics",
+      "steel-processing"
+    ],
+    "products": [
+      "steel-plate"
+    ],
+    "setupNotes": [
+      "Feed coal into left entrance A and iron ore into entrance B below it. Connect electricity.",
+      "The left furnace bank makes iron plates; the right bank turns those plates into steel. The output leaves the right edge.",
+      "Steel takes longer to start than ordinary plates. Uses eight furnaces for iron and eight for steel, shortened from the source’s 48-furnace layout."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Removed optional lamps and recipe-label combinators; connection labels are shown in the website preview.",
+      "Shortened both furnace banks from 24 to eight furnaces each and reconnected the shortened power grid."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Coal",
+        "entity": 335,
+        "items": [
+          "coal"
+        ],
+        "x": -11.5,
+        "y": -1.5,
+        "direction": 4
+      },
+      {
+        "kind": "input",
+        "label": "B · iron-ore",
+        "entity": 336,
+        "items": [
+          "iron-ore"
+        ],
+        "x": -11.5,
+        "y": 0.5,
+        "direction": 4
+      },
+      {
+        "kind": "output",
+        "label": "OUT · steel-plate",
+        "entity": 212,
+        "items": [
+          "steel-plate"
+        ],
+        "x": 11.5,
+        "y": -0.5,
+        "direction": 4
+      }
+    ]
+  },
+  {
+    "id": "early-circuits",
+    "file": "early-circuits.txt",
+    "name": "Green circuits from plates",
+    "sourceId": "circuits",
+    "author": "Nilaus",
+    "sourceURL": "https://www.factorio.school/view/-KoqgcmWqjJGLf6csjL4",
+    "sourceTitle": "Modular Green Circuits",
+    "category": "03 · Parts and building supplies",
+    "kind": "production",
+    "order": 7,
+    "requires": [
+      "automation",
+      "logistics",
+      "fast-inserter"
+    ],
+    "products": [
+      "electronic-circuit"
+    ],
+    "setupNotes": [
+      "Feed copper plates into the two outer bottom entrances A and B, and iron plates into the two inner bottom entrances C and D.",
+      "Collect green circuits from the two center bottom output belts. Copper cable is made and inserted directly inside the layout.",
+      "Uses basic assembling machines. The source design’s faster-machine production rate does not apply."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Removed optional lamps and recipe-label combinators; connection labels are shown in the website preview.",
+      "Replaced assembling machine 2 with assembling machine 1 for a cheaper start; throughput is lower.",
+      "Joined the original left and right power networks with one small pole so a single grid connection powers the whole build."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Copper",
+        "entity": 154,
+        "items": [
+          "copper-plate"
+        ],
+        "x": -12.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "input",
+        "label": "B · Copper",
+        "entity": 155,
+        "items": [
+          "copper-plate"
+        ],
+        "x": 12.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "input",
+        "label": "C · Iron",
+        "entity": 156,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -1.5,
+        "y": 6.5,
+        "direction": 0
+      },
+      {
+        "kind": "input",
+        "label": "D · Iron",
+        "entity": 157,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 1.5,
+        "y": 6.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT · Circuits",
+        "entity": 158,
+        "items": [
+          "electronic-circuit"
+        ],
+        "x": -0.5,
+        "y": 6.5,
+        "direction": 8
+      },
+      {
+        "kind": "output",
+        "label": "OUT · Circuits",
+        "entity": 159,
+        "items": [
+          "electronic-circuit"
+        ],
+        "x": 0.5,
+        "y": 6.5,
+        "direction": 8
+      }
+    ]
+  },
+  {
+    "id": "early-belts-inserters",
+    "file": "early-belts-inserters.txt",
+    "name": "Tiny belt and inserter workshop",
+    "sourceId": "belts-inserters",
+    "author": "Calabash Squash",
+    "sourceURL": "https://www.factorio.school/view/-P-ShwxYSOz41YwznHuq",
+    "sourceTitle": "belts and inserters",
+    "category": "03 · Parts and building supplies",
+    "kind": "production",
+    "order": 8,
+    "requires": [
+      "automation",
+      "logistics"
+    ],
+    "products": [
+      "transport-belt",
+      "inserter"
+    ],
+    "setupNotes": [
+      "Feed iron plates into the upper-right entrance A, and copper plates into the lower-right entrance B. Connect electricity.",
+      "Gears, cable, and green circuits are made inside. Collect belts and inserters from the two wooden chests on the left.",
+      "Output chests are limited to one stack to avoid using all your plates. Increase the red inventory limit when you need a larger stock."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Replaced editor-only output chests with ordinary wooden chests."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Iron",
+        "entity": 22,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 7.5,
+        "y": -5.5,
+        "direction": 12
+      },
+      {
+        "kind": "input",
+        "label": "B · Copper",
+        "entity": 78,
+        "items": [
+          "copper-plate"
+        ],
+        "x": 7.5,
+        "y": 8.5,
+        "direction": 12
+      },
+      {
+        "kind": "output",
+        "label": "OUT · Belts",
+        "entity": 10,
+        "items": [
+          "transport-belt"
+        ],
+        "x": -7.5,
+        "y": -5.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT · Inserters",
+        "entity": 31,
+        "items": [
+          "inserter"
+        ],
+        "x": -7.5,
+        "y": -2.5,
+        "direction": 0
+      }
+    ]
+  },
+  {
+    "id": "early-starter-mall",
+    "file": "early-starter-mall.txt",
+    "name": "Starter building supplies mall",
+    "sourceId": "starter-mall",
+    "author": "Calabash Squash",
+    "sourceURL": "https://www.factorio.school/view/-P-XpDkqICZ1p_PIJFLH",
+    "sourceTitle": "staples (early game)",
+    "category": "03 · Parts and building supplies",
+    "kind": "production",
+    "order": 9,
+    "requires": [
+      "automation",
+      "logistics",
+      "fast-inserter"
+    ],
+    "products": [
+      "assembling-machine-1",
+      "fast-inserter",
+      "inserter",
+      "long-handed-inserter",
+      "underground-belt",
+      "transport-belt",
+      "splitter"
+    ],
+    "setupNotes": [
+      "Feed iron plates into the left-middle entrance A and copper plates into the lower-left entrance B. Connect electricity.",
+      "Makes its own gears, cable, and green circuits. Seven limited wooden output chests hold assemblers, belts, splitters, underground belts, and three inserter types.",
+      "Start with the tiny workshop if resources are tight. This larger mall needs Fast inserter research, which uses red science."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Replaced iron output chests with wooden chests."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Iron",
+        "entity": 50,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -20.5,
+        "y": -2.5,
+        "direction": 4
+      },
+      {
+        "kind": "input",
+        "label": "B · Copper",
+        "entity": 207,
+        "items": [
+          "copper-plate"
+        ],
+        "x": -20.5,
+        "y": 8.5,
+        "direction": 4
+      },
+      {
+        "kind": "output",
+        "label": "OUT · assembling-machine-1",
+        "entity": 25,
+        "items": [
+          "assembling-machine-1"
+        ],
+        "x": 19.5,
+        "y": -8.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT · fast-inserter",
+        "entity": 175,
+        "items": [
+          "fast-inserter"
+        ],
+        "x": 1.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT · inserter",
+        "entity": 181,
+        "items": [
+          "inserter"
+        ],
+        "x": 5.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT · underground-belt",
+        "entity": 188,
+        "items": [
+          "underground-belt"
+        ],
+        "x": 10.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT · long-handed-inserter",
+        "entity": 189,
+        "items": [
+          "long-handed-inserter"
+        ],
+        "x": 9.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT · transport-belt",
+        "entity": 194,
+        "items": [
+          "transport-belt"
+        ],
+        "x": 14.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT · splitter",
+        "entity": 201,
+        "items": [
+          "splitter"
+        ],
+        "x": 18.5,
+        "y": 4.5,
+        "direction": 0
+      }
+    ]
+  },
+  {
+    "id": "early-red-science",
+    "file": "early-red-science.txt",
+    "name": "Red science with gears included",
+    "sourceId": "red-science",
+    "author": "Christoffer Ramqvist",
+    "sourceURL": "https://www.factorio.school/view/-KnQ865j-qQ21WoUPbd3",
+    "sourceTitle": "Tileable Science Production 1.0-2.0 - Early to Mid Game (Vanilla)",
+    "category": "04 · Research",
+    "kind": "production",
+    "order": 10,
+    "requires": [
+      "automation",
+      "logistics",
+      "fast-inserter"
+    ],
+    "products": [
+      "automation-science-pack"
+    ],
+    "setupNotes": [
+      "Feed copper plates into top entrance A and iron plates into top-right entrance B. The gear assembler is included.",
+      "Red science leaves the top-left output. Connect that belt to your labs and connect electricity.",
+      "Basic assembling machines replace the source’s faster machines. No modules, robots, or advanced belts are needed."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Removed optional lamps and recipe-label combinators; connection labels are shown in the website preview.",
+      "Replaced assembling machine 2 with assembling machine 1 for a cheaper start; throughput is lower."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Copper",
+        "entity": 105,
+        "items": [
+          "copper-plate"
+        ],
+        "x": 6.5,
+        "y": -6.5,
+        "direction": 8
+      },
+      {
+        "kind": "input",
+        "label": "B · Iron",
+        "entity": 106,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 9.5,
+        "y": -6.5,
+        "direction": 8
+      },
+      {
+        "kind": "output",
+        "label": "OUT · Red science",
+        "entity": 107,
+        "items": [
+          "automation-science-pack"
+        ],
+        "x": -9.5,
+        "y": -6.5,
+        "direction": 0
+      }
+    ]
+  },
+  {
+    "id": "early-green-science",
+    "file": "early-green-science.txt",
+    "name": "Green science with belts and inserters",
+    "sourceId": "green-science",
+    "author": "Christoffer Ramqvist",
+    "sourceURL": "https://www.factorio.school/view/-KnQ865j-qQ21WoUPbd3",
+    "sourceTitle": "Tileable Science Production 1.0-2.0 - Early to Mid Game (Vanilla)",
+    "category": "04 · Research",
+    "kind": "production",
+    "order": 11,
+    "requires": [
+      "automation",
+      "logistics",
+      "fast-inserter",
+      "logistic-science-pack"
+    ],
+    "products": [
+      "logistic-science-pack"
+    ],
+    "setupNotes": [
+      "Feed green circuits into top entrance A and iron plates into top-right entrance B. Use the green-circuit build upstream.",
+      "Gears, belts, and inserters are made inside. Green science leaves the top-left output; connect it to your labs.",
+      "Connect electricity. All assemblers are basic tier 1; the original source’s nominal production rate does not apply."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77.",
+      "Removed optional lamps and recipe-label combinators; connection labels are shown in the website preview.",
+      "Replaced assembling machine 2 with assembling machine 1 for a cheaper start; throughput is lower."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "A · Circuits",
+        "entity": 148,
+        "items": [
+          "electronic-circuit"
+        ],
+        "x": 1.5,
+        "y": -10.5,
+        "direction": 8
+      },
+      {
+        "kind": "input",
+        "label": "B · Iron",
+        "entity": 149,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 6.5,
+        "y": -10.5,
+        "direction": 8
+      },
+      {
+        "kind": "output",
+        "label": "OUT · Green science",
+        "entity": 150,
+        "items": [
+          "logistic-science-pack"
+        ],
+        "x": -4.5,
+        "y": -10.5,
+        "direction": 0
+      }
+    ]
+  },
+  {
+    "id": "early-split-1-2",
+    "file": "early-split-1-2.txt",
+    "name": "Split one yellow belt into two",
+    "sourceId": "split-1-2",
+    "author": "Durabys",
+    "sourceURL": "https://www.factorio.school/view/-KjZ0Rk_VXbdnxJ9jmUj",
+    "sourceTitle": "The Complete Belt Series: Yellow, Part 1.",
+    "category": "05 · Simple belt helpers",
+    "kind": "routing",
+    "order": 12,
+    "requires": [
+      "logistics"
+    ],
+    "products": [],
+    "setupNotes": [
+      "Input from the bottom, outputs at the top. Both item types and belt lanes are preserved.",
+      "No power required. This splits an existing item stream; it does not manufacture belts."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "IN 1",
+        "entity": 4,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -0.5,
+        "y": 0.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT 1",
+        "entity": 1,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 0.5,
+        "y": -1.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT 2",
+        "entity": 2,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -0.5,
+        "y": -1.5,
+        "direction": 0
+      }
+    ]
+  },
+  {
+    "id": "early-balance-2-2",
+    "file": "early-balance-2-2.txt",
+    "name": "Two-belt yellow balancer",
+    "sourceId": "balance-2-2",
+    "author": "Durabys",
+    "sourceURL": "https://www.factorio.school/view/-KjZ0Rk_VXbdnxJ9jmUj",
+    "sourceTitle": "The Complete Belt Series: Yellow, Part 1.",
+    "category": "05 · Simple belt helpers",
+    "kind": "routing",
+    "order": 13,
+    "requires": [
+      "logistics"
+    ],
+    "products": [],
+    "setupNotes": [
+      "Input from the two bottom belts and collect from the two top belts.",
+      "No power required. Tested for delivery through both outputs; this is not a maximum-throughput certification."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "IN 1",
+        "entity": 4,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 0.5,
+        "y": 0.5,
+        "direction": 0
+      },
+      {
+        "kind": "input",
+        "label": "IN 2",
+        "entity": 5,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -0.5,
+        "y": 0.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT 1",
+        "entity": 1,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 0.5,
+        "y": -1.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT 2",
+        "entity": 2,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -0.5,
+        "y": -1.5,
+        "direction": 0
+      }
+    ]
+  },
+  {
+    "id": "early-balance-4-4",
+    "file": "early-balance-4-4.txt",
+    "name": "Four-belt yellow balancer",
+    "sourceId": "balance-4-4",
+    "author": "Durabys",
+    "sourceURL": "https://www.factorio.school/view/-KjZ0Rk_VXbdnxJ9jmUj",
+    "sourceTitle": "The Complete Belt Series: Yellow, Part 1.",
+    "category": "05 · Simple belt helpers",
+    "kind": "routing",
+    "order": 14,
+    "requires": [
+      "logistics"
+    ],
+    "products": [],
+    "setupNotes": [
+      "Input from the four bottom belts and collect from the four top belts.",
+      "Uses only yellow belts, yellow underground belts, and splitters. No electricity or robots are needed.",
+      "Tested for delivery through every output; maximum throughput and blocked-output behavior are not certified."
+    ],
+    "changes": [
+      "Migrated the original blueprint through Factorio 2.0.77."
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "IN 1",
+        "entity": 27,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -1.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "input",
+        "label": "IN 2",
+        "entity": 29,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 0.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "input",
+        "label": "IN 3",
+        "entity": 30,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -0.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "input",
+        "label": "IN 4",
+        "entity": 32,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 1.5,
+        "y": 4.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT 1",
+        "entity": 1,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -1.5,
+        "y": -4.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT 2",
+        "entity": 3,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 0.5,
+        "y": -4.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT 3",
+        "entity": 4,
+        "items": [
+          "iron-plate"
+        ],
+        "x": -0.5,
+        "y": -4.5,
+        "direction": 0
+      },
+      {
+        "kind": "output",
+        "label": "OUT 4",
+        "entity": 6,
+        "items": [
+          "iron-plate"
+        ],
+        "x": 1.5,
+        "y": -4.5,
+        "direction": 0
+      }
+    ]
+  }
+]
