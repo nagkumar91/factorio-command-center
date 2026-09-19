@@ -1,0 +1,129 @@
+{
+  "gameVersion": "2.0.77",
+  "simulatedMinutes": 45,
+  "fixtures": "Only the declared raw materials at exterior belts/pipes and external electricity at P. Every saved pole and electric consumer is checked for connection to the P network. Belt fixtures supply up to two items per second per entrance; fluid supply is continuous. Only the listed production research is enabled. Optional static input display panels are revived separately from their Circuit network construction unlock; their imported icons, text and Alt-mode settings are checked. No robots or direct machine inventory injection. Output chests fill naturally, are emptied halfway through, and must resume production. Outputs are sampled each second; chest counts are peak stock.",
+  "builds": [
+    {
+      "id": "early-raw-crude-oil-barrel",
+      "blueprintSha256": "c3f8bda484b0a92a447d468da87d81ad7e45993c946232bb209fef79e19e3343",
+      "portConfigurationSha256": "69ebbd67c1049f38a415592822735e965d0288fe356645b4934fcd812419afd1",
+      "kind": "production",
+      "passed": true,
+      "firstOutputTick": 2580,
+      "testedTechnologies": [
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "automation-science-pack",
+        "electric-energy-distribution-1",
+        "electronics",
+        "engine",
+        "fluid-handling",
+        "logistic-science-pack",
+        "steam-power",
+        "steel-processing"
+      ],
+      "rawInputs": [
+        "iron-ore",
+        "coal",
+        "crude-oil"
+      ],
+      "removedAtHalfTime": 10,
+      "restartedAfterCollection": true,
+      "delivered": {
+        "crude-oil-barrel": 10
+      },
+      "outputPorts": {
+        "24": 10
+      },
+      "inputItems": {
+        "iron-ore": 1457,
+        "coal": 216
+      },
+      "sampledLoadEnergy": 0,
+      "machines": [
+        {
+          "id": "steel-furnace",
+          "entity": 98,
+          "blueprintEntity": 1,
+          "position": {
+            "y": -5,
+            "x": -3
+          },
+          "inventory": [
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
+          "recipe": "iron-plate",
+          "status": "full_output",
+          "products": 1417,
+          "energy": 100
+        },
+        {
+          "id": "steel-furnace",
+          "entity": 102,
+          "blueprintEntity": 7,
+          "position": {
+            "y": -5,
+            "x": 4
+          },
+          "inventory": {},
+          "recipe": "steel-plate",
+          "status": "full_output",
+          "products": 260,
+          "energy": 100
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 106,
+          "blueprintEntity": 13,
+          "position": {
+            "y": 3.5,
+            "x": 4.5
+          },
+          "inventory": {},
+          "recipe": "barrel",
+          "status": "full_output",
+          "products": 104,
+          "energy": 2755.5555555555557
+        },
+        {
+          "id": "assembling-machine-2",
+          "entity": 109,
+          "blueprintEntity": 20,
+          "position": {
+            "y": 3.5,
+            "x": -2.5
+          },
+          "inventory": {},
+          "recipe": "crude-oil-barrel",
+          "status": "full_output",
+          "products": 26,
+          "energy": 2755.5555555555557
+        }
+      ],
+      "firstProductTicks": {
+        "crude-oil-barrel": 2580
+      },
+      "powerNetwork": {
+        "bigPoles": 1,
+        "mediumPoles": 4,
+        "poweredConsumers": 12
+      },
+      "drainedPorts": {
+        "24": 10
+      },
+      "restartedPorts": {
+        "24": true
+      },
+      "inputDisplays": {
+        "verified": 3,
+        "optional": true,
+        "requiredTechnology": "circuit-network"
+      }
+    }
+  ]
+}

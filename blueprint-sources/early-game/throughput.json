@@ -3633,11 +3633,11 @@
     },
     {
       "id": "early-raw-grenade",
-      "blueprintSha256": "68c9c312fba7eaae70673f5b0b81ef5ebcf865c4c11d0f89d1c7e91eba223ccf",
+      "blueprintSha256": "c66498646f062e3c2bc2e5b87391af959fc87e2a9de3e5cbf3c0c226b41f9e90",
       "portConfigurationSha256": "581f05734ae97ef60dbd071dea11cc879962023854c0e28bb3959fbad468d192",
       "kind": "production",
       "passed": true,
-      "firstOutputTick": 2340,
+      "firstOutputTick": 2280,
       "testedTechnologies": [
         "advanced-material-processing",
         "automation",
@@ -3664,14 +3664,14 @@
         "11": 169
       },
       "inputItems": {
-        "iron-ore": 1517,
-        "coal": 2734
+        "iron-ore": 1510,
+        "coal": 2733
       },
       "sampledLoadEnergy": 0,
       "machines": [
         {
           "id": "steel-furnace",
-          "entity": 1254,
+          "entity": 73,
           "blueprintEntity": 1,
           "position": {
             "y": 0,
@@ -3681,23 +3681,22 @@
             {
               "name": "iron-ore",
               "quality": "normal",
-              "count": 1
+              "count": 2
             }
           ],
           "recipe": "iron-plate",
           "status": "working",
-          "products": 1477,
+          "products": 1469,
           "energy": 1600,
-          "measuredCrafts": 917,
+          "measuredCrafts": 909,
           "statusSeconds": {
-            "working": 1468,
-            "full_output": 291,
-            "no_ingredients": 41
+            "working": 1499,
+            "full_output": 301
           }
         },
         {
           "id": "assembling-machine-2",
-          "entity": 1258,
+          "entity": 77,
           "blueprintEntity": 7,
           "position": {
             "y": 0.5,
@@ -3726,8 +3725,8 @@
         }
       ],
       "inputPerMinute": {
-        "iron-ore": 30.566666666666666,
-        "coal": 57.43333333333333
+        "iron-ore": 30.3,
+        "coal": 57.4
       },
       "throughput": {
         "warmupMinutes": 15,
@@ -3739,7 +3738,7 @@
           "measuredMinutes": 30,
           "unit": "per-minute"
         },
-        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "rateBasis": "Input rates use deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics. For fluid ingredients marked ignored_by_stats, the measured completed-recipe boundary (products_finished delta plus active-craft boundary delta times the ignored amount) is added; an unignored fluid boundary is only a defensive fallback when its counter is absent. This records recipe ingredients and burner fuel actually consumed by the force on this surface, not belt supply or initial inventory. Output rates are continuously collected over the same post-warmup window.",
         "collected": {
           "grenade": 169
         },
@@ -3750,16 +3749,18 @@
           "grenade": 5.633333333333334
         },
         "inputPerMinute": {
-          "iron-ore": 30.566666666666666,
-          "coal": 57.43333333333333
+          "iron-ore": 30.3,
+          "coal": 57.4
         },
         "inputCounts": {
-          "iron-ore": 917,
-          "coal": 1723
-        }
+          "iron-ore": 909,
+          "coal": 1722
+        },
+        "recipeBoundaryInputCounts": {},
+        "recipeFallbackInputCounts": {}
       },
       "firstProductTicks": {
-        "grenade": 2340
+        "grenade": 2280
       },
       "powerNetwork": {
         "bigPoles": 1,
@@ -12062,11 +12063,11 @@
     },
     {
       "id": "early-raw-crude-oil-barrel",
-      "blueprintSha256": "27608c578f23ccea55191df8f89f9693a21c4eee4b8777614f85331aef7f581e",
+      "blueprintSha256": "c3f8bda484b0a92a447d468da87d81ad7e45993c946232bb209fef79e19e3343",
       "portConfigurationSha256": "69ebbd67c1049f38a415592822735e965d0288fe356645b4934fcd812419afd1",
       "kind": "production",
       "passed": true,
-      "firstOutputTick": 2640,
+      "firstOutputTick": 2580,
       "testedTechnologies": [
         "advanced-material-processing",
         "automation",
@@ -12101,7 +12102,7 @@
       "machines": [
         {
           "id": "steel-furnace",
-          "entity": 100,
+          "entity": 98,
           "blueprintEntity": 1,
           "position": {
             "y": -5,
@@ -12125,7 +12126,7 @@
         },
         {
           "id": "steel-furnace",
-          "entity": 104,
+          "entity": 102,
           "blueprintEntity": 7,
           "position": {
             "y": -5,
@@ -12149,7 +12150,7 @@
         },
         {
           "id": "assembling-machine-2",
-          "entity": 108,
+          "entity": 106,
           "blueprintEntity": 13,
           "position": {
             "y": 3.5,
@@ -12168,7 +12169,7 @@
         },
         {
           "id": "assembling-machine-2",
-          "entity": 111,
+          "entity": 109,
           "blueprintEntity": 20,
           "position": {
             "y": 3.5,
@@ -12226,7 +12227,7 @@
         "recipeFallbackInputCounts": {}
       },
       "firstProductTicks": {
-        "crude-oil-barrel": 2640
+        "crude-oil-barrel": 2580
       },
       "powerNetwork": {
         "bigPoles": 1,
@@ -12650,11 +12651,11 @@
     },
     {
       "id": "early-raw-water-barrel",
-      "blueprintSha256": "95d0caa9b2196b9437a872ea13415557f7ce7b53314d75f568a20b02a64b7a8b",
+      "blueprintSha256": "0bfcbcea75be8891b0f5d961ede34771219c21a392f7f26691233a0b4ac89354",
       "portConfigurationSha256": "bddd030d450284f3de02ab3d241192c6c6e5f8e0a6411498b5a41a17be74953a",
       "kind": "production",
       "passed": true,
-      "firstOutputTick": 2640,
+      "firstOutputTick": 2580,
       "testedTechnologies": [
         "advanced-material-processing",
         "automation",
@@ -12689,7 +12690,7 @@
       "machines": [
         {
           "id": "steel-furnace",
-          "entity": 291,
+          "entity": 551,
           "blueprintEntity": 1,
           "position": {
             "y": -4,
@@ -12713,7 +12714,7 @@
         },
         {
           "id": "steel-furnace",
-          "entity": 295,
+          "entity": 555,
           "blueprintEntity": 7,
           "position": {
             "y": -4,
@@ -12737,7 +12738,7 @@
         },
         {
           "id": "assembling-machine-2",
-          "entity": 299,
+          "entity": 559,
           "blueprintEntity": 13,
           "position": {
             "y": 4.5,
@@ -12756,7 +12757,7 @@
         },
         {
           "id": "assembling-machine-2",
-          "entity": 302,
+          "entity": 562,
           "blueprintEntity": 20,
           "position": {
             "y": 4.5,
@@ -12814,7 +12815,7 @@
         "recipeFallbackInputCounts": {}
       },
       "firstProductTicks": {
-        "water-barrel": 2640
+        "water-barrel": 2580
       },
       "powerNetwork": {
         "bigPoles": 1,
@@ -17048,11 +17049,11 @@
     },
     {
       "id": "early-raw-rail-chain-signal",
-      "blueprintSha256": "6173ed47a80c2788f2173f4a71d76370919b92343d29985160acd5cd65486a8a",
+      "blueprintSha256": "edd7278053f4c7884206f5f27b3dd224837c03b902b060460b0f3988938636b9",
       "portConfigurationSha256": "45c53f392075ae102ae9c01589b29d0520f588a89808f97823f461b1286c0e9d",
       "kind": "production",
       "passed": true,
-      "firstOutputTick": 2220,
+      "firstOutputTick": 2160,
       "testedTechnologies": [
         "advanced-material-processing",
         "automated-rail-transportation",
@@ -17077,21 +17078,21 @@
       "removedAtHalfTime": 0,
       "restartedAfterCollection": false,
       "delivered": {
-        "rail-chain-signal": 187
+        "rail-chain-signal": 188
       },
       "outputPorts": {
-        "32": 187
+        "32": 188
       },
       "inputItems": {
         "iron-ore": 1767,
-        "coal": 277,
-        "copper-ore": 805
+        "coal": 276,
+        "copper-ore": 796
       },
       "sampledLoadEnergy": 0,
       "machines": [
         {
           "id": "steel-furnace",
-          "entity": 6940,
+          "entity": 325,
           "blueprintEntity": 1,
           "position": {
             "y": -3,
@@ -17115,27 +17116,33 @@
         },
         {
           "id": "steel-furnace",
-          "entity": 6944,
+          "entity": 329,
           "blueprintEntity": 7,
           "position": {
             "y": -3,
             "x": 2
           },
-          "inventory": {},
+          "inventory": [
+            {
+              "name": "copper-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
           "recipe": "copper-plate",
           "status": "full_output",
-          "products": 666,
+          "products": 656,
           "energy": 100,
           "measuredCrafts": 281,
           "statusSeconds": {
-            "working": 451,
-            "full_output": 1209,
+            "working": 450,
+            "full_output": 1210,
             "no_ingredients": 140
           }
         },
         {
           "id": "assembling-machine-2",
-          "entity": 6948,
+          "entity": 333,
           "blueprintEntity": 13,
           "position": {
             "y": -2.5,
@@ -17144,18 +17151,18 @@
           "inventory": {},
           "recipe": "copper-cable",
           "status": "full_output",
-          "products": 548,
+          "products": 538,
           "energy": 2755.5555555555557,
-          "measuredCrafts": 282,
+          "measuredCrafts": 280,
           "statusSeconds": {
-            "working": 196,
-            "full_output": 1520,
-            "item_ingredient_shortage": 84
+            "full_output": 1519,
+            "item_ingredient_shortage": 84,
+            "working": 197
           }
         },
         {
           "id": "assembling-machine-2",
-          "entity": 6951,
+          "entity": 336,
           "blueprintEntity": 20,
           "position": {
             "y": 5.5,
@@ -17170,23 +17177,23 @@
             {
               "name": "copper-cable",
               "quality": "normal",
-              "count": 1
+              "count": 2
             }
           ],
           "recipe": "electronic-circuit",
-          "status": "full_output",
-          "products": 351,
+          "status": "item_ingredient_shortage",
+          "products": 344,
           "energy": 2755.5555555555557,
           "measuredCrafts": 187,
           "statusSeconds": {
-            "full_output": 1352,
-            "item_ingredient_shortage": 299,
-            "working": 149
+            "full_output": 1349,
+            "item_ingredient_shortage": 301,
+            "working": 150
           }
         },
         {
           "id": "assembling-machine-2",
-          "entity": 6955,
+          "entity": 340,
           "blueprintEntity": 28,
           "position": {
             "y": 5.5,
@@ -17196,7 +17203,7 @@
             {
               "name": "iron-plate",
               "quality": "normal",
-              "count": 4
+              "count": 1
             },
             {
               "name": "electronic-circuit",
@@ -17206,9 +17213,9 @@
           ],
           "recipe": "rail-chain-signal",
           "status": "item_ingredient_shortage",
-          "products": 259,
+          "products": 261,
           "energy": 2755.5555555555557,
-          "measuredCrafts": 187,
+          "measuredCrafts": 188,
           "statusSeconds": {
             "item_ingredient_shortage": 1687,
             "working": 113
@@ -17217,7 +17224,7 @@
       ],
       "inputPerMinute": {
         "iron-ore": 37.5,
-        "coal": 1.7,
+        "coal": 1.6666666666666667,
         "copper-ore": 9.366666666666667
       },
       "throughput": {
@@ -17230,29 +17237,31 @@
           "measuredMinutes": 30,
           "unit": "per-minute"
         },
-        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "rateBasis": "Input rates use deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics. For fluid ingredients marked ignored_by_stats, the measured completed-recipe boundary (products_finished delta plus active-craft boundary delta times the ignored amount) is added; an unignored fluid boundary is only a defensive fallback when its counter is absent. This records recipe ingredients and burner fuel actually consumed by the force on this surface, not belt supply or initial inventory. Output rates are continuously collected over the same post-warmup window.",
         "collected": {
-          "rail-chain-signal": 187
+          "rail-chain-signal": 188
         },
         "warmupCollected": {
-          "rail-chain-signal": 72
+          "rail-chain-signal": 73
         },
         "perMinute": {
-          "rail-chain-signal": 6.233333333333333
+          "rail-chain-signal": 6.266666666666667
         },
         "inputPerMinute": {
           "iron-ore": 37.5,
-          "coal": 1.7,
+          "coal": 1.6666666666666667,
           "copper-ore": 9.366666666666667
         },
         "inputCounts": {
           "iron-ore": 1125,
-          "coal": 51,
+          "coal": 50,
           "copper-ore": 281
-        }
+        },
+        "recipeBoundaryInputCounts": {},
+        "recipeFallbackInputCounts": {}
       },
       "firstProductTicks": {
-        "rail-chain-signal": 2220
+        "rail-chain-signal": 2160
       },
       "powerNetwork": {
         "bigPoles": 1,
@@ -17269,11 +17278,11 @@
     },
     {
       "id": "early-raw-rail-signal",
-      "blueprintSha256": "2a579b1883376a6763e5e8e1565c8690289a51e5f4ff0cbd5a6dd55694cd70b5",
+      "blueprintSha256": "527ac39ace28afbb63afd6a41a7aa6b167fb2595fb00b2dfb6295be572fae85b",
       "portConfigurationSha256": "533178f1039b97712b3a9bb6ee69306977515c4c7661c2c65cc977af699c60e3",
       "kind": "production",
       "passed": true,
-      "firstOutputTick": 2220,
+      "firstOutputTick": 2160,
       "testedTechnologies": [
         "advanced-material-processing",
         "automated-rail-transportation",
@@ -17298,21 +17307,21 @@
       "removedAtHalfTime": 0,
       "restartedAfterCollection": false,
       "delivered": {
-        "rail-signal": 187
+        "rail-signal": 188
       },
       "outputPorts": {
-        "32": 187
+        "32": 188
       },
       "inputItems": {
         "iron-ore": 1767,
-        "coal": 277,
-        "copper-ore": 805
+        "coal": 276,
+        "copper-ore": 796
       },
       "sampledLoadEnergy": 0,
       "machines": [
         {
           "id": "steel-furnace",
-          "entity": 6041,
+          "entity": 274,
           "blueprintEntity": 1,
           "position": {
             "y": -3,
@@ -17336,27 +17345,33 @@
         },
         {
           "id": "steel-furnace",
-          "entity": 6045,
+          "entity": 278,
           "blueprintEntity": 7,
           "position": {
             "y": -3,
             "x": 2
           },
-          "inventory": {},
+          "inventory": [
+            {
+              "name": "copper-ore",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
           "recipe": "copper-plate",
           "status": "full_output",
-          "products": 666,
+          "products": 656,
           "energy": 100,
           "measuredCrafts": 281,
           "statusSeconds": {
-            "working": 451,
-            "full_output": 1209,
+            "working": 450,
+            "full_output": 1210,
             "no_ingredients": 140
           }
         },
         {
           "id": "assembling-machine-2",
-          "entity": 6049,
+          "entity": 282,
           "blueprintEntity": 13,
           "position": {
             "y": -2.5,
@@ -17365,18 +17380,18 @@
           "inventory": {},
           "recipe": "copper-cable",
           "status": "full_output",
-          "products": 548,
+          "products": 538,
           "energy": 2755.5555555555557,
-          "measuredCrafts": 282,
+          "measuredCrafts": 280,
           "statusSeconds": {
-            "working": 196,
-            "full_output": 1520,
-            "item_ingredient_shortage": 84
+            "full_output": 1519,
+            "item_ingredient_shortage": 84,
+            "working": 197
           }
         },
         {
           "id": "assembling-machine-2",
-          "entity": 6052,
+          "entity": 285,
           "blueprintEntity": 20,
           "position": {
             "y": 5.5,
@@ -17391,23 +17406,23 @@
             {
               "name": "copper-cable",
               "quality": "normal",
-              "count": 1
+              "count": 2
             }
           ],
           "recipe": "electronic-circuit",
-          "status": "full_output",
-          "products": 351,
+          "status": "item_ingredient_shortage",
+          "products": 344,
           "energy": 2755.5555555555557,
           "measuredCrafts": 187,
           "statusSeconds": {
-            "full_output": 1352,
-            "item_ingredient_shortage": 299,
-            "working": 149
+            "full_output": 1349,
+            "item_ingredient_shortage": 301,
+            "working": 150
           }
         },
         {
           "id": "assembling-machine-2",
-          "entity": 6056,
+          "entity": 289,
           "blueprintEntity": 28,
           "position": {
             "y": 5.5,
@@ -17417,7 +17432,7 @@
             {
               "name": "iron-plate",
               "quality": "normal",
-              "count": 4
+              "count": 1
             },
             {
               "name": "electronic-circuit",
@@ -17427,9 +17442,9 @@
           ],
           "recipe": "rail-signal",
           "status": "item_ingredient_shortage",
-          "products": 259,
+          "products": 261,
           "energy": 2755.5555555555557,
-          "measuredCrafts": 187,
+          "measuredCrafts": 188,
           "statusSeconds": {
             "item_ingredient_shortage": 1687,
             "working": 113
@@ -17438,7 +17453,7 @@
       ],
       "inputPerMinute": {
         "iron-ore": 37.5,
-        "coal": 1.7,
+        "coal": 1.6666666666666667,
         "copper-ore": 9.366666666666667
       },
       "throughput": {
@@ -17451,29 +17466,31 @@
           "measuredMinutes": 30,
           "unit": "per-minute"
         },
-        "rateBasis": "Input rates are deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics at warmup and the end of measurement. This records recipe ingredients and burner fuel actually consumed by the force on this surface; it does not report belt supply or initial inventory. Output rates are continuously collected output items over the same post-warmup window.",
+        "rateBasis": "Input rates use deltas from the consumption side (output_counts/get_output_count) of LuaForce item/fluid production statistics. For fluid ingredients marked ignored_by_stats, the measured completed-recipe boundary (products_finished delta plus active-craft boundary delta times the ignored amount) is added; an unignored fluid boundary is only a defensive fallback when its counter is absent. This records recipe ingredients and burner fuel actually consumed by the force on this surface, not belt supply or initial inventory. Output rates are continuously collected over the same post-warmup window.",
         "collected": {
-          "rail-signal": 187
+          "rail-signal": 188
         },
         "warmupCollected": {
-          "rail-signal": 72
+          "rail-signal": 73
         },
         "perMinute": {
-          "rail-signal": 6.233333333333333
+          "rail-signal": 6.266666666666667
         },
         "inputPerMinute": {
           "iron-ore": 37.5,
-          "coal": 1.7,
+          "coal": 1.6666666666666667,
           "copper-ore": 9.366666666666667
         },
         "inputCounts": {
           "iron-ore": 1125,
-          "coal": 51,
+          "coal": 50,
           "copper-ore": 281
-        }
+        },
+        "recipeBoundaryInputCounts": {},
+        "recipeFallbackInputCounts": {}
       },
       "firstProductTicks": {
-        "rail-signal": 2220
+        "rail-signal": 2160
       },
       "powerNetwork": {
         "bigPoles": 1,

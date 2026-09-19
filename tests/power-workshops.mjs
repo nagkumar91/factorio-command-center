@@ -39,7 +39,7 @@ if(!process.env.STARTER_TEST_IDS){
   const directory=path.join(root,'batch-'+(index+1));await fs.mkdir(directory,{recursive:true});
   await fs.rm(directory+'/'+reportFile,{force:true});
   try{
-   const result=await runFile(process.execPath,[path.resolve('tests/early-game.mjs')],{env:{...process.env,STARTER_TEST_IDS:batch.map(b=>b.id).join(','),STARTER_TEST_ROOT:directory},timeout:1800000,maxBuffer:16*1024*1024});
+   const result=await runFile(process.execPath,[path.resolve('tests/power-workshops.mjs')],{env:{...process.env,STARTER_TEST_IDS:batch.map(b=>b.id).join(','),STARTER_TEST_ROOT:directory},timeout:1800000,maxBuffer:16*1024*1024});
    await fs.writeFile(directory+'/run.log',result.stdout+result.stderr);
   }catch(error){await fs.writeFile(directory+'/run.log',String(error.stdout)+String(error.stderr));}
   const report=JSON.parse(await fs.readFile(directory+'/'+reportFile));

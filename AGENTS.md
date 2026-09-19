@@ -2,6 +2,8 @@
 
 This workspace contains the static website, original Factorio sources, community collection imports, and reproducible indexing and validation scripts.
 
+- Blueprint optimization: read the [GA + wave function collapse design handoff](experiments/blueprint-evolution/DESIGN.md). The user subsequently authorized implementation after deployment of the requested power workshops. Keep experiments isolated and publish only improvements with matching native production evidence and preserved version history.
+
 - Serve only `site/` or the generated `dist/` directory. Keep caches, dependencies, game saves, credentials, and machine-local configuration out of Git and public hosting.
 - Run `npm test` and `npm run build` for changes. Use the relevant browser suite for interface changes.
 - Preserve blueprint source attribution. Coverage must mean an actual recipe product, not an entity used to construct a layout.

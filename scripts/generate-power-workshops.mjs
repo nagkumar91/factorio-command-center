@@ -7,6 +7,7 @@ import path from 'node:path';
 import {decodeBlueprint,encodeBlueprint} from './blueprints.mjs';
 import {addInputDisplays} from './starter-input-displays.mjs';
 import {makePowerLayout} from './power-workshop-layout.mjs';
+import {optimizePowerPoles} from './power-pole-optimization.mjs';
 
 const raw=JSON.parse(await fs.readFile(process.env.FACTORIO_RAW||'.cache/factorio-vanilla/script-output/data-raw-dump.json'));
 const catalog=JSON.parse(await fs.readFile('site/data/catalog.json'));
@@ -81,11 +82,13 @@ promotePoleGrid(powerLayout);
 const rawPorts=powerLayout.ports.filter(p=>p.kind==='input'||p.kind==='fluid').sort((a,b)=>a.y-b.y);
 powerLayout.ports=[...rawPorts,...powerLayout.ports.filter(p=>p.kind==='power'||p.kind==='output')];
 portLabels(powerLayout.ports);const powerDisplays=addInputDisplays(powerLayout.blueprint,{ports:powerLayout.ports,setupNotes:powerSetup});
+const powerBoundsBefore=bounds(powerLayout.blueprint.entities);
+const powerOptimization=optimizePowerPoles(powerLayout.blueprint,raw);
 powerLayout.blueprint.label='Raw electric power poles and substation';
 powerLayout.blueprint.description=`Compact raw-input workshop, placement attempt ${powerAttempt}. Electric furnaces smelt all plates; substations include the internal coal/crude advanced-circuit chain.`;
 const powerEntities=powerLayout.blueprint.entities;
 const powerBounds=bounds(powerEntities);
-const powerInfoEntry=sourceInfo({id:'power-poles-substation',file:'power-poles-substation.txt',name:powerLayout.blueprint.label,products:powerProducts,rawInputs:[...powerRawInputs],ports:powerLayout.ports,entities:powerEntities,recipes:powerNodes.map(n=>specialRecipe[n.item]||n.recipe.name),researchClosure:[...powerTech].sort(),requires:powerRoots,setupNotes:powerDisplays.setupNotes,changes:['One shared compact layout makes medium poles, big poles and substations from raw inputs.','Electric furnaces replace burner fuel; coal and crude remain explicit raw ports because vanilla plastic requires both.'],compaction:{before:powerBounds,after:powerBounds,cuts:{columns:0,rows:0}},fuelPolicy:{furnaceFuel:'electricity'}});
+const powerInfoEntry=sourceInfo({id:'power-poles-substation',file:'power-poles-substation.txt',name:powerLayout.blueprint.label,products:powerProducts,rawInputs:[...powerRawInputs],ports:powerLayout.ports,entities:powerEntities,recipes:powerNodes.map(n=>specialRecipe[n.item]||n.recipe.name),researchClosure:[...powerTech].sort(),requires:powerRoots,setupNotes:powerDisplays.setupNotes,changes:['One shared compact layout makes medium poles, big poles and substations from raw inputs.','Electric furnaces replace burner fuel; coal and crude remain explicit raw ports because vanilla plastic requires both.',`Deterministic connected-coverage pruning retains the existing big pole and reduces medium poles from ${powerOptimization.oldMediumPoles} to ${powerOptimization.mediumPoles}; all non-pole entities and routes are unchanged.`],compaction:{before:powerBoundsBefore,after:powerBounds,cuts:{columns:0,rows:0}},fuelPolicy:{furnaceFuel:'electricity'}});
 await fs.writeFile(path.join(outRoot,powerInfoEntry.file),encodeBlueprint({blueprint:powerLayout.blueprint})+'\n');
 
 // The website's original Solar entries are deliberately looked up by stable
@@ -121,6 +124,7 @@ function solarVariant(tier){
  const ports=layout.ports.filter(p=>p.kind==='input'||p.kind==='fluid').sort((a,b)=>a.y-b.y);
  layout.ports=[...ports,...layout.ports.filter(p=>p.kind==='power'||p.kind==='output')];
  portLabels(layout.ports);const displays=addInputDisplays(layout.blueprint,{ports:layout.ports,setupNotes:solarSetup.slice()});
+ const optimization=optimizePowerPoles(layout.blueprint,raw);
  const blueprint=layout.blueprint;
  blueprint.label=`${originalSolars[tier].name} · raw electric workshop`;
  blueprint.description=`Raw-input copy of ${originalSolars[tier].name}; accumulator, solar panel and substation outputs are made internally from ore, fluids and coal. Electric furnaces replace all imported plate/burner supply. Source: ${originalSolars[tier].sourceURL}.`;
@@ -133,7 +137,8 @@ function solarVariant(tier){
   'Regenerated the layout as a raw-input workshop with ore, coal, water and crude-oil entrances; processed plates, circuits, batteries, plastic and sulfuric acid are internal.',
   'Replaced every smelting stage with electric-furnace production and removed burner-fuel assumptions.',
   tier==='am3'?'Kept assembling-machine-3 for final and intermediate assembly stages.':'Kept assembling-machine-2 for final and intermediate assembly stages.',
-  `Original imported entity profile: ${JSON.stringify(originalCounts)}.`
+  `Original imported entity profile: ${JSON.stringify(originalCounts)}.`,
+  `Deterministic connected-coverage pruning retains the existing big pole and reduces medium poles from ${optimization.oldMediumPoles} to ${optimization.mediumPoles}; all non-pole entities and routes are unchanged.`
  ];
  const requires=tier==='am3'?[...solarRoots,'automation-3'] : solarRoots;
  const info=sourceInfo({id,file,name:blueprint.label,products:solarProducts,rawInputs:[...solarRawInputs],ports:layout.ports,entities,recipes:solarNodes.map(n=>specialRecipe[n.item]||n.recipe.name),researchClosure:[...variantTech].sort(),requires,setupNotes:displays.setupNotes,changes,compaction:{before:{width:Math.max(...originalDecoded.entities.map(e=>e.position.x))-Math.min(...originalDecoded.entities.map(e=>e.position.x))+1,height:Math.max(...originalDecoded.entities.map(e=>e.position.y))-Math.min(...originalDecoded.entities.map(e=>e.position.y))+1,entities:originalDecoded.entities.length},after:bb,cuts:{columns:0,rows:0},originalId:original.id},fuelPolicy:{furnaceFuel:'electricity'}});
@@ -144,5 +149,5 @@ const solarVariants=['am2','am3'].map(solarVariant);
 for(const variant of solarVariants)await fs.writeFile(path.join(outRoot,variant.file),encodeBlueprint({blueprint:variant.blueprint})+'\n');
 const entries=[powerInfoEntry,...solarVariants.map(x=>x.info)];
 await fs.writeFile(path.join(outRoot,'manifest.json'),JSON.stringify(entries,null,2)+'\n');
-await fs.writeFile(path.join(outRoot,'README.md'),'# Raw electric power workshops\n\nGenerated by `scripts/generate-power-workshops.mjs`. The pole/substation entry exposes coal and crude oil because vanilla plastic is needed for advanced circuits. Solar AM2 and Solar AM3 retain the original three-product scope (accumulator, solar panel, substation), with water, coal and crude oil exposed for their internal battery/plastic chains. All smelting entities are electric furnaces and all processed ingredients are made inside the blueprint.\n');
+await fs.writeFile(path.join(outRoot,'README.md'),'# Raw electric power workshops\n\nGenerated by `scripts/generate-power-workshops.mjs`. The pole/substation entry exposes coal and crude oil because vanilla plastic is needed for advanced circuits. Solar AM2 and Solar AM3 retain the original three-product scope (accumulator, solar panel, substation), with water, coal and crude oil exposed for their internal battery/plastic chains. All smelting entities are electric furnaces and all processed ingredients are made inside the blueprint. The generator applies deterministic connected-coverage pruning to remove redundant medium poles while retaining the big-pole connection and all production routes.\n');
 console.log(JSON.stringify(entries.map(e=>({id:e.id,file:e.file,products:e.products,rawInputs:e.rawInputs,entities:e.machineCount,footprint:e.compaction.after,ports:e.ports.length})),null,2));

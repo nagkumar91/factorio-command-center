@@ -3,8 +3,12 @@ import {encodeBlueprint} from './blueprints.mjs';
 import {recipeChain,makeRawLayout} from './raw-starter-layout.mjs';
 import {addInputDisplays} from './starter-input-displays.mjs';
 import {starterMachineFor,starterMachineResearch,starterMachineNote} from './starter-machines.mjs';
-import {compactStarterLayout,starterPowerNote,starterConnectionNote} from './compact-starter-layout.mjs';
-const root='blueprint-sources/early-game';
+import {compactStarterLayout,starterBounds,starterPowerNote,starterConnectionNote} from './compact-starter-layout.mjs';
+import {applySavedCorridorOptimization} from './saved-corridor-optimizations.mjs';
+const root=process.env.EARLY_GAME_OUTPUT_ROOT||'blueprint-sources/early-game';
+await fs.mkdir(root,{recursive:true});
+let corridorOptimizations=[];
+try{corridorOptimizations=JSON.parse(await fs.readFile(process.env.EARLY_GAME_CORRIDOR_OPTIMIZATIONS||'blueprint-sources/early-game/corridor-optimizations.json')).optimizations;}catch(error){if(error.code!=='ENOENT')throw error;}
 const raw=JSON.parse(await fs.readFile(process.env.FACTORIO_RAW||'.cache/factorio-vanilla/script-output/data-raw-dump.json'));
 const catalog=JSON.parse(await fs.readFile('site/data/catalog.json'));
 const names=new Map([...catalog.items,...catalog.fluids,...catalog.technologies].map(i=>[i.id,i.name]));
@@ -100,9 +104,22 @@ for(const c of candidates.sort((a,b)=>stages.indexOf(a.stage)-stages.indexOf(b.s
   layout.blueprint.description='Scratch candidate from makeRawLayout attempt 186; all intermediates are internal and all raw ports remain west-facing.';
  }
  const compaction=compactStarterLayout(layout.blueprint,layout.ports,raw);
+ const corridorOptimization=corridorOptimizations.find(entry=>entry.id===id);
+ layout.blueprint=applySavedCorridorOptimization(layout.blueprint,corridorOptimization);
+ // Saved corridor edits can remove a complete edge row after the normal
+ // compaction pass. Keep the published footprint metadata tied to the final
+ // tested entity geometry.
+ if(corridorOptimization){
+  const finalBounds=starterBounds(layout.blueprint.entities,raw);
+  compaction.after={width:finalBounds.width,height:finalBounds.height};
+ }
  await fs.writeFile(root+'/'+file,encodeBlueprint({blueprint:layout.blueprint})+'\n');
  manifest.push({id,file,name:layout.blueprint.label,author:'Factorio Command Center',sourceURL:'sources/early-game/README.md',sourceTitle:'Original raw-material research modules',category:String(stageNumber).padStart(2,'0')+' · '+name(c.stage),kind:'production',order:manifest.length+1,requires,unlock:c.stage,unlockName:name(c.stage),researchClosure:[...c.technology].sort(),products:[c.product],rawInputs:inputs,rawOnly:true,setupNotes,changes:['Original layout generated from the installed vanilla recipes and research tree.','All intermediates are manufactured inside. One dedicated output keeps each module independent.'],ports:layout.ports,recipes:c.nodes.map(n=>n.recipe.name),machineCount:layout.machines});
  Object.assign(manifest.at(-1),{inputDisplays:displays.inputDisplays,setupNotes:displays.setupNotes,compaction,powerNetwork:{connection:'big-electric-pole',distribution:'medium-electric-pole',research:'electric-energy-distribution-1'}});
+ if(corridorOptimization){
+  manifest.at(-1).changes.push(`Verified belt-corridor revision removes ${corridorOptimization.beltsSaved} yellow belts while preserving machines, ports, underground endpoints and power.`);
+  manifest.at(-1).reviewReport='sources/early-game/REVIEW.md';
+ }
  console.log(c.product+': '+layout.machines+' machines, '+layout.blueprint.entities.length+' entities'+(extraLogistics?' (+Logistics)':''));
 }
 manifest.sort((a,b)=>stages.indexOf(a.unlock)-stages.indexOf(b.unlock)||a.products[0].localeCompare(b.products[0]));
