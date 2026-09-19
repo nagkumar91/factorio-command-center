@@ -406,6 +406,14 @@ script.on_init(function()
   check(actual.position.x==saved.position.x+t.dx and actual.position.y==saved.position.y+t.dy,'shifted layout #'..saved.entity_number..' actual '..tostring(actual.position.x)..','..tostring(actual.position.y)..' expected '..tostring(saved.position.x+t.dx)..','..tostring(saved.position.y+t.dy))
   check(actual.direction==(saved.direction or 0),'changed direction #'..saved.entity_number)
   if saved.recipe then check(actual.get_recipe() and actual.get_recipe().name==saved.recipe,'recipe '..saved.recipe..' #'..saved.entity_number)end
+  if actual.type=='inserter' and saved.use_filters then
+   check(actual.use_filters,'inserter filters disabled #'..saved.entity_number)
+   check(actual.inserter_filter_mode==(saved.filter_mode or 'whitelist'),'inserter filter mode #'..saved.entity_number)
+   for _,filter in pairs(saved.filters or {})do
+    local imported=actual.get_filter(filter.index)
+    check(imported and imported.name==filter.name,'inserter item filter #'..saved.entity_number..' slot '..filter.index)
+   end
+  end
   local control=saved.control_behavior
   if control and (control.circuit_enabled~=nil or control.circuit_enable_disable~=nil) then
    local behavior=actual.get_control_behavior()

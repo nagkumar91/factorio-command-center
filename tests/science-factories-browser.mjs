@@ -2,7 +2,20 @@ import {chromium} from 'playwright';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {pathToFileURL} from 'node:url';
+import http from 'node:http';
+
+const site=path.resolve('site');
+const mime={'.html':'text/html','.js':'text/javascript','.json':'application/json','.css':'text/css','.png':'image/png','.svg':'image/svg+xml','.woff2':'font/woff2'};
+const server=http.createServer(async(request,response)=>{
+ try{
+  const pathname=decodeURIComponent(new URL(request.url,'http://localhost').pathname);
+  const file=path.resolve(site,'.'+(pathname==='/'?'/index.html':pathname));
+  if(!file.startsWith(site+path.sep))throw Error('outside site');
+  response.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');
+  response.end(await fs.readFile(file));
+ }catch{response.writeHead(404);response.end('Not found');}
+});
+await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 
 const atlas=JSON.parse(await fs.readFile('site/data/atlas.json'));
 const records=atlas.blueprints.filter(record=>record.scienceFactory);
@@ -17,7 +30,7 @@ const page=await context.newPage(),errors=[];
 page.on('pageerror',error=>errors.push(error.message));
 const format=value=>new Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(value);
 try{
- const url=process.env.WEBSITE_URL||pathToFileURL(path.resolve('site/index.html')).href;
+ const url=process.env.WEBSITE_URL||`http://127.0.0.1:${server.address().port}/`;
  await page.goto(url+'?collection=science-factories#blueprints');
  await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
  assert.equal(await page.locator('.blueprint-card').count(),records.length);
@@ -39,6 +52,18 @@ try{
   }
   await page.locator('#modal [data-action="copy-blueprint"]').click();
   assert.equal(await page.evaluate(()=>window.__copiedBlueprint),record.code,'Copy must use the native-tested saved string');
+  const originalVersion=record.publication?.history?.find(version=>version.version===1);
+  if(record.publication?.version>1&&originalVersion){
+   const original=JSON.parse(await fs.readFile(path.join('site',originalVersion.url)));
+   await page.locator('#blueprint-version').selectOption('1');
+   await page.waitForFunction(()=>document.querySelector('#blueprint-version')?.value==='1'&&!document.querySelector('#blueprint-version')?.disabled);
+   await page.locator('#modal [data-action="copy-blueprint"]').click();
+   assert.equal(await page.evaluate(()=>window.__copiedBlueprint),original.code,'Version 1 must still copy its original tested blueprint');
+   await page.locator('#blueprint-version').selectOption(String(record.publication.version));
+   await page.waitForFunction(version=>document.querySelector('#blueprint-version')?.value===String(version)&&!document.querySelector('#blueprint-version')?.disabled,record.publication.version);
+   await page.locator('#modal [data-action="copy-blueprint"]').click();
+   assert.equal(await page.evaluate(()=>window.__copiedBlueprint),record.code,'Switching back must restore the compact tested blueprint');
+  }
   await page.locator('[data-action="close-modal"]').click();
  }
  await page.locator('#blueprint-input-menu').getByRole('button',{name:/From raw materials/}).click();
@@ -50,4 +75,4 @@ try{
  await page.screenshot({path:'test-results/science-factories-390.png'});
  assert.deepEqual(errors,[]);
  console.log(`Science browser passed: ${records.length} factories, direct collection link, six inputs, four measured outputs, exact copied strings, raw filter and mobile width.`);
-}finally{await browser.close();}
+}finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

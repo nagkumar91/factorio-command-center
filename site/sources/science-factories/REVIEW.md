@@ -1,5 +1,57 @@
 # Combined science factory review
 
+## Electric version 2: direct feeders on both sides of the bus
+
+The accepted blueprint is 232 × 103 tiles with 4,370 entities and 103 production machines. Raw smelting precedes every downstream workshop. Production occupies both sides of the eastbound bus; each input branch runs directly to a bus-facing inlet, and each intermediate bus terminates after its final consumer. All six raw inputs share the west boundary and all four output chests share the east boundary.
+
+The exact saved string passed two independent 45-minute native simulations in Factorio 2.0.77 with Space Age, map seed 12345. The functional run starts empty with only raw inputs and external electricity, drains every output at the midpoint and verifies refill. Every machine crafted and every electric consumer reached the saved P network. All 43 furnaces used electricity. The second run has a 15-minute warmup and a 30-minute collection window; it measured 30.6667 automation, 30.0000 logistic, 30.1333 military and 30.8667 chemical science packs per minute together.
+
+Blueprint SHA-256: `c4c6520e988710484a0baa28f912ca9a2e3d98d49ade9689e6088b69009b16ad`.
+
+Configuration SHA-256: `107a4030a121bb8621ca359c8f36b6533b3bcc1884e6bb4118dfe058aa193f3d`.
+
+The native importer checks the saved recipes, positions, directions, circuit conditions, arithmetic controls and any enabled inserter filters. No processed ingredients, furnace fuel, robots, modules, beacons or research productivity bonuses are injected. Static item routing found zero issues and zero unreachable consumers; the generator’s independent route audit reached all 66 routes. Native measurements provide the production evidence.
+
+## Condensation and capacity review
+
+| Measure | Published electric v1 | Electric v2 |
+| --- | ---: | ---: |
+| Width × height | 412 × 88 | 232 × 103 |
+| Bounding-box area | 36,256 | 23,896 |
+| Entities | 7,984 | 4,370 |
+| Fast belts | 6,463 | 2,969 |
+| Fast underground endpoints | 710 | 604 |
+| Fast splitters | 41 | 41 |
+| Medium poles | 138 | 121 |
+| Electric furnaces | 42 | 43 |
+| AM2 assemblers | 54 | 54 |
+| Production machines | 102 | 103 |
+
+Area falls 34.1%, width 43.7%, and entity count 45.3%. Most savings come from removing long return feeders and placing blocks closer together. The condensed layout retains the seven engine assemblers, seven advanced-circuit assemblers, four cable assemblers and nine chemical-science assemblers that supply the target with recovery capacity. There are 23 iron, nine copper, six steel and five brick furnaces, two refineries and four chemical plants.
+
+A seeded genetic placement search (seed 2919, population 100, 350 generations) orders the recipe blocks, chooses their bank and reserves branch columns. Raw smelters are hard predecessors of all workshops; material producers precede their consumers. The selected plan uses a 16-tile minimum same-bank spacing, direct inlet columns and clearance around underground crossings. Deterministic routing constructs the belts, interval coloring reuses ten physical bus rows for 26 material routes, and a final connection-preserving pass removes transport-only rows and columns before rebuilding power. This revision uses genetic block placement and deterministic tile routing; it does not claim a globally optimal layout or a whole-factory WFC solution.
+
+The first inward-feeder version kept 22 iron furnaces and measured only 26.7333 chemical packs/min, despite reaching the other three targets. Recipe-level evidence located the shortage in engine supply. One added iron furnace and a gear limit of 126/min raised chemical production to 30.8667/min. The same geometry with a 117/min gear limit delivered 29.8667 chemical/min; the higher limit provides more recovery margin. Automation and military production are limited near 30/min to share intermediates. The accepted blueprint uses the ordinary two-combinator clock, without a startup hold or burst controller.
+
+Input consumption includes buffer filling. Measured iron rises from 825 to 853.5333/min; stone falls from 346.4667 to 324/min. These are simultaneous production-window measurements, not theoretical minimum ingredients or an assertion that every raw input rate decreases with compactness.
+
+## Reproduction and version history
+
+The accepted generator reproduces both the saved string byte for byte and its configuration hash:
+
+```sh
+node scripts/science-factory/two-bank/generate.mjs
+node scripts/science-factory/two-bank/apply-caps.mjs
+```
+
+Output is isolated under `.cache/science-factory/reproduce-electric-v2/`. The pinned vanilla prototype dump is required at `.cache/factorio-vanilla/script-output/data-raw-dump.json`. The saved bank plan and search input are in `scripts/science-factory/two-bank/`; `python3 scripts/science-factory/two-bank/search.py` reruns placement exploration into a separate cache directory. Generation and search do not publish untested candidates.
+
+Run `npm run test:science`, `npm run benchmark:science`, then `npm run publish:science` to test and publish matching artifacts. Native reports are bound to exact blueprint and configuration hashes. The site retains the electric v1 string and its native evidence in immutable version records; the steel-furnace version is unchanged.
+
+## Archived electric v1 review
+
+The following review describes the preserved v1, not the default v2. Its original generator remains under `scripts/science-factory/`.
+
 ## Electric furnace factory
 
 The exact imported blueprint `science-four-pack-30-electric.txt` passed two independent 45-minute native Factorio 2.0.77 simulations, map seed 12345. The functional run starts empty with only six raw input fixtures and external electricity, collects outputs at the midpoint and verifies all four refill. The throughput run warms up for 15 minutes and measures continuous collection for 30 minutes. It delivered 31.4333 automation, 29.9333 logistic, 31.8667 military and 30.1333 chemical science packs per minute together; every output exceeded the 29.8/min acceptance floor for the 30/min target.
@@ -33,6 +85,7 @@ node scripts/science-factory/apply-caps.mjs
 ```
 
 The default output is the ignored `.cache/science-factory/reproduce-electric/` directory. It requires the pinned vanilla game prototype dump at `.cache/factorio-vanilla/script-output/data-raw-dump.json` (or `FACTORIO_RAW` where supported). The oil component is preserved under `components/`; its geometry and all external interfaces are included in the full saved-string native tests. Generation does not publish or overwrite the accepted source.
+
 
 ## Steel furnace factory with internal solid fuel
 
