@@ -274,6 +274,7 @@ const luaBuild = JSON.stringify({
   blueprintSha256: build.blueprintSha256,
   portConfigurationSha256: build.portConfigurationSha256,
   targetPerMinute: build.targetPerMinute,
+  fuelPolicy: build.fuelPolicy,
   static: build.static,
 });
 const luaString = JSON.stringify(luaBuild).replace(/\\/g, '\\\\').replace(/`/g, '\\`');
@@ -405,6 +406,26 @@ script.on_init(function()
   check(actual.position.x==saved.position.x+t.dx and actual.position.y==saved.position.y+t.dy,'shifted layout #'..saved.entity_number..' actual '..tostring(actual.position.x)..','..tostring(actual.position.y)..' expected '..tostring(saved.position.x+t.dx)..','..tostring(saved.position.y+t.dy))
   check(actual.direction==(saved.direction or 0),'changed direction #'..saved.entity_number)
   if saved.recipe then check(actual.get_recipe() and actual.get_recipe().name==saved.recipe,'recipe '..saved.recipe..' #'..saved.entity_number)end
+  local control=saved.control_behavior
+  if control and (control.circuit_enabled~=nil or control.circuit_enable_disable~=nil) then
+   local behavior=actual.get_control_behavior()
+   local enabled=control.circuit_enabled;if enabled==nil then enabled=control.circuit_enable_disable end
+   check(behavior and behavior.circuit_enable_disable==enabled,'circuit enable setting #'..saved.entity_number)
+   if control.circuit_condition then
+    local condition=behavior.circuit_condition
+    check(condition and condition.comparator==control.circuit_condition.comparator and condition.constant==control.circuit_condition.constant,'circuit condition #'..saved.entity_number)
+    check(condition.first_signal and condition.first_signal.name==control.circuit_condition.first_signal.name,'circuit input signal #'..saved.entity_number)
+   end
+  end
+  if actual.type=='transport-belt' and control and control.circuit_read_hand_contents then
+   local behavior=actual.get_control_behavior()
+   check(behavior and behavior.read_contents,'belt reader #'..saved.entity_number)
+   check(behavior.read_contents_mode==control.circuit_contents_read_mode,'belt read mode #'..saved.entity_number)
+  end
+  if actual.type=='arithmetic-combinator' and control and control.arithmetic_conditions then
+   local parameters=actual.get_control_behavior().parameters
+   check(parameters.operation==control.arithmetic_conditions.operation and parameters.second_constant==control.arithmetic_conditions.second_constant,'clock operation #'..saved.entity_number)
+  end
   if saved.name=='display-panel' then
    local icon=actual.display_panel_icon
    check(icon and icon.name==saved.icon.name and (icon.type or 'item')==(saved.icon.type or 'item'),'input display icon #'..saved.entity_number)
