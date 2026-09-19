@@ -33,3 +33,29 @@ node scripts/science-factory/apply-caps.mjs
 ```
 
 The default output is the ignored `.cache/science-factory/reproduce-electric/` directory. It requires the pinned vanilla game prototype dump at `.cache/factorio-vanilla/script-output/data-raw-dump.json` (or `FACTORIO_RAW` where supported). The oil component is preserved under `components/`; its geometry and all external interfaces are included in the full saved-string native tests. Generation does not publish or overwrite the accepted source.
+
+## Steel furnace factory with internal solid fuel
+
+The steel version is a separate choice, preserving the electric version. Its accepted layout is 421 × 88 tiles with 8,622 entities and 108 production machines: 44 steel furnaces, 57 AM2 assemblers, two refineries and five chemical plants. It has one external big pole and 133 medium poles. Coal is used by grenade and plastic recipes; all 44 furnaces burn solid fuel made inside from light oil. The six raw inputs remain aligned on the west side and all four output chests on the east.
+
+The exact saved string passed both 45-minute native tests with no supplied intermediates or furnace fuel. The 15-minute warmup / 30-minute measurement run delivered 33.4333 automation, 32.2667 logistic, 32.3333 military and 30.3333 chemical packs per minute together. All machines crafted, every output refilled after collection, all electric consumers reached P, and every furnace burned the internally made fuel.
+
+Blueprint SHA-256: `14e317387ba3ac2a671975043b1ecd7a41832bfe31bbfa066264d07412093fba`. The final text and controls are bound to the matching native reports. The additional publication unit checks reject stale saved strings and any pack below the production floor.
+
+Fuel is distributed through seven independent circuits. Each reads its branch and mixed furnace input belt and limits buffered fuel to 24 items. A diagnostic exposed 12 fuel items trapped on three unused belts beyond each last furnace pickup; a 16-item limit could then permanently close the feed. Removing those 21 unused belts both reduced construction material and eliminated that stalled reserve. Each gate remains isolated from the others and the shared production clock. Connection checks found no unreachable consumers or unintended material routes.
+
+The capacity review added two smelting furnaces and three assemblers compared with the first trimmed 103-machine candidate: 23 iron furnaces, 10 copper furnaces, eight engine assemblers, eight advanced-circuit assemblers and five logistic-science assemblers. Four cable and nine chemical-science assemblers remain. The extra capacity lets later stages recover from unequal startup buffer filling while the intermediate limits keep the shared supply balanced. It preserves the 421 × 88 footprint. The earlier trimmed candidate produced only 27.4 chemical packs/min over the same window and was not published.
+
+The electric choice is nine tiles narrower and uses 638 fewer entities, with six fewer production machines. These variants have different furnace construction costs and energy/fuel behavior; entity count alone is not an ore-equivalent construction-cost comparison. Their observed rates are window averages under continuous raw supply, not claims of global layout optimality.
+
+The deterministic steel generator reproduces the accepted blueprint bytes and the exact research/input/output configuration bound to both native reports:
+
+```sh
+node scripts/science-factory/steel/generate.mjs
+node scripts/science-factory/steel/compact.mjs
+node scripts/science-factory/steel/apply-caps.mjs
+node scripts/science-factory/steel/apply-fuel-limits.mjs
+node scripts/science-factory/steel/trim.mjs
+```
+
+The default output is `.cache/science-factory/reproduce-steel/final/`; the pinned prototype dump and catalog are the same as for the electric generator. The final pass removes the unused furnace-belt tails, sets the verified 24-item fuel reserves, and preserves the tested steel-furnace research requirements. Generation stays in the ignored cache and cannot publish an untested change. The oil component is preserved in `components/oil-steel-bus.json`.

@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {starterConfigurationHash} from '../scripts/starter-verification.mjs';
 import {validateScienceEvidence} from '../scripts/index-science-factories.mjs';
@@ -53,4 +54,27 @@ test('electric science publication requires observed powered electric furnaces i
  assert.doesNotThrow(()=>validate(f));
  f.throughput.builds[0].fuel.furnaces[0].electricPoweredSeconds=0;
  assert.throws(()=>validate(f),/electricity alone/);
+});
+
+const source=new URL('../blueprint-sources/science-factories/',import.meta.url);
+const read=async file=>JSON.parse(await fs.readFile(new URL(file,source)));
+
+test('Both furnace choices retain native evidence for their exact published source',async()=>{
+ const [manifest,functional,throughput]=await Promise.all(['manifest.json','validation.json','throughput.json'].map(read));
+ assert.deepEqual(manifest.map(info=>info.fuelPolicy.furnaceFuel).sort(),['electricity','solid-fuel']);
+ for(const info of manifest){
+  const code=(await fs.readFile(new URL(info.file,source),'utf8')).trim();
+  assert.doesNotThrow(()=>validateScienceEvidence(info,code,functional,throughput),info.id);
+ }
+});
+
+test('Science publication rejects changed strings and a pack below the production floor',async()=>{
+ const [manifest,functional,throughput]=await Promise.all(['manifest.json','validation.json','throughput.json'].map(read));
+ const info=manifest[0],code=(await fs.readFile(new URL(info.file,source),'utf8')).trim();
+ assert.throws(()=>validateScienceEvidence(info,code+' ',functional,throughput),/SHA does not match/);
+ const slow=structuredClone(throughput);
+ const measured=slow.builds.find(build=>build.id===info.id).throughput;
+ measured.perMinute['chemical-science-pack']=29.7;
+ measured.collected['chemical-science-pack']=29.7*measured.measuredMinutes;
+ assert.throws(()=>validateScienceEvidence(info,code,functional,slow),/output below 30\/min target tolerance/);
 });
