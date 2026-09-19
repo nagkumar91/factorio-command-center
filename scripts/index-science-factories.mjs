@@ -18,8 +18,11 @@ export function validateScienceEvidence(info,code,evidence,throughput){
  requireEvidence(sameSet(info.products,PRODUCTS)&&sameSet(info.rawInputs,RAW),info,'science products or raw inputs differ from the required boundary');
  const inputPorts=info.ports.filter(port=>['input','fluid'].includes(port.kind));
  const outputPorts=info.ports.filter(port=>port.kind==='output');
- requireEvidence(inputPorts.length===RAW.length&&sameSet(inputPorts.flatMap(port=>port.items),RAW)&&inputPorts.every(port=>port.externalSide==='west'),info,'six separate raw input ports must be on the west side');
- requireEvidence(outputPorts.length===PRODUCTS.length&&sameSet(outputPorts.flatMap(port=>port.items),PRODUCTS)&&outputPorts.every(port=>port.externalSide==='east'),info,'four separate science output ports must be on the east side');
+ const distributed=info.portPolicy==='distributed';
+ const sides=new Set(['north','east','south','west']);
+ requireEvidence(!info.portPolicy||['distributed','west-to-east'].includes(info.portPolicy),info,'unknown port policy');
+ requireEvidence(inputPorts.length===RAW.length&&sameSet(inputPorts.flatMap(port=>port.items),RAW)&&inputPorts.every(port=>distributed?sides.has(port.externalSide):port.externalSide==='west'),info,distributed?'six separate raw input ports need valid sides':'six separate raw input ports must be on the west side');
+ requireEvidence(outputPorts.length===PRODUCTS.length&&sameSet(outputPorts.flatMap(port=>port.items),PRODUCTS)&&outputPorts.every(port=>distributed?sides.has(port.externalSide):port.externalSide==='east'),info,distributed?'four separate science output ports need valid sides':'four separate science output ports must be on the east side');
  const electric=info.fuelPolicy?.furnaceFuel==='electricity';
  requireEvidence(['solid-fuel','electricity'].includes(info.fuelPolicy?.furnaceFuel),info,'missing furnace fuel policy');
  const checked=validateRawRateEvidence(info,code,evidence,throughput);
@@ -38,7 +41,7 @@ export function validateScienceEvidence(info,code,evidence,throughput){
   }
  }
  for(const port of outputPorts){
-  requireEvidence(port.externalSide==='east'&&checked.functional.drainedPorts?.[port.entity]>0&&checked.functional.restartedPorts?.[port.entity]===true,info,'east output did not drain and refill');
+  requireEvidence(checked.functional.drainedPorts?.[port.entity]>0&&checked.functional.restartedPorts?.[port.entity]===true,info,'science output did not drain and refill');
  }
  for(const raw of RAW)requireEvidence(checked.measured.throughput.inputPerMinute[raw]>0,info,'raw input was not consumed: '+raw);
  for(const product of PRODUCTS)requireEvidence(checked.measured.throughput.perMinute[product]>=29.8,info,'output below 30/min target tolerance: '+product);

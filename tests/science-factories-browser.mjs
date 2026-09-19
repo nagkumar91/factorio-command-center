@@ -52,13 +52,12 @@ try{
   }
   await page.locator('#modal [data-action="copy-blueprint"]').click();
   assert.equal(await page.evaluate(()=>window.__copiedBlueprint),record.code,'Copy must use the native-tested saved string');
-  const originalVersion=record.publication?.history?.find(version=>version.version===1);
-  if(record.publication?.version>1&&originalVersion){
+  for(const originalVersion of record.publication?.history||[]){
    const original=JSON.parse(await fs.readFile(path.join('site',originalVersion.url)));
-   await page.locator('#blueprint-version').selectOption('1');
-   await page.waitForFunction(()=>document.querySelector('#blueprint-version')?.value==='1'&&!document.querySelector('#blueprint-version')?.disabled);
+   await page.locator('#blueprint-version').selectOption(String(originalVersion.version));
+   await page.waitForFunction(version=>document.querySelector('#blueprint-version')?.value===String(version)&&!document.querySelector('#blueprint-version')?.disabled,originalVersion.version);
    await page.locator('#modal [data-action="copy-blueprint"]').click();
-   assert.equal(await page.evaluate(()=>window.__copiedBlueprint),original.code,'Version 1 must still copy its original tested blueprint');
+   assert.equal(await page.evaluate(()=>window.__copiedBlueprint),original.code,`Version ${originalVersion.version} must still copy its original tested blueprint`);
    await page.locator('#blueprint-version').selectOption(String(record.publication.version));
    await page.waitForFunction(version=>document.querySelector('#blueprint-version')?.value===String(version)&&!document.querySelector('#blueprint-version')?.disabled,record.publication.version);
    await page.locator('#modal [data-action="copy-blueprint"]').click();

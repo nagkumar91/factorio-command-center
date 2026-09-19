@@ -9,5 +9,6 @@ export function starterConfigurationHash(info){
  if(info.scienceFactory)configuration.scienceFactory=true;
  if(info.fuelPolicy)configuration.fuelPolicy=info.fuelPolicy;
  if(info.targetPerMinute)configuration.targetPerMinute=info.targetPerMinute;
+ if(info.portPolicy)configuration.portPolicy=info.portPolicy;
  return createHash('sha256').update(JSON.stringify(configuration)).digest('hex');
 }

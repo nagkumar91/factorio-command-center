@@ -1,5 +1,45 @@
 # Combined science factory review
 
+## Electric version 3: distributed ports and local science collectors
+
+Electric v3 is the default electric revision. It is 205 × 100 tiles with 3,517 entities and 104 production machines. The six raw inputs remain the only material inputs: iron ore, copper ore, coal, stone, water and crude oil. Raw ingress is kept near the processing banks under `portPolicy: distributed`; attach to each labeled external fixture, with the current raw belt and fluid fixtures facing west. External electricity connects to the saved big pole marked **P**.
+
+The four science outputs no longer use full-width output buses. Each collector is reversed toward the outer end of its own science row and feeds a nearby indexed chest: OUT 1 automation is north, OUT 2 logistic is south, OUT 3 military is north, and OUT 4 chemical is north. The approach tile beside every raw or output port is reserved for the external connection. The manifest and native harness use the same distributed port configuration.
+
+The compact routing plan has nine shared physical rows carrying 22 material routes. It combines dense mixed C/result lanes, filtered inserters and a rear guide where a mixed lane needs a straight connection. Grouped underground crossings reduce duplicate endpoints while preserving every machine contact. The placement search used GA seed 5030, population 100, 600 generations and gap 11. This is a tested placement and routing candidate, not a whole-factory wave-function-collapse search or a claim of a global optimum.
+
+| Measure | Electric v2 | Electric v3 |
+| --- | ---: | ---: |
+| Width × height | 232 × 103 | **205 × 100** |
+| Bounding-box area | 23,896 | **20,500** |
+| Entities | 4,370 | **3,517** |
+| Fast belts | 2,969 | **2,361** |
+| Fast underground endpoints | 604 | **312** |
+| Fast splitters | 41 | **41** |
+| Medium poles | 121 | **116** |
+| Electric furnaces | 43 | **43** |
+| AM2 assemblers | 54 | **55** |
+| Production machines | 103 | **104** |
+
+The earlier local-output-only candidate passed its native check at 30.6667 automation, 30.0000 logistic, 30.3333 military and 31.0000 chemical packs/min, but occupied 231 × 100 tiles with 4,130 entities. The accepted v3 retained the balanced margin while reaching 205 × 100 and 3,517 entities. An initial dense layout with outward collectors produced 30.6667 automation and 31.6000 chemical but zero logistic and military, so it was rejected. An earlier routing trial also failed to sustain three outputs. The mixed-lane failure was traced to an inlet belt automatically curving and filling both lanes with its ingredient; the rear guide preserves a separate result lane. A regression test now rejects blocks without that guide. These failed candidates remain local cache evidence rather than published revisions.
+
+The accepted v3 blueprint passed two independent native Factorio 2.0.77 runs on map seed 12345. The functional run simulated 45 minutes from an empty start, crafted and powered all 104 production machines, drained 200 items from each output, and verified refill at all four ports. The throughput run simulated 45 minutes with 15 minutes of warmup and 30 minutes of continuous collection. It measured 30.7000 automation, 30.5667 logistic, 30.6667 military and 30.9333 chemical science packs/min; every output cleared the 30/min target. Static routing and the native run reported no rejections.
+
+The throughput report records these simultaneous input deltas, including buffer filling: iron ore 845.4333/min, copper ore 337.5000/min, coal 207.8667/min, stone 327.3333/min, water 1,899.0000/min and crude oil 1,240.0000/min. They are measured recipe consumption rates, not theoretical minimums or a claim that all raw usage falls with the compact layout.
+
+Blueprint SHA-256: `8e90fd9029f580e5d1a24cf38987dd811092ff76fddf6a89ac484309183761d1`.
+
+Distributed port configuration SHA-256: `e00124325643dcad7eff6d6252acb22fb24569d8b2b2aaef079a3c5ffa0726c8`.
+
+The accepted native evidence is preserved in [throughput.json](throughput.json) and [validation.json](validation.json), and in the website version snapshots. Experiment logs remain in the ignored `.cache/electric-v3/` directory. The fifth logistic-science assembler adds recovery capacity; four AM2s have exactly 30/min theoretical capacity and measured 29.9/min with transport interruptions. The extra assembler and small inserter/belt production allowances raised green science to 30.5667/min without expanding the footprint. Area falls 14.2% and total entities fall 19.5% relative to v2; external collection belts from these local outputs to a lab area are excluded. The source reproduction is:
+
+```sh
+node scripts/science-factory/local-ports/generate.mjs
+node scripts/science-factory/local-ports/apply-caps.mjs
+```
+
+It writes to `.cache/science-factory/reproduce-electric-v3/`. The v2, v1 and steel reviews below remain archived and describe their original saved strings and evidence.
+
 ## Electric version 2: direct feeders on both sides of the bus
 
 The accepted blueprint is 232 × 103 tiles with 4,370 entities and 103 production machines. Raw smelting precedes every downstream workshop. Production occupies both sides of the eastbound bus; each input branch runs directly to a bus-facing inlet, and each intermediate bus terminates after its final consumer. All six raw inputs share the west boundary and all four output chests share the east boundary.

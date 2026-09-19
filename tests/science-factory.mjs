@@ -113,6 +113,9 @@ function staticValidate(entry, entities) {
   const rawPorts = ports.filter(p => p.kind === 'input' || p.kind === 'fluid');
   const powerPorts = ports.filter(p => p.kind === 'power');
   const outputPorts = ports.filter(p => p.kind === 'output');
+  const distributedPorts = entry.portPolicy === 'distributed';
+  const validSides = new Set(['north', 'east', 'south', 'west']);
+  if (entry.portPolicy && !['distributed', 'west-to-east'].includes(entry.portPolicy)) reject('unknown portPolicy');
 
   if (entry.scienceFactory !== true) reject('scienceFactory:true is required');
   if (entry.rawOnly !== true) reject('rawOnly:true is required');
@@ -136,7 +139,8 @@ function staticValidate(entry, entities) {
     if (!rawSet.has(item)) reject(`raw port ${port.entity} has undeclared item ${item}`);
     if (rawNames.has(item)) reject(`raw input ${item} is declared more than once`);
     rawNames.add(item);
-    if (port.externalSide !== 'west') reject(`raw port ${item} is not west-facing`);
+    if (!validSides.has(port.externalSide)) reject(`raw port ${item} has no valid external side`);
+    if (!distributedPorts && port.externalSide !== 'west') reject(`raw port ${item} is not west-facing`);
     if (port.kind === 'input' && !solidInputs.has(item)) reject(`${item} must use kind input`);
     if (port.kind === 'fluid' && !fluidInputs.has(item)) reject(`${item} must use kind fluid`);
     if (!Number.isInteger(port.entity) || !byNumber.has(port.entity)) reject(`raw port ${item} does not reference a saved entity`);
@@ -156,7 +160,8 @@ function staticValidate(entry, entities) {
     const chest = byNumber.get(port.entity);
     if (!chest || !['wooden-chest', 'iron-chest', 'steel-chest', 'buffer-chest', 'logistic-chest-passive'].includes(chest.name)) reject(`output ${product} must reference a chest`);
     if (chest?.tags?.science_output && chest.tags.science_output !== product) reject(`output ${product} chest tag disagrees`);
-    if (port.externalSide !== 'east') reject(`output ${product} must declare east-facing externalSide`);
+    if (!validSides.has(port.externalSide)) reject(`output ${product} has no valid external side`);
+    if (!distributedPorts && port.externalSide !== 'east') reject(`output ${product} must declare east-facing externalSide`);
   }
   const productByIndex = [...outputPorts].sort((a, b) => a.index - b.index).map(p => p.items?.[0]);
   if (JSON.stringify(productByIndex) !== JSON.stringify(products)) reject('output indexes must follow products order');
@@ -185,9 +190,11 @@ function staticValidate(entry, entities) {
 
   const rawX = rawPorts.map(p => byNumber.get(p.entity)?.position.x ?? p.x).filter(Number.isFinite);
   const outputX = outputPorts.map(p => byNumber.get(p.entity)?.position.x ?? p.x).filter(Number.isFinite);
-  if (new Set(rawX).size !== 1) reject('all raw entrances must share one west edge');
-  if (new Set(outputX).size !== 1) reject('all output chests must share one east edge');
-  if (rawX.length && outputX.length && Math.min(...outputX) <= Math.max(...rawX)) reject('all output chests must be east of every raw input port');
+  if (!distributedPorts) {
+    if (new Set(rawX).size !== 1) reject('all raw entrances must share one west edge');
+    if (new Set(outputX).size !== 1) reject('all output chests must share one east edge');
+    if (rawX.length && outputX.length && Math.min(...outputX) <= Math.max(...rawX)) reject('all output chests must be east of every raw input port');
+  }
   const displays = new Map();
   for (const entity of entities.filter(e => e.name === 'display-panel')) {
     if (entity.tags?.input_display !== undefined) displays.set(entity.tags.input_display, entity);
@@ -275,6 +282,7 @@ const luaBuild = JSON.stringify({
   portConfigurationSha256: build.portConfigurationSha256,
   targetPerMinute: build.targetPerMinute,
   fuelPolicy: build.fuelPolicy,
+  portPolicy: build.portPolicy,
   static: build.static,
 });
 const luaString = JSON.stringify(luaBuild).replace(/\\/g, '\\\\').replace(/`/g, '\\`');
@@ -339,6 +347,10 @@ local function place_fluid_fixture(surface,t,p)
   pos(base.x-1,base.y),pos(base.x-1,base.y-1),pos(base.x-1,base.y+1),
   pos(base.x,base.y-1),pos(base.x,base.y+1),pos(base.x+1,base.y),
  }
+ if b.portPolicy=='distributed' then
+  local delta=({north={0,-1},east={1,0},south={0,1},west={-1,0}})[p.externalSide]
+  candidates={pos(base.x+delta[1],base.y+delta[2])}
+ end
  for _,candidate in pairs(candidates)do
   if surface.can_place_entity{name='infinity-pipe',position=candidate,force=t.force} then
    local fixture=surface.create_entity{name='infinity-pipe',position=candidate,force=t.force}
@@ -454,6 +466,15 @@ script.on_init(function()
  end
  for _,p in pairs(b.ports)do
   local actual=t.entities[p.entity];check(actual~=nil,'port entity missing '..tostring(p.entity))
+  if b.portPolicy=='distributed' and (p.kind=='input' or p.kind=='output') then
+   local delta=({north={0,-1},east={1,0},south={0,1},west={-1,0}})[p.externalSide]
+   local approach=pos(actual.position.x+delta[1],actual.position.y+delta[2])
+   check(surface.can_place_entity{name='fast-transport-belt',position=approach,force=force},'blocked external approach for '..tostring(p.items[1]))
+   if p.kind=='input' then
+    local inward=({north=8,east=12,south=0,west=4})[p.externalSide]
+    check(actual.direction==inward,'raw input belt points away from declared entrance '..tostring(p.items[1]))
+   end
+  end
   t.ports[p.entity]=p
   if p.kind=='power' then check(actual.name=='big-electric-pole','power port is not big-electric-pole');t.powerPort=actual end
   if p.kind=='output' then t.outputs[p.entity]={port=p,entity=actual,count=0};check(actual.type=='container','output is not a container '..tostring(p.items[1]))end

@@ -56,6 +56,17 @@ test('electric science publication requires observed powered electric furnaces i
  assert.throws(()=>validate(f),/electricity alone/);
 });
 
+test('distributed science ports require matching evidence for their explicit port policy',()=>{
+ const f=fixture();
+ f.info.portPolicy='distributed';
+ f.info.ports.forEach((port,index)=>{port.externalSide=index%2?'north':'south';});
+ assert.throws(()=>validate(f),/configuration/i);
+ for(const build of [f.evidence.builds[0],f.throughput.builds[0]])build.portConfigurationSha256=starterConfigurationHash(f.info);
+ assert.doesNotThrow(()=>validate(f));
+ f.info.ports[0].externalSide='inside';
+ assert.throws(()=>validate(f),/valid sides/);
+});
+
 const source=new URL('../blueprint-sources/science-factories/',import.meta.url);
 const read=async file=>JSON.parse(await fs.readFile(new URL(file,source)));
 
