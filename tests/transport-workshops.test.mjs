@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
-import {decodeBlueprint,encodeBlueprint,blueprintMaterials} from '../scripts/blueprints.mjs';
+import {decodeBlueprint,blueprintMaterials} from '../scripts/blueprints.mjs';
 import {starterConfigurationHash} from '../scripts/starter-verification.mjs';
 import {transportWorkshopConfigs} from '../scripts/transport-workshop-configs.mjs';
 const root='blueprint-sources/transport-workshops';
@@ -60,7 +60,9 @@ test('all output chests replenish and measured rates match the exact downloadabl
  assert.equal(book.blueprints.length,manifest.length);
  for(const [i,info]of manifest.entries()){
   const code=fs.readFileSync(root+'/'+info.file,'utf8').trim();
-  assert.equal(encodeBlueprint({blueprint:book.blueprints[i].blueprint}),code);
+  // Compression output can vary between Node/zlib versions; the published source
+  // and indexed record below still enforce the exact downloadable bytes.
+  assert.deepEqual(book.blueprints[i].blueprint,decodeBlueprint(code).blueprint);
   assert.equal(fs.readFileSync('site/sources/transport-workshops/'+info.file,'utf8').trim(),code);
   const sha=createHash('sha256').update(code).digest('hex'),configuration=starterConfigurationHash(info);
   const b=blueprints.find(b=>b.id===info.id);assert.equal(b.code,code);assert.equal(b.validation.status,'game-tested');

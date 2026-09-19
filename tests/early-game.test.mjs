@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
-import {decodeBlueprint,encodeBlueprint,blueprintMaterials} from '../scripts/blueprints.mjs';
+import {decodeBlueprint,blueprintMaterials} from '../scripts/blueprints.mjs';
 import {starterConfigurationHash} from '../scripts/starter-verification.mjs';
 const root='blueprint-sources/early-game';
 const read=file=>JSON.parse(fs.readFileSync(file));
 const manifest=read(root+'/manifest.json'),research=read(root+'/research.json');
 const evidence=read(root+'/validation.json'),atlas=read('site/data/atlas.json'),catalog=read('site/data/catalog.json');
-const leaves=book=>book.blueprint_book?book.blueprint_book.blueprints.flatMap(leaves):[encodeBlueprint({blueprint:book.blueprint})];
+const leaves=book=>book.blueprint_book?book.blueprint_book.blueprints.flatMap(leaves):[book.blueprint];
 test('research collection is complete and every production module accepts only raw materials',()=>{
  assert.deepEqual(manifest.flatMap(b=>b.products).sort(),research.expectedProducts);
  assert.equal(new Set(manifest.map(b=>b.id)).size,manifest.length);
@@ -93,7 +93,7 @@ test('every raw entrance has an optional matching display without blocking its s
 });
 test('published raw modules and nested research books match exact native delivery evidence',()=>{
  const book=decodeBlueprint(fs.readFileSync('site/sources/collections/early-game.txt','utf8'));
- assert.deepEqual(leaves(book),manifest.map(info=>fs.readFileSync(root+'/'+info.file,'utf8').trim()));
+ assert.deepEqual(leaves(book),manifest.map(info=>decodeBlueprint(fs.readFileSync(root+'/'+info.file,'utf8')).blueprint));
  for(const info of manifest){
   const source=fs.readFileSync(root+'/'+info.file,'utf8').trim(),b=atlas.blueprints.find(b=>b.id===info.id);
   assert.ok(b?.starter);assert.equal(b.code,source);assert.equal(fs.readFileSync('site/sources/early-game/'+info.file,'utf8').trim(),source);
@@ -113,7 +113,7 @@ test('published raw modules and nested research books match exact native deliver
   const expected=manifest.filter(b=>b.unlock===stage.id);
   assert.deepEqual(stage.modules,expected.map(b=>b.id));
   const pack=decodeBlueprint(fs.readFileSync('site/sources/early-game/unlocks/'+stage.id+'.txt','utf8'));
-  assert.deepEqual(leaves(pack),expected.map(b=>fs.readFileSync(root+'/'+b.file,'utf8').trim()));
+  assert.deepEqual(leaves(pack),expected.map(b=>decodeBlueprint(fs.readFileSync(root+'/'+b.file,'utf8')).blueprint));
  }
  assert.deepEqual(fs.readdirSync('site/sources/early-game/unlocks').filter(f=>f.endsWith('.txt')).sort(),research.stages.filter(s=>s.modules.length).map(s=>s.id+'.txt').sort(),'No obsolete research packs may serve older machine tiers');
 });
