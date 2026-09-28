@@ -87,3 +87,26 @@ test('collector recognizes the published blueprint, internal item and source cat
  assert.ok(actual.products['rocket-part']);
  assert.ok(actual.files['sources/Autosaved/AllBlueprints.txt']);
 });
+
+test('dogwalk reports are private, uncached, host-checked, and unavailable until published',async()=>{
+ const store=createStore({dbPath:':memory:',labels});
+ let report=null;
+ const handlers=createHandlers({store,allowedOrigins:[origin],dashboard:'private',readDogwalk:async()=>report,readObservability:async()=>'<h1>Observability</h1>'});
+ const admin=http.createServer(handlers.admin),collector=http.createServer(handlers.collector);
+ await Promise.all([new Promise(r=>admin.listen(0,'127.0.0.1',r)),new Promise(r=>collector.listen(0,'127.0.0.1',r))]);
+ const url='http://127.0.0.1:'+admin.address().port;
+ try{
+  assert.equal((await fetch(url+'/dogwalk')).status,404);
+  report='<!doctype html><h1>Dogwalk daily brief</h1>';
+  const response=await fetch(url+'/dogwalk');
+  assert.equal(response.status,200);assert.equal(await response.text(),report);
+  assert.equal(response.headers.get('cache-control'),'no-store');
+  assert.match(response.headers.get('content-security-policy'),/default-src 'none'/);
+  assert.equal(response.headers.get('referrer-policy'),'no-referrer');
+  assert.equal((await fetch('http://127.0.0.1:'+collector.address().port+'/dogwalk')).status,404);
+  const rejected=await new Promise((resolve,reject)=>http.get(url+'/dogwalk',{headers:{Host:'untrusted.test'}},res=>{res.resume();resolve(res.statusCode);}).on('error',reject));
+  assert.equal(rejected,403);
+  assert.equal((await fetch(url+'/dogwalk/latest.json')).status,404);
+  assert.equal((await fetch(url+'/observability')).status,200);
+ }finally{admin.closeAllConnections();collector.closeAllConnections();await Promise.all([new Promise(r=>admin.close(r)),new Promise(r=>collector.close(r))]);store.close();}
+});

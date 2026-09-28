@@ -10,17 +10,18 @@ import {createHandlers,loadLabels} from '../analytics/server.mjs';
 
 const store=createStore({dbPath:':memory:',labels:await loadLabels(path.resolve('site'))});
 const dashboard=await fs.readFile('analytics/dashboard.html','utf8');
+const dogwalk=process.env.DOGWALK_REPORT_FIXTURE?await fs.readFile(process.env.DOGWALK_REPORT_FIXTURE,'utf8'):'<!doctype html><title>Dogwalk</title><h1>Dogwalk daily brief</h1>';
 const payloads=[],errors=[];
 let handlers,base;
 const server=http.createServer(async(req,res)=>{
  if(req.url==='/broken/'){res.setHeader('Content-Type','text/html');res.end('<h1>Every craftable item</h1><script>throw new Error("broken fixture")</script>');return;}
  if(req.url.startsWith('/collect')){let body='';for await(const chunk of req)body+=chunk;payloads.push(JSON.parse(body));try{store.ingest(JSON.parse(body),base);res.writeHead(202);}catch{res.writeHead(400);}res.end();return;}
- if(req.url.startsWith('/api/')||req.url==='/dashboard'){if(req.url==='/dashboard')req.url='/';return handlers.admin(req,res);}
+ if(req.url.startsWith('/api/')||req.url==='/dashboard'||req.url==='/dogwalk'){if(req.url==='/dashboard')req.url='/';return handlers.admin(req,res);}
  if(req.url==='/analytics-config.js'){res.setHeader('Content-Type','text/javascript');res.end('globalThis.FactorioAnalyticsConfig='+JSON.stringify({endpoint:base+'/collect',origins:[base]})+';');return;}
  try{const name=new URL(req.url,base).pathname;const file=path.join('site',name==='/'?'index.html':name);const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.woff2':'font/woff2'};res.setHeader('Content-Type',types[path.extname(file)]||'text/plain');res.end(await fs.readFile(file));}catch{res.writeHead(404);res.end('Not found');}
 });
 await new Promise(r=>server.listen(0,'127.0.0.1',r));base='http://127.0.0.1:'+server.address().port;
-handlers=createHandlers({store,allowedOrigins:[base],dashboard});
+handlers=createHandlers({store,allowedOrigins:[base],dashboard,readDogwalk:async()=>dogwalk});
 const browser=await chromium.launch({...(process.env.BROWSER_EXECUTABLE?{executablePath:process.env.BROWSER_EXECUTABLE}:{channel:'chrome'}),headless:true});
 const context=await browser.newContext({viewport:{width:1440,height:1000},permissions:['clipboard-read','clipboard-write']});
 const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
@@ -81,5 +82,8 @@ try{
  await page.route('**/api/report?*',route=>route.fulfill({json:{...store.report(),firstEvent:null,summary:{visitors:0,sessions:0,pageViews:0,actions:0,recent:0},pages:[],actions:[],blueprints:[],sources:[],devices:[],sites:[],activity:[]}}));
  await page.locator('#refresh').click();await page.locator('#empty-notice').waitFor();
  await page.route('**/api/report?*',route=>route.fulfill({status:503,body:'Unavailable'}));await page.locator('#refresh').click();await page.getByText('Refresh failed. Showing the last report.').waitFor();
+ await page.getByRole('link',{name:'Dogwalk daily report'}).click();await page.locator('h1').waitFor();
+ assert.match(await page.title(),/Dogwalk/);assert.equal(new URL(page.url()).pathname,'/dogwalk');
+ for(const width of [390,1440]){await page.setViewportSize({width,height:900});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'dogwalk report fits the viewport');}
  assert.deepEqual(errors,[]);console.log('Analytics browser passed: live app actions, privacy controls, offline use, visitor/session counts, dashboard charts, empty/error states and mobile.');
 }finally{await browser.close();server.closeAllConnections();await new Promise(r=>server.close(r));store.close();}
