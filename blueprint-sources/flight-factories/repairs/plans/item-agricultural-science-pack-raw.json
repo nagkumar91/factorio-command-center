@@ -1,0 +1,1094 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "raw",
+  "target": {
+    "id": "agricultural-science-pack",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests.",
+    "Add 180 logistic robots across 9 saved roboports (20 per port); 36 charging positions. Base robot speed and payload assumed.",
+    "Connect external electricity and supply every labeled input chest/pipe. Repeated input labels feed separate machine cells; displayed rates sum to total demand.",
+    "Continuously empty all 12 labeled WASTE chests. Spoiled material is discarded separately and never counted as manufactured output."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "agricultural-science-pack",
+      "machine": "biochamber",
+      "craftsPerSecond": 0.0111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.0222222222222,
+      "utilization": 0.0222222222222,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "agricultural-science-pack"
+      ],
+      "ingredients": [
+        {
+          "id": "bioflux",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "pentapod-egg",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 0.5,
+          "probability": 1,
+          "fuel": true,
+          "perSecond": 0.00555555555556
+        }
+      ],
+      "results": [
+        {
+          "id": "agricultural-science-pack",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1.5,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": {
+        "id": "nutrients",
+        "type": "item",
+        "amount": 0.5,
+        "probability": 1,
+        "fuel": true
+      },
+      "stochastic": false
+    },
+    {
+      "recipe": "bioflux",
+      "machine": "biochamber",
+      "craftsPerSecond": 0.00185185185185,
+      "machineCount": 1,
+      "exactMachineCount": 0.00555555555556,
+      "utilization": 0.00555555555556,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "bioflux"
+      ],
+      "ingredients": [
+        {
+          "id": "yumako-mash",
+          "type": "item",
+          "amount": 15,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0277777777778
+        },
+        {
+          "id": "jelly",
+          "type": "item",
+          "amount": 12,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0222222222222
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 0.75,
+          "probability": 1,
+          "fuel": true,
+          "perSecond": 0.00138888888889
+        }
+      ],
+      "results": [
+        {
+          "id": "bioflux",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 6,
+          "perSecond": 0.0111111111111
+        }
+      ],
+      "fuel": {
+        "id": "nutrients",
+        "type": "item",
+        "amount": 0.75,
+        "probability": 1,
+        "fuel": true
+      },
+      "stochastic": false
+    },
+    {
+      "recipe": "jellynut-processing",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.00555555555556,
+      "machineCount": 1,
+      "exactMachineCount": 0.00740740740741,
+      "utilization": 0.00740740740741,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "jellynut"
+      ],
+      "ingredients": [
+        {
+          "id": "jellynut",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.00555555555556
+        }
+      ],
+      "results": [
+        {
+          "id": "jellynut-seed",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.02,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.02,
+          "perSecond": 0.000111111111111
+        },
+        {
+          "id": "jelly",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 4,
+          "perSecond": 0.0222222222222
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    },
+    {
+      "recipe": "nutrients-from-fish",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0121527777778,
+      "machineCount": 1,
+      "exactMachineCount": 0.0324074074074,
+      "utilization": 0.0324074074074,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "fish-breeding"
+      ],
+      "ingredients": [
+        {
+          "id": "raw-fish",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0121527777778
+        }
+      ],
+      "results": [
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 20,
+          "perSecond": 0.243055555556
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "pentapod-egg",
+      "machine": "biochamber",
+      "craftsPerSecond": 0.00740740740741,
+      "machineCount": 1,
+      "exactMachineCount": 0.0555555555556,
+      "utilization": 0.0555555555556,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "biochamber"
+      ],
+      "ingredients": [
+        {
+          "id": "pentapod-egg",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.00740740740741
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 30,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.222222222222
+        },
+        {
+          "id": "water",
+          "type": "fluid",
+          "amount": 60,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.444444444444
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 1.875,
+          "probability": 1,
+          "fuel": true,
+          "perSecond": 0.0138888888889
+        }
+      ],
+      "results": [
+        {
+          "id": "pentapod-egg",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 1,
+          "expectedAmount": 2.5,
+          "perSecond": 0.0185185185185
+        }
+      ],
+      "fuel": {
+        "id": "nutrients",
+        "type": "item",
+        "amount": 1.875,
+        "probability": 1,
+        "fuel": true
+      },
+      "stochastic": false
+    },
+    {
+      "recipe": "yumako-processing",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0138888888889,
+      "machineCount": 1,
+      "exactMachineCount": 0.0185185185185,
+      "utilization": 0.0185185185185,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "yumako"
+      ],
+      "ingredients": [
+        {
+          "id": "yumako",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0138888888889
+        }
+      ],
+      "results": [
+        {
+          "id": "yumako-seed",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.02,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.02,
+          "perSecond": 0.000277777777778
+        },
+        {
+          "id": "yumako-mash",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 2,
+          "perSecond": 0.0277777777778
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "water",
+      "type": "fluid",
+      "perSecond": 0.444444444444,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "offshore-pumping",
+          "tile": "deepwater",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "water",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-yumako",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-jellynut",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-red-tentacle",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-pink-tentacle",
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "water",
+      "label": "IN water",
+      "entityNumber": 76,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.444444444444,
+      "plannedPerSecond": 0.444444444444,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "displayEntity": 77,
+      "fixturePosition": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "temperature": 15
+    },
+    {
+      "id": "jellynut",
+      "type": "item",
+      "perSecond": 0.00555555555556,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "jellystem",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "jellynut",
+      "label": "IN jellynut",
+      "entityNumber": 95,
+      "position": {
+        "x": 65.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.00555555555556,
+      "plannedPerSecond": 0.00555555555556,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 162
+    },
+    {
+      "id": "raw-fish",
+      "type": "item",
+      "perSecond": 0.0121527777778,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "fish",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "raw-fish",
+      "label": "IN raw-fish",
+      "entityNumber": 101,
+      "position": {
+        "x": 17.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.0121527777778,
+      "plannedPerSecond": 0.0121527777778,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 163
+    },
+    {
+      "id": "yumako",
+      "type": "item",
+      "perSecond": 0.0138888888889,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "yumako-tree",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "yumako",
+      "label": "IN yumako",
+      "entityNumber": 134,
+      "position": {
+        "x": 65.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.0138888888889,
+      "plannedPerSecond": 0.0138888888889,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 164
+    }
+  ],
+  "surplus": [
+    {
+      "id": "jellynut-seed",
+      "type": "item",
+      "perSecond": 0.000111111111111,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "yumako-seed",
+      "type": "item",
+      "perSecond": 0.000277777777778,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [
+    {
+      "id": "pentapod-egg",
+      "type": "item",
+      "amount": 1,
+      "reason": "Selected steady-state cycle cannot start empty.",
+      "sources": [
+        {
+          "gate": "biochamber",
+          "item": "pentapod-egg",
+          "count": 1,
+          "quality": "normal",
+          "price": [
+            {
+              "name": "steel-plate",
+              "count": 20
+            },
+            {
+              "name": "nutrients",
+              "count": 20
+            }
+          ],
+          "kind": "manual-scripted-exchange",
+          "automatedThroughput": false
+        }
+      ]
+    }
+  ],
+  "rawOnly": false,
+  "stochastic": true,
+  "warnings": [
+    "Random result rates are expectations, not guaranteed yields. Native throughput needs repeated measurement windows.",
+    "Spoilage losses are not included in stoichiometric demand; measure them in the native run.",
+    "Burner fuel is included at active crafting consumption; idle fuel and spoilage can increase demand.",
+    "Startup stock is separate from continuous inputs. This layout cannot start from raw inputs alone."
+  ],
+  "machineCount": 6,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "battery",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "bulk-inserter",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "fast-inserter",
+      "fish-breeding",
+      "flammables",
+      "fluid-handling",
+      "jellynut",
+      "landfill",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing",
+      "tree-seeding",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "agricultural-science-pack",
+        "unlockAlternatives": [
+          "agricultural-science-pack"
+        ],
+        "selected": "agricultural-science-pack"
+      },
+      {
+        "recipe": "bioflux",
+        "unlockAlternatives": [
+          "bioflux"
+        ],
+        "selected": "bioflux"
+      },
+      {
+        "recipe": "jellynut-processing",
+        "unlockAlternatives": [
+          "jellynut"
+        ],
+        "selected": "jellynut"
+      },
+      {
+        "recipe": "nutrients-from-fish",
+        "unlockAlternatives": [
+          "fish-breeding"
+        ],
+        "selected": "fish-breeding"
+      },
+      {
+        "recipe": "pentapod-egg",
+        "unlockAlternatives": [
+          "biochamber"
+        ],
+        "selected": "biochamber"
+      },
+      {
+        "recipe": "yumako-processing",
+        "unlockAlternatives": [
+          "yumako"
+        ],
+        "selected": "yumako"
+      },
+      {
+        "recipe": "pipe",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "steel-chest",
+        "unlockAlternatives": [
+          "steel-processing"
+        ],
+        "selected": "steel-processing"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "biochamber",
+        "unlockAlternatives": [
+          "biochamber"
+        ],
+        "selected": "biochamber"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "water",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.444444444445,
+        "residual": 0
+      },
+      {
+        "id": "agricultural-science-pack",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "bioflux",
+        "type": "item",
+        "producedPerSecond": 0.0111111111111,
+        "consumedPerSecond": 0.0111111111111,
+        "residual": 0
+      },
+      {
+        "id": "jelly",
+        "type": "item",
+        "producedPerSecond": 0.0222222222222,
+        "consumedPerSecond": 0.0222222222222,
+        "residual": 0
+      },
+      {
+        "id": "jellynut",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.00555555555556,
+        "residual": 0
+      },
+      {
+        "id": "jellynut-seed",
+        "type": "item",
+        "producedPerSecond": 0.000111111111111,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "nutrients",
+        "type": "item",
+        "producedPerSecond": 0.243055555556,
+        "consumedPerSecond": 0.243055555556,
+        "residual": 0
+      },
+      {
+        "id": "pentapod-egg",
+        "type": "item",
+        "producedPerSecond": 0.0185185185185,
+        "consumedPerSecond": 0.0185185185185,
+        "residual": 0
+      },
+      {
+        "id": "raw-fish",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0121527777778,
+        "residual": 0
+      },
+      {
+        "id": "yumako",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0138888888889,
+        "residual": 0
+      },
+      {
+        "id": "yumako-mash",
+        "type": "item",
+        "producedPerSecond": 0.0277777777778,
+        "consumedPerSecond": 0.0277777777777,
+        "residual": 0
+      },
+      {
+        "id": "yumako-seed",
+        "type": "item",
+        "producedPerSecond": 0.000277777777778,
+        "consumedPerSecond": 0,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "agricultural-science-pack",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "agricultural-science-pack",
+      "entityNumber": 78,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    },
+    {
+      "id": "jellynut-seed",
+      "type": "item",
+      "perSecond": 0.000111111111111,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "jellynut-seed",
+      "entityNumber": 79,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.000111111111111,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "yumako-seed",
+      "type": "item",
+      "perSecond": 0.000277777777778,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "yumako-seed",
+      "entityNumber": 80,
+      "position": {
+        "x": 12.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.000277777777778,
+      "minPerMinute": 0,
+      "role": "surplus"
+    }
+  ],
+  "wasteOutputs": [
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 139,
+      "position": {
+        "x": 4.5,
+        "y": 6.5
+      },
+      "sourceEntityNumber": 78,
+      "inserterEntityNumber": 138,
+      "spoiledFrom": [
+        "agricultural-science-pack"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 165
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 141,
+      "position": {
+        "x": 17.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 83,
+      "inserterEntityNumber": 140,
+      "spoiledFrom": [
+        "bioflux",
+        "nutrients"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 166
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 143,
+      "position": {
+        "x": 23.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 85,
+      "inserterEntityNumber": 142,
+      "spoiledFrom": [
+        "agricultural-science-pack"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 167
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 145,
+      "position": {
+        "x": 41.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 89,
+      "inserterEntityNumber": 144,
+      "spoiledFrom": [
+        "yumako-mash",
+        "jelly",
+        "nutrients"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 168
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 147,
+      "position": {
+        "x": 47.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 91,
+      "inserterEntityNumber": 146,
+      "spoiledFrom": [
+        "bioflux"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 169
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 149,
+      "position": {
+        "x": 65.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 95,
+      "inserterEntityNumber": 148,
+      "spoiledFrom": [
+        "jellynut"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 170
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 151,
+      "position": {
+        "x": 71.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 97,
+      "inserterEntityNumber": 150,
+      "spoiledFrom": [
+        "jelly"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 171
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 153,
+      "position": {
+        "x": 17.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 101,
+      "inserterEntityNumber": 152,
+      "spoiledFrom": [
+        "raw-fish"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 172
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 155,
+      "position": {
+        "x": 23.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 103,
+      "inserterEntityNumber": 154,
+      "spoiledFrom": [
+        "nutrients"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 173
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 157,
+      "position": {
+        "x": 41.5,
+        "y": 62.5
+      },
+      "sourceEntityNumber": 110,
+      "inserterEntityNumber": 156,
+      "spoiledFrom": [
+        "nutrients"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 174
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 159,
+      "position": {
+        "x": 65.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 134,
+      "inserterEntityNumber": 158,
+      "spoiledFrom": [
+        "yumako"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 175
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 161,
+      "position": {
+        "x": 71.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 136,
+      "inserterEntityNumber": 160,
+      "spoiledFrom": [
+        "yumako-mash"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 176
+    }
+  ],
+  "logistics": {
+    "robotCount": 180,
+    "roboportCount": 9,
+    "robotsPerPort": 20,
+    "chargingSlots": 36,
+    "chargingWatts": 18000000,
+    "estimatedTransfersPerSecond": 0.33233333333310566,
+    "estimatedMovementWatts": 90108.70213667674,
+    "sizingPolicy": "Installed base robot speed/payload, weighted producer distance, return journey, four seconds dispatch allowance and 80% capacity margin; native tests still required."
+  },
+  "materialSeeds": [
+    {
+      "type": "item",
+      "name": "pentapod-egg",
+      "entityNumber": 128,
+      "count": 1,
+      "displayEntity": 130,
+      "position": {
+        "x": 49.5,
+        "y": 66.5
+      },
+      "sources": [
+        {
+          "gate": "biochamber",
+          "item": "pentapod-egg",
+          "count": 1,
+          "quality": "normal",
+          "price": [
+            {
+              "name": "steel-plate",
+              "count": 20
+            },
+            {
+              "name": "nutrients",
+              "count": 20
+            }
+          ],
+          "kind": "manual-scripted-exchange",
+          "automatedThroughput": false
+        }
+      ]
+    }
+  ],
+  "blueprintSha256": "f3e17845c4876a9bf4aaa7e36878233ac9869e46642c5233c2773c8acc99a3e7",
+  "entityCount": 269
+}

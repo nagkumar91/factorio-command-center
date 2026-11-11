@@ -1,0 +1,3679 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "mixed",
+  "target": {
+    "id": "biolab",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests.",
+    "Uranium-235 starts from ore processing; no enriched uranium startup seed is required.",
+    "Add 1940 logistic robots across 97 saved roboports (20 per port); 388 charging positions. Base robot speed and payload assumed.",
+    "Connect external electricity and supply every labeled input chest/pipe. Repeated input labels feed separate machine cells; displayed rates sum to total demand."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "biolab",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.222222222222,
+      "utilization": 0.222222222222,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "biolab"
+      ],
+      "ingredients": [
+        {
+          "id": "lab",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "biter-egg",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.166666666667
+        },
+        {
+          "id": "refined-concrete",
+          "type": "item",
+          "amount": 25,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.416666666667
+        },
+        {
+          "id": "capture-robot-rocket",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0333333333333
+        },
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 3,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.05
+        }
+      ],
+      "results": [
+        {
+          "id": "biolab",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "uranium-processing",
+      "machine": "centrifuge",
+      "craftsPerSecond": 7.14285714286,
+      "machineCount": 86,
+      "exactMachineCount": 85.7142857143,
+      "utilization": 0.996677740864,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "uranium-processing"
+      ],
+      "ingredients": [
+        {
+          "id": "uranium-ore",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 71.4285714286
+        }
+      ],
+      "results": [
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.007000000000000001,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.007000000000000001,
+          "perSecond": 0.05
+        },
+        {
+          "id": "uranium-238",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.993,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.993,
+          "perSecond": 7.09285714286
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "lab",
+      "type": "item",
+      "perSecond": 0.0166666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "lab",
+      "label": "IN lab",
+      "entityNumber": 521,
+      "position": {
+        "x": 17.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.0166666666667,
+      "plannedPerSecond": 0.0166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 1049
+    },
+    {
+      "id": "biter-egg",
+      "type": "item",
+      "perSecond": 0.166666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "biter-egg",
+      "label": "IN biter-egg",
+      "entityNumber": 523,
+      "position": {
+        "x": 23.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.166666666667,
+      "plannedPerSecond": 0.166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 20,
+      "displayEntity": 1050
+    },
+    {
+      "id": "refined-concrete",
+      "type": "item",
+      "perSecond": 0.4166666666669999,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "refined-concrete",
+      "label": "IN refined-concrete",
+      "entityNumber": 525,
+      "position": {
+        "x": 19.5,
+        "y": 37.5
+      },
+      "ratePerSecond": 0.4166666666669999,
+      "plannedPerSecond": 0.4166666666669999,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1051
+    },
+    {
+      "id": "capture-robot-rocket",
+      "type": "item",
+      "perSecond": 0.0333333333333,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "capture-robot-rocket",
+      "label": "IN capture-robot-rocket",
+      "entityNumber": 527,
+      "position": {
+        "x": 19.5,
+        "y": 43.5
+      },
+      "ratePerSecond": 0.0333333333333,
+      "plannedPerSecond": 0.0333333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 4,
+      "displayEntity": 1052
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 535,
+      "position": {
+        "x": 41.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1053
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 541,
+      "position": {
+        "x": 65.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1054
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 547,
+      "position": {
+        "x": 89.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1055
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 553,
+      "position": {
+        "x": 113.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1056
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 559,
+      "position": {
+        "x": 137.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1057
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 565,
+      "position": {
+        "x": 161.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1058
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 571,
+      "position": {
+        "x": 185.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1059
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 577,
+      "position": {
+        "x": 209.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1060
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 583,
+      "position": {
+        "x": 233.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1061
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 589,
+      "position": {
+        "x": 17.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1062
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 595,
+      "position": {
+        "x": 41.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1063
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 601,
+      "position": {
+        "x": 65.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1064
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 607,
+      "position": {
+        "x": 89.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1065
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 613,
+      "position": {
+        "x": 113.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1066
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 619,
+      "position": {
+        "x": 137.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1067
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 625,
+      "position": {
+        "x": 161.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1068
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 631,
+      "position": {
+        "x": 185.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1069
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 637,
+      "position": {
+        "x": 209.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1070
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 643,
+      "position": {
+        "x": 233.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1071
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 649,
+      "position": {
+        "x": 17.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1072
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 655,
+      "position": {
+        "x": 41.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1073
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 661,
+      "position": {
+        "x": 65.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1074
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 667,
+      "position": {
+        "x": 89.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1075
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 673,
+      "position": {
+        "x": 113.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1076
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 679,
+      "position": {
+        "x": 137.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1077
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 685,
+      "position": {
+        "x": 161.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1078
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 691,
+      "position": {
+        "x": 185.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1079
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 697,
+      "position": {
+        "x": 209.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1080
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 703,
+      "position": {
+        "x": 233.5,
+        "y": 87.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1081
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 709,
+      "position": {
+        "x": 17.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1082
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 715,
+      "position": {
+        "x": 41.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1083
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 721,
+      "position": {
+        "x": 65.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1084
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 727,
+      "position": {
+        "x": 89.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1085
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 733,
+      "position": {
+        "x": 113.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1086
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 739,
+      "position": {
+        "x": 137.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1087
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 745,
+      "position": {
+        "x": 161.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1088
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 751,
+      "position": {
+        "x": 185.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1089
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 757,
+      "position": {
+        "x": 209.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1090
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 763,
+      "position": {
+        "x": 233.5,
+        "y": 111.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1091
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 769,
+      "position": {
+        "x": 17.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1092
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 775,
+      "position": {
+        "x": 41.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1093
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 781,
+      "position": {
+        "x": 65.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1094
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 787,
+      "position": {
+        "x": 89.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1095
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 793,
+      "position": {
+        "x": 113.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1096
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 799,
+      "position": {
+        "x": 137.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1097
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 805,
+      "position": {
+        "x": 161.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1098
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 811,
+      "position": {
+        "x": 185.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1099
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 817,
+      "position": {
+        "x": 209.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1100
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 823,
+      "position": {
+        "x": 233.5,
+        "y": 135.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1101
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 829,
+      "position": {
+        "x": 17.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1102
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 835,
+      "position": {
+        "x": 41.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1103
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 841,
+      "position": {
+        "x": 65.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1104
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 847,
+      "position": {
+        "x": 89.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1105
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 853,
+      "position": {
+        "x": 113.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1106
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 859,
+      "position": {
+        "x": 137.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1107
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 865,
+      "position": {
+        "x": 161.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1108
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 871,
+      "position": {
+        "x": 185.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1109
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 877,
+      "position": {
+        "x": 209.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1110
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 883,
+      "position": {
+        "x": 233.5,
+        "y": 159.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1111
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 889,
+      "position": {
+        "x": 17.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1112
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 895,
+      "position": {
+        "x": 41.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1113
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 901,
+      "position": {
+        "x": 65.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1114
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 907,
+      "position": {
+        "x": 89.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1115
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 913,
+      "position": {
+        "x": 113.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1116
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 919,
+      "position": {
+        "x": 137.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1117
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 925,
+      "position": {
+        "x": 161.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1118
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 931,
+      "position": {
+        "x": 185.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1119
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 937,
+      "position": {
+        "x": 209.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1120
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 943,
+      "position": {
+        "x": 233.5,
+        "y": 183.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1121
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 949,
+      "position": {
+        "x": 17.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1122
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 955,
+      "position": {
+        "x": 41.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1123
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 961,
+      "position": {
+        "x": 65.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1124
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 967,
+      "position": {
+        "x": 89.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1125
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 973,
+      "position": {
+        "x": 113.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1126
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 979,
+      "position": {
+        "x": 137.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1127
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 985,
+      "position": {
+        "x": 161.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1128
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 991,
+      "position": {
+        "x": 185.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1129
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 997,
+      "position": {
+        "x": 209.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1130
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 1003,
+      "position": {
+        "x": 233.5,
+        "y": 207.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1131
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 1009,
+      "position": {
+        "x": 17.5,
+        "y": 231.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1132
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 1015,
+      "position": {
+        "x": 41.5,
+        "y": 231.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1133
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 1021,
+      "position": {
+        "x": 65.5,
+        "y": 231.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1134
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 1027,
+      "position": {
+        "x": 89.5,
+        "y": 231.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1135
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 1033,
+      "position": {
+        "x": 113.5,
+        "y": 231.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1136
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 1039,
+      "position": {
+        "x": 137.5,
+        "y": 231.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1137
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.8305647840534883,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 1045,
+      "position": {
+        "x": 161.5,
+        "y": 231.5
+      },
+      "ratePerSecond": 0.8305647840534883,
+      "plannedPerSecond": 0.8305647840534883,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 50,
+      "displayEntity": 1138
+    }
+  ],
+  "surplus": [
+    {
+      "id": "uranium-238",
+      "type": "item",
+      "perSecond": 7.09285714286,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": false,
+  "stochastic": true,
+  "warnings": [
+    "Random result rates are expectations, not guaranteed yields. Native throughput needs repeated measurement windows.",
+    "Spoilage losses are not included in stoichiometric demand; measure them in the native run."
+  ],
+  "machineCount": 87,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "battery",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "biolab",
+      "biter-egg-handling",
+      "bulk-inserter",
+      "captivity",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "explosives",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "jellynut",
+      "landfill",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "military",
+      "military-2",
+      "military-3",
+      "military-science-pack",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "rocketry",
+      "space-platform",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "stone-wall",
+      "sulfur-processing",
+      "uranium-mining",
+      "uranium-processing",
+      "utility-science-pack",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "biolab",
+        "unlockAlternatives": [
+          "biolab"
+        ],
+        "selected": "biolab"
+      },
+      {
+        "recipe": "uranium-processing",
+        "unlockAlternatives": [
+          "uranium-processing"
+        ],
+        "selected": "uranium-processing"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "steel-chest",
+        "unlockAlternatives": [
+          "steel-processing"
+        ],
+        "selected": "steel-processing"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "centrifuge",
+        "unlockAlternatives": [
+          "uranium-processing"
+        ],
+        "selected": "uranium-processing"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "biolab",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "biter-egg",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.166666666667,
+        "residual": 0
+      },
+      {
+        "id": "capture-robot-rocket",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0333333333334,
+        "residual": 0
+      },
+      {
+        "id": "lab",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "refined-concrete",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.416666666668,
+        "residual": 0
+      },
+      {
+        "id": "uranium-235",
+        "type": "item",
+        "producedPerSecond": 0.05,
+        "consumedPerSecond": 0.0500000000001,
+        "residual": 0
+      },
+      {
+        "id": "uranium-238",
+        "type": "item",
+        "producedPerSecond": 7.09285714286,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "uranium-ore",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 71.4285714286,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "biolab",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "biolab",
+      "entityNumber": 517,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    },
+    {
+      "id": "uranium-238",
+      "type": "item",
+      "perSecond": 7.09285714286,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "uranium-238",
+      "entityNumber": 518,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 7.09285714286,
+      "minPerMinute": 0,
+      "role": "surplus"
+    }
+  ],
+  "wasteOutputs": [],
+  "logistics": {
+    "robotCount": 1940,
+    "roboportCount": 97,
+    "robotsPerPort": 20,
+    "chargingSlots": 388,
+    "chargingWatts": 194000000,
+    "estimatedTransfersPerSecond": 7.159523809526666,
+    "estimatedMovementWatts": 15983988.55237956,
+    "sizingPolicy": "Installed base robot speed/payload, weighted producer distance, return journey, four seconds dispatch allowance and 80% capacity margin; native tests still required."
+  },
+  "materialSeeds": [],
+  "blueprintSha256": "02745902a1c4a2628f736ba90149f676ce8f45e4874bb8113d4822d92a3cd74f",
+  "entityCount": 1138
+}

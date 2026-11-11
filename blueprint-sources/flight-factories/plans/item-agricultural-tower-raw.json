@@ -1,0 +1,820 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "raw",
+  "target": {
+    "id": "agricultural-tower",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "agricultural-tower",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.222222222222,
+      "utilization": 0.222222222222,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "agriculture"
+      ],
+      "ingredients": [
+        {
+          "id": "steel-plate",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.166666666667
+        },
+        {
+          "id": "electronic-circuit",
+          "type": "item",
+          "amount": 3,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.05
+        },
+        {
+          "id": "spoilage",
+          "type": "item",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.333333333333
+        },
+        {
+          "id": "landfill",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "agricultural-tower",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "copper-cable",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.075,
+      "machineCount": 1,
+      "exactMachineCount": 0.05,
+      "utilization": 0.05,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "electronics"
+      ],
+      "ingredients": [
+        {
+          "id": "copper-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.075
+        }
+      ],
+      "results": [
+        {
+          "id": "copper-cable",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 2,
+          "perSecond": 0.15
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "copper-plate",
+      "machine": "electric-furnace",
+      "craftsPerSecond": 0.075,
+      "machineCount": 1,
+      "exactMachineCount": 0.12,
+      "utilization": 0.12,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [],
+      "ingredients": [
+        {
+          "id": "copper-ore",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.075
+        }
+      ],
+      "results": [
+        {
+          "id": "copper-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.075
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "electronic-circuit",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.05,
+      "machineCount": 1,
+      "exactMachineCount": 0.0333333333333,
+      "utilization": 0.0333333333333,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "electronics"
+      ],
+      "ingredients": [
+        {
+          "id": "iron-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.05
+        },
+        {
+          "id": "copper-cable",
+          "type": "item",
+          "amount": 3,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.15
+        }
+      ],
+      "results": [
+        {
+          "id": "electronic-circuit",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.05
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "iron-plate",
+      "machine": "electric-furnace",
+      "craftsPerSecond": 0.883333333333,
+      "machineCount": 2,
+      "exactMachineCount": 1.41333333333,
+      "utilization": 0.706666666667,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [],
+      "ingredients": [
+        {
+          "id": "iron-ore",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.883333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "iron-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.883333333333
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "landfill",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.0111111111111,
+      "utilization": 0.0111111111111,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "landfill"
+      ],
+      "ingredients": [
+        {
+          "id": "stone",
+          "type": "item",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.833333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "landfill",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "steel-plate",
+      "machine": "electric-furnace",
+      "craftsPerSecond": 0.166666666667,
+      "machineCount": 2,
+      "exactMachineCount": 1.33333333333,
+      "utilization": 0.666666666667,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "steel-processing"
+      ],
+      "ingredients": [
+        {
+          "id": "iron-plate",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.833333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "steel-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "copper-ore",
+      "type": "item",
+      "perSecond": 0.075,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "copper-ore",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "copper-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "copper-ore",
+      "label": "IN copper-ore",
+      "entityNumber": 92,
+      "displayEntity": 93,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.075,
+      "plannedPerSecond": 0.075,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "iron-ore",
+      "type": "item",
+      "perSecond": 0.883333333333,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "iron-ore",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "iron-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "iron-ore",
+      "label": "IN iron-ore",
+      "entityNumber": 94,
+      "displayEntity": 95,
+      "position": {
+        "x": 8.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.883333333333,
+      "plannedPerSecond": 0.883333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "spoilage",
+      "type": "item",
+      "perSecond": 0.333333333333,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "cuttlepop",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "slipstack",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "funneltrunk",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "hairyclubnub",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "teflilly",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "lickmaw",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "stingfrond",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "boompuff",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "sunnycomb",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "spoilage",
+      "label": "IN spoilage",
+      "entityNumber": 96,
+      "displayEntity": 97,
+      "position": {
+        "x": 12.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.333333333333,
+      "plannedPerSecond": 0.333333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "stone",
+      "type": "item",
+      "perSecond": 0.833333333333,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "stone",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "slipstack",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-sand-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-faded",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-cold",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-short",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-truncated",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "iron-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "copper-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "stone",
+      "label": "IN stone",
+      "entityNumber": 98,
+      "displayEntity": 99,
+      "position": {
+        "x": 16.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.833333333333,
+      "plannedPerSecond": 0.833333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [],
+  "startupStock": [],
+  "rawOnly": true,
+  "stochastic": false,
+  "warnings": [],
+  "machineCount": 9,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agriculture",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "battery",
+      "bulk-inserter",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "landfill",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing"
+    ],
+    "requirements": [
+      {
+        "recipe": "agricultural-tower",
+        "unlockAlternatives": [
+          "agriculture"
+        ],
+        "selected": "agriculture"
+      },
+      {
+        "recipe": "copper-cable",
+        "unlockAlternatives": [
+          "electronics"
+        ],
+        "selected": "electronics"
+      },
+      {
+        "recipe": "electronic-circuit",
+        "unlockAlternatives": [
+          "electronics"
+        ],
+        "selected": "electronics"
+      },
+      {
+        "recipe": "landfill",
+        "unlockAlternatives": [
+          "landfill"
+        ],
+        "selected": "landfill"
+      },
+      {
+        "recipe": "steel-plate",
+        "unlockAlternatives": [
+          "steel-processing"
+        ],
+        "selected": "steel-processing"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "electric-furnace",
+        "unlockAlternatives": [
+          "advanced-material-processing-2"
+        ],
+        "selected": "advanced-material-processing-2"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "agricultural-tower",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "copper-cable",
+        "type": "item",
+        "producedPerSecond": 0.15,
+        "consumedPerSecond": 0.15,
+        "residual": 0
+      },
+      {
+        "id": "copper-ore",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.075,
+        "residual": 0
+      },
+      {
+        "id": "copper-plate",
+        "type": "item",
+        "producedPerSecond": 0.075,
+        "consumedPerSecond": 0.075,
+        "residual": 0
+      },
+      {
+        "id": "electronic-circuit",
+        "type": "item",
+        "producedPerSecond": 0.05,
+        "consumedPerSecond": 0.0500000000001,
+        "residual": 0
+      },
+      {
+        "id": "iron-ore",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.883333333333,
+        "residual": 0
+      },
+      {
+        "id": "iron-plate",
+        "type": "item",
+        "producedPerSecond": 0.883333333333,
+        "consumedPerSecond": 0.883333333335,
+        "residual": 0
+      },
+      {
+        "id": "landfill",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "spoilage",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.333333333334,
+        "residual": 0
+      },
+      {
+        "id": "steel-plate",
+        "type": "item",
+        "producedPerSecond": 0.166666666667,
+        "consumedPerSecond": 0.166666666667,
+        "residual": 0
+      },
+      {
+        "id": "stone",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.833333333335,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "agricultural-tower",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "agricultural-tower",
+      "entityNumber": 100,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    }
+  ],
+  "blueprintSha256": "f11ced8302fa248d228da543c38abf5f938535dbf6dbecdf13e97589e188b57c",
+  "entityCount": 154
+}

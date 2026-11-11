@@ -1,0 +1,665 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "raw",
+  "target": {
+    "id": "fluoroketone-cold",
+    "type": "fluid",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "ammoniacal-solution-separation",
+      "machine": "chemical-plant",
+      "craftsPerSecond": 0.000433333333333,
+      "machineCount": 1,
+      "exactMachineCount": 0.000433333333333,
+      "utilization": 0.000433333333333,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "planet-discovery-aquilo",
+        "solar-system-edge-discovery"
+      ],
+      "ingredients": [
+        {
+          "id": "ammoniacal-solution",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0216666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "ice",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 5,
+          "perSecond": 0.00216666666667
+        },
+        {
+          "id": "ammonia",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 50,
+          "perSecond": 0.0216666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "fluoroketone",
+      "machine": "cryogenic-plant",
+      "craftsPerSecond": 0.000333333333333,
+      "machineCount": 1,
+      "exactMachineCount": 0.00166666666667,
+      "utilization": 0.00166666666667,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "cryogenic-plant"
+      ],
+      "ingredients": [
+        {
+          "id": "fluorine",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "ammonia",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "solid-fuel",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.000333333333333
+        },
+        {
+          "id": "lithium",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.000333333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "fluoroketone-hot",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "temperature": 180,
+          "expectedAmount": 50,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "fluoroketone-cooling",
+      "machine": "cryogenic-plant",
+      "craftsPerSecond": 0.00166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.00416666666667,
+      "utilization": 0.00416666666667,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "cryogenic-plant"
+      ],
+      "ingredients": [
+        {
+          "id": "fluoroketone-hot",
+          "type": "fluid",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "fluoroketone-cold",
+          "type": "fluid",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "temperature": -150,
+          "expectedAmount": 10,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "solid-fuel-from-ammonia",
+      "machine": "chemical-plant",
+      "craftsPerSecond": 0.000333333333333,
+      "machineCount": 1,
+      "exactMachineCount": 0.000166666666667,
+      "utilization": 0.000166666666667,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "planet-discovery-aquilo",
+        "solar-system-edge-discovery"
+      ],
+      "ingredients": [
+        {
+          "id": "ammonia",
+          "type": "fluid",
+          "amount": 15,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.005
+        },
+        {
+          "id": "crude-oil",
+          "type": "fluid",
+          "amount": 6,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.002
+        }
+      ],
+      "results": [
+        {
+          "id": "solid-fuel",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.000333333333333
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "ammoniacal-solution",
+      "type": "fluid",
+      "perSecond": 0.0216666666667,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "offshore-pumping",
+          "tile": "ammoniacal-ocean",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "ammoniacal-ocean-2",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "brash-ice",
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "ammoniacal-solution",
+      "label": "IN ammoniacal-solution",
+      "entityNumber": 57,
+      "displayEntity": 58,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.0216666666667,
+      "plannedPerSecond": 0.0216666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "temperature": -50
+    },
+    {
+      "id": "crude-oil",
+      "type": "fluid",
+      "perSecond": 0.002,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "crude-oil",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "crude-oil",
+      "label": "IN crude-oil",
+      "entityNumber": 59,
+      "displayEntity": 60,
+      "position": {
+        "x": 8.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.002,
+      "plannedPerSecond": 0.002,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 8.5,
+        "y": 3.5
+      },
+      "temperature": 25
+    },
+    {
+      "id": "fluorine",
+      "type": "fluid",
+      "perSecond": 0.0166666666667,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "fluorine-vent",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "fluorine",
+      "label": "IN fluorine",
+      "entityNumber": 61,
+      "displayEntity": 62,
+      "position": {
+        "x": 12.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.0166666666667,
+      "plannedPerSecond": 0.0166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 12.5,
+        "y": 3.5
+      },
+      "temperature": 25
+    },
+    {
+      "id": "lithium",
+      "type": "item",
+      "perSecond": 0.000333333333333,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "lithium-iceberg-huge",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "lithium-iceberg-big",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "lithium",
+      "label": "IN lithium",
+      "entityNumber": 63,
+      "displayEntity": 64,
+      "position": {
+        "x": 16.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.000333333333333,
+      "plannedPerSecond": 0.000333333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [
+    {
+      "id": "ice",
+      "type": "item",
+      "perSecond": 0.00216666666667,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": true,
+  "stochastic": false,
+  "warnings": [],
+  "machineCount": 4,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-asteroid-processing",
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "asteroid-reprocessing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "base-ore-processing",
+      "battery",
+      "big-mining-drill",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "bulk-inserter",
+      "calcite-processing",
+      "carbon-fiber",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "cryogenic-plant",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electric-mining-drill",
+      "electric-mining-drill-mk2",
+      "electric-mining-drill-mk3",
+      "electromagnetic-plant",
+      "electromagnetic-science-pack",
+      "electronics",
+      "engine",
+      "explosives",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "foundry",
+      "heating-tower",
+      "holmium-processing",
+      "jellynut",
+      "landfill",
+      "lithium-processing",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "metallurgic-science-pack",
+      "military",
+      "military-2",
+      "military-science-pack",
+      "mining-productivity-1",
+      "mining-productivity-2",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "recycling",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "rocket-turret",
+      "rocketry",
+      "solar-system-edge-discovery",
+      "space-platform",
+      "space-platform-thruster",
+      "space-science-pack",
+      "speed-module",
+      "steam-power",
+      "steel-processing",
+      "stone-wall",
+      "stronger-explosives-1",
+      "stronger-explosives-2",
+      "sulfur-processing",
+      "tungsten-carbide",
+      "tungsten-steel",
+      "utility-science-pack",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "ammoniacal-solution-separation",
+        "unlockAlternatives": [
+          "planet-discovery-aquilo",
+          "solar-system-edge-discovery"
+        ],
+        "selected": "solar-system-edge-discovery"
+      },
+      {
+        "recipe": "fluoroketone",
+        "unlockAlternatives": [
+          "cryogenic-plant"
+        ],
+        "selected": "cryogenic-plant"
+      },
+      {
+        "recipe": "fluoroketone-cooling",
+        "unlockAlternatives": [
+          "cryogenic-plant"
+        ],
+        "selected": "cryogenic-plant"
+      },
+      {
+        "recipe": "solid-fuel-from-ammonia",
+        "unlockAlternatives": [
+          "planet-discovery-aquilo",
+          "solar-system-edge-discovery"
+        ],
+        "selected": "solar-system-edge-discovery"
+      },
+      {
+        "recipe": "pipe",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "pipe-to-ground",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "chemical-plant",
+        "unlockAlternatives": [
+          "oil-processing"
+        ],
+        "selected": "oil-processing"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "cryogenic-plant",
+        "unlockAlternatives": [
+          "cryogenic-plant"
+        ],
+        "selected": "cryogenic-plant"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "ammonia",
+        "type": "fluid",
+        "producedPerSecond": 0.0216666666667,
+        "consumedPerSecond": 0.0216666666666,
+        "residual": 0
+      },
+      {
+        "id": "ammoniacal-solution",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0216666666667,
+        "residual": 0
+      },
+      {
+        "id": "crude-oil",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.002,
+        "residual": 0
+      },
+      {
+        "id": "fluorine",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0166666666666,
+        "residual": 0
+      },
+      {
+        "id": "fluoroketone-cold",
+        "type": "fluid",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "fluoroketone-hot",
+        "type": "fluid",
+        "producedPerSecond": 0.0166666666666,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "ice",
+        "type": "item",
+        "producedPerSecond": 0.00216666666666,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "lithium",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.000333333333333,
+        "residual": 0
+      },
+      {
+        "id": "solid-fuel",
+        "type": "item",
+        "producedPerSecond": 0.000333333333333,
+        "consumedPerSecond": 0.000333333333333,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "fluoroketone-cold",
+      "type": "fluid",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "fluoroketone-cold",
+      "entityNumber": 65,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target",
+      "fixturePosition": {
+        "x": 4.5,
+        "y": 9.5
+      }
+    },
+    {
+      "id": "ice",
+      "type": "item",
+      "perSecond": 0.00216666666667,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "ice",
+      "entityNumber": 66,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.00216666666667,
+      "minPerMinute": 0,
+      "role": "surplus"
+    }
+  ],
+  "blueprintSha256": "b21c354c2f6dd0abfcfca9ef60a223413d84f5981cb3b6cdf7ded3d8624f0606",
+  "entityCount": 454
+}

@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "raw",
+  "target": {
+    "id": "ice",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "ammoniacal-solution-separation",
+      "machine": "chemical-plant",
+      "craftsPerSecond": 0.00333333333333,
+      "machineCount": 1,
+      "exactMachineCount": 0.00333333333333,
+      "utilization": 0.00333333333333,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "planet-discovery-aquilo",
+        "solar-system-edge-discovery"
+      ],
+      "ingredients": [
+        {
+          "id": "ammoniacal-solution",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.166666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "ice",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 5,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "ammonia",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 50,
+          "perSecond": 0.166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "ammoniacal-solution",
+      "type": "fluid",
+      "perSecond": 0.166666666667,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "offshore-pumping",
+          "tile": "ammoniacal-ocean",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "ammoniacal-ocean-2",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "brash-ice",
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "ammoniacal-solution",
+      "label": "IN ammoniacal-solution",
+      "entityNumber": 38,
+      "displayEntity": 39,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.166666666667,
+      "plannedPerSecond": 0.166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "temperature": -50
+    }
+  ],
+  "surplus": [
+    {
+      "id": "ammonia",
+      "type": "fluid",
+      "perSecond": 0.166666666667,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": true,
+  "stochastic": false,
+  "warnings": [],
+  "machineCount": 1,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "battery",
+      "bulk-inserter",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "solar-system-edge-discovery",
+      "space-platform",
+      "space-platform-thruster",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing"
+    ],
+    "requirements": [
+      {
+        "recipe": "ammoniacal-solution-separation",
+        "unlockAlternatives": [
+          "planet-discovery-aquilo",
+          "solar-system-edge-discovery"
+        ],
+        "selected": "solar-system-edge-discovery"
+      },
+      {
+        "recipe": "pipe",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "chemical-plant",
+        "unlockAlternatives": [
+          "oil-processing"
+        ],
+        "selected": "oil-processing"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "ammonia",
+        "type": "fluid",
+        "producedPerSecond": 0.166666666666,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "ammoniacal-solution",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.166666666666,
+        "residual": 0
+      },
+      {
+        "id": "ice",
+        "type": "item",
+        "producedPerSecond": 0.0166666666666,
+        "consumedPerSecond": 0,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "ice",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "ice",
+      "entityNumber": 40,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    },
+    {
+      "id": "ammonia",
+      "type": "fluid",
+      "perSecond": 0.166666666667,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "ammonia",
+      "entityNumber": 41,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.166666666667,
+      "minPerMinute": 0,
+      "role": "surplus",
+      "fixturePosition": {
+        "x": 8.5,
+        "y": 9.5
+      }
+    }
+  ],
+  "blueprintSha256": "71eb801793d9c8e48367a84af4bdc93c7d4df89bff80a858096a648688bac567",
+  "entityCount": 145
+}

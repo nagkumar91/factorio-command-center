@@ -1,0 +1,407 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "intermediary",
+  "target": {
+    "id": "agricultural-science-pack",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests.",
+    "Add 60 logistic robots across 3 saved roboports (20 per port); 12 charging positions. Base robot speed and payload assumed.",
+    "Connect external electricity and supply every labeled input chest/pipe. Repeated input labels feed separate machine cells; displayed rates sum to total demand.",
+    "Continuously empty all 4 labeled WASTE chests. Spoiled material is discarded separately and never counted as manufactured output."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "agricultural-science-pack",
+      "machine": "biochamber",
+      "craftsPerSecond": 0.0111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.0222222222222,
+      "utilization": 0.0222222222222,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "agricultural-science-pack"
+      ],
+      "ingredients": [
+        {
+          "id": "bioflux",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "pentapod-egg",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 0.5,
+          "probability": 1,
+          "fuel": true,
+          "perSecond": 0.00555555555556
+        }
+      ],
+      "results": [
+        {
+          "id": "agricultural-science-pack",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1.5,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": {
+        "id": "nutrients",
+        "type": "item",
+        "amount": 0.5,
+        "probability": 1,
+        "fuel": true
+      },
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "bioflux",
+      "type": "item",
+      "perSecond": 0.0111111111111,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "bioflux",
+      "label": "IN bioflux",
+      "entityNumber": 41,
+      "position": {
+        "x": 17.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.0111111111111,
+      "plannedPerSecond": 0.0111111111111,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 57
+    },
+    {
+      "id": "pentapod-egg",
+      "type": "item",
+      "perSecond": 0.0111111111111,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": false,
+      "name": "pentapod-egg",
+      "label": "IN pentapod-egg",
+      "entityNumber": 43,
+      "position": {
+        "x": 23.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.0111111111111,
+      "plannedPerSecond": 0.0111111111111,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 58
+    },
+    {
+      "id": "nutrients",
+      "type": "item",
+      "perSecond": 0.00555555555556,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "nutrients",
+      "label": "IN nutrients",
+      "entityNumber": 45,
+      "position": {
+        "x": 19.5,
+        "y": 37.5
+      },
+      "ratePerSecond": 0.00555555555556,
+      "plannedPerSecond": 0.00555555555556,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 59
+    }
+  ],
+  "surplus": [],
+  "startupStock": [],
+  "rawOnly": false,
+  "stochastic": false,
+  "warnings": [
+    "Spoilage losses are not included in stoichiometric demand; measure them in the native run.",
+    "Burner fuel is included at active crafting consumption; idle fuel and spoilage can increase demand.",
+    "Some supplied intermediates have no supported raw-source route; importing them is an explicit external dependency."
+  ],
+  "machineCount": 1,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "battery",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "bulk-inserter",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "jellynut",
+      "landfill",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "agricultural-science-pack",
+        "unlockAlternatives": [
+          "agricultural-science-pack"
+        ],
+        "selected": "agricultural-science-pack"
+      },
+      {
+        "recipe": "steel-chest",
+        "unlockAlternatives": [
+          "steel-processing"
+        ],
+        "selected": "steel-processing"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "biochamber",
+        "unlockAlternatives": [
+          "biochamber"
+        ],
+        "selected": "biochamber"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "agricultural-science-pack",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "bioflux",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0111111111111,
+        "residual": 0
+      },
+      {
+        "id": "nutrients",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.00555555555555,
+        "residual": 0
+      },
+      {
+        "id": "pentapod-egg",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0111111111111,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "agricultural-science-pack",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "agricultural-science-pack",
+      "entityNumber": 38,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    }
+  ],
+  "wasteOutputs": [
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 50,
+      "position": {
+        "x": 4.5,
+        "y": 6.5
+      },
+      "sourceEntityNumber": 38,
+      "inserterEntityNumber": 49,
+      "spoiledFrom": [
+        "agricultural-science-pack"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 60
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 52,
+      "position": {
+        "x": 17.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 41,
+      "inserterEntityNumber": 51,
+      "spoiledFrom": [
+        "bioflux"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 61
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 54,
+      "position": {
+        "x": 19.5,
+        "y": 35.5
+      },
+      "sourceEntityNumber": 45,
+      "inserterEntityNumber": 53,
+      "spoiledFrom": [
+        "nutrients"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 62
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 56,
+      "position": {
+        "x": 21.5,
+        "y": 43.5
+      },
+      "sourceEntityNumber": 47,
+      "inserterEntityNumber": 55,
+      "spoiledFrom": [
+        "agricultural-science-pack"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 63
+    }
+  ],
+  "logistics": {
+    "robotCount": 60,
+    "roboportCount": 3,
+    "robotsPerPort": 20,
+    "chargingSlots": 12,
+    "chargingWatts": 6000000,
+    "estimatedTransfersPerSecond": 0.016666666666666666,
+    "estimatedMovementWatts": 7615.773105863908,
+    "sizingPolicy": "Installed base robot speed/payload, weighted producer distance, return journey, four seconds dispatch allowance and 80% capacity margin; native tests still required."
+  },
+  "materialSeeds": [],
+  "blueprintSha256": "29263e00a77ba61995762668ad9924ba022d2d333481b4ac2ac8cc0cb71608cb",
+  "entityCount": 63
+}

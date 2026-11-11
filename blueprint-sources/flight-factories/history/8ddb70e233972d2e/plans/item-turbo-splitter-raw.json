@@ -1,0 +1,1668 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "raw",
+  "target": {
+    "id": "turbo-splitter",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "advanced-circuit",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.155555555556,
+      "machineCount": 2,
+      "exactMachineCount": 1.24444444444,
+      "utilization": 0.622222222222,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "advanced-circuit"
+      ],
+      "ingredients": [
+        {
+          "id": "electronic-circuit",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.311111111111
+        },
+        {
+          "id": "plastic-bar",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.311111111111
+        },
+        {
+          "id": "copper-cable",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.622222222222
+        }
+      ],
+      "results": [
+        {
+          "id": "advanced-circuit",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.155555555556
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "advanced-oil-processing",
+      "machine": "oil-refinery",
+      "craftsPerSecond": 0.0711111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.355555555556,
+      "utilization": 0.355555555556,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "advanced-oil-processing"
+      ],
+      "ingredients": [
+        {
+          "id": "water",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 3.55555555556
+        },
+        {
+          "id": "crude-oil",
+          "type": "fluid",
+          "amount": 100,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 7.11111111111
+        }
+      ],
+      "results": [
+        {
+          "id": "heavy-oil",
+          "type": "fluid",
+          "amount": 25,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 25,
+          "perSecond": 1.77777777778
+        },
+        {
+          "id": "light-oil",
+          "type": "fluid",
+          "amount": 45,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 45,
+          "perSecond": 3.2
+        },
+        {
+          "id": "petroleum-gas",
+          "type": "fluid",
+          "amount": 55,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 55,
+          "perSecond": 3.91111111111
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "copper-cable",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 1.69444444444,
+      "machineCount": 2,
+      "exactMachineCount": 1.12962962963,
+      "utilization": 0.564814814815,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "electronics"
+      ],
+      "ingredients": [
+        {
+          "id": "copper-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.69444444444
+        }
+      ],
+      "results": [
+        {
+          "id": "copper-cable",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 2,
+          "perSecond": 3.38888888889
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "copper-plate",
+      "machine": "electric-furnace",
+      "craftsPerSecond": 1.69444444448,
+      "machineCount": 3,
+      "exactMachineCount": 2.71111111116,
+      "utilization": 0.903703703721,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [],
+      "ingredients": [
+        {
+          "id": "copper-ore",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.69444444448
+        }
+      ],
+      "results": [
+        {
+          "id": "copper-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 1.69444444448
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "electronic-circuit",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.922222222222,
+      "machineCount": 1,
+      "exactMachineCount": 0.614814814815,
+      "utilization": 0.614814814815,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "electronics"
+      ],
+      "ingredients": [
+        {
+          "id": "iron-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.922222222222
+        },
+        {
+          "id": "copper-cable",
+          "type": "item",
+          "amount": 3,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 2.76666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "electronic-circuit",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.922222222222
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "express-splitter",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.0296296296296,
+      "utilization": 0.0296296296296,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "logistics-3"
+      ],
+      "ingredients": [
+        {
+          "id": "fast-splitter",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "iron-gear-wheel",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.111111111111
+        },
+        {
+          "id": "advanced-circuit",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.111111111111
+        },
+        {
+          "id": "lubricant",
+          "type": "fluid",
+          "amount": 80,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.888888888889
+        }
+      ],
+      "results": [
+        {
+          "id": "express-splitter",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0111111111111
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "fast-splitter",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.0296296296296,
+      "utilization": 0.0296296296296,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "logistics-2"
+      ],
+      "ingredients": [
+        {
+          "id": "splitter",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "iron-gear-wheel",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.111111111111
+        },
+        {
+          "id": "electronic-circuit",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.111111111111
+        }
+      ],
+      "results": [
+        {
+          "id": "fast-splitter",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0111111111111
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "iron-gear-wheel",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.244444444444,
+      "machineCount": 1,
+      "exactMachineCount": 0.162962962963,
+      "utilization": 0.162962962963,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [],
+      "ingredients": [
+        {
+          "id": "iron-plate",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.488888888889
+        }
+      ],
+      "results": [
+        {
+          "id": "iron-gear-wheel",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.244444444444
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "iron-ore-alternative-enriching",
+      "machine": "echamber1",
+      "craftsPerSecond": 0.00277777777778,
+      "machineCount": 1,
+      "exactMachineCount": 0.0444444444444,
+      "utilization": 0.0444444444444,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "advanced-ore-processing"
+      ],
+      "ingredients": [
+        {
+          "id": "iron-ore",
+          "type": "item",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0555555555556
+        },
+        {
+          "id": "calcite",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.00277777777778
+        }
+      ],
+      "results": [
+        {
+          "id": "molten-iron",
+          "type": "fluid",
+          "amount": 400,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 400,
+          "perSecond": 1.11111111111
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "iron-plate",
+      "machine": "electric-furnace",
+      "craftsPerSecond": 1.48888888894,
+      "machineCount": 3,
+      "exactMachineCount": 2.3822222223,
+      "utilization": 0.794074074099,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [],
+      "ingredients": [
+        {
+          "id": "iron-ore",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.48888888894
+        }
+      ],
+      "results": [
+        {
+          "id": "iron-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 1.48888888894
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "lubricant",
+      "machine": "chemical-plant",
+      "craftsPerSecond": 0.177777777778,
+      "machineCount": 1,
+      "exactMachineCount": 0.177777777778,
+      "utilization": 0.177777777778,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "lubricant"
+      ],
+      "ingredients": [
+        {
+          "id": "heavy-oil",
+          "type": "fluid",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.77777777778
+        }
+      ],
+      "results": [
+        {
+          "id": "lubricant",
+          "type": "fluid",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 10,
+          "perSecond": 1.77777777778
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "plastic-bar",
+      "machine": "chemical-plant",
+      "craftsPerSecond": 0.155555555556,
+      "machineCount": 1,
+      "exactMachineCount": 0.155555555556,
+      "utilization": 0.155555555556,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "plastics"
+      ],
+      "ingredients": [
+        {
+          "id": "petroleum-gas",
+          "type": "fluid",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 3.11111111111
+        },
+        {
+          "id": "coal",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.155555555556
+        }
+      ],
+      "results": [
+        {
+          "id": "plastic-bar",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 2,
+          "perSecond": 0.311111111111
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "processing-unit",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0222222222222,
+      "machineCount": 1,
+      "exactMachineCount": 0.296296296296,
+      "utilization": 0.296296296296,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "processing-unit"
+      ],
+      "ingredients": [
+        {
+          "id": "electronic-circuit",
+          "type": "item",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.444444444444
+        },
+        {
+          "id": "advanced-circuit",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0444444444444
+        },
+        {
+          "id": "sulfuric-acid",
+          "type": "fluid",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.111111111111
+        }
+      ],
+      "results": [
+        {
+          "id": "processing-unit",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0222222222222
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "splitter",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.0148148148148,
+      "utilization": 0.0148148148148,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "logistics"
+      ],
+      "ingredients": [
+        {
+          "id": "electronic-circuit",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0555555555556
+        },
+        {
+          "id": "iron-plate",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0555555555556
+        },
+        {
+          "id": "transport-belt",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0444444444444
+        }
+      ],
+      "results": [
+        {
+          "id": "splitter",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0111111111111
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "transport-belt",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0222222222222,
+      "machineCount": 1,
+      "exactMachineCount": 0.0148148148148,
+      "utilization": 0.0148148148148,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [],
+      "ingredients": [
+        {
+          "id": "iron-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0222222222222
+        },
+        {
+          "id": "iron-gear-wheel",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0222222222222
+        }
+      ],
+      "results": [
+        {
+          "id": "transport-belt",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 2,
+          "perSecond": 0.0444444444444
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "tungsten-plate",
+      "machine": "foundry",
+      "craftsPerSecond": 0.111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.277777777778,
+      "utilization": 0.277777777778,
+      "craftingSpeed": 4,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "tungsten-steel"
+      ],
+      "ingredients": [
+        {
+          "id": "tungsten-ore",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.444444444444
+        },
+        {
+          "id": "molten-iron",
+          "type": "fluid",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.11111111111
+        }
+      ],
+      "results": [
+        {
+          "id": "tungsten-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1.5,
+          "perSecond": 0.166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "turbo-splitter",
+      "machine": "foundry",
+      "craftsPerSecond": 0.0111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.00555555555556,
+      "utilization": 0.00555555555556,
+      "craftingSpeed": 4,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "turbo-transport-belt"
+      ],
+      "ingredients": [
+        {
+          "id": "express-splitter",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "tungsten-plate",
+          "type": "item",
+          "amount": 15,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.166666666667
+        },
+        {
+          "id": "processing-unit",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0222222222222
+        },
+        {
+          "id": "lubricant",
+          "type": "fluid",
+          "amount": 80,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.888888888889
+        }
+      ],
+      "results": [
+        {
+          "id": "turbo-splitter",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1.5,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "crude-oil",
+      "type": "fluid",
+      "perSecond": 7.11111111111,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "crude-oil",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "crude-oil",
+      "label": "IN crude-oil",
+      "entityNumber": 186,
+      "displayEntity": 187,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 7.11111111111,
+      "plannedPerSecond": 7.11111111111,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "temperature": 25
+    },
+    {
+      "id": "sulfuric-acid",
+      "type": "fluid",
+      "perSecond": 0.111111111111,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "sulfuric-acid-geyser",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "sulfuric-acid",
+      "label": "IN sulfuric-acid",
+      "entityNumber": 188,
+      "displayEntity": 189,
+      "position": {
+        "x": 8.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.111111111111,
+      "plannedPerSecond": 0.111111111111,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 8.5,
+        "y": 3.5
+      },
+      "temperature": 25
+    },
+    {
+      "id": "water",
+      "type": "fluid",
+      "perSecond": 3.55555555556,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "offshore-pumping",
+          "tile": "deepwater",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "water",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-yumako",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-jellynut",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-red-tentacle",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-pink-tentacle",
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "water",
+      "label": "IN water",
+      "entityNumber": 190,
+      "displayEntity": 191,
+      "position": {
+        "x": 12.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 3.55555555556,
+      "plannedPerSecond": 3.55555555556,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 12.5,
+        "y": 3.5
+      },
+      "temperature": 15
+    },
+    {
+      "id": "calcite",
+      "type": "item",
+      "perSecond": 0.00277777777778,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "calcite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "calcite",
+      "label": "IN calcite",
+      "entityNumber": 192,
+      "displayEntity": 193,
+      "position": {
+        "x": 16.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.00277777777778,
+      "plannedPerSecond": 0.00277777777778,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "coal",
+      "type": "item",
+      "perSecond": 0.155555555556,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "coal",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "coal",
+      "label": "IN coal",
+      "entityNumber": 194,
+      "displayEntity": 195,
+      "position": {
+        "x": 20.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.155555555556,
+      "plannedPerSecond": 0.155555555556,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "copper-ore",
+      "type": "item",
+      "perSecond": 1.69444444447,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "copper-ore",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "copper-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "copper-ore",
+      "label": "IN copper-ore",
+      "entityNumber": 196,
+      "displayEntity": 197,
+      "position": {
+        "x": 24.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 1.69444444447,
+      "plannedPerSecond": 1.69444444447,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "iron-ore",
+      "type": "item",
+      "perSecond": 1.54444444455,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "iron-ore",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "iron-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "iron-ore",
+      "label": "IN iron-ore",
+      "entityNumber": 198,
+      "displayEntity": 199,
+      "position": {
+        "x": 28.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 1.54444444455,
+      "plannedPerSecond": 1.54444444455,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "tungsten-ore",
+      "type": "item",
+      "perSecond": 0.444444444444,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "tungsten-ore",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "tungsten-ore",
+      "label": "IN tungsten-ore",
+      "entityNumber": 200,
+      "displayEntity": 201,
+      "position": {
+        "x": 32.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.444444444444,
+      "plannedPerSecond": 0.444444444444,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [
+    {
+      "id": "light-oil",
+      "type": "fluid",
+      "perSecond": 3.2,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "petroleum-gas",
+      "type": "fluid",
+      "perSecond": 0.8,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": true,
+  "stochastic": false,
+  "warnings": [],
+  "machineCount": 23,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "advanced-ore-processing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "base-ore-processing",
+      "battery",
+      "big-mining-drill",
+      "bulk-inserter",
+      "calcite-processing",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electric-mining-drill",
+      "electric-mining-drill-mk2",
+      "electric-mining-drill-mk3",
+      "electronics",
+      "engine",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "foundry",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "logistics-3",
+      "low-density-structure",
+      "lubricant",
+      "metallurgic-science-pack",
+      "mining-productivity-1",
+      "mining-productivity-2",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "speed-module",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing",
+      "tungsten-carbide",
+      "tungsten-steel",
+      "turbo-transport-belt"
+    ],
+    "requirements": [
+      {
+        "recipe": "advanced-circuit",
+        "unlockAlternatives": [
+          "advanced-circuit"
+        ],
+        "selected": "advanced-circuit"
+      },
+      {
+        "recipe": "advanced-oil-processing",
+        "unlockAlternatives": [
+          "advanced-oil-processing"
+        ],
+        "selected": "advanced-oil-processing"
+      },
+      {
+        "recipe": "copper-cable",
+        "unlockAlternatives": [
+          "electronics"
+        ],
+        "selected": "electronics"
+      },
+      {
+        "recipe": "electronic-circuit",
+        "unlockAlternatives": [
+          "electronics"
+        ],
+        "selected": "electronics"
+      },
+      {
+        "recipe": "express-splitter",
+        "unlockAlternatives": [
+          "logistics-3"
+        ],
+        "selected": "logistics-3"
+      },
+      {
+        "recipe": "fast-splitter",
+        "unlockAlternatives": [
+          "logistics-2"
+        ],
+        "selected": "logistics-2"
+      },
+      {
+        "recipe": "iron-ore-alternative-enriching",
+        "unlockAlternatives": [
+          "advanced-ore-processing"
+        ],
+        "selected": "advanced-ore-processing"
+      },
+      {
+        "recipe": "lubricant",
+        "unlockAlternatives": [
+          "lubricant"
+        ],
+        "selected": "lubricant"
+      },
+      {
+        "recipe": "plastic-bar",
+        "unlockAlternatives": [
+          "plastics"
+        ],
+        "selected": "plastics"
+      },
+      {
+        "recipe": "processing-unit",
+        "unlockAlternatives": [
+          "processing-unit"
+        ],
+        "selected": "processing-unit"
+      },
+      {
+        "recipe": "splitter",
+        "unlockAlternatives": [
+          "logistics"
+        ],
+        "selected": "logistics"
+      },
+      {
+        "recipe": "tungsten-plate",
+        "unlockAlternatives": [
+          "tungsten-steel"
+        ],
+        "selected": "tungsten-steel"
+      },
+      {
+        "recipe": "turbo-splitter",
+        "unlockAlternatives": [
+          "turbo-transport-belt"
+        ],
+        "selected": "turbo-transport-belt"
+      },
+      {
+        "recipe": "pipe",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "pipe-to-ground",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "electric-furnace",
+        "unlockAlternatives": [
+          "advanced-material-processing-2"
+        ],
+        "selected": "advanced-material-processing-2"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "oil-refinery",
+        "unlockAlternatives": [
+          "oil-processing"
+        ],
+        "selected": "oil-processing"
+      },
+      {
+        "recipe": "chemical-plant",
+        "unlockAlternatives": [
+          "oil-processing"
+        ],
+        "selected": "oil-processing"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "foundry",
+        "unlockAlternatives": [
+          "foundry"
+        ],
+        "selected": "foundry"
+      },
+      {
+        "recipe": "echamber1",
+        "unlockAlternatives": [
+          "advanced-ore-processing"
+        ],
+        "selected": "advanced-ore-processing"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "crude-oil",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 7.11111111111,
+        "residual": 0
+      },
+      {
+        "id": "heavy-oil",
+        "type": "fluid",
+        "producedPerSecond": 1.77777777778,
+        "consumedPerSecond": 1.77777777778,
+        "residual": 0
+      },
+      {
+        "id": "light-oil",
+        "type": "fluid",
+        "producedPerSecond": 3.2,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "lubricant",
+        "type": "fluid",
+        "producedPerSecond": 1.77777777778,
+        "consumedPerSecond": 1.77777777778,
+        "residual": 0
+      },
+      {
+        "id": "molten-iron",
+        "type": "fluid",
+        "producedPerSecond": 1.11111111111,
+        "consumedPerSecond": 1.11111111111,
+        "residual": 0
+      },
+      {
+        "id": "petroleum-gas",
+        "type": "fluid",
+        "producedPerSecond": 3.91111111111,
+        "consumedPerSecond": 3.11111111112,
+        "residual": 0
+      },
+      {
+        "id": "sulfuric-acid",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.111111111111,
+        "residual": 0
+      },
+      {
+        "id": "water",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 3.55555555555,
+        "residual": 0
+      },
+      {
+        "id": "advanced-circuit",
+        "type": "item",
+        "producedPerSecond": 0.155555555556,
+        "consumedPerSecond": 0.155555555555,
+        "residual": 0
+      },
+      {
+        "id": "calcite",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.00277777777778,
+        "residual": 0
+      },
+      {
+        "id": "coal",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.155555555556,
+        "residual": 0
+      },
+      {
+        "id": "copper-cable",
+        "type": "item",
+        "producedPerSecond": 3.38888888888,
+        "consumedPerSecond": 3.38888888889,
+        "residual": 0
+      },
+      {
+        "id": "copper-ore",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 1.69444444448,
+        "residual": 0
+      },
+      {
+        "id": "copper-plate",
+        "type": "item",
+        "producedPerSecond": 1.69444444448,
+        "consumedPerSecond": 1.69444444444,
+        "residual": 0
+      },
+      {
+        "id": "electronic-circuit",
+        "type": "item",
+        "producedPerSecond": 0.922222222222,
+        "consumedPerSecond": 0.922222222222,
+        "residual": 0
+      },
+      {
+        "id": "express-splitter",
+        "type": "item",
+        "producedPerSecond": 0.0111111111111,
+        "consumedPerSecond": 0.0111111111111,
+        "residual": 0
+      },
+      {
+        "id": "fast-splitter",
+        "type": "item",
+        "producedPerSecond": 0.0111111111111,
+        "consumedPerSecond": 0.0111111111111,
+        "residual": 0
+      },
+      {
+        "id": "iron-gear-wheel",
+        "type": "item",
+        "producedPerSecond": 0.244444444444,
+        "consumedPerSecond": 0.244444444444,
+        "residual": 0
+      },
+      {
+        "id": "iron-ore",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 1.5444444445,
+        "residual": 0
+      },
+      {
+        "id": "iron-plate",
+        "type": "item",
+        "producedPerSecond": 1.48888888894,
+        "consumedPerSecond": 1.48888888889,
+        "residual": 0
+      },
+      {
+        "id": "plastic-bar",
+        "type": "item",
+        "producedPerSecond": 0.311111111112,
+        "consumedPerSecond": 0.311111111112,
+        "residual": 0
+      },
+      {
+        "id": "processing-unit",
+        "type": "item",
+        "producedPerSecond": 0.0222222222222,
+        "consumedPerSecond": 0.0222222222222,
+        "residual": 0
+      },
+      {
+        "id": "splitter",
+        "type": "item",
+        "producedPerSecond": 0.0111111111111,
+        "consumedPerSecond": 0.0111111111111,
+        "residual": 0
+      },
+      {
+        "id": "transport-belt",
+        "type": "item",
+        "producedPerSecond": 0.0444444444444,
+        "consumedPerSecond": 0.0444444444444,
+        "residual": 0
+      },
+      {
+        "id": "tungsten-ore",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.444444444444,
+        "residual": 0
+      },
+      {
+        "id": "tungsten-plate",
+        "type": "item",
+        "producedPerSecond": 0.166666666666,
+        "consumedPerSecond": 0.166666666667,
+        "residual": 0
+      },
+      {
+        "id": "turbo-splitter",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "turbo-splitter",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "turbo-splitter",
+      "entityNumber": 202,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    },
+    {
+      "id": "light-oil",
+      "type": "fluid",
+      "perSecond": 3.2,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "light-oil",
+      "entityNumber": 203,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 3.2,
+      "minPerMinute": 0,
+      "role": "surplus",
+      "fixturePosition": {
+        "x": 8.5,
+        "y": 9.5
+      }
+    },
+    {
+      "id": "petroleum-gas",
+      "type": "fluid",
+      "perSecond": 0.8,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "petroleum-gas",
+      "entityNumber": 204,
+      "position": {
+        "x": 12.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.8,
+      "minPerMinute": 0,
+      "role": "surplus",
+      "fixturePosition": {
+        "x": 12.5,
+        "y": 9.5
+      }
+    }
+  ],
+  "blueprintSha256": "19e48007ae50c5eb269e23380b260de06ae4758d62b9591a1db611dedbad31bf",
+  "entityCount": 1278
+}

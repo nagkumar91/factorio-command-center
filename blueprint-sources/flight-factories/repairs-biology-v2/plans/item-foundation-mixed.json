@@ -1,0 +1,616 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "mixed",
+  "target": {
+    "id": "foundation",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests.",
+    "Add 80 logistic robots across 4 saved roboports (20 per port); 16 charging positions. Base robot speed and payload assumed.",
+    "Connect external electricity and supply every labeled input chest/pipe. Repeated input labels feed separate machine cells; displayed rates sum to total demand."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "foundation",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.666666666667,
+      "utilization": 0.666666666667,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "foundation"
+      ],
+      "ingredients": [
+        {
+          "id": "tungsten-plate",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0666666666667
+        },
+        {
+          "id": "lithium-plate",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0666666666667
+        },
+        {
+          "id": "carbon-fiber",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0666666666667
+        },
+        {
+          "id": "stone",
+          "type": "item",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.333333333333
+        },
+        {
+          "id": "fluoroketone-cold",
+          "type": "fluid",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.333333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "foundation",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "lithium-plate",
+      "machine": "electric-furnace",
+      "craftsPerSecond": 0.0666666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.213333333333,
+      "utilization": 0.213333333333,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "lithium-processing"
+      ],
+      "ingredients": [
+        {
+          "id": "lithium",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0666666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "lithium-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0666666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "fluoroketone-cold",
+      "type": "fluid",
+      "perSecond": 0.333333333333,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "fluoroketone-cold",
+      "label": "IN fluoroketone-cold",
+      "entityNumber": 45,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.333333333333,
+      "plannedPerSecond": 0.333333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "displayEntity": 46,
+      "fixturePosition": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "temperature": -150
+    },
+    {
+      "id": "tungsten-plate",
+      "type": "item",
+      "perSecond": 0.0666666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "tungsten-plate",
+      "label": "IN tungsten-plate",
+      "entityNumber": 54,
+      "position": {
+        "x": 17.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.0666666666667,
+      "plannedPerSecond": 0.0666666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 8,
+      "displayEntity": 70
+    },
+    {
+      "id": "carbon-fiber",
+      "type": "item",
+      "perSecond": 0.0666666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "carbon-fiber",
+      "label": "IN carbon-fiber",
+      "entityNumber": 56,
+      "position": {
+        "x": 23.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.0666666666667,
+      "plannedPerSecond": 0.0666666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 8,
+      "displayEntity": 71
+    },
+    {
+      "id": "stone",
+      "type": "item",
+      "perSecond": 0.333333333333,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "stone",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "slipstack",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-sand-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-faded",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-cold",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-short",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-truncated",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "iron-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "copper-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "stone",
+          "requiredFluid": null,
+          "extractionIncluded": false,
+          "amount": 3423088934115,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "bd5a8941ecbcd83b4f3e1c7a2d9a779298e10b4f6be6c7be72d13c0e17e21260",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "stone",
+      "label": "IN stone",
+      "entityNumber": 58,
+      "position": {
+        "x": 19.5,
+        "y": 37.5
+      },
+      "ratePerSecond": 0.333333333333,
+      "plannedPerSecond": 0.333333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 40,
+      "displayEntity": 72
+    },
+    {
+      "id": "lithium",
+      "type": "item",
+      "perSecond": 0.0666666666667,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "lithium-iceberg-huge",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "lithium-iceberg-big",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "lithium",
+      "label": "IN lithium",
+      "entityNumber": 66,
+      "position": {
+        "x": 41.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.0666666666667,
+      "plannedPerSecond": 0.0666666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 5,
+      "displayEntity": 73
+    }
+  ],
+  "surplus": [],
+  "startupStock": [],
+  "rawOnly": false,
+  "stochastic": false,
+  "warnings": [],
+  "machineCount": 2,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-asteroid-processing",
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "asteroid-reprocessing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "base-ore-processing",
+      "battery",
+      "big-mining-drill",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "bulk-inserter",
+      "calcite-processing",
+      "carbon-fiber",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "cryogenic-plant",
+      "cryogenic-science-pack",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electric-mining-drill",
+      "electric-mining-drill-mk2",
+      "electric-mining-drill-mk3",
+      "electromagnetic-plant",
+      "electromagnetic-science-pack",
+      "electronics",
+      "engine",
+      "explosives",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "foundation",
+      "foundry",
+      "heating-tower",
+      "holmium-processing",
+      "jellynut",
+      "landfill",
+      "lithium-processing",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "metallurgic-science-pack",
+      "military",
+      "military-2",
+      "military-science-pack",
+      "mining-productivity-1",
+      "mining-productivity-2",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "recycling",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "rocket-turret",
+      "rocketry",
+      "space-platform",
+      "space-science-pack",
+      "speed-module",
+      "steam-power",
+      "steel-processing",
+      "stone-wall",
+      "stronger-explosives-1",
+      "stronger-explosives-2",
+      "sulfur-processing",
+      "tungsten-carbide",
+      "tungsten-steel",
+      "utility-science-pack",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "foundation",
+        "unlockAlternatives": [
+          "foundation"
+        ],
+        "selected": "foundation"
+      },
+      {
+        "recipe": "lithium-plate",
+        "unlockAlternatives": [
+          "lithium-processing"
+        ],
+        "selected": "lithium-processing"
+      },
+      {
+        "recipe": "pipe",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "electric-furnace",
+        "unlockAlternatives": [
+          "advanced-material-processing-2"
+        ],
+        "selected": "advanced-material-processing-2"
+      },
+      {
+        "recipe": "steel-chest",
+        "unlockAlternatives": [
+          "steel-processing"
+        ],
+        "selected": "steel-processing"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "fluoroketone-cold",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.333333333334,
+        "residual": 0
+      },
+      {
+        "id": "carbon-fiber",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0666666666668,
+        "residual": 0
+      },
+      {
+        "id": "foundation",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "lithium",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0666666666667,
+        "residual": 0
+      },
+      {
+        "id": "lithium-plate",
+        "type": "item",
+        "producedPerSecond": 0.0666666666667,
+        "consumedPerSecond": 0.0666666666668,
+        "residual": 0
+      },
+      {
+        "id": "stone",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.333333333334,
+        "residual": 0
+      },
+      {
+        "id": "tungsten-plate",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0666666666668,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "foundation",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "foundation",
+      "entityNumber": 47,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    }
+  ],
+  "wasteOutputs": [],
+  "logistics": {
+    "robotCount": 80,
+    "roboportCount": 4,
+    "robotsPerPort": 20,
+    "chargingSlots": 16,
+    "chargingWatts": 8000000,
+    "estimatedTransfersPerSecond": 0.08333333333336666,
+    "estimatedMovementWatts": 29535.38341364905,
+    "sizingPolicy": "Installed base robot speed/payload, weighted producer distance, return journey, four seconds dispatch allowance and 80% capacity margin; native tests still required."
+  },
+  "materialSeeds": [],
+  "blueprintSha256": "8d88bb3048cd77f2c7a72a65b8ec94f4314dbc54ccc114734aa7c2f4c8199b9c",
+  "entityCount": 119
+}

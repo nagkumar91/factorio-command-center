@@ -1,0 +1,504 @@
+{
+  "id": "fluid-heavy-oil-mixed",
+  "blueprintSha256": "6a4f89e349a1d3d4b8a3d9062671197a920b60a09eaceace1e40ccb608eeb013",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "5d82c3343e60fff95fa79a5a852f666ff3107bc99890cf94a5732ce54c79bd8b",
+  "specSha256": "8eca7d0b11ec62de8011d80ba3e303ffdee1d932b74a4474a716f6d097e829e4",
+  "configurationSha256": "9f0dc71e7645638b618ab75a1b04ea417581a8592aae1fe3d3946c96ed88df78",
+  "configuration": {
+    "id": "fluid-heavy-oil-mixed",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "6a4f89e349a1d3d4b8a3d9062671197a920b60a09eaceace1e40ccb608eeb013",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "mixed",
+    "rawOnly": false,
+    "inputs": [
+      {
+        "id": "heavy-oil-barrel",
+        "type": "item",
+        "perSecond": 0.000333333333333,
+        "source": "supplied-intermediate",
+        "sources": [],
+        "obtainableFromRaw": true,
+        "name": "heavy-oil-barrel",
+        "label": "IN heavy-oil-barrel",
+        "entityNumber": 38,
+        "displayEntity": 39,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.000333333333333,
+        "plannedPerSecond": 0.000333333333333,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "heavy-oil",
+        "type": "fluid",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "heavy-oil",
+        "entityNumber": 40,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target",
+        "fixturePosition": {
+          "x": 4.5,
+          "y": 9.5
+        }
+      },
+      {
+        "id": "barrel",
+        "type": "item",
+        "perSecond": 0.000333333333333,
+        "handling": "Export continuously; finite storage eventually blocks production.",
+        "name": "barrel",
+        "entityNumber": 41,
+        "position": {
+          "x": 8.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.000333333333333,
+        "minPerMinute": 0,
+        "role": "surplus"
+      }
+    ],
+    "machineIds": [
+      42
+    ],
+    "roboportIds": [
+      36,
+      37,
+      51
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 103,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 51,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": false,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/fluid-heavy-oil-mixed.6a4f89e349a1d3d4b8a3d9062671197a920b60a09eaceace1e40ccb608eeb013.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/fluid-heavy-oil-mixed.json",
+    "blueprintFile": "blueprints/fluid-heavy-oil-mixed.6a4f89e349a1d3d4b8a3d9062671197a920b60a09eaceace1e40ccb608eeb013.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "fluid:heavy-oil": [
+        42
+      ],
+      "item:barrel": [
+        42
+      ]
+    },
+    "expectedRecipes": {
+      "42": "empty-heavy-oil-barrel"
+    },
+    "statisticsIgnoredInputs": {
+      "item:heavy-oil-barrel": true
+    },
+    "statisticsIgnoredOutputs": {
+      "fluid:heavy-oil": true,
+      "item:barrel": true
+    },
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 2,
+    "specSha256": "8eca7d0b11ec62de8011d80ba3e303ffdee1d932b74a4474a716f6d097e829e4",
+    "configurationSha256": "9f0dc71e7645638b618ab75a1b04ea417581a8592aae1fe3d3946c96ed88df78",
+    "sourceSpecSha256": "5d82c3343e60fff95fa79a5a852f666ff3107bc99890cf94a5732ce54c79bd8b"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "fluid:heavy-oil": {
+      "warmupCollected": 2367.837978899479,
+      "collectionEvents": 1180,
+      "windowCounts": [
+        3092.856482565403,
+        3098.6334024071693,
+        3101.143395781517
+      ],
+      "windowProduced": [
+        0,
+        0,
+        0
+      ],
+      "windowProducerCrafts": [
+        61,
+        63,
+        61
+      ],
+      "measuredProduced": 0,
+      "measuredProducerCrafts": 185,
+      "producerEntityIds": [
+        42
+      ],
+      "productionStatisticsIgnored": true,
+      "baselineProduced": 0,
+      "baselineProducerCrafts": 59,
+      "firstOutputTick": 1260,
+      "lastOutputTick": 72000,
+      "previousProduced": 0,
+      "previousProducerCrafts": 244,
+      "collected": 9292.63328075409,
+      "perMinute": 619.508885383606,
+      "windowPerMinute": [
+        618.5712965130806,
+        619.7266804814338,
+        620.2286791563034
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-completed-crafts-of-matching-recipe-product",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    },
+    "item:barrel": {
+      "warmupCollected": 56,
+      "collectionEvents": 233,
+      "windowCounts": [
+        62,
+        62,
+        62
+      ],
+      "windowProduced": [
+        0,
+        0,
+        0
+      ],
+      "windowProducerCrafts": [
+        61,
+        63,
+        61
+      ],
+      "measuredProduced": 0,
+      "measuredProducerCrafts": 185,
+      "producerEntityIds": [
+        42
+      ],
+      "productionStatisticsIgnored": true,
+      "baselineProduced": 0,
+      "baselineProducerCrafts": 59,
+      "firstOutputTick": 2100,
+      "lastOutputTick": 71940,
+      "previousProduced": 0,
+      "previousProducerCrafts": 244,
+      "collected": 186,
+      "perMinute": 12.4,
+      "windowPerMinute": [
+        12.4,
+        12.4,
+        12.4
+      ],
+      "targetPerMinute": 0,
+      "required": false,
+      "productionEvidenceBasis": "native-completed-crafts-of-matching-recipe-product",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "native": {
+    "id": "fluid-heavy-oil-mixed",
+    "blueprintSha256": "6a4f89e349a1d3d4b8a3d9062671197a920b60a09eaceace1e40ccb608eeb013",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "9f0dc71e7645638b618ab75a1b04ea417581a8592aae1fe3d3946c96ed88df78",
+    "specSha256": "8eca7d0b11ec62de8011d80ba3e303ffdee1d932b74a4474a716f6d097e829e4",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 103,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-11",
+      "force": "flight-native-11",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -24,
+        "y": -36
+      }
+    },
+    "outputs": {
+      "fluid:heavy-oil": {
+        "warmupCollected": 2367.837978899479,
+        "collectionEvents": 1180,
+        "windowCounts": [
+          3092.856482565403,
+          3098.6334024071693,
+          3101.143395781517
+        ],
+        "windowProduced": [
+          0,
+          0,
+          0
+        ],
+        "windowProducerCrafts": [
+          61,
+          63,
+          61
+        ],
+        "measuredProduced": 0,
+        "measuredProducerCrafts": 185,
+        "producerEntityIds": [
+          42
+        ],
+        "productionStatisticsIgnored": true,
+        "baselineProduced": 0,
+        "baselineProducerCrafts": 59,
+        "firstOutputTick": 1260,
+        "lastOutputTick": 72000,
+        "previousProduced": 0,
+        "previousProducerCrafts": 244
+      },
+      "item:barrel": {
+        "warmupCollected": 56,
+        "collectionEvents": 233,
+        "windowCounts": [
+          62,
+          62,
+          62
+        ],
+        "windowProduced": [
+          0,
+          0,
+          0
+        ],
+        "windowProducerCrafts": [
+          61,
+          63,
+          61
+        ],
+        "measuredProduced": 0,
+        "measuredProducerCrafts": 185,
+        "producerEntityIds": [
+          42
+        ],
+        "productionStatisticsIgnored": true,
+        "baselineProduced": 0,
+        "baselineProducerCrafts": 59,
+        "firstOutputTick": 2100,
+        "lastOutputTick": 71940,
+        "previousProduced": 0,
+        "previousProducerCrafts": 244
+      }
+    },
+    "inputs": {
+      "item:heavy-oil-barrel": {
+        "acceptedItems": 348,
+        "statisticsCount": 0,
+        "statisticsCountsExcluded": true,
+        "measuredAcceptedItems": 187,
+        "supply": "declared-boundary-chest-or-belt"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 42,
+        "name": "assembling-machine-2",
+        "recipe": "empty-heavy-oil-barrel",
+        "position": {
+          "y": 4.5,
+          "x": -3.5
+        },
+        "status": "item_ingredient_shortage",
+        "productsFinished": 244,
+        "measuredCrafts": 185,
+        "statusSeconds": {
+          "item_ingredient_shortage": 856,
+          "working": 44
+        },
+        "inputInventory": {},
+        "outputInventory": {},
+        "fuelInventory": {}
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -38,
+          "x": -26
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 51,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 36,
+        "robotInventory": {
+          "logistic-robot": 12
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 52
+      },
+      {
+        "entityNumber": 37,
+        "robotInventory": {
+          "logistic-robot": 20
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 52
+      },
+      {
+        "entityNumber": 51,
+        "robotInventory": {
+          "logistic-robot": 20
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 52
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 41
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "6a0f2c5a7d904dfe6d1a9f6bcebcc0910a051ccc04c3bb339ec5ef753a417df0",
+  "nativeReportSha256": "2ef2c1901c5f9a8ef41aed4262c104689dd5b29174bc147676b48fbcae297e95",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

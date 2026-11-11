@@ -1,0 +1,559 @@
+{
+  "id": "item-explosives-intermediary",
+  "blueprintSha256": "81e67a05cbc24e8576f1865ae967a878a5da2cba01d489f390f9f02b2dd5d6cc",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "5510929f2aea258c9d337a2495949581e0d29d0f0bb59c1e6de7b24597ef3836",
+  "specSha256": "28a8c56be6af17e3ed1ccb4644dd0b08e5f9ded89a6e34aaed7b5f044b2943bf",
+  "configurationSha256": "a84607a42ecc0733b35f31b9a64040e21244200eebab31bc8e574d4e897b7e71",
+  "configuration": {
+    "id": "item-explosives-intermediary",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "81e67a05cbc24e8576f1865ae967a878a5da2cba01d489f390f9f02b2dd5d6cc",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "intermediary",
+    "rawOnly": true,
+    "inputs": [
+      {
+        "id": "water",
+        "type": "fluid",
+        "perSecond": 0.0833333333333,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "offshore-pumping",
+            "tile": "deepwater",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "water",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "wetland-yumako",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "wetland-jellynut",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "wetland-dead-skin",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "wetland-light-dead-skin",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "wetland-green-slime",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "wetland-light-green-slime",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "wetland-red-tentacle",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "wetland-pink-tentacle",
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "water",
+        "label": "IN water",
+        "entityNumber": 38,
+        "displayEntity": 39,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.0833333333333,
+        "plannedPerSecond": 0.0833333333333,
+        "supplyPolicy": "unlimited-external-boundary-fixture",
+        "fixturePosition": {
+          "x": 4.5,
+          "y": 3.5
+        },
+        "temperature": 15
+      },
+      {
+        "id": "coal",
+        "type": "item",
+        "perSecond": 0.00833333333333,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "mining",
+            "entity": "coal",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "huge-rock",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "coal",
+        "label": "IN coal",
+        "entityNumber": 40,
+        "displayEntity": 41,
+        "position": {
+          "x": 8.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.00833333333333,
+        "plannedPerSecond": 0.00833333333333,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      },
+      {
+        "id": "sulfur",
+        "type": "item",
+        "perSecond": 0.00833333333333,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "harvest",
+            "entity": "vulcanus-chimney",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "vulcanus-chimney-faded",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "vulcanus-chimney-cold",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "sulfur",
+        "label": "IN sulfur",
+        "entityNumber": 42,
+        "displayEntity": 43,
+        "position": {
+          "x": 12.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.00833333333333,
+        "plannedPerSecond": 0.00833333333333,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "explosives",
+        "type": "item",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "explosives",
+        "entityNumber": 44,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target"
+      }
+    ],
+    "machineIds": [
+      45
+    ],
+    "roboportIds": [
+      36,
+      37,
+      54
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 99,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 54,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": false,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/item-explosives-intermediary.81e67a05cbc24e8576f1865ae967a878a5da2cba01d489f390f9f02b2dd5d6cc.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/item-explosives-intermediary.json",
+    "blueprintFile": "blueprints/item-explosives-intermediary.81e67a05cbc24e8576f1865ae967a878a5da2cba01d489f390f9f02b2dd5d6cc.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "item:explosives": [
+        45
+      ]
+    },
+    "expectedRecipes": {
+      "45": "explosives"
+    },
+    "statisticsIgnoredInputs": {},
+    "statisticsIgnoredOutputs": {},
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 2,
+    "specSha256": "28a8c56be6af17e3ed1ccb4644dd0b08e5f9ded89a6e34aaed7b5f044b2943bf",
+    "configurationSha256": "a84607a42ecc0733b35f31b9a64040e21244200eebab31bc8e574d4e897b7e71",
+    "sourceSpecSha256": "5510929f2aea258c9d337a2495949581e0d29d0f0bb59c1e6de7b24597ef3836"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "item:explosives": {
+      "warmupCollected": 125,
+      "collectionEvents": 452,
+      "windowCounts": [
+        145,
+        145,
+        145
+      ],
+      "windowProduced": [
+        142,
+        146,
+        144
+      ],
+      "windowProducerCrafts": [
+        71,
+        73,
+        72
+      ],
+      "measuredProduced": 432,
+      "measuredProducerCrafts": 216,
+      "producerEntityIds": [
+        45
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 134,
+      "baselineProducerCrafts": 67,
+      "firstOutputTick": 2400,
+      "lastOutputTick": 71940,
+      "previousProduced": 566,
+      "previousProducerCrafts": 283,
+      "collected": 435,
+      "perMinute": 29,
+      "windowPerMinute": [
+        29,
+        29,
+        29
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "native": {
+    "id": "item-explosives-intermediary",
+    "blueprintSha256": "81e67a05cbc24e8576f1865ae967a878a5da2cba01d489f390f9f02b2dd5d6cc",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "a84607a42ecc0733b35f31b9a64040e21244200eebab31bc8e574d4e897b7e71",
+    "specSha256": "28a8c56be6af17e3ed1ccb4644dd0b08e5f9ded89a6e34aaed7b5f044b2943bf",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 99,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-14",
+      "force": "flight-native-14",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -24,
+        "y": -36
+      }
+    },
+    "outputs": {
+      "item:explosives": {
+        "warmupCollected": 125,
+        "collectionEvents": 452,
+        "windowCounts": [
+          145,
+          145,
+          145
+        ],
+        "windowProduced": [
+          142,
+          146,
+          144
+        ],
+        "windowProducerCrafts": [
+          71,
+          73,
+          72
+        ],
+        "measuredProduced": 432,
+        "measuredProducerCrafts": 216,
+        "producerEntityIds": [
+          45
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 134,
+        "baselineProducerCrafts": 67,
+        "firstOutputTick": 2400,
+        "lastOutputTick": 71940,
+        "previousProduced": 566,
+        "previousProducerCrafts": 283
+      }
+    },
+    "inputs": {
+      "fluid:water": {
+        "acceptedItems": 0,
+        "consumed": 2160,
+        "consumedPerMinute": 144,
+        "statisticsCount": 2160,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 0,
+        "supply": "external-infinity-pipe"
+      },
+      "item:coal": {
+        "acceptedItems": 789,
+        "consumed": 216,
+        "consumedPerMinute": 14.4,
+        "statisticsCount": 216,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 218,
+        "supply": "declared-boundary-chest-or-belt"
+      },
+      "item:sulfur": {
+        "acceptedItems": 789,
+        "consumed": 216,
+        "consumedPerMinute": 14.4,
+        "statisticsCount": 216,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 217,
+        "supply": "declared-boundary-chest-or-belt"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 45,
+        "name": "chemical-plant",
+        "recipe": "explosives",
+        "position": {
+          "y": 4.5,
+          "x": -3.5
+        },
+        "status": "working",
+        "productsFinished": 283,
+        "measuredCrafts": 216,
+        "statusSeconds": {
+          "working": 866,
+          "item_ingredient_shortage": 34
+        },
+        "inputInventory": {
+          "coal": 2,
+          "sulfur": 2
+        },
+        "outputInventory": {},
+        "fuelInventory": {}
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-fluid",
+        "port": 38,
+        "name": "water",
+        "position": {
+          "y": -32.5,
+          "x": -19.5
+        },
+        "entityName": "infinity-pipe"
+      },
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -38,
+          "x": -26
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 54,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 36,
+        "robotInventory": {
+          "logistic-robot": 12
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 41
+      },
+      {
+        "entityNumber": 37,
+        "robotInventory": {
+          "logistic-robot": 20
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 41
+      },
+      {
+        "entityNumber": 54,
+        "robotInventory": {
+          "logistic-robot": 9
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 41
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 41
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "98501f846a8cb1bd712d391fc06d5fa10b5784be94fd00b3958efa4eb34c8f47",
+  "nativeReportSha256": "403c6616a5849761f6a78d8a693dede032087456c9fa110a3476fcc75ad6874b",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

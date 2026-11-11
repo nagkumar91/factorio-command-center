@@ -1,0 +1,380 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "mixed",
+  "target": {
+    "id": "uranium-cannon-shell",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "uranium-cannon-shell",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.266666666667,
+      "utilization": 0.266666666667,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "uranium-ammo"
+      ],
+      "ingredients": [
+        {
+          "id": "cannon-shell",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "uranium-238",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "uranium-cannon-shell",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "uranium-processing",
+      "machine": "centrifuge",
+      "craftsPerSecond": 0.016784155757,
+      "machineCount": 1,
+      "exactMachineCount": 0.201409869084,
+      "utilization": 0.201409869084,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "uranium-processing"
+      ],
+      "ingredients": [
+        {
+          "id": "uranium-ore",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.16784155757
+        }
+      ],
+      "results": [
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.007000000000000001,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.007000000000000001,
+          "perSecond": 0.000117489090299
+        },
+        {
+          "id": "uranium-238",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.993,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.993,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "cannon-shell",
+      "type": "item",
+      "perSecond": 0.0166666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "cannon-shell",
+      "label": "IN cannon-shell",
+      "entityNumber": 45,
+      "displayEntity": 46,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.0166666666667,
+      "plannedPerSecond": 0.0166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 0.16784155757,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 47,
+      "displayEntity": 48,
+      "position": {
+        "x": 8.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.16784155757,
+      "plannedPerSecond": 0.16784155757,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [
+    {
+      "id": "uranium-235",
+      "type": "item",
+      "perSecond": 0.000117489090299,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": false,
+  "stochastic": true,
+  "warnings": [
+    "Random result rates are expectations, not guaranteed yields. Native throughput needs repeated measurement windows."
+  ],
+  "machineCount": 2,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "automobilism",
+      "battery",
+      "bulk-inserter",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "explosives",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "military",
+      "military-2",
+      "military-3",
+      "military-4",
+      "military-science-pack",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "stone-wall",
+      "sulfur-processing",
+      "tank",
+      "uranium-ammo",
+      "uranium-mining",
+      "uranium-processing",
+      "utility-science-pack"
+    ],
+    "requirements": [
+      {
+        "recipe": "uranium-cannon-shell",
+        "unlockAlternatives": [
+          "uranium-ammo"
+        ],
+        "selected": "uranium-ammo"
+      },
+      {
+        "recipe": "uranium-processing",
+        "unlockAlternatives": [
+          "uranium-processing"
+        ],
+        "selected": "uranium-processing"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "centrifuge",
+        "unlockAlternatives": [
+          "uranium-processing"
+        ],
+        "selected": "uranium-processing"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "cannon-shell",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "uranium-235",
+        "type": "item",
+        "producedPerSecond": 0.000117489090299,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "uranium-238",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "uranium-cannon-shell",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "uranium-ore",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.16784155757,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "uranium-cannon-shell",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "uranium-cannon-shell",
+      "entityNumber": 49,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    },
+    {
+      "id": "uranium-235",
+      "type": "item",
+      "perSecond": 0.000117489090299,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "uranium-235",
+      "entityNumber": 50,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.000117489090299,
+      "minPerMinute": 0,
+      "role": "surplus"
+    }
+  ],
+  "blueprintSha256": "9085f8c3b6bbaceced9f3f122e94f5de9e9271a17e96222846941cf0896be4fb",
+  "entityCount": 62
+}

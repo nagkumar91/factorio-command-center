@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "mixed",
+  "target": {
+    "id": "captive-biter-spawner",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "captive-biter-spawner",
+      "machine": "cryogenic-plant",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.0833333333333,
+      "utilization": 0.0833333333333,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "captive-biter-spawner"
+      ],
+      "ingredients": [
+        {
+          "id": "biter-egg",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.166666666667
+        },
+        {
+          "id": "capture-robot-rocket",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 15,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.25
+        },
+        {
+          "id": "fluoroketone-cold",
+          "type": "fluid",
+          "amount": 100,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.66666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "captive-biter-spawner",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "kovarex-enrichment-process",
+      "machine": "centrifuge",
+      "craftsPerSecond": 0.244822485207,
+      "machineCount": 15,
+      "exactMachineCount": 14.6893491124,
+      "utilization": 0.979289940828,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "kovarex-enrichment-process"
+      ],
+      "ingredients": [
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 40,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 9.79289940828
+        },
+        {
+          "id": "uranium-238",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.22411242604
+        }
+      ],
+      "results": [
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 41,
+          "probability": 1,
+          "ignoredByProductivity": 40,
+          "expectedAmount": 41,
+          "perSecond": 10.0377218935
+        },
+        {
+          "id": "uranium-238",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 2,
+          "expectedAmount": 2,
+          "perSecond": 0.489644970414
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "uranium-processing",
+      "machine": "centrifuge",
+      "craftsPerSecond": 0.739644970414,
+      "machineCount": 9,
+      "exactMachineCount": 8.87573964497,
+      "utilization": 0.986193293886,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "uranium-processing"
+      ],
+      "ingredients": [
+        {
+          "id": "uranium-ore",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 7.39644970414
+        }
+      ],
+      "results": [
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.007000000000000001,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.007000000000000001,
+          "perSecond": 0.0051775147929
+        },
+        {
+          "id": "uranium-238",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.993,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.993,
+          "perSecond": 0.734467455621
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "fluoroketone-cold",
+      "type": "fluid",
+      "perSecond": 1.66666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "fluoroketone-cold",
+      "label": "IN fluoroketone-cold",
+      "entityNumber": 186,
+      "displayEntity": 187,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 1.66666666667,
+      "plannedPerSecond": 1.66666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "temperature": -150
+    },
+    {
+      "id": "biter-egg",
+      "type": "item",
+      "perSecond": 0.166666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "biter-egg",
+      "label": "IN biter-egg",
+      "entityNumber": 188,
+      "displayEntity": 189,
+      "position": {
+        "x": 8.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.166666666667,
+      "plannedPerSecond": 0.166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "capture-robot-rocket",
+      "type": "item",
+      "perSecond": 0.0166666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "capture-robot-rocket",
+      "label": "IN capture-robot-rocket",
+      "entityNumber": 190,
+      "displayEntity": 191,
+      "position": {
+        "x": 12.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.0166666666667,
+      "plannedPerSecond": 0.0166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "uranium-ore",
+      "type": "item",
+      "perSecond": 7.39644970414,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "uranium-ore",
+          "requiredFluid": "sulfuric-acid",
+          "extractionIncluded": false,
+          "amount": 79700000,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "1da8bc719902babcb18a5f96de47b41147f7b573ce799e13516038ce181b87c1",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "uranium-ore",
+      "label": "IN uranium-ore",
+      "entityNumber": 192,
+      "displayEntity": 193,
+      "position": {
+        "x": 16.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 7.39644970414,
+      "plannedPerSecond": 7.39644970414,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [],
+  "startupStock": [],
+  "rawOnly": false,
+  "stochastic": true,
+  "warnings": [
+    "Random result rates are expectations, not guaranteed yields. Native throughput needs repeated measurement windows.",
+    "Spoilage losses are not included in stoichiometric demand; measure them in the native run."
+  ],
+  "machineCount": 25,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-asteroid-processing",
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "asteroid-reprocessing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "base-ore-processing",
+      "battery",
+      "big-mining-drill",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "biter-egg-handling",
+      "bulk-inserter",
+      "calcite-processing",
+      "captive-biter-spawner",
+      "captivity",
+      "carbon-fiber",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "cryogenic-plant",
+      "cryogenic-science-pack",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electric-mining-drill",
+      "electric-mining-drill-mk2",
+      "electric-mining-drill-mk3",
+      "electromagnetic-plant",
+      "electromagnetic-science-pack",
+      "electronics",
+      "engine",
+      "explosives",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "foundry",
+      "heating-tower",
+      "holmium-processing",
+      "jellynut",
+      "kovarex-enrichment-process",
+      "landfill",
+      "lithium-processing",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "metallurgic-science-pack",
+      "military",
+      "military-2",
+      "military-3",
+      "military-science-pack",
+      "mining-productivity-1",
+      "mining-productivity-2",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "recycling",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "rocket-turret",
+      "rocketry",
+      "space-platform",
+      "space-science-pack",
+      "speed-module",
+      "steam-power",
+      "steel-processing",
+      "stone-wall",
+      "stronger-explosives-1",
+      "stronger-explosives-2",
+      "sulfur-processing",
+      "tungsten-carbide",
+      "tungsten-steel",
+      "uranium-mining",
+      "uranium-processing",
+      "utility-science-pack",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "captive-biter-spawner",
+        "unlockAlternatives": [
+          "captive-biter-spawner"
+        ],
+        "selected": "captive-biter-spawner"
+      },
+      {
+        "recipe": "kovarex-enrichment-process",
+        "unlockAlternatives": [
+          "kovarex-enrichment-process"
+        ],
+        "selected": "kovarex-enrichment-process"
+      },
+      {
+        "recipe": "uranium-processing",
+        "unlockAlternatives": [
+          "uranium-processing"
+        ],
+        "selected": "uranium-processing"
+      },
+      {
+        "recipe": "pipe",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "centrifuge",
+        "unlockAlternatives": [
+          "uranium-processing"
+        ],
+        "selected": "uranium-processing"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "cryogenic-plant",
+        "unlockAlternatives": [
+          "cryogenic-plant"
+        ],
+        "selected": "cryogenic-plant"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "fluoroketone-cold",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 1.66666666667,
+        "residual": 0
+      },
+      {
+        "id": "biter-egg",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.166666666667,
+        "residual": 0
+      },
+      {
+        "id": "captive-biter-spawner",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "capture-robot-rocket",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "uranium-235",
+        "type": "item",
+        "producedPerSecond": 10.0428994083,
+        "consumedPerSecond": 10.0428994083,
+        "residual": 0
+      },
+      {
+        "id": "uranium-238",
+        "type": "item",
+        "producedPerSecond": 1.22411242604,
+        "consumedPerSecond": 1.22411242604,
+        "residual": 0
+      },
+      {
+        "id": "uranium-ore",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 7.39644970414,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "captive-biter-spawner",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "captive-biter-spawner",
+      "entityNumber": 194,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    }
+  ],
+  "materialSeeds": [],
+  "blueprintSha256": "5f54c7a48a4347e582ad7e966e00be58d2309e1814ced20012b31f0b86314353",
+  "entityCount": 403
+}

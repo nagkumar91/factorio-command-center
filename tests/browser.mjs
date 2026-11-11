@@ -95,8 +95,8 @@ try {
   assert.equal(await page.locator('.blueprint-card').count(), 24);
   await page.screenshot({ path: 'test-results/blueprints-desktop.png', fullPage: false });
   await click('explore-feature', 'solar');
-  assert.equal(await page.locator('.blueprint-card').count(), 2);
-  await click('blueprint-details');
+  assert.ok(await page.locator('.blueprint-card').count() >= 2, 'Solar search includes the expanded workshop catalogue');
+  await click('blueprint-details', 'autosaved-614f2f4c2ed1acc9');
   assert.ok(await page.locator('.material-list>div').count() > 0);
   await click('copy-blueprint');
   assert.match(await page.evaluate(() => navigator.clipboard.readText()), /^0e/);
@@ -113,7 +113,7 @@ try {
   await click('clear-crate');
   await route('blueprints');
   await click('explore-feature', 'solar');
-  await click('blueprint-details');
+  await click('blueprint-details', 'autosaved-614f2f4c2ed1acc9');
   await click('plan-blueprint');
   await page.waitForURL(/#production$/);
   await page.getByRole('heading', { name: 'Production planner', exact: true }).waitFor();

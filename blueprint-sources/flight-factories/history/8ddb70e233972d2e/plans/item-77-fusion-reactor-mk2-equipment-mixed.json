@@ -1,0 +1,459 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "mixed",
+  "target": {
+    "id": "77-fusion-reactor-mk2-equipment",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "77-fusion-reactor-mk2-equipment",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 1,
+      "utilization": 1,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "77-fusion-reactor-mk2-equipment"
+      ],
+      "ingredients": [
+        {
+          "id": "fusion-reactor-equipment",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "fusion-power-cell",
+          "type": "item",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.333333333333
+        },
+        {
+          "id": "supercapacitor",
+          "type": "item",
+          "amount": 40,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.666666666667
+        },
+        {
+          "id": "quantum-processor",
+          "type": "item",
+          "amount": 300,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 5
+        },
+        {
+          "id": "productivity-module-3",
+          "type": "item",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.833333333333
+        },
+        {
+          "id": "quality-module-3",
+          "type": "item",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.833333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "77-fusion-reactor-mk2-equipment",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "fusion-power-cell",
+      "type": "item",
+      "perSecond": 0.333333333333,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "fusion-power-cell",
+      "label": "IN fusion-power-cell",
+      "entityNumber": 38,
+      "displayEntity": 39,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.333333333333,
+      "plannedPerSecond": 0.333333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "fusion-reactor-equipment",
+      "type": "item",
+      "perSecond": 0.0166666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "fusion-reactor-equipment",
+      "label": "IN fusion-reactor-equipment",
+      "entityNumber": 40,
+      "displayEntity": 41,
+      "position": {
+        "x": 8.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.0166666666667,
+      "plannedPerSecond": 0.0166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "productivity-module-3",
+      "type": "item",
+      "perSecond": 0.833333333333,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "productivity-module-3",
+      "label": "IN productivity-module-3",
+      "entityNumber": 42,
+      "displayEntity": 43,
+      "position": {
+        "x": 12.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.833333333333,
+      "plannedPerSecond": 0.833333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "quality-module-3",
+      "type": "item",
+      "perSecond": 0.833333333333,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "quality-module-3",
+      "label": "IN quality-module-3",
+      "entityNumber": 44,
+      "displayEntity": 45,
+      "position": {
+        "x": 16.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.833333333333,
+      "plannedPerSecond": 0.833333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "quantum-processor",
+      "type": "item",
+      "perSecond": 5,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "quantum-processor",
+      "label": "IN quantum-processor",
+      "entityNumber": 46,
+      "displayEntity": 47,
+      "position": {
+        "x": 20.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 5,
+      "plannedPerSecond": 5,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "supercapacitor",
+      "type": "item",
+      "perSecond": 0.666666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "supercapacitor",
+      "label": "IN supercapacitor",
+      "entityNumber": 48,
+      "displayEntity": 49,
+      "position": {
+        "x": 24.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.666666666667,
+      "plannedPerSecond": 0.666666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [],
+  "startupStock": [],
+  "rawOnly": false,
+  "stochastic": false,
+  "warnings": [],
+  "machineCount": 1,
+  "requiredResearch": {
+    "technologies": [
+      "77-fusion-reactor-mk2-equipment",
+      "advanced-asteroid-processing",
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "asteroid-reprocessing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "base-ore-processing",
+      "battery",
+      "big-mining-drill",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "bulk-inserter",
+      "calcite-processing",
+      "carbon-fiber",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "cryogenic-plant",
+      "cryogenic-science-pack",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electric-mining-drill",
+      "electric-mining-drill-mk2",
+      "electric-mining-drill-mk3",
+      "electromagnetic-plant",
+      "electromagnetic-science-pack",
+      "electronics",
+      "engine",
+      "explosives",
+      "fast-inserter",
+      "fission-reactor-equipment",
+      "flammables",
+      "fluid-handling",
+      "foundry",
+      "fusion-reactor",
+      "fusion-reactor-equipment",
+      "heating-tower",
+      "heavy-armor",
+      "holmium-processing",
+      "jellynut",
+      "landfill",
+      "lithium-processing",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "metallurgic-science-pack",
+      "military",
+      "military-2",
+      "military-science-pack",
+      "mining-productivity-1",
+      "mining-productivity-2",
+      "modular-armor",
+      "modules",
+      "nuclear-power",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "power-armor",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "quantum-processor",
+      "railway",
+      "recycling",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "rocket-turret",
+      "rocketry",
+      "space-platform",
+      "space-science-pack",
+      "speed-module",
+      "steam-power",
+      "steel-processing",
+      "stone-wall",
+      "stronger-explosives-1",
+      "stronger-explosives-2",
+      "sulfur-processing",
+      "tungsten-carbide",
+      "tungsten-steel",
+      "uranium-mining",
+      "uranium-processing",
+      "utility-science-pack",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "77-fusion-reactor-mk2-equipment",
+        "unlockAlternatives": [
+          "77-fusion-reactor-mk2-equipment"
+        ],
+        "selected": "77-fusion-reactor-mk2-equipment"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "77-fusion-reactor-mk2-equipment",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "fusion-power-cell",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.333333333334,
+        "residual": 0
+      },
+      {
+        "id": "fusion-reactor-equipment",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "productivity-module-3",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.833333333335,
+        "residual": 0
+      },
+      {
+        "id": "quality-module-3",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.833333333335,
+        "residual": 0
+      },
+      {
+        "id": "quantum-processor",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 5.00000000001,
+        "residual": 0
+      },
+      {
+        "id": "supercapacitor",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.666666666668,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "77-fusion-reactor-mk2-equipment",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "77-fusion-reactor-mk2-equipment",
+      "entityNumber": 50,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    }
+  ],
+  "materialSeeds": [],
+  "blueprintSha256": "b9436bbe2be868a8f1aa32e1f40321316bd340f3da027d9d9a50097fd0f49fd8",
+  "entityCount": 56
+}

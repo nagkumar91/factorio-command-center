@@ -1,0 +1,638 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "raw",
+  "target": {
+    "id": "lubricant-barrel",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports plus active machine time; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "advanced-oil-processing",
+      "machine": "oil-refinery",
+      "craftsPerSecond": 0.0333333333333,
+      "machineCount": 1,
+      "exactMachineCount": 0.166666666667,
+      "utilization": 0.166666666667,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "advanced-oil-processing"
+      ],
+      "ingredients": [
+        {
+          "id": "water",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.66666666667
+        },
+        {
+          "id": "crude-oil",
+          "type": "fluid",
+          "amount": 100,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 3.33333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "heavy-oil",
+          "type": "fluid",
+          "amount": 25,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 25,
+          "perSecond": 0.833333333333
+        },
+        {
+          "id": "light-oil",
+          "type": "fluid",
+          "amount": 45,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 45,
+          "perSecond": 1.5
+        },
+        {
+          "id": "petroleum-gas",
+          "type": "fluid",
+          "amount": 55,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 55,
+          "perSecond": 1.83333333333
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "barrel",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.0222222222222,
+      "utilization": 0.0222222222222,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "fluid-handling"
+      ],
+      "ingredients": [
+        {
+          "id": "steel-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "barrel",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "casting-steel",
+      "machine": "foundry",
+      "craftsPerSecond": 0.0111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.00888888888889,
+      "utilization": 0.00888888888889,
+      "craftingSpeed": 4,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "foundry"
+      ],
+      "ingredients": [
+        {
+          "id": "molten-iron",
+          "type": "fluid",
+          "amount": 30,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.333333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "steel-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1.5,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "lubricant",
+      "machine": "chemical-plant",
+      "craftsPerSecond": 0.0833333333333,
+      "machineCount": 1,
+      "exactMachineCount": 0.0833333333333,
+      "utilization": 0.0833333333333,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "lubricant"
+      ],
+      "ingredients": [
+        {
+          "id": "heavy-oil",
+          "type": "fluid",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.833333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "lubricant",
+          "type": "fluid",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 10,
+          "perSecond": 0.833333333333
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "lubricant-barrel",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.00444444444444,
+      "utilization": 0.00444444444444,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "fluid-handling"
+      ],
+      "ingredients": [
+        {
+          "id": "lubricant",
+          "type": "fluid",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.833333333333
+        },
+        {
+          "id": "barrel",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "lubricant-barrel",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "molten-iron-from-lava",
+      "machine": "foundry",
+      "craftsPerSecond": 0.000888888888889,
+      "machineCount": 1,
+      "exactMachineCount": 0.00355555555556,
+      "utilization": 0.00355555555556,
+      "craftingSpeed": 4,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "foundry"
+      ],
+      "ingredients": [
+        {
+          "id": "lava",
+          "type": "fluid",
+          "amount": 500,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.444444444444
+        },
+        {
+          "id": "calcite",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.000888888888889
+        }
+      ],
+      "results": [
+        {
+          "id": "molten-iron",
+          "type": "fluid",
+          "amount": 250,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 375,
+          "perSecond": 0.333333333333
+        },
+        {
+          "id": "stone",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 15,
+          "perSecond": 0.0133333333333
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "crude-oil",
+      "type": "fluid",
+      "perSecond": 3.33333333333,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "crude-oil",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true
+    },
+    {
+      "id": "lava",
+      "type": "fluid",
+      "perSecond": 0.444444444444,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "offshore-pumping",
+          "tile": "lava",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "lava-hot",
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true
+    },
+    {
+      "id": "water",
+      "type": "fluid",
+      "perSecond": 1.66666666667,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "offshore-pumping",
+          "tile": "deepwater",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "water",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-yumako",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-jellynut",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-red-tentacle",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-pink-tentacle",
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true
+    },
+    {
+      "id": "calcite",
+      "type": "item",
+      "perSecond": 0.000888888888889,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "calcite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true
+    }
+  ],
+  "surplus": [
+    {
+      "id": "light-oil",
+      "type": "fluid",
+      "perSecond": 1.5,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "petroleum-gas",
+      "type": "fluid",
+      "perSecond": 1.83333333333,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "stone",
+      "type": "item",
+      "perSecond": 0.0133333333333,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": true,
+  "stochastic": false,
+  "warnings": [],
+  "machineCount": 6,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "calcite-processing",
+      "chemical-science-pack",
+      "electronics",
+      "engine",
+      "fluid-handling",
+      "foundry",
+      "logistic-science-pack",
+      "logistics",
+      "logistics-2",
+      "lubricant",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing",
+      "tungsten-carbide"
+    ],
+    "requirements": [
+      {
+        "recipe": "advanced-oil-processing",
+        "unlockAlternatives": [
+          "advanced-oil-processing"
+        ],
+        "selected": "advanced-oil-processing"
+      },
+      {
+        "recipe": "barrel",
+        "unlockAlternatives": [
+          "fluid-handling"
+        ],
+        "selected": "fluid-handling"
+      },
+      {
+        "recipe": "casting-steel",
+        "unlockAlternatives": [
+          "foundry"
+        ],
+        "selected": "foundry"
+      },
+      {
+        "recipe": "lubricant",
+        "unlockAlternatives": [
+          "lubricant"
+        ],
+        "selected": "lubricant"
+      },
+      {
+        "recipe": "lubricant-barrel",
+        "unlockAlternatives": [
+          "fluid-handling"
+        ],
+        "selected": "fluid-handling"
+      },
+      {
+        "recipe": "molten-iron-from-lava",
+        "unlockAlternatives": [
+          "foundry"
+        ],
+        "selected": "foundry"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "oil-refinery",
+        "unlockAlternatives": [
+          "oil-processing"
+        ],
+        "selected": "oil-processing"
+      },
+      {
+        "recipe": "chemical-plant",
+        "unlockAlternatives": [
+          "oil-processing"
+        ],
+        "selected": "oil-processing"
+      },
+      {
+        "recipe": "foundry",
+        "unlockAlternatives": [
+          "foundry"
+        ],
+        "selected": "foundry"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "crude-oil",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 3.33333333333,
+        "residual": 0
+      },
+      {
+        "id": "heavy-oil",
+        "type": "fluid",
+        "producedPerSecond": 0.833333333332,
+        "consumedPerSecond": 0.833333333333,
+        "residual": 0
+      },
+      {
+        "id": "lava",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.444444444444,
+        "residual": 0
+      },
+      {
+        "id": "light-oil",
+        "type": "fluid",
+        "producedPerSecond": 1.5,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "lubricant",
+        "type": "fluid",
+        "producedPerSecond": 0.833333333333,
+        "consumedPerSecond": 0.833333333335,
+        "residual": 0
+      },
+      {
+        "id": "molten-iron",
+        "type": "fluid",
+        "producedPerSecond": 0.333333333333,
+        "consumedPerSecond": 0.333333333333,
+        "residual": 0
+      },
+      {
+        "id": "petroleum-gas",
+        "type": "fluid",
+        "producedPerSecond": 1.83333333333,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "water",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 1.66666666666,
+        "residual": 0
+      },
+      {
+        "id": "barrel",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "calcite",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.000888888888889,
+        "residual": 0
+      },
+      {
+        "id": "lubricant-barrel",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "steel-plate",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "stone",
+        "type": "item",
+        "producedPerSecond": 0.0133333333333,
+        "consumedPerSecond": 0,
+        "residual": 0
+      }
+    ]
+  }
+}

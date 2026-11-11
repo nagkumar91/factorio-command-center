@@ -1,0 +1,1171 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "raw",
+  "target": {
+    "id": "overgrowth-yumako-soil",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "artificial-yumako-soil",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.00333333333333,
+      "machineCount": 1,
+      "exactMachineCount": 0.00888888888889,
+      "utilization": 0.00888888888889,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "artificial-soil"
+      ],
+      "ingredients": [
+        {
+          "id": "yumako-seed",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.00666666666667
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.166666666667
+        },
+        {
+          "id": "landfill",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "artificial-yumako-soil",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 10,
+          "perSecond": 0.0333333333333
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "bioflux",
+      "machine": "biochamber",
+      "craftsPerSecond": 0.000925925925926,
+      "machineCount": 1,
+      "exactMachineCount": 0.00277777777778,
+      "utilization": 0.00277777777778,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "bioflux"
+      ],
+      "ingredients": [
+        {
+          "id": "yumako-mash",
+          "type": "item",
+          "amount": 15,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0138888888889
+        },
+        {
+          "id": "jelly",
+          "type": "item",
+          "amount": 12,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 0.75,
+          "probability": 1,
+          "fuel": true,
+          "perSecond": 0.000694444444444
+        }
+      ],
+      "results": [
+        {
+          "id": "bioflux",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 6,
+          "perSecond": 0.00555555555556
+        }
+      ],
+      "fuel": {
+        "id": "nutrients",
+        "type": "item",
+        "amount": 0.75,
+        "probability": 1,
+        "fuel": true
+      },
+      "stochastic": false
+    },
+    {
+      "recipe": "biter-egg",
+      "machine": "captive-biter-spawner",
+      "craftsPerSecond": 0.0333333333333,
+      "machineCount": 1,
+      "exactMachineCount": 0.333333333333,
+      "utilization": 0.333333333333,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "captivity"
+      ],
+      "ingredients": [
+        {
+          "id": "bioflux",
+          "type": "item",
+          "amount": 0.16666666666666666,
+          "probability": 1,
+          "fuel": true,
+          "perSecond": 0.00555555555556
+        }
+      ],
+      "results": [
+        {
+          "id": "biter-egg",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 5,
+          "perSecond": 0.166666666667
+        }
+      ],
+      "fuel": {
+        "id": "bioflux",
+        "type": "item",
+        "amount": 0.16666666666666666,
+        "probability": 1,
+        "fuel": true
+      },
+      "stochastic": false
+    },
+    {
+      "recipe": "jellynut-processing",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.00277777777778,
+      "machineCount": 1,
+      "exactMachineCount": 0.0037037037037,
+      "utilization": 0.0037037037037,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "jellynut"
+      ],
+      "ingredients": [
+        {
+          "id": "jellynut",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.00277777777778
+        }
+      ],
+      "results": [
+        {
+          "id": "jellynut-seed",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.02,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.02,
+          "perSecond": 0.0000555555555556
+        },
+        {
+          "id": "jelly",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 4,
+          "perSecond": 0.0111111111111
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    },
+    {
+      "recipe": "landfill",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.0111111111111,
+      "utilization": 0.0111111111111,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "landfill"
+      ],
+      "ingredients": [
+        {
+          "id": "stone",
+          "type": "item",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.833333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "landfill",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "nutrients-from-fish",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.00836805555556,
+      "machineCount": 1,
+      "exactMachineCount": 0.0223148148148,
+      "utilization": 0.0223148148148,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "fish-breeding"
+      ],
+      "ingredients": [
+        {
+          "id": "raw-fish",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.00836805555556
+        }
+      ],
+      "results": [
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 20,
+          "perSecond": 0.167361111111
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "overgrowth-yumako-soil",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.222222222222,
+      "utilization": 0.222222222222,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "overgrowth-soil"
+      ],
+      "ingredients": [
+        {
+          "id": "artificial-yumako-soil",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0333333333333
+        },
+        {
+          "id": "yumako-seed",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0833333333333
+        },
+        {
+          "id": "biter-egg",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.166666666667
+        },
+        {
+          "id": "spoilage",
+          "type": "item",
+          "amount": 50,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.833333333333
+        },
+        {
+          "id": "water",
+          "type": "fluid",
+          "amount": 100,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.66666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "overgrowth-yumako-soil",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "yumako-processing",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 4.5,
+      "machineCount": 6,
+      "exactMachineCount": 6,
+      "utilization": 1,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "yumako"
+      ],
+      "ingredients": [
+        {
+          "id": "yumako",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 4.5
+        }
+      ],
+      "results": [
+        {
+          "id": "yumako-seed",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.02,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.02,
+          "perSecond": 0.09
+        },
+        {
+          "id": "yumako-mash",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 2,
+          "perSecond": 9
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "water",
+      "type": "fluid",
+      "perSecond": 1.66666666667,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "offshore-pumping",
+          "tile": "deepwater",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "water",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-yumako",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-jellynut",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-red-tentacle",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-pink-tentacle",
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "water",
+      "label": "IN water",
+      "entityNumber": 135,
+      "displayEntity": 136,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 1.66666666667,
+      "plannedPerSecond": 1.66666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "temperature": 15
+    },
+    {
+      "id": "jellynut",
+      "type": "item",
+      "perSecond": 0.00277777777778,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "jellystem",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "jellynut",
+      "label": "IN jellynut",
+      "entityNumber": 137,
+      "displayEntity": 138,
+      "position": {
+        "x": 8.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.00277777777778,
+      "plannedPerSecond": 0.00277777777778,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "raw-fish",
+      "type": "item",
+      "perSecond": 0.00836805555556,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "fish",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "raw-fish",
+      "label": "IN raw-fish",
+      "entityNumber": 139,
+      "displayEntity": 140,
+      "position": {
+        "x": 12.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.00836805555556,
+      "plannedPerSecond": 0.00836805555556,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "spoilage",
+      "type": "item",
+      "perSecond": 0.833333333333,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "cuttlepop",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "slipstack",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "funneltrunk",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "hairyclubnub",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "teflilly",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "lickmaw",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "stingfrond",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "boompuff",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "sunnycomb",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "spoilage",
+      "label": "IN spoilage",
+      "entityNumber": 141,
+      "displayEntity": 142,
+      "position": {
+        "x": 16.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.833333333333,
+      "plannedPerSecond": 0.833333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "stone",
+      "type": "item",
+      "perSecond": 0.833333333333,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "mining",
+          "entity": "stone",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "slipstack",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-sand-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-faded",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-cold",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-short",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "vulcanus-chimney-truncated",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "huge-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "big-volcanic-rock",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "iron-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "copper-stromatolite",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "stone",
+          "requiredFluid": null,
+          "extractionIncluded": false,
+          "amount": 79700000,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "1da8bc719902babcb18a5f96de47b41147f7b573ce799e13516038ce181b87c1",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "stone",
+      "label": "IN stone",
+      "entityNumber": 143,
+      "displayEntity": 144,
+      "position": {
+        "x": 20.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.833333333333,
+      "plannedPerSecond": 0.833333333333,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "yumako",
+      "type": "item",
+      "perSecond": 4.5,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "yumako-tree",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "yumako",
+      "label": "IN yumako",
+      "entityNumber": 145,
+      "displayEntity": 146,
+      "position": {
+        "x": 24.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 4.5,
+      "plannedPerSecond": 4.5,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [
+    {
+      "id": "jellynut-seed",
+      "type": "item",
+      "perSecond": 0.0000555555555556,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "yumako-mash",
+      "type": "item",
+      "perSecond": 8.98611111111,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": true,
+  "stochastic": true,
+  "warnings": [
+    "Random result rates are expectations, not guaranteed yields. Native throughput needs repeated measurement windows.",
+    "Spoilage losses are not included in stoichiometric demand; measure them in the native run.",
+    "Burner fuel is included at active crafting consumption; idle fuel and spoilage can increase demand."
+  ],
+  "machineCount": 13,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-asteroid-processing",
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "asteroid-reprocessing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "base-ore-processing",
+      "battery",
+      "big-mining-drill",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "biter-egg-handling",
+      "bulk-inserter",
+      "calcite-processing",
+      "captive-biter-spawner",
+      "captivity",
+      "carbon-fiber",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "cryogenic-plant",
+      "cryogenic-science-pack",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electric-mining-drill",
+      "electric-mining-drill-mk2",
+      "electric-mining-drill-mk3",
+      "electromagnetic-plant",
+      "electromagnetic-science-pack",
+      "electronics",
+      "engine",
+      "explosives",
+      "fast-inserter",
+      "fish-breeding",
+      "flammables",
+      "fluid-handling",
+      "foundry",
+      "heating-tower",
+      "holmium-processing",
+      "jellynut",
+      "kovarex-enrichment-process",
+      "landfill",
+      "lithium-processing",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "metallurgic-science-pack",
+      "military",
+      "military-2",
+      "military-3",
+      "military-science-pack",
+      "mining-productivity-1",
+      "mining-productivity-2",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "overgrowth-soil",
+      "plastics",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "recycling",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "rocket-turret",
+      "rocketry",
+      "space-platform",
+      "space-science-pack",
+      "speed-module",
+      "steam-power",
+      "steel-processing",
+      "stone-wall",
+      "stronger-explosives-1",
+      "stronger-explosives-2",
+      "sulfur-processing",
+      "tree-seeding",
+      "tungsten-carbide",
+      "tungsten-steel",
+      "uranium-mining",
+      "uranium-processing",
+      "utility-science-pack",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "artificial-yumako-soil",
+        "unlockAlternatives": [
+          "artificial-soil"
+        ],
+        "selected": "artificial-soil"
+      },
+      {
+        "recipe": "bioflux",
+        "unlockAlternatives": [
+          "bioflux"
+        ],
+        "selected": "bioflux"
+      },
+      {
+        "recipe": "biter-egg",
+        "unlockAlternatives": [
+          "captivity"
+        ],
+        "selected": "captivity"
+      },
+      {
+        "recipe": "jellynut-processing",
+        "unlockAlternatives": [
+          "jellynut"
+        ],
+        "selected": "jellynut"
+      },
+      {
+        "recipe": "landfill",
+        "unlockAlternatives": [
+          "landfill"
+        ],
+        "selected": "landfill"
+      },
+      {
+        "recipe": "nutrients-from-fish",
+        "unlockAlternatives": [
+          "fish-breeding"
+        ],
+        "selected": "fish-breeding"
+      },
+      {
+        "recipe": "overgrowth-yumako-soil",
+        "unlockAlternatives": [
+          "overgrowth-soil"
+        ],
+        "selected": "overgrowth-soil"
+      },
+      {
+        "recipe": "yumako-processing",
+        "unlockAlternatives": [
+          "yumako"
+        ],
+        "selected": "yumako"
+      },
+      {
+        "recipe": "pipe",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "biochamber",
+        "unlockAlternatives": [
+          "biochamber"
+        ],
+        "selected": "biochamber"
+      },
+      {
+        "recipe": "captive-biter-spawner",
+        "unlockAlternatives": [
+          "captive-biter-spawner"
+        ],
+        "selected": "captive-biter-spawner"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "water",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 1.66666666667,
+        "residual": 0
+      },
+      {
+        "id": "artificial-yumako-soil",
+        "type": "item",
+        "producedPerSecond": 0.0333333333333,
+        "consumedPerSecond": 0.0333333333334,
+        "residual": 0
+      },
+      {
+        "id": "bioflux",
+        "type": "item",
+        "producedPerSecond": 0.00555555555556,
+        "consumedPerSecond": 0.00555555555555,
+        "residual": 0
+      },
+      {
+        "id": "biter-egg",
+        "type": "item",
+        "producedPerSecond": 0.166666666666,
+        "consumedPerSecond": 0.166666666667,
+        "residual": 0
+      },
+      {
+        "id": "jelly",
+        "type": "item",
+        "producedPerSecond": 0.0111111111111,
+        "consumedPerSecond": 0.0111111111111,
+        "residual": 0
+      },
+      {
+        "id": "jellynut",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.00277777777778,
+        "residual": 0
+      },
+      {
+        "id": "jellynut-seed",
+        "type": "item",
+        "producedPerSecond": 0.0000555555555556,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "landfill",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0.0166666666666,
+        "residual": 0
+      },
+      {
+        "id": "nutrients",
+        "type": "item",
+        "producedPerSecond": 0.167361111111,
+        "consumedPerSecond": 0.167361111111,
+        "residual": 0
+      },
+      {
+        "id": "overgrowth-yumako-soil",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "raw-fish",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.00836805555556,
+        "residual": 0
+      },
+      {
+        "id": "spoilage",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.833333333335,
+        "residual": 0
+      },
+      {
+        "id": "stone",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.833333333335,
+        "residual": 0
+      },
+      {
+        "id": "yumako",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 4.5,
+        "residual": 0
+      },
+      {
+        "id": "yumako-mash",
+        "type": "item",
+        "producedPerSecond": 9,
+        "consumedPerSecond": 0.0138888888889,
+        "residual": 0
+      },
+      {
+        "id": "yumako-seed",
+        "type": "item",
+        "producedPerSecond": 0.09,
+        "consumedPerSecond": 0.0900000000002,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "overgrowth-yumako-soil",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "overgrowth-yumako-soil",
+      "entityNumber": 147,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    },
+    {
+      "id": "jellynut-seed",
+      "type": "item",
+      "perSecond": 0.0000555555555556,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "jellynut-seed",
+      "entityNumber": 148,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.0000555555555556,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "yumako-mash",
+      "type": "item",
+      "perSecond": 8.98611111111,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "yumako-mash",
+      "entityNumber": 149,
+      "position": {
+        "x": 12.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 8.98611111111,
+      "minPerMinute": 0,
+      "role": "surplus"
+    }
+  ],
+  "materialSeeds": [],
+  "blueprintSha256": "357519c62ce1ae2925af80e20c256cf686a6d4af43ab5b0acddb655340ff9fcb",
+  "entityCount": 349
+}

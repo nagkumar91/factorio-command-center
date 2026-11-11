@@ -1,0 +1,626 @@
+{
+  "id": "item-heat-exchanger-mixed",
+  "blueprintSha256": "64d9c1d1075d1bdf56e11f4aacccf6aaad6ef89c89476646b56dc640e2f45169",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "45ffe2e2d40e14eb65d9dc211e3803403c0606c1ce0ed47112c3db05364ffde1",
+  "specSha256": "5d8bad14fa6cbc1af4945d8f6ab09dda318166c87f8bd3b9bf527abfe37f2641",
+  "configurationSha256": "828ceeef0b7d22fe7b19775c510cc3adeeb2de6eea1d02c54475a11edabe4f82",
+  "configuration": {
+    "id": "item-heat-exchanger-mixed",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "64d9c1d1075d1bdf56e11f4aacccf6aaad6ef89c89476646b56dc640e2f45169",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "mixed",
+    "rawOnly": false,
+    "inputs": [
+      {
+        "id": "copper-ore",
+        "type": "item",
+        "perSecond": 1.66666666667,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "mining",
+            "entity": "copper-ore",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "huge-volcanic-rock",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "big-volcanic-rock",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "copper-stromatolite",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "copper-ore",
+        "label": "IN copper-ore",
+        "entityNumber": 57,
+        "displayEntity": 58,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 1.66666666667,
+        "plannedPerSecond": 1.66666666667,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      },
+      {
+        "id": "pipe",
+        "type": "item",
+        "perSecond": 0.166666666667,
+        "source": "supplied-intermediate",
+        "sources": [],
+        "obtainableFromRaw": true,
+        "name": "pipe",
+        "label": "IN pipe",
+        "entityNumber": 59,
+        "displayEntity": 60,
+        "position": {
+          "x": 8.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.166666666667,
+        "plannedPerSecond": 0.166666666667,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      },
+      {
+        "id": "steel-plate",
+        "type": "item",
+        "perSecond": 0.166666666667,
+        "source": "supplied-intermediate",
+        "sources": [],
+        "obtainableFromRaw": true,
+        "name": "steel-plate",
+        "label": "IN steel-plate",
+        "entityNumber": 61,
+        "displayEntity": 62,
+        "position": {
+          "x": 12.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.166666666667,
+        "plannedPerSecond": 0.166666666667,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "heat-exchanger",
+        "type": "item",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "heat-exchanger",
+        "entityNumber": 63,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target"
+      }
+    ],
+    "machineIds": [
+      64,
+      70,
+      76,
+      82
+    ],
+    "roboportIds": [
+      55,
+      56,
+      69,
+      75,
+      81,
+      87
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 87,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 55,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 56,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 69,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 75,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 81,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 87,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": false,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/item-heat-exchanger-mixed.64d9c1d1075d1bdf56e11f4aacccf6aaad6ef89c89476646b56dc640e2f45169.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/item-heat-exchanger-mixed.json",
+    "blueprintFile": "blueprints/item-heat-exchanger-mixed.64d9c1d1075d1bdf56e11f4aacccf6aaad6ef89c89476646b56dc640e2f45169.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "item:copper-plate": [
+        64,
+        70,
+        76
+      ],
+      "item:heat-exchanger": [
+        82
+      ]
+    },
+    "expectedRecipes": {
+      "64": "copper-plate",
+      "70": "copper-plate",
+      "76": "copper-plate",
+      "82": "heat-exchanger"
+    },
+    "statisticsIgnoredInputs": {},
+    "statisticsIgnoredOutputs": {},
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 2,
+    "specSha256": "5d8bad14fa6cbc1af4945d8f6ab09dda318166c87f8bd3b9bf527abfe37f2641",
+    "configurationSha256": "828ceeef0b7d22fe7b19775c510cc3adeeb2de6eea1d02c54475a11edabe4f82",
+    "sourceSpecSha256": "45ffe2e2d40e14eb65d9dc211e3803403c0606c1ce0ed47112c3db05364ffde1"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "item:heat-exchanger": {
+      "warmupCollected": 3,
+      "collectionEvents": 18,
+      "windowCounts": [
+        5,
+        5,
+        5
+      ],
+      "windowProduced": [
+        5,
+        5,
+        5
+      ],
+      "windowProducerCrafts": [
+        5,
+        5,
+        5
+      ],
+      "measuredProduced": 15,
+      "measuredProducerCrafts": 15,
+      "producerEntityIds": [
+        82
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 3,
+      "baselineProducerCrafts": 3,
+      "firstOutputTick": 9720,
+      "lastOutputTick": 70980,
+      "previousProduced": 18,
+      "previousProducerCrafts": 18,
+      "collected": 15,
+      "perMinute": 1,
+      "windowPerMinute": [
+        1,
+        1,
+        1
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "native": {
+    "id": "item-heat-exchanger-mixed",
+    "blueprintSha256": "64d9c1d1075d1bdf56e11f4aacccf6aaad6ef89c89476646b56dc640e2f45169",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "828ceeef0b7d22fe7b19775c510cc3adeeb2de6eea1d02c54475a11edabe4f82",
+    "specSha256": "5d8bad14fa6cbc1af4945d8f6ab09dda318166c87f8bd3b9bf527abfe37f2641",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 87,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-16",
+      "force": "flight-native-16",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -30,
+        "y": -48
+      }
+    },
+    "outputs": {
+      "item:heat-exchanger": {
+        "warmupCollected": 3,
+        "collectionEvents": 18,
+        "windowCounts": [
+          5,
+          5,
+          5
+        ],
+        "windowProduced": [
+          5,
+          5,
+          5
+        ],
+        "windowProducerCrafts": [
+          5,
+          5,
+          5
+        ],
+        "measuredProduced": 15,
+        "measuredProducerCrafts": 15,
+        "producerEntityIds": [
+          82
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 3,
+        "baselineProducerCrafts": 3,
+        "firstOutputTick": 9720,
+        "lastOutputTick": 70980,
+        "previousProduced": 18,
+        "previousProducerCrafts": 18
+      }
+    },
+    "inputs": {
+      "item:copper-ore": {
+        "acceptedItems": 2437,
+        "consumed": 1487,
+        "consumedPerMinute": 99.13333333333334,
+        "statisticsCount": 1487,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 1484,
+        "supply": "declared-boundary-chest-or-belt"
+      },
+      "item:pipe": {
+        "acceptedItems": 1240,
+        "consumed": 150,
+        "consumedPerMinute": 10,
+        "statisticsCount": 150,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 150,
+        "supply": "declared-boundary-chest-or-belt"
+      },
+      "item:steel-plate": {
+        "acceptedItems": 1238,
+        "consumed": 150,
+        "consumedPerMinute": 10,
+        "statisticsCount": 150,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 148,
+        "supply": "declared-boundary-chest-or-belt"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 64,
+        "name": "electric-furnace",
+        "recipe": "copper-plate",
+        "position": {
+          "y": -7.5,
+          "x": -9.5
+        },
+        "status": "working",
+        "productsFinished": 638,
+        "measuredCrafts": 497,
+        "statusSeconds": {
+          "working": 791,
+          "item_ingredient_shortage": 109
+        },
+        "inputInventory": {},
+        "outputInventory": {},
+        "fuelInventory": {}
+      },
+      {
+        "entityNumber": 70,
+        "name": "electric-furnace",
+        "recipe": "copper-plate",
+        "position": {
+          "y": -7.5,
+          "x": 14.5
+        },
+        "status": "working",
+        "productsFinished": 633,
+        "measuredCrafts": 493,
+        "statusSeconds": {
+          "item_ingredient_shortage": 111,
+          "working": 789
+        },
+        "inputInventory": {
+          "copper-ore": 2
+        },
+        "outputInventory": {},
+        "fuelInventory": {}
+      },
+      {
+        "entityNumber": 76,
+        "name": "electric-furnace",
+        "recipe": "copper-plate",
+        "position": {
+          "y": 16.5,
+          "x": -9.5
+        },
+        "status": "working",
+        "productsFinished": 632,
+        "measuredCrafts": 496,
+        "statusSeconds": {
+          "item_ingredient_shortage": 106,
+          "working": 794
+        },
+        "inputInventory": {
+          "copper-ore": 1
+        },
+        "outputInventory": {},
+        "fuelInventory": {}
+      },
+      {
+        "entityNumber": 82,
+        "name": "assembling-machine-2",
+        "recipe": "heat-exchanger",
+        "position": {
+          "y": 16.5,
+          "x": 14.5
+        },
+        "status": "item_ingredient_shortage",
+        "productsFinished": 18,
+        "measuredCrafts": 15,
+        "statusSeconds": {
+          "item_ingredient_shortage": 841,
+          "working": 59
+        },
+        "inputInventory": {
+          "pipe": 20,
+          "copper-plate": 78,
+          "steel-plate": 20
+        },
+        "outputInventory": {},
+        "fuelInventory": {}
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -50,
+          "x": -32
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 55,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 56,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 69,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 75,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 81,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 87,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 55,
+        "robotInventory": {},
+        "allLogisticRobots": 120,
+        "availableLogisticRobots": 0
+      },
+      {
+        "entityNumber": 56,
+        "robotInventory": {},
+        "allLogisticRobots": 120,
+        "availableLogisticRobots": 0
+      },
+      {
+        "entityNumber": 69,
+        "robotInventory": {},
+        "allLogisticRobots": 120,
+        "availableLogisticRobots": 0
+      },
+      {
+        "entityNumber": 75,
+        "robotInventory": {},
+        "allLogisticRobots": 120,
+        "availableLogisticRobots": 0
+      },
+      {
+        "entityNumber": 81,
+        "robotInventory": {},
+        "allLogisticRobots": 120,
+        "availableLogisticRobots": 0
+      },
+      {
+        "entityNumber": 87,
+        "robotInventory": {},
+        "allLogisticRobots": 120,
+        "availableLogisticRobots": 0
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 72
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "b752ebb5054cf0bf1a1006033f9f35272a63b83e28962c1b062d001dc6c585d7",
+  "nativeReportSha256": "6c8ee1237df9618d3cd2d747979e0cf8e6596e0782586f43443b94b15489ff98",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

@@ -1,0 +1,472 @@
+{
+  "id": "item-carbon-fiber-intermediary",
+  "blueprintSha256": "b6b4be23b2cbc95ee7605029f5a16b1c2367c26e3492e84ef1e45e264a8f043f",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "3c73cde3dc8f67b2ba9f7b07cccd41c9c803e8da8c294741aa106803b650e7cd",
+  "specSha256": "aca5802fa92cb4acca87451cbe75e8a50dcb8ad08a1b0471ae63cafe817287a3",
+  "configurationSha256": "50da8f9977e7a40e275ba80d3bbc6251b4d3138536c88e2eaac5f3b54e160c1c",
+  "configuration": {
+    "id": "item-carbon-fiber-intermediary",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "b6b4be23b2cbc95ee7605029f5a16b1c2367c26e3492e84ef1e45e264a8f043f",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "intermediary",
+    "rawOnly": false,
+    "inputs": [
+      {
+        "id": "carbon",
+        "type": "item",
+        "perSecond": 0.0111111111111,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "harvest",
+            "entity": "ashland-lichen-tree",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "ashland-lichen-tree-flaming",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "carbon",
+        "label": "IN carbon",
+        "entityNumber": 38,
+        "displayEntity": 39,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.0111111111111,
+        "plannedPerSecond": 0.0111111111111,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      },
+      {
+        "id": "nutrients",
+        "type": "item",
+        "perSecond": 0.00694444444444,
+        "source": "supplied-intermediate",
+        "sources": [],
+        "obtainableFromRaw": true,
+        "name": "nutrients",
+        "label": "IN nutrients",
+        "entityNumber": 40,
+        "displayEntity": 41,
+        "position": {
+          "x": 8.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.00694444444444,
+        "plannedPerSecond": 0.00694444444444,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      },
+      {
+        "id": "yumako-mash",
+        "type": "item",
+        "perSecond": 0.111111111111,
+        "source": "supplied-intermediate",
+        "sources": [],
+        "obtainableFromRaw": true,
+        "name": "yumako-mash",
+        "label": "IN yumako-mash",
+        "entityNumber": 42,
+        "displayEntity": 43,
+        "position": {
+          "x": 12.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.111111111111,
+        "plannedPerSecond": 0.111111111111,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "carbon-fiber",
+        "type": "item",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "carbon-fiber",
+        "entityNumber": 44,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target"
+      }
+    ],
+    "machineIds": [
+      45
+    ],
+    "roboportIds": [
+      36,
+      37,
+      50
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 50,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 50,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": false,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/item-carbon-fiber-intermediary.b6b4be23b2cbc95ee7605029f5a16b1c2367c26e3492e84ef1e45e264a8f043f.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/item-carbon-fiber-intermediary.json",
+    "blueprintFile": "blueprints/item-carbon-fiber-intermediary.b6b4be23b2cbc95ee7605029f5a16b1c2367c26e3492e84ef1e45e264a8f043f.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "item:carbon-fiber": [
+        45
+      ]
+    },
+    "expectedRecipes": {
+      "45": "carbon-fiber"
+    },
+    "statisticsIgnoredInputs": {},
+    "statisticsIgnoredOutputs": {},
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 2,
+    "specSha256": "aca5802fa92cb4acca87451cbe75e8a50dcb8ad08a1b0471ae63cafe817287a3",
+    "configurationSha256": "50da8f9977e7a40e275ba80d3bbc6251b4d3138536c88e2eaac5f3b54e160c1c",
+    "sourceSpecSha256": "3c73cde3dc8f67b2ba9f7b07cccd41c9c803e8da8c294741aa106803b650e7cd"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "item:carbon-fiber": {
+      "warmupCollected": 61,
+      "collectionEvents": 249,
+      "windowCounts": [
+        72,
+        72,
+        74
+      ],
+      "windowProduced": [
+        69,
+        73,
+        75
+      ],
+      "windowProducerCrafts": [
+        69,
+        73,
+        75
+      ],
+      "measuredProduced": 217,
+      "measuredProducerCrafts": 217,
+      "producerEntityIds": [
+        45
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 66,
+      "baselineProducerCrafts": 66,
+      "firstOutputTick": 2640,
+      "lastOutputTick": 71820,
+      "previousProduced": 283,
+      "previousProducerCrafts": 283,
+      "collected": 218,
+      "perMinute": 14.533333333333333,
+      "windowPerMinute": [
+        14.4,
+        14.4,
+        14.8
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "native": {
+    "id": "item-carbon-fiber-intermediary",
+    "blueprintSha256": "b6b4be23b2cbc95ee7605029f5a16b1c2367c26e3492e84ef1e45e264a8f043f",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "50da8f9977e7a40e275ba80d3bbc6251b4d3138536c88e2eaac5f3b54e160c1c",
+    "specSha256": "aca5802fa92cb4acca87451cbe75e8a50dcb8ad08a1b0471ae63cafe817287a3",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 50,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-2",
+      "force": "flight-native-2",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -24,
+        "y": -36
+      }
+    },
+    "outputs": {
+      "item:carbon-fiber": {
+        "warmupCollected": 61,
+        "collectionEvents": 249,
+        "windowCounts": [
+          72,
+          72,
+          74
+        ],
+        "windowProduced": [
+          69,
+          73,
+          75
+        ],
+        "windowProducerCrafts": [
+          69,
+          73,
+          75
+        ],
+        "measuredProduced": 217,
+        "measuredProducerCrafts": 217,
+        "producerEntityIds": [
+          45
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 66,
+        "baselineProducerCrafts": 66,
+        "firstOutputTick": 2640,
+        "lastOutputTick": 71820,
+        "previousProduced": 283,
+        "previousProducerCrafts": 283
+      }
+    },
+    "inputs": {
+      "item:carbon": {
+        "acceptedItems": 692,
+        "consumed": 145,
+        "consumedPerMinute": 9.666666666666666,
+        "statisticsCount": 145,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 147,
+        "supply": "declared-boundary-chest-or-belt"
+      },
+      "item:nutrients": {
+        "acceptedItems": 4126,
+        "consumed": 91,
+        "consumedPerMinute": 6.066666666666666,
+        "statisticsCount": 91,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 3092,
+        "supply": "declared-boundary-chest-or-belt"
+      },
+      "item:yumako-mash": {
+        "acceptedItems": 6728,
+        "consumed": 1450,
+        "consumedPerMinute": 96.66666666666667,
+        "statisticsCount": 1450,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 4352,
+        "supply": "declared-boundary-chest-or-belt"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 45,
+        "name": "biochamber",
+        "recipe": "carbon-fiber",
+        "position": {
+          "y": 4.5,
+          "x": -3.5
+        },
+        "status": "working",
+        "productsFinished": 283,
+        "measuredCrafts": 217,
+        "statusSeconds": {
+          "working": 359,
+          "item_ingredient_shortage": 540,
+          "full_output": 1
+        },
+        "inputInventory": {
+          "carbon": 1
+        },
+        "outputInventory": {},
+        "fuelInventory": {
+          "nutrients": 5
+        }
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -38,
+          "x": -26
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 50,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 36,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 1
+      },
+      {
+        "entityNumber": 37,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 1
+      },
+      {
+        "entityNumber": 50,
+        "robotInventory": {
+          "logistic-robot": 1
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 1
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 40
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "04c66a578461cb33693cb20fcdecb0f8018ecde1f1f723d605ec1b18ea5faa9f",
+  "nativeReportSha256": "4d9b113abaa72e6e2d1a2608619632145ba4cab4de7ed9f57c5b818ba5a168e4",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

@@ -1,0 +1,528 @@
+{
+  "id": "item-ice-raw",
+  "blueprintSha256": "71eb801793d9c8e48367a84af4bdc93c7d4df89bff80a858096a648688bac567",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "2d7d5f7dbef29954437e07cddd8b4a1cdc979d74380e5c4d4fcd399d64cfecfe",
+  "specSha256": "fb84147239f67ebaa826a8870e85373ca1128a6043f0c7b418a0fa112c58e635",
+  "configurationSha256": "78a717539a8796ff108240089443b1e0b8ec960bf14efedc61a56258b80bd414",
+  "configuration": {
+    "id": "item-ice-raw",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "71eb801793d9c8e48367a84af4bdc93c7d4df89bff80a858096a648688bac567",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "raw",
+    "rawOnly": true,
+    "inputs": [
+      {
+        "id": "ammoniacal-solution",
+        "type": "fluid",
+        "perSecond": 0.166666666667,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "offshore-pumping",
+            "tile": "ammoniacal-ocean",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "ammoniacal-ocean-2",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "brash-ice",
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "ammoniacal-solution",
+        "label": "IN ammoniacal-solution",
+        "entityNumber": 38,
+        "displayEntity": 39,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.166666666667,
+        "plannedPerSecond": 0.166666666667,
+        "supplyPolicy": "unlimited-external-boundary-fixture",
+        "fixturePosition": {
+          "x": 4.5,
+          "y": 3.5
+        },
+        "temperature": -50
+      }
+    ],
+    "outputs": [
+      {
+        "id": "ice",
+        "type": "item",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "ice",
+        "entityNumber": 40,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target"
+      },
+      {
+        "id": "ammonia",
+        "type": "fluid",
+        "perSecond": 0.166666666667,
+        "handling": "Export continuously; finite storage eventually blocks production.",
+        "name": "ammonia",
+        "entityNumber": 41,
+        "position": {
+          "x": 8.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.166666666667,
+        "minPerMinute": 0,
+        "role": "surplus",
+        "fixturePosition": {
+          "x": 8.5,
+          "y": 9.5
+        }
+      }
+    ],
+    "machineIds": [
+      42
+    ],
+    "roboportIds": [
+      36,
+      37,
+      53
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 145,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 53,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": false,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/item-ice-raw.71eb801793d9c8e48367a84af4bdc93c7d4df89bff80a858096a648688bac567.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/item-ice-raw.json",
+    "blueprintFile": "blueprints/item-ice-raw.71eb801793d9c8e48367a84af4bdc93c7d4df89bff80a858096a648688bac567.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "item:ice": [
+        42
+      ],
+      "fluid:ammonia": [
+        42
+      ]
+    },
+    "expectedRecipes": {
+      "42": "ammoniacal-solution-separation"
+    },
+    "statisticsIgnoredInputs": {},
+    "statisticsIgnoredOutputs": {},
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 2,
+    "specSha256": "fb84147239f67ebaa826a8870e85373ca1128a6043f0c7b418a0fa112c58e635",
+    "configurationSha256": "78a717539a8796ff108240089443b1e0b8ec960bf14efedc61a56258b80bd414",
+    "sourceSpecSha256": "2d7d5f7dbef29954437e07cddd8b4a1cdc979d74380e5c4d4fcd399d64cfecfe"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "item:ice": {
+      "warmupCollected": 615,
+      "collectionEvents": 1008,
+      "windowCounts": [
+        659,
+        665,
+        661
+      ],
+      "windowProduced": [
+        655,
+        660,
+        665
+      ],
+      "windowProducerCrafts": [
+        131,
+        132,
+        133
+      ],
+      "measuredProduced": 1980,
+      "measuredProducerCrafts": 396,
+      "producerEntityIds": [
+        42
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 795,
+      "baselineProducerCrafts": 159,
+      "firstOutputTick": 1020,
+      "lastOutputTick": 72000,
+      "previousProduced": 2775,
+      "previousProducerCrafts": 555,
+      "collected": 1985,
+      "perMinute": 132.33333333333334,
+      "windowPerMinute": [
+        131.8,
+        133,
+        132.2
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    },
+    "fluid:ammonia": {
+      "warmupCollected": 6684.3036314845085,
+      "collectionEvents": 1199,
+      "windowCounts": [
+        6688.215255975723,
+        6584.3885846138,
+        6648.801993787289
+      ],
+      "windowProduced": [
+        6550,
+        6600,
+        6650
+      ],
+      "windowProducerCrafts": [
+        131,
+        132,
+        133
+      ],
+      "measuredProduced": 19800,
+      "measuredProducerCrafts": 396,
+      "producerEntityIds": [
+        42
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 7950,
+      "baselineProducerCrafts": 159,
+      "firstOutputTick": 120,
+      "lastOutputTick": 72000,
+      "previousProduced": 27750,
+      "previousProducerCrafts": 555,
+      "collected": 19921.405834376812,
+      "perMinute": 1328.0937222917876,
+      "windowPerMinute": [
+        1337.6430511951446,
+        1316.87771692276,
+        1329.7603987574578
+      ],
+      "targetPerMinute": 0,
+      "required": false,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "native": {
+    "id": "item-ice-raw",
+    "blueprintSha256": "71eb801793d9c8e48367a84af4bdc93c7d4df89bff80a858096a648688bac567",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "78a717539a8796ff108240089443b1e0b8ec960bf14efedc61a56258b80bd414",
+    "specSha256": "fb84147239f67ebaa826a8870e85373ca1128a6043f0c7b418a0fa112c58e635",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 145,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-1",
+      "force": "flight-native-1",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -24,
+        "y": -36
+      }
+    },
+    "outputs": {
+      "item:ice": {
+        "warmupCollected": 615,
+        "collectionEvents": 1008,
+        "windowCounts": [
+          659,
+          665,
+          661
+        ],
+        "windowProduced": [
+          655,
+          660,
+          665
+        ],
+        "windowProducerCrafts": [
+          131,
+          132,
+          133
+        ],
+        "measuredProduced": 1980,
+        "measuredProducerCrafts": 396,
+        "producerEntityIds": [
+          42
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 795,
+        "baselineProducerCrafts": 159,
+        "firstOutputTick": 1020,
+        "lastOutputTick": 72000,
+        "previousProduced": 2775,
+        "previousProducerCrafts": 555
+      },
+      "fluid:ammonia": {
+        "warmupCollected": 6684.3036314845085,
+        "collectionEvents": 1199,
+        "windowCounts": [
+          6688.215255975723,
+          6584.3885846138,
+          6648.801993787289
+        ],
+        "windowProduced": [
+          6550,
+          6600,
+          6650
+        ],
+        "windowProducerCrafts": [
+          131,
+          132,
+          133
+        ],
+        "measuredProduced": 19800,
+        "measuredProducerCrafts": 396,
+        "producerEntityIds": [
+          42
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 7950,
+        "baselineProducerCrafts": 159,
+        "firstOutputTick": 120,
+        "lastOutputTick": 72000,
+        "previousProduced": 27750,
+        "previousProducerCrafts": 555
+      }
+    },
+    "inputs": {
+      "fluid:ammoniacal-solution": {
+        "acceptedItems": 0,
+        "consumed": 19800,
+        "consumedPerMinute": 1320,
+        "statisticsCount": 19800,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 0,
+        "supply": "external-infinity-pipe"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 42,
+        "name": "chemical-plant",
+        "recipe": "ammoniacal-solution-separation",
+        "position": {
+          "y": 4.5,
+          "x": -3.5
+        },
+        "status": "working",
+        "productsFinished": 555,
+        "measuredCrafts": 396,
+        "statusSeconds": {
+          "full_output": 527,
+          "working": 373
+        },
+        "inputInventory": {},
+        "outputInventory": {
+          "ice": 50
+        },
+        "fuelInventory": {}
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-fluid",
+        "port": 38,
+        "name": "ammoniacal-solution",
+        "position": {
+          "y": -32.5,
+          "x": -19.5
+        },
+        "entityName": "infinity-pipe"
+      },
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -38,
+          "x": -26
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 53,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 36,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 0
+      },
+      {
+        "entityNumber": 37,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 0
+      },
+      {
+        "entityNumber": 53,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 0
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 40
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "abcb77530ccbb0c433e0ea300d90bc5d905bdf74bce8e2d7e072e1f1a95588bb",
+  "nativeReportSha256": "da23d99f0ed3497352dcbf1117b7275e7db8e3729e5b52e1f4f414f60f46598f",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

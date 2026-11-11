@@ -1,0 +1,461 @@
+{
+  "id": "item-carbon-raw",
+  "blueprintSha256": "0356ca6dab4dfc2069cabb064a2adcfe705fa75eb4747700b9668245533c6b69",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "63c977dd72888c411519e308c435fb70affb65395adaca1b8990215826a07b77",
+  "specSha256": "59bef5b8142c946d95a938917786e8da5a69a0f4748b64f81a422d2d5cb6f771",
+  "configurationSha256": "77154ead2c37d19da471b9033d731cedc7e7221f2eb5925ad89bb2349778b457",
+  "configuration": {
+    "id": "item-carbon-raw",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "0356ca6dab4dfc2069cabb064a2adcfe705fa75eb4747700b9668245533c6b69",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "raw",
+    "rawOnly": true,
+    "inputs": [
+      {
+        "id": "sulfuric-acid",
+        "type": "fluid",
+        "perSecond": 0.333333333333,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "mining",
+            "entity": "sulfuric-acid-geyser",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "sulfuric-acid",
+        "label": "IN sulfuric-acid",
+        "entityNumber": 38,
+        "displayEntity": 39,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.333333333333,
+        "plannedPerSecond": 0.333333333333,
+        "supplyPolicy": "unlimited-external-boundary-fixture",
+        "fixturePosition": {
+          "x": 4.5,
+          "y": 3.5
+        },
+        "temperature": 25
+      },
+      {
+        "id": "coal",
+        "type": "item",
+        "perSecond": 0.0333333333333,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "mining",
+            "entity": "coal",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "huge-rock",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "coal",
+        "label": "IN coal",
+        "entityNumber": 40,
+        "displayEntity": 41,
+        "position": {
+          "x": 8.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.0333333333333,
+        "plannedPerSecond": 0.0333333333333,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "carbon",
+        "type": "item",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "carbon",
+        "entityNumber": 42,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target"
+      }
+    ],
+    "machineIds": [
+      43
+    ],
+    "roboportIds": [
+      36,
+      37,
+      52
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 97,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 52,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": false,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/item-carbon-raw.0356ca6dab4dfc2069cabb064a2adcfe705fa75eb4747700b9668245533c6b69.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/item-carbon-raw.json",
+    "blueprintFile": "blueprints/item-carbon-raw.0356ca6dab4dfc2069cabb064a2adcfe705fa75eb4747700b9668245533c6b69.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "item:carbon": [
+        43
+      ]
+    },
+    "expectedRecipes": {
+      "43": "carbon"
+    },
+    "statisticsIgnoredInputs": {},
+    "statisticsIgnoredOutputs": {},
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 2,
+    "specSha256": "59bef5b8142c946d95a938917786e8da5a69a0f4748b64f81a422d2d5cb6f771",
+    "configurationSha256": "77154ead2c37d19da471b9033d731cedc7e7221f2eb5925ad89bb2349778b457",
+    "sourceSpecSha256": "63c977dd72888c411519e308c435fb70affb65395adaca1b8990215826a07b77"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "item:carbon": {
+      "warmupCollected": 54,
+      "collectionEvents": 201,
+      "windowCounts": [
+        53,
+        52,
+        55
+      ],
+      "windowProduced": [
+        52,
+        54,
+        54
+      ],
+      "windowProducerCrafts": [
+        52,
+        54,
+        54
+      ],
+      "measuredProduced": 160,
+      "measuredProducerCrafts": 160,
+      "producerEntityIds": [
+        43
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 57,
+      "baselineProducerCrafts": 57,
+      "firstOutputTick": 2100,
+      "lastOutputTick": 71940,
+      "previousProduced": 217,
+      "previousProducerCrafts": 217,
+      "collected": 160,
+      "perMinute": 10.666666666666666,
+      "windowPerMinute": [
+        10.6,
+        10.4,
+        11
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "native": {
+    "id": "item-carbon-raw",
+    "blueprintSha256": "0356ca6dab4dfc2069cabb064a2adcfe705fa75eb4747700b9668245533c6b69",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "77154ead2c37d19da471b9033d731cedc7e7221f2eb5925ad89bb2349778b457",
+    "specSha256": "59bef5b8142c946d95a938917786e8da5a69a0f4748b64f81a422d2d5cb6f771",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 97,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-7",
+      "force": "flight-native-7",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -24,
+        "y": -36
+      }
+    },
+    "outputs": {
+      "item:carbon": {
+        "warmupCollected": 54,
+        "collectionEvents": 201,
+        "windowCounts": [
+          53,
+          52,
+          55
+        ],
+        "windowProduced": [
+          52,
+          54,
+          54
+        ],
+        "windowProducerCrafts": [
+          52,
+          54,
+          54
+        ],
+        "measuredProduced": 160,
+        "measuredProducerCrafts": 160,
+        "producerEntityIds": [
+          43
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 57,
+        "baselineProducerCrafts": 57,
+        "firstOutputTick": 2100,
+        "lastOutputTick": 71940,
+        "previousProduced": 217,
+        "previousProducerCrafts": 217
+      }
+    },
+    "inputs": {
+      "fluid:sulfuric-acid": {
+        "acceptedItems": 0,
+        "consumed": 3200,
+        "consumedPerMinute": 213.33333333333334,
+        "statisticsCount": 3200,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 0,
+        "supply": "external-infinity-pipe"
+      },
+      "item:coal": {
+        "acceptedItems": 940,
+        "consumed": 320,
+        "consumedPerMinute": 21.333333333333332,
+        "statisticsCount": 320,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 322,
+        "supply": "declared-boundary-chest-or-belt"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 43,
+        "name": "chemical-plant",
+        "recipe": "carbon",
+        "position": {
+          "y": 4.5,
+          "x": -3.5
+        },
+        "status": "item_ingredient_shortage",
+        "productsFinished": 217,
+        "measuredCrafts": 160,
+        "statusSeconds": {
+          "item_ingredient_shortage": 741,
+          "working": 159
+        },
+        "inputInventory": {},
+        "outputInventory": {},
+        "fuelInventory": {}
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-fluid",
+        "port": 38,
+        "name": "sulfuric-acid",
+        "position": {
+          "y": -32.5,
+          "x": -19.5
+        },
+        "entityName": "infinity-pipe"
+      },
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -38,
+          "x": -26
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 52,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 36,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 47
+      },
+      {
+        "entityNumber": 37,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 47
+      },
+      {
+        "entityNumber": 52,
+        "robotInventory": {
+          "logistic-robot": 47
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 47
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 41
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "4138dd2b5621e959e7a988f2c4c6ed187ee669d9059c4ef1f817267b361c0c18",
+  "nativeReportSha256": "04138c02eadfb492cd6444dbdda0be7796be0dc87a73e8dc0a5ae391968b566b",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

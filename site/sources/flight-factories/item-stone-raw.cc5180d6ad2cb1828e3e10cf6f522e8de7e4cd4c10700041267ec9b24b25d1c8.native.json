@@ -1,0 +1,571 @@
+{
+  "id": "item-stone-raw",
+  "blueprintSha256": "cc5180d6ad2cb1828e3e10cf6f522e8de7e4cd4c10700041267ec9b24b25d1c8",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "5d814db661f6896a8eb85c2a391c03365924aab2eb41ed0be4a3faac74938d82",
+  "specSha256": "af1b82212094004869d1ecdff64289bc0835ae0232234ab3804b563b31e14499",
+  "configurationSha256": "bc90cb5c7e8ef9cf6cf170486812386701b62b3152a1b4ab5f0744d2eed13128",
+  "configuration": {
+    "id": "item-stone-raw",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "cc5180d6ad2cb1828e3e10cf6f522e8de7e4cd4c10700041267ec9b24b25d1c8",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "raw",
+    "rawOnly": true,
+    "inputs": [
+      {
+        "id": "lava",
+        "type": "fluid",
+        "perSecond": 0.37037037037,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "offshore-pumping",
+            "tile": "lava",
+            "extractionIncluded": false
+          },
+          {
+            "kind": "offshore-pumping",
+            "tile": "lava-hot",
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "lava",
+        "label": "IN lava",
+        "entityNumber": 38,
+        "displayEntity": 39,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.37037037037,
+        "plannedPerSecond": 0.37037037037,
+        "supplyPolicy": "unlimited-external-boundary-fixture",
+        "fixturePosition": {
+          "x": 4.5,
+          "y": 3.5
+        },
+        "temperature": 1500
+      },
+      {
+        "id": "calcite",
+        "type": "item",
+        "perSecond": 0.000740740740741,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "mining",
+            "entity": "calcite",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "huge-volcanic-rock",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "big-volcanic-rock",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "calcite",
+        "label": "IN calcite",
+        "entityNumber": 40,
+        "displayEntity": 41,
+        "position": {
+          "x": 8.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.000740740740741,
+        "plannedPerSecond": 0.000740740740741,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "stone",
+        "type": "item",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "stone",
+        "entityNumber": 42,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target"
+      },
+      {
+        "id": "molten-copper",
+        "type": "fluid",
+        "perSecond": 0.277777777778,
+        "handling": "Export continuously; finite storage eventually blocks production.",
+        "name": "molten-copper",
+        "entityNumber": 43,
+        "position": {
+          "x": 8.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.277777777778,
+        "minPerMinute": 0,
+        "role": "surplus",
+        "fixturePosition": {
+          "x": 8.5,
+          "y": 9.5
+        }
+      }
+    ],
+    "machineIds": [
+      44
+    ],
+    "roboportIds": [
+      36,
+      37,
+      57
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 149,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 57,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": false,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/item-stone-raw.cc5180d6ad2cb1828e3e10cf6f522e8de7e4cd4c10700041267ec9b24b25d1c8.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/item-stone-raw.json",
+    "blueprintFile": "blueprints/item-stone-raw.cc5180d6ad2cb1828e3e10cf6f522e8de7e4cd4c10700041267ec9b24b25d1c8.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "fluid:molten-copper": [
+        44
+      ],
+      "item:stone": [
+        44
+      ]
+    },
+    "expectedRecipes": {
+      "44": "molten-copper-from-lava"
+    },
+    "statisticsIgnoredInputs": {},
+    "statisticsIgnoredOutputs": {},
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 2,
+    "specSha256": "af1b82212094004869d1ecdff64289bc0835ae0232234ab3804b563b31e14499",
+    "configurationSha256": "bc90cb5c7e8ef9cf6cf170486812386701b62b3152a1b4ab5f0744d2eed13128",
+    "sourceSpecSha256": "5d814db661f6896a8eb85c2a391c03365924aab2eb41ed0be4a3faac74938d82"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "item:stone": {
+      "warmupCollected": 534,
+      "collectionEvents": 947,
+      "windowCounts": [
+        601,
+        616,
+        604
+      ],
+      "windowProduced": [
+        600,
+        585,
+        630
+      ],
+      "windowProducerCrafts": [
+        40,
+        39,
+        42
+      ],
+      "measuredProduced": 1815,
+      "measuredProducerCrafts": 121,
+      "producerEntityIds": [
+        44
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 705,
+      "baselineProducerCrafts": 47,
+      "firstOutputTick": 2340,
+      "lastOutputTick": 72000,
+      "previousProduced": 2520,
+      "previousProducerCrafts": 168,
+      "collected": 1821,
+      "perMinute": 121.4,
+      "windowPerMinute": [
+        120.2,
+        123.2,
+        120.8
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    },
+    "fluid:molten-copper": {
+      "warmupCollected": 10266.26844573021,
+      "collectionEvents": 1178,
+      "windowCounts": [
+        10076.15635240078,
+        10003.997469365597,
+        10260.437444508076
+      ],
+      "windowProduced": [
+        10000,
+        9750,
+        10500
+      ],
+      "windowProducerCrafts": [
+        40,
+        39,
+        42
+      ],
+      "measuredProduced": 30250,
+      "measuredProducerCrafts": 121,
+      "producerEntityIds": [
+        44
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 11750,
+      "baselineProducerCrafts": 47,
+      "firstOutputTick": 1380,
+      "lastOutputTick": 72000,
+      "previousProduced": 42000,
+      "previousProducerCrafts": 168,
+      "collected": 30340.591266274452,
+      "perMinute": 2022.7060844182968,
+      "windowPerMinute": [
+        2015.231270480156,
+        2000.7994938731194,
+        2052.087488901615
+      ],
+      "targetPerMinute": 0,
+      "required": false,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "native": {
+    "id": "item-stone-raw",
+    "blueprintSha256": "cc5180d6ad2cb1828e3e10cf6f522e8de7e4cd4c10700041267ec9b24b25d1c8",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "bc90cb5c7e8ef9cf6cf170486812386701b62b3152a1b4ab5f0744d2eed13128",
+    "specSha256": "af1b82212094004869d1ecdff64289bc0835ae0232234ab3804b563b31e14499",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 149,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-11",
+      "force": "flight-native-11",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -24,
+        "y": -36
+      }
+    },
+    "outputs": {
+      "item:stone": {
+        "warmupCollected": 534,
+        "collectionEvents": 947,
+        "windowCounts": [
+          601,
+          616,
+          604
+        ],
+        "windowProduced": [
+          600,
+          585,
+          630
+        ],
+        "windowProducerCrafts": [
+          40,
+          39,
+          42
+        ],
+        "measuredProduced": 1815,
+        "measuredProducerCrafts": 121,
+        "producerEntityIds": [
+          44
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 705,
+        "baselineProducerCrafts": 47,
+        "firstOutputTick": 2340,
+        "lastOutputTick": 72000,
+        "previousProduced": 2520,
+        "previousProducerCrafts": 168
+      },
+      "fluid:molten-copper": {
+        "warmupCollected": 10266.26844573021,
+        "collectionEvents": 1178,
+        "windowCounts": [
+          10076.15635240078,
+          10003.997469365597,
+          10260.437444508076
+        ],
+        "windowProduced": [
+          10000,
+          9750,
+          10500
+        ],
+        "windowProducerCrafts": [
+          40,
+          39,
+          42
+        ],
+        "measuredProduced": 30250,
+        "measuredProducerCrafts": 121,
+        "producerEntityIds": [
+          44
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 11750,
+        "baselineProducerCrafts": 47,
+        "firstOutputTick": 1380,
+        "lastOutputTick": 72000,
+        "previousProduced": 42000,
+        "previousProducerCrafts": 168
+      }
+    },
+    "inputs": {
+      "fluid:lava": {
+        "acceptedItems": 0,
+        "consumed": 40000,
+        "consumedPerMinute": 2666.6666666666665,
+        "statisticsCount": 40000,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 0,
+        "supply": "external-infinity-pipe"
+      },
+      "item:calcite": {
+        "acceptedItems": 616,
+        "consumed": 80,
+        "consumedPerMinute": 5.333333333333333,
+        "statisticsCount": 80,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 80,
+        "supply": "declared-boundary-chest-or-belt"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 44,
+        "name": "foundry",
+        "recipe": "molten-copper-from-lava",
+        "position": {
+          "y": 4.5,
+          "x": -3.5
+        },
+        "status": "full_output",
+        "productsFinished": 168,
+        "measuredCrafts": 121,
+        "statusSeconds": {
+          "full_output": 573,
+          "item_ingredient_shortage": 7,
+          "working": 320
+        },
+        "inputInventory": {},
+        "outputInventory": {
+          "stone": 49
+        },
+        "fuelInventory": {}
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-fluid",
+        "port": 38,
+        "name": "lava",
+        "position": {
+          "y": -32.5,
+          "x": -19.5
+        },
+        "entityName": "infinity-pipe"
+      },
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -38,
+          "x": -26
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 57,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 36,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 0
+      },
+      {
+        "entityNumber": 37,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 0
+      },
+      {
+        "entityNumber": 57,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 0
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 41
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "41358154b593ae7f98fd2e09a3c6567489971655bd995161f6770dfcd4d579b1",
+  "nativeReportSha256": "ad6333a53e40547b22c6d03a5be1c0dadbee682b98e00de51f82387089fa814b",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

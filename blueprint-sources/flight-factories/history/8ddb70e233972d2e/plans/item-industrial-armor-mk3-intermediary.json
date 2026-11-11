@@ -1,0 +1,451 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "intermediary",
+  "target": {
+    "id": "industrial-armor-mk3",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "industrial-armor-mk3",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 2,
+      "exactMachineCount": 1.33333333333,
+      "utilization": 0.666666666667,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "77-power-armor-mk6"
+      ],
+      "ingredients": [
+        {
+          "id": "industrial-armor-mk2",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "electric-engine-unit",
+          "type": "item",
+          "amount": 40,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.666666666667
+        },
+        {
+          "id": "personal-assembling-unit4-equipment",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "77-energy-shield-mk5-equipment",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "productivity-module-3",
+          "type": "item",
+          "amount": 30,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.5
+        }
+      ],
+      "results": [
+        {
+          "id": "industrial-armor-mk3",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "77-energy-shield-mk5-equipment",
+      "type": "item",
+      "perSecond": 0.0166666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": false,
+      "name": "77-energy-shield-mk5-equipment",
+      "label": "IN 77-energy-shield-mk5-equipment",
+      "entityNumber": 45,
+      "displayEntity": 46,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.0166666666667,
+      "plannedPerSecond": 0.0166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "electric-engine-unit",
+      "type": "item",
+      "perSecond": 0.666666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "electric-engine-unit",
+      "label": "IN electric-engine-unit",
+      "entityNumber": 47,
+      "displayEntity": 48,
+      "position": {
+        "x": 8.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.666666666667,
+      "plannedPerSecond": 0.666666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "industrial-armor-mk2",
+      "type": "item",
+      "perSecond": 0.0166666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "industrial-armor-mk2",
+      "label": "IN industrial-armor-mk2",
+      "entityNumber": 49,
+      "displayEntity": 50,
+      "position": {
+        "x": 12.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.0166666666667,
+      "plannedPerSecond": 0.0166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "personal-assembling-unit4-equipment",
+      "type": "item",
+      "perSecond": 0.0166666666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": false,
+      "name": "personal-assembling-unit4-equipment",
+      "label": "IN personal-assembling-unit4-equipment",
+      "entityNumber": 51,
+      "displayEntity": 52,
+      "position": {
+        "x": 16.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.0166666666667,
+      "plannedPerSecond": 0.0166666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    },
+    {
+      "id": "productivity-module-3",
+      "type": "item",
+      "perSecond": 0.5,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": false,
+      "name": "productivity-module-3",
+      "label": "IN productivity-module-3",
+      "entityNumber": 53,
+      "displayEntity": 54,
+      "position": {
+        "x": 20.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.5,
+      "plannedPerSecond": 0.5,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [],
+  "startupStock": [],
+  "rawOnly": false,
+  "stochastic": false,
+  "warnings": [
+    "Some supplied intermediates have no supported raw-source route; importing them is an explicit external dependency."
+  ],
+  "machineCount": 2,
+  "requiredResearch": {
+    "technologies": [
+      "77-energy-shield-mk3-equipment",
+      "77-energy-shield-mk4-equipment",
+      "77-energy-shield-mk5-equipment",
+      "77-power-armor-mk3",
+      "77-power-armor-mk4",
+      "77-power-armor-mk5",
+      "77-power-armor-mk6",
+      "advanced-asteroid-processing",
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "asteroid-reprocessing",
+      "automation",
+      "automation-2",
+      "automation-3",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "base-ore-processing",
+      "battery",
+      "belt-immunity-equipment",
+      "big-mining-drill",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "biter-egg-handling",
+      "bulk-inserter",
+      "calcite-processing",
+      "captivity",
+      "carbon-fiber",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "cryogenic-plant",
+      "cryogenic-science-pack",
+      "efficiency-module",
+      "efficiency-module-2",
+      "efficiency-module-3",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electric-mining-drill",
+      "electric-mining-drill-mk2",
+      "electric-mining-drill-mk3",
+      "electromagnetic-plant",
+      "electromagnetic-science-pack",
+      "electronics",
+      "energy-shield-equipment",
+      "energy-shield-mk2-equipment",
+      "engine",
+      "explosives",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "foundry",
+      "heating-tower",
+      "heavy-armor",
+      "holmium-processing",
+      "jellynut",
+      "landfill",
+      "lithium-processing",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "metallurgic-science-pack",
+      "military",
+      "military-2",
+      "military-3",
+      "military-4",
+      "military-science-pack",
+      "mining-productivity-1",
+      "mining-productivity-2",
+      "modular-armor",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "personal-assembling-unit1-equipment",
+      "personal-assembling-unit2-equipment",
+      "personal-assembling-unit3-equipment",
+      "personal-assembling-unit4-equipment",
+      "plastics",
+      "power-armor",
+      "power-armor-mk2",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "productivity-module-2",
+      "productivity-module-3",
+      "quality-module",
+      "quality-module-2",
+      "quality-module-3",
+      "quantum-processor",
+      "railway",
+      "recycling",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "rocket-turret",
+      "rocketry",
+      "solar-energy",
+      "solar-panel-equipment",
+      "space-platform",
+      "space-science-pack",
+      "speed-module",
+      "speed-module-2",
+      "speed-module-3",
+      "steam-power",
+      "steel-processing",
+      "stone-wall",
+      "stronger-explosives-1",
+      "stronger-explosives-2",
+      "sulfur-processing",
+      "tungsten-carbide",
+      "tungsten-steel",
+      "utility-science-pack",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "industrial-armor-mk3",
+        "unlockAlternatives": [
+          "77-power-armor-mk6"
+        ],
+        "selected": "77-power-armor-mk6"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "77-energy-shield-mk5-equipment",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "electric-engine-unit",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.666666666668,
+        "residual": 0
+      },
+      {
+        "id": "industrial-armor-mk2",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "industrial-armor-mk3",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "personal-assembling-unit4-equipment",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "productivity-module-3",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.500000000001,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "industrial-armor-mk3",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "industrial-armor-mk3",
+      "entityNumber": 55,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    }
+  ],
+  "blueprintSha256": "a278aa7b185a70a85ce6b2f2312102320ffb7aff6a459f0137bfcdd1a1c3dd5e",
+  "entityCount": 67
+}

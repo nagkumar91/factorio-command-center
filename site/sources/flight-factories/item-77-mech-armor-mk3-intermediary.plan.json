@@ -1,0 +1,666 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "intermediary",
+  "target": {
+    "id": "77-mech-armor-mk3",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests.",
+    "Add 100 logistic robots across 5 saved roboports (20 per port); 20 charging positions. Base robot speed and payload assumed.",
+    "Connect external electricity and supply every labeled input chest/pipe. Repeated input labels feed separate machine cells; displayed rates sum to total demand."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "77-mech-armor-mk3",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0166666666667,
+      "machineCount": 3,
+      "exactMachineCount": 2.22222222222,
+      "utilization": 0.740740740741,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "77-mech-armor-mk3"
+      ],
+      "ingredients": [
+        {
+          "id": "promethium-asteroid-chunk",
+          "type": "item",
+          "amount": 500,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 8.33333333333
+        },
+        {
+          "id": "quantum-processor",
+          "type": "item",
+          "amount": 200,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 3.33333333333
+        },
+        {
+          "id": "superconductor",
+          "type": "item",
+          "amount": 150,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 2.5
+        },
+        {
+          "id": "supercapacitor",
+          "type": "item",
+          "amount": 150,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 2.5
+        },
+        {
+          "id": "77-mech-armor-mk2",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "77-mech-armor-mk3",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "promethium-asteroid-chunk",
+      "type": "item",
+      "perSecond": 2.7777777777766666,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": false,
+      "name": "promethium-asteroid-chunk",
+      "label": "IN promethium-asteroid-chunk",
+      "entityNumber": 60,
+      "position": {
+        "x": 17.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 2.7777777777766666,
+      "plannedPerSecond": 2.7777777777766666,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 1000,
+      "displayEntity": 100
+    },
+    {
+      "id": "quantum-processor",
+      "type": "item",
+      "perSecond": 1.11111111111,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "quantum-processor",
+      "label": "IN quantum-processor",
+      "entityNumber": 62,
+      "position": {
+        "x": 23.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 1.11111111111,
+      "plannedPerSecond": 1.11111111111,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 400,
+      "displayEntity": 101
+    },
+    {
+      "id": "superconductor",
+      "type": "item",
+      "perSecond": 0.8333333333333334,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "superconductor",
+      "label": "IN superconductor",
+      "entityNumber": 64,
+      "position": {
+        "x": 19.5,
+        "y": 37.5
+      },
+      "ratePerSecond": 0.8333333333333334,
+      "plannedPerSecond": 0.8333333333333334,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 300,
+      "displayEntity": 102
+    },
+    {
+      "id": "supercapacitor",
+      "type": "item",
+      "perSecond": 0.8333333333333334,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "supercapacitor",
+      "label": "IN supercapacitor",
+      "entityNumber": 66,
+      "position": {
+        "x": 19.5,
+        "y": 43.5
+      },
+      "ratePerSecond": 0.8333333333333334,
+      "plannedPerSecond": 0.8333333333333334,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 300,
+      "displayEntity": 103
+    },
+    {
+      "id": "77-mech-armor-mk2",
+      "type": "item",
+      "perSecond": 0.005555555555566667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "77-mech-armor-mk2",
+      "label": "IN 77-mech-armor-mk2",
+      "entityNumber": 68,
+      "position": {
+        "x": 17.5,
+        "y": 40.5
+      },
+      "ratePerSecond": 0.005555555555566667,
+      "plannedPerSecond": 0.005555555555566667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 104
+    },
+    {
+      "id": "promethium-asteroid-chunk",
+      "type": "item",
+      "perSecond": 2.7777777777766666,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": false,
+      "name": "promethium-asteroid-chunk",
+      "label": "IN promethium-asteroid-chunk",
+      "entityNumber": 74,
+      "position": {
+        "x": 41.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 2.7777777777766666,
+      "plannedPerSecond": 2.7777777777766666,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 1000,
+      "displayEntity": 105
+    },
+    {
+      "id": "quantum-processor",
+      "type": "item",
+      "perSecond": 1.11111111111,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "quantum-processor",
+      "label": "IN quantum-processor",
+      "entityNumber": 76,
+      "position": {
+        "x": 47.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 1.11111111111,
+      "plannedPerSecond": 1.11111111111,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 400,
+      "displayEntity": 106
+    },
+    {
+      "id": "superconductor",
+      "type": "item",
+      "perSecond": 0.8333333333333334,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "superconductor",
+      "label": "IN superconductor",
+      "entityNumber": 78,
+      "position": {
+        "x": 43.5,
+        "y": 37.5
+      },
+      "ratePerSecond": 0.8333333333333334,
+      "plannedPerSecond": 0.8333333333333334,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 300,
+      "displayEntity": 107
+    },
+    {
+      "id": "supercapacitor",
+      "type": "item",
+      "perSecond": 0.8333333333333334,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "supercapacitor",
+      "label": "IN supercapacitor",
+      "entityNumber": 80,
+      "position": {
+        "x": 43.5,
+        "y": 43.5
+      },
+      "ratePerSecond": 0.8333333333333334,
+      "plannedPerSecond": 0.8333333333333334,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 300,
+      "displayEntity": 108
+    },
+    {
+      "id": "77-mech-armor-mk2",
+      "type": "item",
+      "perSecond": 0.005555555555566667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "77-mech-armor-mk2",
+      "label": "IN 77-mech-armor-mk2",
+      "entityNumber": 82,
+      "position": {
+        "x": 41.5,
+        "y": 40.5
+      },
+      "ratePerSecond": 0.005555555555566667,
+      "plannedPerSecond": 0.005555555555566667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 109
+    },
+    {
+      "id": "promethium-asteroid-chunk",
+      "type": "item",
+      "perSecond": 2.7777777777766666,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": false,
+      "name": "promethium-asteroid-chunk",
+      "label": "IN promethium-asteroid-chunk",
+      "entityNumber": 88,
+      "position": {
+        "x": 17.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 2.7777777777766666,
+      "plannedPerSecond": 2.7777777777766666,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 1000,
+      "displayEntity": 110
+    },
+    {
+      "id": "quantum-processor",
+      "type": "item",
+      "perSecond": 1.11111111111,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "quantum-processor",
+      "label": "IN quantum-processor",
+      "entityNumber": 90,
+      "position": {
+        "x": 23.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 1.11111111111,
+      "plannedPerSecond": 1.11111111111,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 400,
+      "displayEntity": 111
+    },
+    {
+      "id": "superconductor",
+      "type": "item",
+      "perSecond": 0.8333333333333334,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "superconductor",
+      "label": "IN superconductor",
+      "entityNumber": 92,
+      "position": {
+        "x": 19.5,
+        "y": 61.5
+      },
+      "ratePerSecond": 0.8333333333333334,
+      "plannedPerSecond": 0.8333333333333334,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 300,
+      "displayEntity": 112
+    },
+    {
+      "id": "supercapacitor",
+      "type": "item",
+      "perSecond": 0.8333333333333334,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "supercapacitor",
+      "label": "IN supercapacitor",
+      "entityNumber": 94,
+      "position": {
+        "x": 19.5,
+        "y": 67.5
+      },
+      "ratePerSecond": 0.8333333333333334,
+      "plannedPerSecond": 0.8333333333333334,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 300,
+      "displayEntity": 113
+    },
+    {
+      "id": "77-mech-armor-mk2",
+      "type": "item",
+      "perSecond": 0.005555555555566667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "77-mech-armor-mk2",
+      "label": "IN 77-mech-armor-mk2",
+      "entityNumber": 96,
+      "position": {
+        "x": 17.5,
+        "y": 64.5
+      },
+      "ratePerSecond": 0.005555555555566667,
+      "plannedPerSecond": 0.005555555555566667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 114
+    }
+  ],
+  "surplus": [],
+  "startupStock": [],
+  "rawOnly": false,
+  "stochastic": false,
+  "warnings": [
+    "Some supplied intermediates have no supported raw-source route; importing them is an explicit external dependency."
+  ],
+  "machineCount": 3,
+  "requiredResearch": {
+    "technologies": [
+      "77-mech-armor-mk2",
+      "77-mech-armor-mk3",
+      "advanced-asteroid-processing",
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "asteroid-reprocessing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "base-ore-processing",
+      "battery",
+      "big-mining-drill",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "biter-egg-handling",
+      "bulk-inserter",
+      "calcite-processing",
+      "captivity",
+      "carbon-fiber",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "cryogenic-plant",
+      "cryogenic-science-pack",
+      "efficiency-module",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electric-mining-drill",
+      "electric-mining-drill-mk2",
+      "electric-mining-drill-mk3",
+      "electromagnetic-plant",
+      "electromagnetic-science-pack",
+      "electronics",
+      "engine",
+      "explosives",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "foundry",
+      "fusion-reactor",
+      "heating-tower",
+      "heavy-armor",
+      "holmium-processing",
+      "jellynut",
+      "landfill",
+      "lithium-processing",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "mech-armor",
+      "metallurgic-science-pack",
+      "military",
+      "military-2",
+      "military-3",
+      "military-4",
+      "military-science-pack",
+      "mining-productivity-1",
+      "mining-productivity-2",
+      "modular-armor",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "power-armor",
+      "power-armor-mk2",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "promethium-science-pack",
+      "quantum-processor",
+      "railway",
+      "recycling",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "rocket-turret",
+      "rocketry",
+      "solar-system-edge-discovery",
+      "space-platform",
+      "space-platform-thruster",
+      "space-science-pack",
+      "speed-module",
+      "stack-inserter",
+      "steam-power",
+      "steel-processing",
+      "stone-wall",
+      "stronger-explosives-1",
+      "stronger-explosives-2",
+      "sulfur-processing",
+      "tungsten-carbide",
+      "tungsten-steel",
+      "utility-science-pack",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "77-mech-armor-mk3",
+        "unlockAlternatives": [
+          "77-mech-armor-mk3"
+        ],
+        "selected": "77-mech-armor-mk3"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "steel-chest",
+        "unlockAlternatives": [
+          "steel-processing"
+        ],
+        "selected": "steel-processing"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "stack-inserter",
+        "unlockAlternatives": [
+          "stack-inserter"
+        ],
+        "selected": "stack-inserter"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "77-mech-armor-mk2",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0166666666667,
+        "residual": 0
+      },
+      {
+        "id": "77-mech-armor-mk3",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "promethium-asteroid-chunk",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 8.33333333335,
+        "residual": 0
+      },
+      {
+        "id": "quantum-processor",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 3.33333333334,
+        "residual": 0
+      },
+      {
+        "id": "supercapacitor",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 2.50000000001,
+        "residual": 0
+      },
+      {
+        "id": "superconductor",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 2.50000000001,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "77-mech-armor-mk3",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "77-mech-armor-mk3",
+      "entityNumber": 57,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    }
+  ],
+  "wasteOutputs": [],
+  "logistics": {
+    "robotCount": 100,
+    "roboportCount": 5,
+    "robotsPerPort": 20,
+    "chargingSlots": 20,
+    "chargingWatts": 10000000,
+    "estimatedTransfersPerSecond": 0.016666666666666666,
+    "estimatedMovementWatts": 9996.759935518432,
+    "sizingPolicy": "Installed base robot speed/payload, weighted producer distance, return journey, four seconds dispatch allowance and 80% capacity margin; native tests still required."
+  },
+  "materialSeeds": [],
+  "blueprintSha256": "271d164019a451360e90fa0d0401ba936cccc6c3535cbc3e635282e3da5d5090",
+  "entityCount": 114
+}

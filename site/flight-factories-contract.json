@@ -1,0 +1,417 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Modded flight factory catalogue v1",
+  "description": "Publish this JSON as globalThis.FLIGHT_FACTORIES in flight-factories-data.js so the page also works offline over file://. All asset and download paths are relative to site/, without traversal or remote URLs. Keep this separate from the vanilla datasets.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "profile",
+    "items",
+    "factories"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "profile": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "mods"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "factorioVersion": {
+          "type": "string"
+        },
+        "prototypeSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "mods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/notes"
+        },
+        "map": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "seed": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "path": {
+              "type": "string"
+            },
+            "preview": {
+              "type": "string"
+            },
+            "saveName": {
+              "type": "string",
+              "description": "Exact installed local save filename; game saves are not publicly hosted."
+            },
+            "evidencePath": {
+              "type": "string",
+              "description": "Local JSON evidence from the corrected save after native loading."
+            }
+          }
+        },
+        "book": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "description": "The complete set of actual recipe products in the modded snapshot, including unavailable products with reasons. Never add construction materials solely because a blueprint uses them.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "item",
+              "fluid"
+            ]
+          },
+          "group": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "materials": {
+      "type": "array",
+      "description": "Optional icon/name lookup for raw inputs, machines, and signals that are not recipe products. These do not enter coverage. Entries have the same id/name/type/group/icon shape as items.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "factories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "variant",
+          "inputs",
+          "steps"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "product": {
+            "type": "string"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only actual recipe outputs count as coverage. The first product is the primary output."
+          },
+          "variant": {
+            "enum": [
+              "raw",
+              "mixed",
+              "intermediate",
+              "intermediary"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "description": "Use unavailable or blocked for non-plans; these do not count as planned coverage."
+          },
+          "reason": {
+            "type": "string"
+          },
+          "outputPerMinute": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "description": "Calculated target, not measured throughput. Convert plan.target.perSecond \u00d7 60."
+          },
+          "planPath": {
+            "type": "string"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "type",
+                "perMinute"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "enum": [
+                    "item",
+                    "fluid"
+                  ]
+                },
+                "perMinute": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "label": {
+                  "type": "string"
+                },
+                "displayEntity": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "recipe",
+                "machine",
+                "count"
+              ],
+              "properties": {
+                "recipe": {
+                  "type": "string"
+                },
+                "machine": {
+                  "type": "string"
+                },
+                "count": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "utilization": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "blueprint": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "preview": {
+                "type": "string"
+              },
+              "entities": {
+                "type": "array",
+                "description": "Optional decoded blueprint entities. Include original display-panel text, icon, position, entity_number, and size for accurate schematic rendering. Use a generated preview for large layouts.",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "validation": {
+            "type": "object",
+            "description": "Native badge requires status native-tested, passed true, a local reportPath, a local blueprint download, exact blueprint SHA-256 equality, and matching profile prototypeSha256 when present. Import/recipe checks are not native production tests. The publication adapter must verify file/report bytes before publishing these assertions.",
+            "properties": {
+              "status": {
+                "type": "string",
+                "description": "calculated, native-tested, or native-failed. native-failed always withholds blueprint downloads, even if path is accidentally retained."
+              },
+              "passed": {
+                "type": "boolean"
+              },
+              "blueprintSha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "prototypeSha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "reportPath": {
+                "type": "string"
+              },
+              "failures": {
+                "$ref": "#/$defs/notes"
+              },
+              "measuredMinutes": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "warmupMinutes": {
+                "type": "number",
+                "minimum": 0
+              },
+              "throughputPassed": {
+                "type": "boolean"
+              },
+              "rateBasis": {
+                "type": "string"
+              },
+              "outputs": {
+                "type": "array",
+                "description": "Observed collection only, rendered separately from calculated targets and only behind the native SHA/profile gate. perMinute must equal collected/measuredMinutes. Legacy object keyed item:id/fluid:id is also accepted by the UI.",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "type",
+                    "collected",
+                    "perMinute"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "enum": [
+                        "item",
+                        "fluid"
+                      ]
+                    },
+                    "collected": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "perMinute": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "author": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "diagnosticsPath": {
+                "type": "string",
+                "description": "Local JSON history of all matching native runs, ordered by duration, warmup and recency independently of outcome."
+              }
+            }
+          },
+          "notes": {
+            "$ref": "#/$defs/notes"
+          },
+          "assumptions": {
+            "$ref": "#/$defs/notes"
+          },
+          "warnings": {
+            "$ref": "#/$defs/notes"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{64}$"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

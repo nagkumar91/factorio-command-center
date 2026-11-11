@@ -1,0 +1,585 @@
+{
+  "id": "item-cryogenic-science-pack-intermediary",
+  "blueprintSha256": "c921aff30e997b47f7a9c438b373f793d4115a2104d8daeae65619587d05a1c8",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "2fd0a6de6d381325a47004eebde544f3ea87621e25fa929d65afda49d92170d0",
+  "specSha256": "b925ddbec2b5d1a02ff33daf2bc9e7c95cbc3c8d8ffcb922fa2ff451d2ee8d1d",
+  "configurationSha256": "63a6a1df5de4c486f6eb9f5177d238e0d709e1de5a3945a7543fbafb1ea7f01e",
+  "configuration": {
+    "id": "item-cryogenic-science-pack-intermediary",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "c921aff30e997b47f7a9c438b373f793d4115a2104d8daeae65619587d05a1c8",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "intermediary",
+    "rawOnly": false,
+    "inputs": [
+      {
+        "id": "fluoroketone-cold",
+        "type": "fluid",
+        "perSecond": 0.1,
+        "source": "supplied-intermediate",
+        "sources": [],
+        "obtainableFromRaw": true,
+        "name": "fluoroketone-cold",
+        "label": "IN fluoroketone-cold",
+        "entityNumber": 38,
+        "displayEntity": 39,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.1,
+        "plannedPerSecond": 0.1,
+        "supplyPolicy": "unlimited-external-boundary-fixture",
+        "fixturePosition": {
+          "x": 4.5,
+          "y": 3.5
+        },
+        "temperature": -150
+      },
+      {
+        "id": "ice",
+        "type": "item",
+        "perSecond": 0.05,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "harvest",
+            "entity": "lithium-iceberg-huge",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          },
+          {
+            "kind": "harvest",
+            "entity": "lithium-iceberg-big",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "ice",
+        "label": "IN ice",
+        "entityNumber": 40,
+        "displayEntity": 41,
+        "position": {
+          "x": 8.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.05,
+        "plannedPerSecond": 0.05,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      },
+      {
+        "id": "lithium-plate",
+        "type": "item",
+        "perSecond": 0.0166666666667,
+        "source": "supplied-intermediate",
+        "sources": [],
+        "obtainableFromRaw": true,
+        "name": "lithium-plate",
+        "label": "IN lithium-plate",
+        "entityNumber": 42,
+        "displayEntity": 43,
+        "position": {
+          "x": 12.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.0166666666667,
+        "plannedPerSecond": 0.0166666666667,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "cryogenic-science-pack",
+        "type": "item",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "cryogenic-science-pack",
+        "entityNumber": 44,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target"
+      },
+      {
+        "id": "fluoroketone-hot",
+        "type": "fluid",
+        "perSecond": 0.05,
+        "handling": "Export continuously; finite storage eventually blocks production.",
+        "name": "fluoroketone-hot",
+        "entityNumber": 45,
+        "position": {
+          "x": 8.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.05,
+        "minPerMinute": 0,
+        "role": "surplus",
+        "fixturePosition": {
+          "x": 8.5,
+          "y": 9.5
+        }
+      }
+    ],
+    "machineIds": [
+      46
+    ],
+    "roboportIds": [
+      36,
+      37,
+      59
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 149,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 59,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": false,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/item-cryogenic-science-pack-intermediary.c921aff30e997b47f7a9c438b373f793d4115a2104d8daeae65619587d05a1c8.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/item-cryogenic-science-pack-intermediary.json",
+    "blueprintFile": "blueprints/item-cryogenic-science-pack-intermediary.c921aff30e997b47f7a9c438b373f793d4115a2104d8daeae65619587d05a1c8.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "item:cryogenic-science-pack": [
+        46
+      ],
+      "fluid:fluoroketone-hot": [
+        46
+      ]
+    },
+    "expectedRecipes": {
+      "46": "cryogenic-science-pack"
+    },
+    "statisticsIgnoredInputs": {
+      "fluid:fluoroketone-cold": true
+    },
+    "statisticsIgnoredOutputs": {
+      "fluid:fluoroketone-hot": true
+    },
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 2,
+    "specSha256": "b925ddbec2b5d1a02ff33daf2bc9e7c95cbc3c8d8ffcb922fa2ff451d2ee8d1d",
+    "configurationSha256": "63a6a1df5de4c486f6eb9f5177d238e0d709e1de5a3945a7543fbafb1ea7f01e",
+    "sourceSpecSha256": "2fd0a6de6d381325a47004eebde544f3ea87621e25fa929d65afda49d92170d0"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "item:cryogenic-science-pack": {
+      "warmupCollected": 26,
+      "collectionEvents": 116,
+      "windowCounts": [
+        30,
+        30,
+        30
+      ],
+      "windowProduced": [
+        30,
+        30,
+        30
+      ],
+      "windowProducerCrafts": [
+        30,
+        30,
+        30
+      ],
+      "measuredProduced": 90,
+      "measuredProducerCrafts": 90,
+      "producerEntityIds": [
+        46
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 28,
+      "baselineProducerCrafts": 28,
+      "firstOutputTick": 2820,
+      "lastOutputTick": 71760,
+      "previousProduced": 118,
+      "previousProducerCrafts": 118,
+      "collected": 90,
+      "perMinute": 6,
+      "windowPerMinute": [
+        6,
+        6,
+        6
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    },
+    "fluid:fluoroketone-hot": {
+      "warmupCollected": 70.933629155159,
+      "collectionEvents": 1171,
+      "windowCounts": [
+        89.98909598588943,
+        89.99999451637268,
+        90
+      ],
+      "windowProduced": [
+        0,
+        0,
+        0
+      ],
+      "windowProducerCrafts": [
+        30,
+        30,
+        30
+      ],
+      "measuredProduced": 0,
+      "measuredProducerCrafts": 90,
+      "producerEntityIds": [
+        46
+      ],
+      "productionStatisticsIgnored": true,
+      "baselineProduced": 0,
+      "baselineProducerCrafts": 28,
+      "firstOutputTick": 1800,
+      "lastOutputTick": 72000,
+      "previousProduced": 0,
+      "previousProducerCrafts": 118,
+      "collected": 269.9890905022621,
+      "perMinute": 17.999272700150808,
+      "windowPerMinute": [
+        17.997819197177886,
+        17.999998903274538,
+        18
+      ],
+      "targetPerMinute": 0,
+      "required": false,
+      "productionEvidenceBasis": "native-completed-crafts-of-matching-recipe-product",
+      "minimumObservedCount": 2,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "native": {
+    "id": "item-cryogenic-science-pack-intermediary",
+    "blueprintSha256": "c921aff30e997b47f7a9c438b373f793d4115a2104d8daeae65619587d05a1c8",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "63a6a1df5de4c486f6eb9f5177d238e0d709e1de5a3945a7543fbafb1ea7f01e",
+    "specSha256": "b925ddbec2b5d1a02ff33daf2bc9e7c95cbc3c8d8ffcb922fa2ff451d2ee8d1d",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 149,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-6",
+      "force": "flight-native-6",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -24,
+        "y": -36
+      }
+    },
+    "outputs": {
+      "item:cryogenic-science-pack": {
+        "warmupCollected": 26,
+        "collectionEvents": 116,
+        "windowCounts": [
+          30,
+          30,
+          30
+        ],
+        "windowProduced": [
+          30,
+          30,
+          30
+        ],
+        "windowProducerCrafts": [
+          30,
+          30,
+          30
+        ],
+        "measuredProduced": 90,
+        "measuredProducerCrafts": 90,
+        "producerEntityIds": [
+          46
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 28,
+        "baselineProducerCrafts": 28,
+        "firstOutputTick": 2820,
+        "lastOutputTick": 71760,
+        "previousProduced": 118,
+        "previousProducerCrafts": 118
+      },
+      "fluid:fluoroketone-hot": {
+        "warmupCollected": 70.933629155159,
+        "collectionEvents": 1171,
+        "windowCounts": [
+          89.98909598588943,
+          89.99999451637268,
+          90
+        ],
+        "windowProduced": [
+          0,
+          0,
+          0
+        ],
+        "windowProducerCrafts": [
+          30,
+          30,
+          30
+        ],
+        "measuredProduced": 0,
+        "measuredProducerCrafts": 90,
+        "producerEntityIds": [
+          46
+        ],
+        "productionStatisticsIgnored": true,
+        "baselineProduced": 0,
+        "baselineProducerCrafts": 28,
+        "firstOutputTick": 1800,
+        "lastOutputTick": 72000,
+        "previousProduced": 0,
+        "previousProducerCrafts": 118
+      }
+    },
+    "inputs": {
+      "fluid:fluoroketone-cold": {
+        "acceptedItems": 0,
+        "statisticsCount": 270,
+        "statisticsCountsExcluded": true,
+        "measuredAcceptedItems": 0,
+        "supply": "external-infinity-pipe"
+      },
+      "item:ice": {
+        "acceptedItems": 870,
+        "consumed": 270,
+        "consumedPerMinute": 18,
+        "statisticsCount": 270,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 270,
+        "supply": "declared-boundary-chest-or-belt"
+      },
+      "item:lithium-plate": {
+        "acceptedItems": 1123,
+        "consumed": 90,
+        "consumedPerMinute": 6,
+        "statisticsCount": 90,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 90,
+        "supply": "declared-boundary-chest-or-belt"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 46,
+        "name": "cryogenic-plant",
+        "recipe": "cryogenic-science-pack",
+        "position": {
+          "y": 4.5,
+          "x": -3.5
+        },
+        "status": "working",
+        "productsFinished": 118,
+        "measuredCrafts": 90,
+        "statusSeconds": {
+          "working": 900
+        },
+        "inputInventory": {
+          "ice": 5,
+          "lithium-plate": 1
+        },
+        "outputInventory": {},
+        "fuelInventory": {}
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-fluid",
+        "port": 38,
+        "name": "fluoroketone-cold",
+        "position": {
+          "y": -32.5,
+          "x": -19.5
+        },
+        "entityName": "infinity-pipe"
+      },
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -38,
+          "x": -26
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 59,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 36,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 45
+      },
+      {
+        "entityNumber": 37,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 45
+      },
+      {
+        "entityNumber": 59,
+        "robotInventory": {
+          "logistic-robot": 45
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 45
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 41
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "8c19e9783f00f30cb034fd35173896de32de189b569f9262d0a48a05de7ee58a",
+  "nativeReportSha256": "ea0e3bc017e855e8636c2e1ae1ee2e916a9eca27229c97c73ed031769112ba69",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

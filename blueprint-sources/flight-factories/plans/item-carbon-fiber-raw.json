@@ -1,0 +1,599 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "raw",
+  "target": {
+    "id": "carbon-fiber",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests.",
+    "Add 100 logistic robots across 5 saved roboports (20 per port); 20 charging positions. Base robot speed and payload assumed.",
+    "Connect external electricity and supply every labeled input chest/pipe. Repeated input labels feed separate machine cells; displayed rates sum to total demand.",
+    "Continuously empty all 5 labeled WASTE chests. Spoiled material is discarded separately and never counted as manufactured output."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "carbon-fiber",
+      "machine": "biochamber",
+      "craftsPerSecond": 0.0111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.0277777777778,
+      "utilization": 0.0277777777778,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "carbon-fiber"
+      ],
+      "ingredients": [
+        {
+          "id": "yumako-mash",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.111111111111
+        },
+        {
+          "id": "carbon",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 0.625,
+          "probability": 1,
+          "fuel": true,
+          "perSecond": 0.00694444444444
+        }
+      ],
+      "results": [
+        {
+          "id": "carbon-fiber",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 1.5,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": {
+        "id": "nutrients",
+        "type": "item",
+        "amount": 0.625,
+        "probability": 1,
+        "fuel": true
+      },
+      "stochastic": false
+    },
+    {
+      "recipe": "nutrients-from-fish",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.000347222222222,
+      "machineCount": 1,
+      "exactMachineCount": 0.000925925925926,
+      "utilization": 0.000925925925926,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "fish-breeding"
+      ],
+      "ingredients": [
+        {
+          "id": "raw-fish",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.000347222222222
+        }
+      ],
+      "results": [
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 20,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 20,
+          "perSecond": 0.00694444444444
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "yumako-processing",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.0555555555556,
+      "machineCount": 1,
+      "exactMachineCount": 0.0740740740741,
+      "utilization": 0.0740740740741,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "yumako"
+      ],
+      "ingredients": [
+        {
+          "id": "yumako",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0555555555556
+        }
+      ],
+      "results": [
+        {
+          "id": "yumako-seed",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.02,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.02,
+          "perSecond": 0.00111111111111
+        },
+        {
+          "id": "yumako-mash",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 2,
+          "perSecond": 0.111111111111
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "carbon",
+      "type": "item",
+      "perSecond": 0.0111111111111,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "ashland-lichen-tree",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        },
+        {
+          "kind": "harvest",
+          "entity": "ashland-lichen-tree-flaming",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "carbon",
+      "label": "IN carbon",
+      "entityNumber": 61,
+      "position": {
+        "x": 17.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.0111111111111,
+      "plannedPerSecond": 0.0111111111111,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 89
+    },
+    {
+      "id": "raw-fish",
+      "type": "item",
+      "perSecond": 0.000347222222222,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "fish",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "raw-fish",
+      "label": "IN raw-fish",
+      "entityNumber": 69,
+      "position": {
+        "x": 41.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.000347222222222,
+      "plannedPerSecond": 0.000347222222222,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 90
+    },
+    {
+      "id": "yumako",
+      "type": "item",
+      "perSecond": 0.0555555555556,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "yumako-tree",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "yumako",
+      "label": "IN yumako",
+      "entityNumber": 75,
+      "position": {
+        "x": 17.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.0555555555556,
+      "plannedPerSecond": 0.0555555555556,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 2,
+      "displayEntity": 91
+    }
+  ],
+  "surplus": [
+    {
+      "id": "yumako-seed",
+      "type": "item",
+      "perSecond": 0.00111111111111,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": true,
+  "stochastic": true,
+  "warnings": [
+    "Random result rates are expectations, not guaranteed yields. Native throughput needs repeated measurement windows.",
+    "Spoilage losses are not included in stoichiometric demand; measure them in the native run.",
+    "Burner fuel is included at active crafting consumption; idle fuel and spoilage can increase demand."
+  ],
+  "machineCount": 3,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agricultural-science-pack",
+      "agriculture",
+      "artificial-soil",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "bacteria-cultivation",
+      "battery",
+      "biochamber",
+      "bioflux",
+      "bioflux-processing",
+      "bulk-inserter",
+      "carbon-fiber",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "fast-inserter",
+      "fish-breeding",
+      "flammables",
+      "fluid-handling",
+      "jellynut",
+      "landfill",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing",
+      "tree-seeding",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "carbon-fiber",
+        "unlockAlternatives": [
+          "carbon-fiber"
+        ],
+        "selected": "carbon-fiber"
+      },
+      {
+        "recipe": "nutrients-from-fish",
+        "unlockAlternatives": [
+          "fish-breeding"
+        ],
+        "selected": "fish-breeding"
+      },
+      {
+        "recipe": "yumako-processing",
+        "unlockAlternatives": [
+          "yumako"
+        ],
+        "selected": "yumako"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "steel-chest",
+        "unlockAlternatives": [
+          "steel-processing"
+        ],
+        "selected": "steel-processing"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "biochamber",
+        "unlockAlternatives": [
+          "biochamber"
+        ],
+        "selected": "biochamber"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "carbon",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0111111111111,
+        "residual": 0
+      },
+      {
+        "id": "carbon-fiber",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "nutrients",
+        "type": "item",
+        "producedPerSecond": 0.00694444444444,
+        "consumedPerSecond": 0.00694444444444,
+        "residual": 0
+      },
+      {
+        "id": "raw-fish",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.000347222222222,
+        "residual": 0
+      },
+      {
+        "id": "yumako",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.0555555555556,
+        "residual": 0
+      },
+      {
+        "id": "yumako-mash",
+        "type": "item",
+        "producedPerSecond": 0.111111111111,
+        "consumedPerSecond": 0.111111111111,
+        "residual": 0
+      },
+      {
+        "id": "yumako-seed",
+        "type": "item",
+        "producedPerSecond": 0.00111111111111,
+        "consumedPerSecond": 0,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "carbon-fiber",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "carbon-fiber",
+      "entityNumber": 57,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    },
+    {
+      "id": "yumako-seed",
+      "type": "item",
+      "perSecond": 0.00111111111111,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "yumako-seed",
+      "entityNumber": 58,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.00111111111111,
+      "minPerMinute": 0,
+      "role": "surplus"
+    }
+  ],
+  "wasteOutputs": [
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 80,
+      "position": {
+        "x": 23.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 63,
+      "inserterEntityNumber": 79,
+      "spoiledFrom": [
+        "yumako-mash",
+        "nutrients"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 92
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 82,
+      "position": {
+        "x": 41.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 69,
+      "inserterEntityNumber": 81,
+      "spoiledFrom": [
+        "raw-fish"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 93
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 84,
+      "position": {
+        "x": 47.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 71,
+      "inserterEntityNumber": 83,
+      "spoiledFrom": [
+        "nutrients"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 94
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 86,
+      "position": {
+        "x": 17.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 75,
+      "inserterEntityNumber": 85,
+      "spoiledFrom": [
+        "yumako"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 95
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 88,
+      "position": {
+        "x": 23.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 77,
+      "inserterEntityNumber": 87,
+      "spoiledFrom": [
+        "yumako-mash"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 96
+    }
+  ],
+  "logistics": {
+    "robotCount": 100,
+    "roboportCount": 5,
+    "robotsPerPort": 20,
+    "chargingSlots": 20,
+    "chargingWatts": 10000000,
+    "estimatedTransfersPerSecond": 0.13583333333321668,
+    "estimatedMovementWatts": 41290.04803695784,
+    "sizingPolicy": "Installed base robot speed/payload, weighted producer distance, return journey, four seconds dispatch allowance and 80% capacity margin; native tests still required."
+  },
+  "materialSeeds": [],
+  "blueprintSha256": "6fe39e5dd4449df4676f26c7a385b676c6b83ab7d2f8da6aba3c927c67bbee21",
+  "entityCount": 96
+}

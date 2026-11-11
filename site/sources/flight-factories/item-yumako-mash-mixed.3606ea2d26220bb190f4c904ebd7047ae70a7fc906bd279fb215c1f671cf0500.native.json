@@ -1,0 +1,564 @@
+{
+  "id": "item-yumako-mash-mixed",
+  "blueprintSha256": "3606ea2d26220bb190f4c904ebd7047ae70a7fc906bd279fb215c1f671cf0500",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "7736aeb1a3395462c3f9852dc0ddc426cd9b1cc8cbf2fc1dccee90f907377c10",
+  "specSha256": "74b0286cb3968d48d0345bb959dd0f3b40cacc1e0a696ef80c673e1e128ee7c0",
+  "configurationSha256": "267b7656640f73c97877d3731e6f557b2b82c9b7cd01a545eff76052690f3df0",
+  "configuration": {
+    "id": "item-yumako-mash-mixed",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "3606ea2d26220bb190f4c904ebd7047ae70a7fc906bd279fb215c1f671cf0500",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "mixed",
+    "rawOnly": true,
+    "inputs": [
+      {
+        "id": "yumako",
+        "type": "item",
+        "perSecond": 0.00833333333333,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "harvest",
+            "entity": "yumako-tree",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "yumako",
+        "label": "IN yumako",
+        "entityNumber": 38,
+        "displayEntity": 39,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.00833333333333,
+        "plannedPerSecond": 0.00833333333333,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "yumako-mash",
+        "type": "item",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "yumako-mash",
+        "entityNumber": 40,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target"
+      },
+      {
+        "id": "yumako-seed",
+        "type": "item",
+        "perSecond": 0.000166666666667,
+        "handling": "Export continuously; finite storage eventually blocks production.",
+        "name": "yumako-seed",
+        "entityNumber": 41,
+        "position": {
+          "x": 8.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.000166666666667,
+        "minPerMinute": 0,
+        "role": "surplus"
+      }
+    ],
+    "machineIds": [
+      42
+    ],
+    "roboportIds": [
+      36,
+      37,
+      47
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 47,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 47,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": true,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/item-yumako-mash-mixed.3606ea2d26220bb190f4c904ebd7047ae70a7fc906bd279fb215c1f671cf0500.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/item-yumako-mash-mixed.json",
+    "blueprintFile": "blueprints/item-yumako-mash-mixed.3606ea2d26220bb190f4c904ebd7047ae70a7fc906bd279fb215c1f671cf0500.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "item:yumako-seed": [
+        42
+      ],
+      "item:yumako-mash": [
+        42
+      ]
+    },
+    "expectedRecipes": {
+      "42": "yumako-processing"
+    },
+    "statisticsIgnoredInputs": {},
+    "statisticsIgnoredOutputs": {},
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 100,
+    "specSha256": "74b0286cb3968d48d0345bb959dd0f3b40cacc1e0a696ef80c673e1e128ee7c0",
+    "configurationSha256": "267b7656640f73c97877d3731e6f557b2b82c9b7cd01a545eff76052690f3df0",
+    "sourceSpecSha256": "7736aeb1a3395462c3f9852dc0ddc426cd9b1cc8cbf2fc1dccee90f907377c10"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462-reevaluated-1794371101520",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "item:yumako-mash": {
+      "warmupCollected": 118,
+      "collectionEvents": 403,
+      "windowCounts": [
+        131,
+        134,
+        132
+      ],
+      "windowProduced": [
+        128,
+        136,
+        132
+      ],
+      "windowProducerCrafts": [
+        64,
+        68,
+        66
+      ],
+      "measuredProduced": 396,
+      "measuredProducerCrafts": 198,
+      "producerEntityIds": [
+        42
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 128,
+      "baselineProducerCrafts": 64,
+      "firstOutputTick": 2220,
+      "lastOutputTick": 71940,
+      "previousProduced": 524,
+      "previousProducerCrafts": 262,
+      "collected": 397,
+      "perMinute": 26.466666666666665,
+      "windowPerMinute": [
+        26.2,
+        26.8,
+        26.4
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 100,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true,
+      "stabilityMethod": "relative-spread-with-count-quantization"
+    },
+    "item:yumako-seed": {
+      "warmupCollected": 1,
+      "collectionEvents": 6,
+      "windowCounts": [
+        4,
+        1,
+        0
+      ],
+      "windowProduced": [
+        4,
+        1,
+        0
+      ],
+      "windowProducerCrafts": [
+        64,
+        68,
+        66
+      ],
+      "measuredProduced": 5,
+      "measuredProducerCrafts": 198,
+      "producerEntityIds": [
+        42
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 1,
+      "baselineProducerCrafts": 64,
+      "firstOutputTick": 8880,
+      "lastOutputTick": 48600,
+      "previousProduced": 6,
+      "previousProducerCrafts": 262,
+      "collected": 5,
+      "perMinute": 0.3333333333333333,
+      "windowPerMinute": [
+        0.8,
+        0.2,
+        0
+      ],
+      "targetPerMinute": 0,
+      "required": false,
+      "productionEvidenceBasis": "native-completed-crafts-of-matching-recipe-product",
+      "minimumObservedCount": 100,
+      "sufficientObservations": false,
+      "stable": false,
+      "rateMet": true,
+      "functional": true,
+      "stabilityMethod": "conditional-poisson",
+      "stabilityTest": {
+        "method": "Pearson conditional multinomial goodness of fit to equal-duration stationary Poisson counts",
+        "policyId": "flight-native-conditional-poisson-v1",
+        "alpha": 0.05,
+        "chiSquare": 5.199999999999999,
+        "degreesOfFreedom": 2,
+        "pValue": 0.07427357821433397,
+        "expectedCountPerWindow": 1.6666666666666667,
+        "minimumObservedCount": 100,
+        "sufficientObservations": false,
+        "everyWindowPositive": false,
+        "accepted": false,
+        "interpretation": "Insufficient evidence or variation inconsistent with stationary random output at the 5% test level.",
+        "assumptions": [
+          "Equal-duration windows",
+          "Independent Poisson arrivals conditional on total count; rare Bernoulli yields are an approximation",
+          "Each expected window count at least 5",
+          "No correction for multiple factory tests; per-output diagnostic only"
+        ]
+      },
+      "rateConfidenceInterval": {
+        "method": "Garwood exact Poisson",
+        "confidence": 0.95,
+        "count": 5,
+        "minutes": 15,
+        "lowerPerMinute": 0.10823242600789464,
+        "upperPerMinute": 0.7778888052881776,
+        "assumption": "Independent Poisson arrivals at a constant rate; recipe, transport and spoilage correlations can violate this model."
+      }
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "evaluation": {
+    "policyId": "flight-native-conditional-poisson-v1",
+    "originalRunId": "2026-11-11T04-03-42-821Z-57462",
+    "evaluatorSha256": "5db241b81ec4bbd23290fb3d5b908f5c5ba1bd76da8c14dd1014d80e00c87544",
+    "statisticsSha256": "972b96db04f7cfbc3f6aef476a55dc8c5b7f938ab114da49243bb901cf9afd75",
+    "reevaluatorSha256": "3c0fa012ade455a6fae9d4aea7eab792e0220a960413645d81d09d8d0bd5a907",
+    "scope": "Reanalysis of identical recorded native observations; no new simulation and no changed input/configuration fingerprints.",
+    "originalReportSha256": "3bc13ff6f00385e4d730d84e6a4e8bf25543ab1acd2e28da66dd641d83b8a32b",
+    "nativeReportSha256": "2047f44cd19c79f881f1600fab2630ddd37c6a891cdb83fe1aca0f0c146adf74",
+    "nativeControlSha256": "b089e31b4e4261569ef8dd4d39fcc48dbd9a3f92f33a7b9d54665b671118beec",
+    "stochasticDependencyAudit": {
+      "declaredStochastic": true,
+      "eligibleOutputKeys": [
+        "item:yumako-seed"
+      ],
+      "recipeNames": [
+        "yumako-processing"
+      ],
+      "variableMaterials": [
+        {
+          "material": "item:yumako-seed",
+          "recipe": "yumako-processing",
+          "reason": "probabilistic-or-ranged-product",
+          "probability": 0.02,
+          "amountMin": 1,
+          "amountMax": 1
+        }
+      ]
+    },
+    "evaluated": true
+  },
+  "native": {
+    "id": "item-yumako-mash-mixed",
+    "blueprintSha256": "3606ea2d26220bb190f4c904ebd7047ae70a7fc906bd279fb215c1f671cf0500",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "267b7656640f73c97877d3731e6f557b2b82c9b7cd01a545eff76052690f3df0",
+    "specSha256": "74b0286cb3968d48d0345bb959dd0f3b40cacc1e0a696ef80c673e1e128ee7c0",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 47,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-11",
+      "force": "flight-native-11",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -24,
+        "y": -36
+      }
+    },
+    "outputs": {
+      "item:yumako-mash": {
+        "warmupCollected": 118,
+        "collectionEvents": 403,
+        "windowCounts": [
+          131,
+          134,
+          132
+        ],
+        "windowProduced": [
+          128,
+          136,
+          132
+        ],
+        "windowProducerCrafts": [
+          64,
+          68,
+          66
+        ],
+        "measuredProduced": 396,
+        "measuredProducerCrafts": 198,
+        "producerEntityIds": [
+          42
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 128,
+        "baselineProducerCrafts": 64,
+        "firstOutputTick": 2220,
+        "lastOutputTick": 71940,
+        "previousProduced": 524,
+        "previousProducerCrafts": 262
+      },
+      "item:yumako-seed": {
+        "warmupCollected": 1,
+        "collectionEvents": 6,
+        "windowCounts": [
+          4,
+          1,
+          0
+        ],
+        "windowProduced": [
+          4,
+          1,
+          0
+        ],
+        "windowProducerCrafts": [
+          64,
+          68,
+          66
+        ],
+        "measuredProduced": 5,
+        "measuredProducerCrafts": 198,
+        "producerEntityIds": [
+          42
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 1,
+        "baselineProducerCrafts": 64,
+        "firstOutputTick": 8880,
+        "lastOutputTick": 48600,
+        "previousProduced": 6,
+        "previousProducerCrafts": 262
+      }
+    },
+    "inputs": {
+      "item:yumako": {
+        "acceptedItems": 766,
+        "consumed": 197,
+        "consumedPerMinute": 13.133333333333333,
+        "statisticsCount": 197,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 198,
+        "supply": "declared-boundary-chest-or-belt"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 42,
+        "name": "assembling-machine-2",
+        "recipe": "yumako-processing",
+        "position": {
+          "y": 4.5,
+          "x": -3.5
+        },
+        "status": "item_ingredient_shortage",
+        "productsFinished": 262,
+        "measuredCrafts": 198,
+        "statusSeconds": {
+          "item_ingredient_shortage": 629,
+          "working": 271
+        },
+        "inputInventory": {},
+        "outputInventory": {},
+        "fuelInventory": {}
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -38,
+          "x": -26
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 36,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 37,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 47,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 36,
+        "robotInventory": {
+          "logistic-robot": 22
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 43
+      },
+      {
+        "entityNumber": 37,
+        "robotInventory": {
+          "logistic-robot": 21
+        },
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 43
+      },
+      {
+        "entityNumber": 47,
+        "robotInventory": {},
+        "allLogisticRobots": 60,
+        "availableLogisticRobots": 43
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 41
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "52aeb97abc133a1cc341746d1e99ac9c5d23e34229f3581849425b3bef35bb0a",
+  "nativeReportSha256": "2047f44cd19c79f881f1600fab2630ddd37c6a891cdb83fe1aca0f0c146adf74",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

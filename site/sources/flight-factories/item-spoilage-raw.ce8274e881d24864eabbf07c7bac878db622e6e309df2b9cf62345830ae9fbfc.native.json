@@ -1,0 +1,750 @@
+{
+  "id": "item-spoilage-raw",
+  "blueprintSha256": "ce8274e881d24864eabbf07c7bac878db622e6e309df2b9cf62345830ae9fbfc",
+  "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "sourceSpecSha256": "8f8cd815e0965b93873d6931d00ed44f34cfc41a840f29a05ae695e35f58d822",
+  "specSha256": "baf9920fd1d89b9d393f1f0746d7d31378fb565d550bf91fe5a794f6b01a657f",
+  "configurationSha256": "e7a4acf1a1935a2f1c3c7a761e1d27b1cb20a40f8e2741fd5a7acb22d26b80b5",
+  "configuration": {
+    "id": "item-spoilage-raw",
+    "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "blueprintSha256": "ce8274e881d24864eabbf07c7bac878db622e6e309df2b9cf62345830ae9fbfc",
+    "surface": "nauvis",
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "enableAllRecipes": true,
+    "zeroResearchProductivity": true,
+    "boundaryMode": "raw",
+    "rawOnly": true,
+    "inputs": [
+      {
+        "id": "jellynut",
+        "type": "item",
+        "perSecond": 0.00625,
+        "source": "natural-resource",
+        "sources": [
+          {
+            "kind": "harvest",
+            "entity": "jellystem",
+            "requiredFluid": null,
+            "extractionIncluded": false
+          }
+        ],
+        "obtainableFromRaw": true,
+        "name": "jellynut",
+        "label": "IN jellynut",
+        "entityNumber": 45,
+        "displayEntity": 46,
+        "position": {
+          "x": 4.5,
+          "y": 4.5
+        },
+        "ratePerSecond": 0.00625,
+        "plannedPerSecond": 0.00625,
+        "supplyPolicy": "unlimited-external-boundary-fixture"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "spoilage",
+        "type": "item",
+        "perSecond": 0.016666666666666666,
+        "target": true,
+        "name": "spoilage",
+        "entityNumber": 47,
+        "position": {
+          "x": 4.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.016666666666666666,
+        "minPerMinute": 0.9,
+        "role": "target"
+      },
+      {
+        "id": "iron-bacteria",
+        "type": "item",
+        "perSecond": 0.000416666666667,
+        "handling": "Export continuously; finite storage eventually blocks production.",
+        "name": "iron-bacteria",
+        "entityNumber": 48,
+        "position": {
+          "x": 8.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.000416666666667,
+        "minPerMinute": 0,
+        "role": "surplus"
+      },
+      {
+        "id": "jellynut-seed",
+        "type": "item",
+        "perSecond": 0.000125,
+        "handling": "Export continuously; finite storage eventually blocks production.",
+        "name": "jellynut-seed",
+        "entityNumber": 49,
+        "position": {
+          "x": 12.5,
+          "y": 8.5
+        },
+        "ratePerSecond": 0.000125,
+        "minPerMinute": 0,
+        "role": "surplus"
+      }
+    ],
+    "machineIds": [
+      50,
+      56
+    ],
+    "roboportIds": [
+      43,
+      44,
+      55,
+      61
+    ],
+    "powerPoleIds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42
+    ],
+    "powerPoleId": 1,
+    "expectedEntityCount": 61,
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 43,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 44,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 55,
+        "item": "logistic-robot",
+        "count": 20
+      },
+      {
+        "entityNumber": 61,
+        "item": "logistic-robot",
+        "count": 20
+      }
+    ],
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "measurementWindows": 3,
+    "materialSeeds": [],
+    "startupStock": [],
+    "stochastic": true,
+    "boundaryPolicy": "Only declared boundary chests/pipes; no direct machine or intermediate injection; drain declared outputs only. Material startup seeds supplied once at dedicated boundary providers.",
+    "blueprintPath": "blueprint-sources/flight-factories/blueprints/item-spoilage-raw.ce8274e881d24864eabbf07c7bac878db622e6e309df2b9cf62345830ae9fbfc.txt",
+    "planFile": "blueprint-sources/flight-factories/plans/item-spoilage-raw.json",
+    "blueprintFile": "blueprints/item-spoilage-raw.ce8274e881d24864eabbf07c7bac878db622e6e309df2b9cf62345830ae9fbfc.txt",
+    "windows": 3,
+    "outputProducerEntityIds": {
+      "item:iron-bacteria": [
+        50
+      ],
+      "item:spoilage": [
+        50
+      ],
+      "item:jellynut-seed": [
+        56
+      ],
+      "item:jelly": [
+        56
+      ]
+    },
+    "expectedRecipes": {
+      "50": "iron-bacteria",
+      "56": "jellynut-processing"
+    },
+    "statisticsIgnoredInputs": {},
+    "statisticsIgnoredOutputs": {},
+    "verifiedResourceSources": [],
+    "maxRelativeSpread": 0.25,
+    "rateToleranceFraction": 0.1,
+    "minimumObservedCount": 100,
+    "specSha256": "baf9920fd1d89b9d393f1f0746d7d31378fb565d550bf91fe5a794f6b01a657f",
+    "configurationSha256": "e7a4acf1a1935a2f1c3c7a761e1d27b1cb20a40f8e2741fd5a7acb22d26b80b5",
+    "sourceSpecSha256": "8f8cd815e0965b93873d6931d00ed44f34cfc41a840f29a05ae695e35f58d822"
+  },
+  "modSnapshotSha256": "0ab66ec6073db2c046cb3dd375e39fb39990b2407354135dd19c8a2e9b9cd21a",
+  "runId": "2026-11-11T04-03-42-821Z-57462-reevaluated-1794371101520",
+  "passed": true,
+  "status": "passed",
+  "functionalPassed": true,
+  "throughputPassed": true,
+  "failures": [],
+  "outputs": {
+    "item:spoilage": {
+      "warmupCollected": 107,
+      "collectionEvents": 368,
+      "windowCounts": [
+        142,
+        137,
+        142
+      ],
+      "windowProduced": [
+        140,
+        140,
+        144
+      ],
+      "windowProducerCrafts": [
+        35,
+        35,
+        36
+      ],
+      "measuredProduced": 424,
+      "measuredProducerCrafts": 106,
+      "producerEntityIds": [
+        50
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 116,
+      "baselineProducerCrafts": 29,
+      "firstOutputTick": 3720,
+      "lastOutputTick": 71820,
+      "previousProduced": 540,
+      "previousProducerCrafts": 135,
+      "collected": 421,
+      "perMinute": 28.066666666666666,
+      "windowPerMinute": [
+        28.4,
+        27.4,
+        28.4
+      ],
+      "targetPerMinute": 0.9,
+      "required": true,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 100,
+      "sufficientObservations": true,
+      "stable": true,
+      "rateMet": true,
+      "functional": true,
+      "stabilityMethod": "relative-spread-with-count-quantization"
+    },
+    "item:iron-bacteria": {
+      "warmupCollected": 2,
+      "collectionEvents": 17,
+      "windowCounts": [
+        5,
+        5,
+        5
+      ],
+      "windowProduced": [
+        4,
+        6,
+        4
+      ],
+      "windowProducerCrafts": [
+        35,
+        35,
+        36
+      ],
+      "measuredProduced": 14,
+      "measuredProducerCrafts": 106,
+      "producerEntityIds": [
+        50
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 3,
+      "baselineProducerCrafts": 29,
+      "firstOutputTick": 6780,
+      "lastOutputTick": 70800,
+      "previousProduced": 17,
+      "previousProducerCrafts": 135,
+      "collected": 15,
+      "perMinute": 1,
+      "windowPerMinute": [
+        1,
+        1,
+        1
+      ],
+      "targetPerMinute": 0,
+      "required": false,
+      "productionEvidenceBasis": "native-production-statistics",
+      "minimumObservedCount": 100,
+      "sufficientObservations": false,
+      "stable": false,
+      "rateMet": true,
+      "functional": true,
+      "stabilityMethod": "conditional-poisson",
+      "stabilityTest": {
+        "method": "Pearson conditional multinomial goodness of fit to equal-duration stationary Poisson counts",
+        "policyId": "flight-native-conditional-poisson-v1",
+        "alpha": 0.05,
+        "chiSquare": 0,
+        "degreesOfFreedom": 2,
+        "pValue": 1,
+        "expectedCountPerWindow": 5,
+        "minimumObservedCount": 100,
+        "sufficientObservations": false,
+        "everyWindowPositive": true,
+        "accepted": false,
+        "interpretation": "Insufficient evidence or variation inconsistent with stationary random output at the 5% test level.",
+        "assumptions": [
+          "Equal-duration windows",
+          "Independent Poisson arrivals conditional on total count; rare Bernoulli yields are an approximation",
+          "Each expected window count at least 5",
+          "No correction for multiple factory tests; per-output diagnostic only"
+        ]
+      },
+      "rateConfidenceInterval": {
+        "method": "Garwood exact Poisson",
+        "confidence": 0.95,
+        "count": 15,
+        "minutes": 15,
+        "lowerPerMinute": 0.559692408852221,
+        "upperPerMinute": 1.649347924765723,
+        "assumption": "Independent Poisson arrivals at a constant rate; recipe, transport and spoilage correlations can violate this model."
+      }
+    },
+    "item:jellynut-seed": {
+      "warmupCollected": 1,
+      "collectionEvents": 5,
+      "windowCounts": [
+        1,
+        0,
+        3
+      ],
+      "windowProduced": [
+        1,
+        0,
+        3
+      ],
+      "windowProducerCrafts": [
+        52,
+        53,
+        54
+      ],
+      "measuredProduced": 4,
+      "measuredProducerCrafts": 159,
+      "producerEntityIds": [
+        56
+      ],
+      "productionStatisticsIgnored": false,
+      "baselineProduced": 1,
+      "baselineProducerCrafts": 48,
+      "firstOutputTick": 9360,
+      "lastOutputTick": 63060,
+      "previousProduced": 5,
+      "previousProducerCrafts": 207,
+      "collected": 4,
+      "perMinute": 0.26666666666666666,
+      "windowPerMinute": [
+        0.2,
+        0,
+        0.6
+      ],
+      "targetPerMinute": 0,
+      "required": false,
+      "productionEvidenceBasis": "native-completed-crafts-of-matching-recipe-product",
+      "minimumObservedCount": 100,
+      "sufficientObservations": false,
+      "stable": false,
+      "rateMet": true,
+      "functional": true,
+      "stabilityMethod": "conditional-poisson",
+      "stabilityTest": {
+        "method": "Pearson conditional multinomial goodness of fit to equal-duration stationary Poisson counts",
+        "policyId": "flight-native-conditional-poisson-v1",
+        "alpha": 0.05,
+        "chiSquare": 3.5000000000000004,
+        "degreesOfFreedom": 2,
+        "pValue": 0.17377394345044472,
+        "expectedCountPerWindow": 1.3333333333333333,
+        "minimumObservedCount": 100,
+        "sufficientObservations": false,
+        "everyWindowPositive": false,
+        "accepted": false,
+        "interpretation": "Insufficient evidence or variation inconsistent with stationary random output at the 5% test level.",
+        "assumptions": [
+          "Equal-duration windows",
+          "Independent Poisson arrivals conditional on total count; rare Bernoulli yields are an approximation",
+          "Each expected window count at least 5",
+          "No correction for multiple factory tests; per-output diagnostic only"
+        ]
+      },
+      "rateConfidenceInterval": {
+        "method": "Garwood exact Poisson",
+        "confidence": 0.95,
+        "count": 4,
+        "minutes": 15,
+        "lowerPerMinute": 0.0726576915750883,
+        "upperPerMinute": 0.6827725783602467,
+        "assumption": "Independent Poisson arrivals at a constant rate; recipe, transport and spoilage correlations can violate this model."
+      }
+    }
+  },
+  "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured.",
+  "evaluation": {
+    "policyId": "flight-native-conditional-poisson-v1",
+    "originalRunId": "2026-11-11T04-03-42-821Z-57462",
+    "evaluatorSha256": "5db241b81ec4bbd23290fb3d5b908f5c5ba1bd76da8c14dd1014d80e00c87544",
+    "statisticsSha256": "972b96db04f7cfbc3f6aef476a55dc8c5b7f938ab114da49243bb901cf9afd75",
+    "reevaluatorSha256": "3c0fa012ade455a6fae9d4aea7eab792e0220a960413645d81d09d8d0bd5a907",
+    "scope": "Reanalysis of identical recorded native observations; no new simulation and no changed input/configuration fingerprints.",
+    "originalReportSha256": "76d3e2cd6e489942ae9c65b10c7ac75f0a01ded28a8460eef6253dc4f8582eec",
+    "nativeReportSha256": "f870c1f43e016f33dd304172ae9b53eddc9b3f7a13ff32d237684dda3c322299",
+    "nativeControlSha256": "b089e31b4e4261569ef8dd4d39fcc48dbd9a3f92f33a7b9d54665b671118beec",
+    "stochasticDependencyAudit": {
+      "declaredStochastic": true,
+      "eligibleOutputKeys": [
+        "item:iron-bacteria",
+        "item:jellynut-seed"
+      ],
+      "recipeNames": [
+        "iron-bacteria",
+        "jellynut-processing"
+      ],
+      "variableMaterials": [
+        {
+          "material": "item:iron-bacteria",
+          "recipe": "iron-bacteria",
+          "reason": "probabilistic-or-ranged-product",
+          "probability": 0.1,
+          "amountMin": 1,
+          "amountMax": 1
+        },
+        {
+          "material": "item:jellynut-seed",
+          "recipe": "jellynut-processing",
+          "reason": "probabilistic-or-ranged-product",
+          "probability": 0.02,
+          "amountMin": 1,
+          "amountMax": 1
+        }
+      ]
+    },
+    "evaluated": true
+  },
+  "native": {
+    "id": "item-spoilage-raw",
+    "blueprintSha256": "ce8274e881d24864eabbf07c7bac878db622e6e309df2b9cf62345830ae9fbfc",
+    "prototypeDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "configurationSha256": "e7a4acf1a1935a2f1c3c7a761e1d27b1cb20a40f8e2741fd5a7acb22d26b80b5",
+    "specSha256": "baf9920fd1d89b9d393f1f0746d7d31378fb565d550bf91fe5a794f6b01a657f",
+    "gameVersion": "2.0.77",
+    "activeMods": {
+      "base": "2.0.77",
+      "elevated-rails": "2.0.77",
+      "quality": "2.0.77",
+      "starter_initializer": "0.2.6",
+      "space-age": "2.0.77",
+      "ev-assets": "2.4.6",
+      "EverythingOnNauvis": "0.1.8",
+      "visible-planets": "1.7.1",
+      "ev-machines": "2.1.1",
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "Better-Power-Armor-Grid": "8.0.1",
+      "flight_native_test": "1.0.0"
+    },
+    "completedTick": 72000,
+    "importedEntities": 61,
+    "warmupTicks": 18000,
+    "measurementTicks": 54000,
+    "windows": 3,
+    "isolation": {
+      "surface": "flight-native-13",
+      "force": "flight-native-13",
+      "mapSeed": 12345,
+      "blueprintOffset": {
+        "x": -30,
+        "y": -36
+      }
+    },
+    "outputs": {
+      "item:spoilage": {
+        "warmupCollected": 107,
+        "collectionEvents": 368,
+        "windowCounts": [
+          142,
+          137,
+          142
+        ],
+        "windowProduced": [
+          140,
+          140,
+          144
+        ],
+        "windowProducerCrafts": [
+          35,
+          35,
+          36
+        ],
+        "measuredProduced": 424,
+        "measuredProducerCrafts": 106,
+        "producerEntityIds": [
+          50
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 116,
+        "baselineProducerCrafts": 29,
+        "firstOutputTick": 3720,
+        "lastOutputTick": 71820,
+        "previousProduced": 540,
+        "previousProducerCrafts": 135
+      },
+      "item:iron-bacteria": {
+        "warmupCollected": 2,
+        "collectionEvents": 17,
+        "windowCounts": [
+          5,
+          5,
+          5
+        ],
+        "windowProduced": [
+          4,
+          6,
+          4
+        ],
+        "windowProducerCrafts": [
+          35,
+          35,
+          36
+        ],
+        "measuredProduced": 14,
+        "measuredProducerCrafts": 106,
+        "producerEntityIds": [
+          50
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 3,
+        "baselineProducerCrafts": 29,
+        "firstOutputTick": 6780,
+        "lastOutputTick": 70800,
+        "previousProduced": 17,
+        "previousProducerCrafts": 135
+      },
+      "item:jellynut-seed": {
+        "warmupCollected": 1,
+        "collectionEvents": 5,
+        "windowCounts": [
+          1,
+          0,
+          3
+        ],
+        "windowProduced": [
+          1,
+          0,
+          3
+        ],
+        "windowProducerCrafts": [
+          52,
+          53,
+          54
+        ],
+        "measuredProduced": 4,
+        "measuredProducerCrafts": 159,
+        "producerEntityIds": [
+          56
+        ],
+        "productionStatisticsIgnored": false,
+        "baselineProduced": 1,
+        "baselineProducerCrafts": 48,
+        "firstOutputTick": 9360,
+        "lastOutputTick": 63060,
+        "previousProduced": 5,
+        "previousProducerCrafts": 207
+      }
+    },
+    "inputs": {
+      "item:jellynut": {
+        "acceptedItems": 711,
+        "consumed": 159,
+        "consumedPerMinute": 10.6,
+        "statisticsCount": 159,
+        "statisticsCountsExcluded": false,
+        "measuredAcceptedItems": 159,
+        "supply": "declared-boundary-chest-or-belt"
+      }
+    },
+    "machines": [
+      {
+        "entityNumber": 50,
+        "name": "assembling-machine-2",
+        "recipe": "iron-bacteria",
+        "position": {
+          "y": 4.5,
+          "x": -9.5
+        },
+        "status": "item_ingredient_shortage",
+        "productsFinished": 135,
+        "measuredCrafts": 106,
+        "statusSeconds": {
+          "working": 142,
+          "item_ingredient_shortage": 758
+        },
+        "inputInventory": {
+          "jelly": 1
+        },
+        "outputInventory": {
+          "spoilage": 2
+        },
+        "fuelInventory": {}
+      },
+      {
+        "entityNumber": 56,
+        "name": "assembling-machine-2",
+        "recipe": "jellynut-processing",
+        "position": {
+          "y": 4.5,
+          "x": 14.5
+        },
+        "status": "item_ingredient_shortage",
+        "productsFinished": 207,
+        "measuredCrafts": 159,
+        "statusSeconds": {
+          "item_ingredient_shortage": 687,
+          "working": 213
+        },
+        "inputInventory": {},
+        "outputInventory": {},
+        "fuelInventory": {}
+      }
+    ],
+    "fixtures": [
+      {
+        "kind": "external-power",
+        "position": {
+          "y": -38,
+          "x": -32
+        },
+        "entityName": "electric-energy-interface"
+      }
+    ],
+    "infrastructureSeeds": [
+      {
+        "entityNumber": 43,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 44,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 55,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      },
+      {
+        "entityNumber": 61,
+        "item": "logistic-robot",
+        "count": 20,
+        "purpose": "logistics-infrastructure-only"
+      }
+    ],
+    "materialSeeds": {},
+    "remainingSeedDebits": {},
+    "logistics": [
+      {
+        "entityNumber": 43,
+        "robotInventory": {
+          "logistic-robot": 45
+        },
+        "allLogisticRobots": 80,
+        "availableLogisticRobots": 45
+      },
+      {
+        "entityNumber": 44,
+        "robotInventory": {},
+        "allLogisticRobots": 80,
+        "availableLogisticRobots": 45
+      },
+      {
+        "entityNumber": 55,
+        "robotInventory": {},
+        "allLogisticRobots": 80,
+        "availableLogisticRobots": 45
+      },
+      {
+        "entityNumber": 61,
+        "robotInventory": {},
+        "allLogisticRobots": 80,
+        "availableLogisticRobots": 45
+      }
+    ],
+    "power": {
+      "singleSavedBoundaryPole": 1,
+      "allConsumersConnected": true,
+      "connectedConsumers": 52
+    },
+    "initialVisualEffects": {},
+    "verifiedResourceSources": {},
+    "surfaceProperties": {
+      "gravity": 10,
+      "pressure": 1000,
+      "magnetic-field": 90,
+      "solar-power": 100,
+      "day-night-cycle": 25200
+    },
+    "researchPolicy": "all-recipes-enabled-without-research-bonuses",
+    "testedTechnologies": {},
+    "rejections": {},
+    "portPolicy": "Declared raw boundaries only; no machine inventory or internal pipe writes."
+  },
+  "originalReportSha256": "ae4444814c02808a7b5e40e2d88e8c36aa4cb447cfbdddb82e29d748548b5627",
+  "nativeReportSha256": "f870c1f43e016f33dd304172ae9b53eddc9b3f7a13ff32d237684dda3c322299",
+  "environmentAvailability": {
+    "schemaVersion": 1,
+    "policyId": "flight-native-loaded-map-availability-v1",
+    "nativeMeasurementsUnchanged": true,
+    "scope": "Scenario-seeded resource availability only; extraction, logistics from the map and player-join behavior are not production measurements.",
+    "historicalAvailabilityClaimsSuperseded": false,
+    "status": "not-required-by-declared-boundaries",
+    "supersedes": [],
+    "verifiedResourceSources": []
+  }
+}

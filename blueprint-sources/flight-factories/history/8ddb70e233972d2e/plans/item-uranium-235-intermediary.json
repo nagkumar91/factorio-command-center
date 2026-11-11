@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "intermediary",
+  "target": {
+    "id": "uranium-235",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "kovarex-enrichment-process",
+      "machine": "centrifuge",
+      "craftsPerSecond": 0.0160569105691,
+      "machineCount": 1,
+      "exactMachineCount": 0.963414634146,
+      "utilization": 0.963414634146,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "kovarex-enrichment-process"
+      ],
+      "ingredients": [
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 40,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.642276422764
+        },
+        {
+          "id": "uranium-238",
+          "type": "item",
+          "amount": 5,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0802845528455
+        }
+      ],
+      "results": [
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 41,
+          "probability": 1,
+          "ignoredByProductivity": 40,
+          "expectedAmount": 41,
+          "perSecond": 0.658333333333
+        },
+        {
+          "id": "uranium-238",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 2,
+          "expectedAmount": 2,
+          "perSecond": 0.0321138211382
+        }
+      ],
+      "fuel": null,
+      "stochastic": false
+    },
+    {
+      "recipe": "uranium-chunk-processing",
+      "machine": "centrifuge",
+      "craftsPerSecond": 0.0487804878049,
+      "machineCount": 1,
+      "exactMachineCount": 0.390243902439,
+      "utilization": 0.390243902439,
+      "craftingSpeed": 1,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "elite-ore-processing"
+      ],
+      "ingredients": [
+        {
+          "id": "uranium-chunk",
+          "type": "item",
+          "amount": 10,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.487804878049
+        }
+      ],
+      "results": [
+        {
+          "id": "uranium-235",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.0125,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.0125,
+          "perSecond": 0.000609756097561
+        },
+        {
+          "id": "uranium-238",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.9875,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.9875,
+          "perSecond": 0.0481707317073
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "uranium-chunk",
+      "type": "item",
+      "perSecond": 0.487804878049,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "uranium-chunk",
+      "label": "IN uranium-chunk",
+      "entityNumber": 45,
+      "displayEntity": 46,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.487804878049,
+      "plannedPerSecond": 0.487804878049,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [],
+  "startupStock": [],
+  "rawOnly": false,
+  "stochastic": true,
+  "warnings": [
+    "Random result rates are expectations, not guaranteed yields. Native throughput needs repeated measurement windows."
+  ],
+  "machineCount": 2,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "advanced-ore-processing",
+      "automation",
+      "automation-2",
+      "automation-3",
+      "automation-science-pack",
+      "base-ore-processing",
+      "battery",
+      "big-mining-drill",
+      "bulk-inserter",
+      "calcite-processing",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electric-mining-drill",
+      "electric-mining-drill-mk2",
+      "electric-mining-drill-mk3",
+      "electromagnetic-plant",
+      "electromagnetic-science-pack",
+      "electronics",
+      "elite-ore-processing",
+      "engine",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "foundry",
+      "holmium-processing",
+      "kovarex-enrichment-process",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "metallurgic-science-pack",
+      "mining-productivity-1",
+      "mining-productivity-2",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "recycling",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "speed-module",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing",
+      "tungsten-carbide",
+      "tungsten-steel",
+      "uranium-mining",
+      "uranium-processing"
+    ],
+    "requirements": [
+      {
+        "recipe": "kovarex-enrichment-process",
+        "unlockAlternatives": [
+          "kovarex-enrichment-process"
+        ],
+        "selected": "kovarex-enrichment-process"
+      },
+      {
+        "recipe": "uranium-chunk-processing",
+        "unlockAlternatives": [
+          "elite-ore-processing"
+        ],
+        "selected": "elite-ore-processing"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "centrifuge",
+        "unlockAlternatives": [
+          "uranium-processing"
+        ],
+        "selected": "uranium-processing"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "uranium-235",
+        "type": "item",
+        "producedPerSecond": 0.658943089431,
+        "consumedPerSecond": 0.642276422764,
+        "residual": 0
+      },
+      {
+        "id": "uranium-238",
+        "type": "item",
+        "producedPerSecond": 0.0802845528455,
+        "consumedPerSecond": 0.0802845528455,
+        "residual": 0
+      },
+      {
+        "id": "uranium-chunk",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.487804878049,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "uranium-235",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "uranium-235",
+      "entityNumber": 47,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    }
+  ],
+  "blueprintSha256": "0360730e59fb96fc3742a1ba7e48d77865ea2acf0e2698ad954fa9d0c49f1c6d",
+  "entityCount": 59
+}

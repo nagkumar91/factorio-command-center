@@ -1,0 +1,538 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "raw",
+  "target": {
+    "id": "jellynut-seed",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests.",
+    "Machine count includes 2 extra cells for conservative item-inserter capacity; recipe demand and external ingredients are unchanged.",
+    "Add 234 logistic robots across 6 saved roboports (39 per port); 24 charging positions. Base robot speed and payload assumed.",
+    "Connect external electricity and supply every labeled input chest/pipe. Repeated input labels feed separate machine cells; displayed rates sum to total demand.",
+    "Continuously empty all 9 labeled WASTE chests. Spoiled material is discarded separately and never counted as manufactured output."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "jellynut-processing",
+      "machine": "assembling-machine-2",
+      "craftsPerSecond": 0.833333333333,
+      "machineCount": 4,
+      "exactMachineCount": 1.11111111111,
+      "utilization": 0.2777777777775,
+      "craftingSpeed": 0.75,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "jellynut"
+      ],
+      "ingredients": [
+        {
+          "id": "jellynut",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.833333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "jellynut-seed",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.02,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.02,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "jelly",
+          "type": "item",
+          "amount": 4,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 4,
+          "perSecond": 3.33333333333
+        }
+      ],
+      "fuel": null,
+      "stochastic": true,
+      "transportProvision": {
+        "reason": "Conservative installed stack-inserter transfer capacity",
+        "itemsPerSecondPerArm": 5.333333333333334
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "jellynut",
+      "type": "item",
+      "perSecond": 0.20833333333325,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "jellystem",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "jellynut",
+      "label": "IN jellynut",
+      "entityNumber": 61,
+      "position": {
+        "x": 17.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.20833333333325,
+      "plannedPerSecond": 0.20833333333325,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 7,
+      "displayEntity": 101
+    },
+    {
+      "id": "jellynut",
+      "type": "item",
+      "perSecond": 0.20833333333325,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "jellystem",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "jellynut",
+      "label": "IN jellynut",
+      "entityNumber": 67,
+      "position": {
+        "x": 41.5,
+        "y": 39.5
+      },
+      "ratePerSecond": 0.20833333333325,
+      "plannedPerSecond": 0.20833333333325,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 7,
+      "displayEntity": 102
+    },
+    {
+      "id": "jellynut",
+      "type": "item",
+      "perSecond": 0.20833333333325,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "jellystem",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "jellynut",
+      "label": "IN jellynut",
+      "entityNumber": 73,
+      "position": {
+        "x": 17.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.20833333333325,
+      "plannedPerSecond": 0.20833333333325,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 7,
+      "displayEntity": 103
+    },
+    {
+      "id": "jellynut",
+      "type": "item",
+      "perSecond": 0.20833333333325,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "harvest",
+          "entity": "jellystem",
+          "requiredFluid": null,
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "jellynut",
+      "label": "IN jellynut",
+      "entityNumber": 79,
+      "position": {
+        "x": 41.5,
+        "y": 63.5
+      },
+      "ratePerSecond": 0.20833333333325,
+      "plannedPerSecond": 0.20833333333325,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "bufferCount": 7,
+      "displayEntity": 104
+    }
+  ],
+  "surplus": [
+    {
+      "id": "jelly",
+      "type": "item",
+      "perSecond": 3.33333333333,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": true,
+  "stochastic": true,
+  "warnings": [
+    "Random result rates are expectations, not guaranteed yields. Native throughput needs repeated measurement windows.",
+    "Spoilage losses are not included in stoichiometric demand; measure them in the native run."
+  ],
+  "machineCount": 4,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agriculture",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "battery",
+      "bulk-inserter",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "jellynut",
+      "landfill",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing"
+    ],
+    "requirements": [
+      {
+        "recipe": "jellynut-processing",
+        "unlockAlternatives": [
+          "jellynut"
+        ],
+        "selected": "jellynut"
+      },
+      {
+        "recipe": "assembling-machine-2",
+        "unlockAlternatives": [
+          "automation-2"
+        ],
+        "selected": "automation-2"
+      },
+      {
+        "recipe": "steel-chest",
+        "unlockAlternatives": [
+          "steel-processing"
+        ],
+        "selected": "steel-processing"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "jelly",
+        "type": "item",
+        "producedPerSecond": 3.33333333333,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "jellynut",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.833333333333,
+        "residual": 0
+      },
+      {
+        "id": "jellynut-seed",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "jellynut-seed",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "jellynut-seed",
+      "entityNumber": 57,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    },
+    {
+      "id": "jelly",
+      "type": "item",
+      "perSecond": 3.33333333333,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "jelly",
+      "entityNumber": 58,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 3.33333333333,
+      "minPerMinute": 0,
+      "role": "surplus"
+    }
+  ],
+  "wasteOutputs": [
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 84,
+      "position": {
+        "x": 8.5,
+        "y": 6.5
+      },
+      "sourceEntityNumber": 58,
+      "inserterEntityNumber": 83,
+      "spoiledFrom": [
+        "jelly"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 105
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 86,
+      "position": {
+        "x": 17.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 61,
+      "inserterEntityNumber": 85,
+      "spoiledFrom": [
+        "jellynut"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 106
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 88,
+      "position": {
+        "x": 23.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 63,
+      "inserterEntityNumber": 87,
+      "spoiledFrom": [
+        "jelly",
+        "jellynut"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 107
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 90,
+      "position": {
+        "x": 41.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 67,
+      "inserterEntityNumber": 89,
+      "spoiledFrom": [
+        "jellynut"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 108
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 92,
+      "position": {
+        "x": 47.5,
+        "y": 37.5
+      },
+      "sourceEntityNumber": 69,
+      "inserterEntityNumber": 91,
+      "spoiledFrom": [
+        "jelly",
+        "jellynut"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 109
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 94,
+      "position": {
+        "x": 17.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 73,
+      "inserterEntityNumber": 93,
+      "spoiledFrom": [
+        "jellynut"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 110
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 96,
+      "position": {
+        "x": 23.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 75,
+      "inserterEntityNumber": 95,
+      "spoiledFrom": [
+        "jelly",
+        "jellynut"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 111
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 98,
+      "position": {
+        "x": 41.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 79,
+      "inserterEntityNumber": 97,
+      "spoiledFrom": [
+        "jellynut"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 112
+    },
+    {
+      "type": "item",
+      "name": "spoilage",
+      "entityNumber": 100,
+      "position": {
+        "x": 47.5,
+        "y": 61.5
+      },
+      "sourceEntityNumber": 81,
+      "inserterEntityNumber": 99,
+      "spoiledFrom": [
+        "jelly",
+        "jellynut"
+      ],
+      "handling": "Empty this dedicated waste chest continuously; its contents are not manufactured output.",
+      "displayEntity": 113
+    }
+  ],
+  "logistics": {
+    "robotCount": 234,
+    "roboportCount": 6,
+    "robotsPerPort": 39,
+    "chargingSlots": 24,
+    "chargingWatts": 12000000,
+    "estimatedTransfersPerSecond": 3.3499999999966668,
+    "estimatedMovementWatts": 2097776.8880194286,
+    "sizingPolicy": "Installed base robot speed/payload, weighted producer distance, return journey, four seconds dispatch allowance and 80% capacity margin; native tests still required."
+  },
+  "materialSeeds": [],
+  "blueprintSha256": "04e1e5d35a435e1d060ba423454425b962814e5dabb5c46161f4175561994589",
+  "entityCount": 113
+}

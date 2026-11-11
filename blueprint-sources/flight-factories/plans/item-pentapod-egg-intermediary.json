@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "intermediary",
+  "target": {
+    "id": "pentapod-egg",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "pentapod-egg",
+      "machine": "biochamber",
+      "craftsPerSecond": 0.0111111111111,
+      "machineCount": 1,
+      "exactMachineCount": 0.0833333333333,
+      "utilization": 0.0833333333333,
+      "craftingSpeed": 2,
+      "intrinsicProductivity": 0.5,
+      "unlockTechnologies": [
+        "biochamber"
+      ],
+      "ingredients": [
+        {
+          "id": "pentapod-egg",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.0111111111111
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 30,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.333333333333
+        },
+        {
+          "id": "water",
+          "type": "fluid",
+          "amount": 60,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 0.666666666667
+        },
+        {
+          "id": "nutrients",
+          "type": "item",
+          "amount": 1.875,
+          "probability": 1,
+          "fuel": true,
+          "perSecond": 0.0208333333333
+        }
+      ],
+      "results": [
+        {
+          "id": "pentapod-egg",
+          "type": "item",
+          "amount": 2,
+          "probability": 1,
+          "ignoredByProductivity": 1,
+          "expectedAmount": 2.5,
+          "perSecond": 0.0277777777778
+        }
+      ],
+      "fuel": {
+        "id": "nutrients",
+        "type": "item",
+        "amount": 1.875,
+        "probability": 1,
+        "fuel": true
+      },
+      "stochastic": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "water",
+      "type": "fluid",
+      "perSecond": 0.666666666667,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "offshore-pumping",
+          "tile": "deepwater",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "water",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-yumako",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-jellynut",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-dead-skin",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-light-green-slime",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-red-tentacle",
+          "extractionIncluded": false
+        },
+        {
+          "kind": "offshore-pumping",
+          "tile": "wetland-pink-tentacle",
+          "extractionIncluded": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "water",
+      "label": "IN water",
+      "entityNumber": 38,
+      "displayEntity": 39,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.666666666667,
+      "plannedPerSecond": 0.666666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture",
+      "fixturePosition": {
+        "x": 4.5,
+        "y": 3.5
+      },
+      "temperature": 15
+    },
+    {
+      "id": "nutrients",
+      "type": "item",
+      "perSecond": 0.354166666667,
+      "source": "supplied-intermediate",
+      "sources": [],
+      "obtainableFromRaw": true,
+      "name": "nutrients",
+      "label": "IN nutrients",
+      "entityNumber": 40,
+      "displayEntity": 41,
+      "position": {
+        "x": 8.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 0.354166666667,
+      "plannedPerSecond": 0.354166666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [],
+  "startupStock": [
+    {
+      "id": "pentapod-egg",
+      "type": "item",
+      "amount": 1,
+      "reason": "Selected steady-state cycle cannot start empty.",
+      "sources": [
+        {
+          "gate": "biochamber",
+          "item": "pentapod-egg",
+          "count": 1,
+          "quality": "normal",
+          "price": [
+            {
+              "name": "steel-plate",
+              "count": 20
+            },
+            {
+              "name": "nutrients",
+              "count": 20
+            }
+          ],
+          "kind": "manual-scripted-exchange",
+          "automatedThroughput": false
+        }
+      ]
+    }
+  ],
+  "rawOnly": false,
+  "stochastic": false,
+  "warnings": [
+    "Spoilage losses are not included in stoichiometric demand; measure them in the native run.",
+    "Burner fuel is included at active crafting consumption; idle fuel and spoilage can increase demand.",
+    "Startup stock is separate from continuous inputs. This layout cannot start from raw inputs alone."
+  ],
+  "machineCount": 1,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "agriculture",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "battery",
+      "biochamber",
+      "bulk-inserter",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "jellynut",
+      "landfill",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing",
+      "yumako"
+    ],
+    "requirements": [
+      {
+        "recipe": "pentapod-egg",
+        "unlockAlternatives": [
+          "biochamber"
+        ],
+        "selected": "biochamber"
+      },
+      {
+        "recipe": "pipe",
+        "unlockAlternatives": [
+          "steam-power"
+        ],
+        "selected": "steam-power"
+      },
+      {
+        "recipe": "steel-chest",
+        "unlockAlternatives": [
+          "steel-processing"
+        ],
+        "selected": "steel-processing"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "biochamber",
+        "unlockAlternatives": [
+          "biochamber"
+        ],
+        "selected": "biochamber"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "water",
+        "type": "fluid",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.666666666666,
+        "residual": 0
+      },
+      {
+        "id": "nutrients",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 0.354166666666,
+        "residual": 0
+      },
+      {
+        "id": "pentapod-egg",
+        "type": "item",
+        "producedPerSecond": 0.0277777777777,
+        "consumedPerSecond": 0.0111111111111,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "pentapod-egg",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "pentapod-egg",
+      "entityNumber": 42,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    }
+  ],
+  "materialSeeds": [
+    {
+      "type": "item",
+      "name": "pentapod-egg",
+      "entityNumber": 66,
+      "count": 1,
+      "displayEntity": 68,
+      "position": {
+        "x": 17.5,
+        "y": 38.5
+      },
+      "sources": [
+        {
+          "gate": "biochamber",
+          "item": "pentapod-egg",
+          "count": 1,
+          "quality": "normal",
+          "price": [
+            {
+              "name": "steel-plate",
+              "count": 20
+            },
+            {
+              "name": "nutrients",
+              "count": 20
+            }
+          ],
+          "kind": "manual-scripted-exchange",
+          "automatedThroughput": false
+        }
+      ]
+    }
+  ],
+  "blueprintSha256": "78b77b3c7fee76ee8dc5c577efff9837d9256f8a9b51e8cc7091c8b2dedab8ec",
+  "entityCount": 114
+}

@@ -1,0 +1,3065 @@
+{
+  "schemaVersion": 1,
+  "scope": "Grounded progression for the exact installed flight map mod set; not the public vanilla catalogue.",
+  "evidenceStatus": "Installed source/prototype audit, passing Lua 5.2 regression tests and exact-module native API milestone validation. Synthetic prerequisite milestones are not native production or research-cost proof; spaceship victory still requires travel.",
+  "provenance": {
+    "factorioVersion": "2.0.77",
+    "rawDump": ".cache/flight-game/script-output/data-raw-dump.json",
+    "rawDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+    "everythingOnNauvis": {
+      "version": "0.1.8",
+      "archiveSha256": "b162e751c06a2d7023d171afe065ff872bb721346c7ebf08fae839ced81bf07c",
+      "sourceSha256": {
+        "data.lua": "007dca336547fbfc78d59ff7d4a3d65eda9d50b229cd025fab490bc04a7f7e5e",
+        "data-updates.lua": "f86edbe5b62af6b96ef650efbb83322674b8516944523c48aa3ddd6b8219e721",
+        "data-final-fixes.lua": "f0a79cb008cd27f0d37517f793dc6b93a450295f2289f48c8c8a3e8be550bd45",
+        "prototypes/technologies.lua": "ffd38142434740ff335467456d95479374c6a9d7e5b4181c923f1b9a6539ae13",
+        "prototypes/items.lua": "35b978556a6252d172b25553f3f5d80ea8779defbdbc84bcc9f5fceda58b7c2b",
+        "prototypes/recipes.lua": "16367b96a8c11b4b699197f60dc68cf664e168badea7466bc0766b0f03af1efe",
+        "prototypes/surface-conditions.lua": "915fd2e5b90a953ef1653d204edf774689d23d5d0d1edc83d3e45a6e03ab7666",
+        "prototypes/remove-planets.lua": "a8444f0bd456e5f5df0a3bf17802a7e890e1d5316b80877dbd90bef3053f41be",
+        "map-generation/resources.lua": "cf9e83ccf5ad9a3e2c37e732483f2fd5328f55e0d92cc44a5d6e9201c008e455",
+        "map-generation/resources-updates.lua": "e02d681e82cfa878b753dd5ac7d333e3703ba98887d6af226b1403be5fb062e8"
+      }
+    },
+    "installedModifiers": {
+      "ev-mining-drills": "3.2.0",
+      "ev-refining": "3.5.1",
+      "ev-machines": "2.1.1",
+      "Better-Power-Armor-Grid": "8.0.1"
+    },
+    "apiReference": "Factorio 2.0.77 installed doc-html/runtime-api.json; LuaEntity.add_market_item, LuaTechnology.prerequisites/researched, LuaEntity.disabled_by_script"
+  },
+  "integration": {
+    "module": "progression.lua",
+    "init": "init(surface, force) after map clearing, resource/plant placement and two stromatolite wetland pads; one surface/force, idempotent; no script event registration; fails generation if a required initial specimen/market/rock cannot be placed.",
+    "handlers": [
+      "on_research_finished(event)",
+      "on_tick(event)"
+    ],
+    "tickInterval": 300,
+    "storageKey": "flight_progression",
+    "marketPosition": [
+      240,
+      100
+    ],
+    "designedArea": [
+      [
+        -300,
+        -280
+      ],
+      [
+        300,
+        280
+      ]
+    ],
+    "ownedPadArea": [
+      [
+        224,
+        98
+      ],
+      [
+        258,
+        148
+      ]
+    ],
+    "stateIsolation": "No changes to storage.flight, control.lua, map generation, tiles, trees, kits or player inventory. No new mod or prototype changes. No deletion of player-built blockers."
+  },
+  "policy": {
+    "automaticTechnologies": [
+      "space-platform",
+      "space-science-pack"
+    ],
+    "automaticRule": "Only the allowlisted installed trigger shapes; technology enabled, required gate earned, and ALL live prerequisites researched. Never research prerequisites recursively.",
+    "normalResearchPreserved": [
+      "calcite-processing",
+      "tungsten-carbide",
+      "recycling",
+      "concrete",
+      "construction-robotics",
+      "logistic-robotics",
+      "rocket-silo",
+      "electric-mining-drill-mk3",
+      "captivity",
+      "space-platform-thruster",
+      "solar-system-edge-discovery",
+      "promethium-science-pack"
+    ],
+    "robotsRemainEarned": true,
+    "allOtherTriggersRemainNative": true,
+    "normalQualityOnly": true,
+    "victoryOnGround": false
+  },
+  "starterSupplies": {
+    "volcanicRocks": {
+      "entity": "big-volcanic-rock",
+      "count": 80,
+      "grid": {
+        "origin": [
+          226,
+          124
+        ],
+        "columns": 10,
+        "rows": 8,
+        "spacing": 3
+      },
+      "minimumYield": {
+        "tungsten-ore": 160,
+        "calcite": 160,
+        "iron-ore": 400,
+        "copper-ore": 240,
+        "stone": 160
+      },
+      "renewal": "One-time only; paid gated ore exchanges are the recovery path. No gifted drill, foundry, carbide or robot."
+    },
+    "specimens": [
+      {
+        "entity": "iron-stromatolite",
+        "position": [
+          230,
+          110
+        ],
+        "technology": "agriculture"
+      },
+      {
+        "entity": "copper-stromatolite",
+        "position": [
+          236,
+          110
+        ],
+        "technology": "heating-tower"
+      },
+      {
+        "entity": "lithium-iceberg-big",
+        "position": [
+          244,
+          110
+        ],
+        "technology": "lithium-processing"
+      }
+    ],
+    "specimenRenewal": "Initial specimen, then replacements only after all live prerequisites and only until corresponding native trigger researched. Keep pads clear. No stored perishable stacks.",
+    "captureTarget": {
+      "entity": "biter-spawner",
+      "position": [
+        254,
+        112
+      ],
+      "gate": "captivity",
+      "until": "biter-egg-handling",
+      "force": "enemy",
+      "disabled_by_script": true,
+      "renewal": "Only after captivity; retry destroyed uncaptured target. Captured replacement is native and is not disabled by this module."
+    },
+    "specimenPads": {
+      "owner": "main map control.lua, not progression.lua",
+      "tile": "wetland-light-green-slime",
+      "totalTiles": 18,
+      "areas": [
+        [
+          [
+            229,
+            109
+          ],
+          [
+            231,
+            111
+          ]
+        ],
+        [
+          [
+            235,
+            109
+          ],
+          [
+            237,
+            111
+          ]
+        ]
+      ],
+      "tileCollisionLayers": [
+        "water_tile",
+        "resource",
+        "floor"
+      ],
+      "reason": "Installed stromatolites collide with ground_tile and cannot stand on grass. This shallow wetland has no player collision, so the pads are walkable. Main supplies two 3x3 pads before progression.init; lithium remains on grass.",
+      "writePolicy": "Progression never writes terrain. Initial placement is asserted; later blocked retries give a notice without deleting buildings or changing tiles."
+    }
+  },
+  "exchange": {
+    "kind": "scripted-market-give-item",
+    "manual": true,
+    "renewableOffers": true,
+    "automatedThroughputClaim": false,
+    "normalRecipe": false,
+    "costSemantics": "Each displayed price is paid per purchase. Normal quality inputs/outputs. No productivity bonuses. Native market handles payment and delivery; no on_market_item_purchased handler.",
+    "eggSemantics": "Eggs are freshly created on purchase, never stockpiled in startup chests. Native spoil/hatch timers apply after purchase: pentapod 54000 ticks (15 minutes), biter 108000 ticks (30 minutes). No spoilage immunity or spoil-time editing.",
+    "offers": [
+      {
+        "gate": "tungsten-carbide",
+        "item": "tungsten-ore",
+        "count": 10,
+        "quality": "normal",
+        "price": [
+          {
+            "name": "steel-plate",
+            "count": 10
+          }
+        ]
+      },
+      {
+        "gate": "calcite-processing",
+        "item": "calcite",
+        "count": 10,
+        "quality": "normal",
+        "price": [
+          {
+            "name": "stone",
+            "count": 50
+          }
+        ]
+      },
+      {
+        "gate": "biochamber",
+        "item": "pentapod-egg",
+        "count": 1,
+        "quality": "normal",
+        "price": [
+          {
+            "name": "steel-plate",
+            "count": 20
+          },
+          {
+            "name": "nutrients",
+            "count": 20
+          }
+        ]
+      },
+      {
+        "gate": "biter-egg-handling",
+        "item": "biter-egg",
+        "count": 5,
+        "quality": "normal",
+        "price": [
+          {
+            "name": "bioflux",
+            "count": 20
+          },
+          {
+            "name": "steel-plate",
+            "count": 5
+          }
+        ]
+      },
+      {
+        "gate": "space-platform",
+        "item": "metallic-asteroid-chunk",
+        "count": 1,
+        "quality": "normal",
+        "price": [
+          {
+            "name": "iron-plate",
+            "count": 50
+          }
+        ]
+      },
+      {
+        "gate": "space-platform",
+        "item": "carbonic-asteroid-chunk",
+        "count": 1,
+        "quality": "normal",
+        "price": [
+          {
+            "name": "coal",
+            "count": 50
+          }
+        ]
+      },
+      {
+        "gate": "space-platform",
+        "item": "oxide-asteroid-chunk",
+        "count": 1,
+        "quality": "normal",
+        "price": [
+          {
+            "name": "stone",
+            "count": 50
+          }
+        ]
+      },
+      {
+        "gate": "promethium-science-pack",
+        "item": "promethium-asteroid-chunk",
+        "count": 25,
+        "quality": "normal",
+        "price": [
+          {
+            "name": "quantum-processor",
+            "count": 1
+          },
+          {
+            "name": "tungsten-plate",
+            "count": 100
+          },
+          {
+            "name": "superconductor",
+            "count": 20
+          }
+        ]
+      }
+    ]
+  },
+  "triggerCount": 29,
+  "triggers": [
+    {
+      "technology": "agricultural-science-pack",
+      "trigger": {
+        "type": "craft-item",
+        "item": "bioflux",
+        "count": 100
+      },
+      "prerequisites": [
+        "bioflux-processing",
+        "bacteria-cultivation",
+        "artificial-soil"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "After bioflux-processing, bacteria-cultivation and artificial-soil, craft 100 bioflux. Buy another egg to start the egg multiplication recipe; do not spend the sole seed egg on a chamber and assume a seed remains."
+    },
+    {
+      "technology": "agriculture",
+      "trigger": {
+        "type": "mine-entity",
+        "entity": "iron-stromatolite"
+      },
+      "prerequisites": [
+        "landfill",
+        "steel-processing"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Research landfill and steel-processing, then personally mine the iron-stromatolite at 230,110. A prematurely mined specimen is replaced once prerequisites are ready."
+    },
+    {
+      "technology": "artificial-soil",
+      "trigger": {
+        "type": "craft-item",
+        "item": "nutrients",
+        "count": 500
+      },
+      "prerequisites": [
+        "yumako",
+        "jellynut"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "After yumako and jellynut, craft 500 nutrients. Start with spoilage; scale using mash/bioflux after earning biochamber. Do not grant soil research for free."
+    },
+    {
+      "technology": "automation-science-pack",
+      "trigger": {
+        "type": "craft-item",
+        "item": "lab"
+      },
+      "prerequisites": [
+        "steam-power",
+        "electronics"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "After steam-power and electronics, craft a NEW lab from iron plates, gears and circuits. Starter labs do not grant this trigger."
+    },
+    {
+      "technology": "bacteria-cultivation",
+      "trigger": {
+        "type": "craft-item",
+        "item": "bioflux"
+      },
+      "prerequisites": [
+        "bioflux"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Craft bioflux in a nutrient-fueled biochamber from processed fruit. Hand-crafted bacteria restart cultures if earlier stromatolite bacteria spoil."
+    },
+    {
+      "technology": "big-mining-drill",
+      "trigger": {
+        "type": "craft-item",
+        "item": "foundry"
+      },
+      "prerequisites": [
+        "foundry",
+        "electric-mining-drill",
+        "electric-mining-drill-mk3"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Craft a foundry in assembling-machine-2/3 after foundry plus the installed electric-mining-drill and electric-mining-drill-mk3 prerequisites. The first foundry consumes 50 carbide; the first big drill consumes 20 more and molten iron made with starter calcite."
+    },
+    {
+      "technology": "biochamber",
+      "trigger": {
+        "type": "craft-item",
+        "item": "nutrients",
+        "count": 10
+      },
+      "prerequisites": [
+        "yumako",
+        "jellynut"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "After yumako and jellynut, craft 10 nutrients from 100 spoilage (let fruit spoil or hand craft bacteria); organic-or-assembling works in the character/assembler before any biochamber. No egg needed for this trigger."
+    },
+    {
+      "technology": "bioflux",
+      "trigger": {
+        "type": "craft-item",
+        "item": "biochamber"
+      },
+      "prerequisites": [
+        "biochamber"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Earn biochamber from nutrients, buy one fresh pentapod egg, then craft a biochamber with nutrients, plates, circuits and landfill. No self-consuming egg loop is required to start."
+    },
+    {
+      "technology": "bioflux-processing",
+      "trigger": {
+        "type": "craft-item",
+        "item": "bioflux",
+        "count": 25
+      },
+      "prerequisites": [
+        "bioflux"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Craft 25 bioflux with the same earned biochamber chain."
+    },
+    {
+      "technology": "biter-egg-handling",
+      "trigger": {
+        "type": "capture-spawner"
+      },
+      "prerequisites": [
+        "captivity"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Earn captivity and craft/fire a capture-robot-rocket at a real biter spawner. A dormant enemy target appears at 254,112 only after captivity and retries until the capture succeeds. Native capture triggers the research; fresh-egg trade is gated behind it."
+    },
+    {
+      "technology": "cryogenic-plant",
+      "trigger": {
+        "type": "craft-item",
+        "item": "lithium-plate"
+      },
+      "prerequisites": [
+        "lithium-processing"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "After lithium-processing, smelt lithium plates. For bulk lithium, pump brine and separate the guaranteed ammoniacal lake in a chemical plant after earned solar-system-edge-discovery. Make the first cryogenic plant in an assembler, not a cryogenic plant."
+    },
+    {
+      "technology": "cryogenic-science-pack",
+      "trigger": {
+        "type": "craft-item",
+        "item": "cryogenic-plant"
+      },
+      "prerequisites": [
+        "cryogenic-plant"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Craft a cryogenic plant from lithium plates, superconductors, processing units and refined concrete in assembling-machine-2/3. Then its chemistry supports cryogenic science."
+    },
+    {
+      "technology": "electromagnetic-plant",
+      "trigger": {
+        "type": "craft-item",
+        "item": "holmium-plate",
+        "count": 50
+      },
+      "prerequisites": [
+        "holmium-processing"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "After holmium-processing, make holmium solution in a chemical plant and 50 holmium plates in assembling-machine-2/3 (crafting-with-fluid-or-metallurgy). No electromagnetic plant is needed to bootstrap itself."
+    },
+    {
+      "technology": "electromagnetic-science-pack",
+      "trigger": {
+        "type": "craft-item",
+        "item": "supercapacitor"
+      },
+      "prerequisites": [
+        "electromagnetic-plant"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Build the earned electromagnetic plant; make superconductor/electrolyte and a supercapacitor there from holmium, oil and normal materials."
+    },
+    {
+      "technology": "electronics",
+      "trigger": {
+        "type": "craft-item",
+        "item": "copper-plate",
+        "count": 10
+      },
+      "prerequisites": [],
+      "handling": "native-trigger",
+      "groundedRoute": "Smelt 10 copper plates in a furnace. Supplied circuits and plates do not satisfy a craft trigger."
+    },
+    {
+      "technology": "foundry",
+      "trigger": {
+        "type": "craft-item",
+        "item": "tungsten-carbide"
+      },
+      "prerequisites": [
+        "calcite-processing",
+        "tungsten-carbide"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Earn calcite-processing and tungsten-carbide with purple science; make carbon from coal/acid, then tungsten carbide from harvestable volcanic rock tungsten. Craft a carbide after prerequisites; nothing is auto-unlocked."
+    },
+    {
+      "technology": "heating-tower",
+      "trigger": {
+        "type": "mine-entity",
+        "entity": "copper-stromatolite"
+      },
+      "prerequisites": [
+        "concrete"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Research concrete, then personally mine the copper-stromatolite at 236,110. It is a separate trigger from agriculture; no Gleba travel or research auto-grant."
+    },
+    {
+      "technology": "holmium-processing",
+      "trigger": {
+        "type": "mine-entity",
+        "entity": "holmium-ore"
+      },
+      "prerequisites": [
+        "recycling"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Research recycling with science, then extract the guaranteed hard-solid holmium patch with an earned big drill. Scrap-recycled holmium is a useful ingredient but is NOT mine-entity credit."
+    },
+    {
+      "technology": "jellynut",
+      "trigger": {
+        "type": "mine-entity",
+        "entity": "jellystem"
+      },
+      "prerequisites": [
+        "agriculture"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "After agriculture, mine the map-owned jellystem grove; process fruit for seeds and replant with an agricultural tower."
+    },
+    {
+      "technology": "lithium-processing",
+      "trigger": {
+        "type": "mine-entity",
+        "entity": "lithium-iceberg-big"
+      },
+      "prerequisites": [
+        "rocket-turret",
+        "advanced-asteroid-processing",
+        "heating-tower",
+        "asteroid-reprocessing",
+        "electromagnetic-science-pack"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Earn rocket-turret, advanced-asteroid-processing, heating-tower, asteroid-reprocessing and electromagnetic-science-pack; mine lithium-iceberg-big (not huge) at 244,110. Replaced after prerequisites if harvested too soon."
+    },
+    {
+      "technology": "metallurgic-science-pack",
+      "trigger": {
+        "type": "craft-item",
+        "item": "tungsten-plate"
+      },
+      "prerequisites": [
+        "tungsten-steel"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "After tungsten-steel, make tungsten plates from mined tungsten and molten iron in the foundry."
+    },
+    {
+      "technology": "oil-processing",
+      "trigger": {
+        "type": "mine-entity",
+        "entity": "crude-oil"
+      },
+      "prerequisites": [
+        "oil-gathering"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Research oil-gathering, build a pumpjack on the guaranteed crude-oil field, power it and extract oil. An inventory of oil barrels would not be mine-entity credit."
+    },
+    {
+      "technology": "space-platform",
+      "trigger": {
+        "type": "create-space-platform"
+      },
+      "prerequisites": [
+        "rocket-silo"
+      ],
+      "handling": "prerequisite-gated-space-exception",
+      "groundedRoute": "Scenario exception: after rocket-silo and every live prerequisite are researched, complete only this create-space-platform trigger. The module creates no platform or rocket and grants no prerequisite."
+    },
+    {
+      "technology": "space-science-pack",
+      "trigger": {
+        "type": "build-entity",
+        "entity": "asteroid-collector"
+      },
+      "prerequisites": [
+        "space-platform"
+      ],
+      "handling": "prerequisite-gated-space-exception",
+      "groundedRoute": "Scenario exception: after space-platform and every live prerequisite are researched, complete only this asteroid-collector build trigger. Engine ground placement is not assumed possible."
+    },
+    {
+      "technology": "steam-power",
+      "trigger": {
+        "type": "craft-item",
+        "item": "iron-plate",
+        "count": 50
+      },
+      "prerequisites": [],
+      "handling": "native-trigger",
+      "groundedRoute": "Smelt 50 iron plates in a furnace from basic-solid iron ore. Supplied starter plates are not crafting credit."
+    },
+    {
+      "technology": "steel-axe",
+      "trigger": {
+        "type": "craft-item",
+        "item": "steel-plate",
+        "count": 50
+      },
+      "prerequisites": [
+        "steel-processing"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Research steel-processing normally, then smelt 50 steel plates; starter steel is not credit."
+    },
+    {
+      "technology": "tungsten-steel",
+      "trigger": {
+        "type": "craft-item",
+        "item": "big-mining-drill"
+      },
+      "prerequisites": [
+        "big-mining-drill"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Craft a big-mining-drill in a foundry. Deploy it on tungsten/calcite/holmium; all ordinary and MK2..MK6 electric drills lack hard-solid capability."
+    },
+    {
+      "technology": "uranium-processing",
+      "trigger": {
+        "type": "mine-entity",
+        "entity": "uranium-ore"
+      },
+      "prerequisites": [
+        "uranium-mining"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "Research uranium-mining; supply sulfuric acid and power to an electric drill on uranium. Acid is available from earned chemistry or a pumpjack on the guaranteed acid geyser."
+    },
+    {
+      "technology": "yumako",
+      "trigger": {
+        "type": "mine-entity",
+        "entity": "yumako-tree"
+      },
+      "prerequisites": [
+        "agriculture"
+      ],
+      "handling": "native-trigger",
+      "groundedRoute": "After agriculture, mine the map-owned yumako-tree grove; process fruit for seeds and replant on guaranteed suitable soil with an agricultural tower."
+    }
+  ],
+  "resources": [
+    {
+      "name": "calcite",
+      "category": "hard-solid",
+      "minable": {
+        "result": "calcite"
+      },
+      "groundedRoute": "hard-solid: hand-mine volcanic rocks first or use calcite-processing gated trade; eventually earned big drill. Needed for the first molten iron before any hard drill exists."
+    },
+    {
+      "name": "coal",
+      "category": "basic-solid",
+      "minable": {
+        "result": "coal"
+      },
+      "groundedRoute": "Character/burner/electric drill: basic-solid; supplies carbon and ordinary fuel."
+    },
+    {
+      "name": "copper-ore",
+      "category": "basic-solid",
+      "minable": {
+        "result": "copper-ore"
+      },
+      "groundedRoute": "Character/burner/electric drill: basic-solid, no fluids."
+    },
+    {
+      "name": "crude-oil",
+      "category": "basic-fluid",
+      "minable": {
+        "results": [
+          {
+            "type": "fluid",
+            "name": "crude-oil",
+            "amount_min": 10,
+            "amount_max": 10,
+            "probability": 1
+          }
+        ]
+      },
+      "groundedRoute": "Earn oil-gathering; pumpjack plus electricity."
+    },
+    {
+      "name": "fluorine-vent",
+      "category": "basic-fluid",
+      "minable": {
+        "results": [
+          {
+            "type": "fluid",
+            "name": "fluorine",
+            "amount_min": 1,
+            "amount_max": 1,
+            "probability": 1
+          }
+        ]
+      },
+      "groundedRoute": "Pumpjack plus electricity; fluoroketone needs earned cryogenic plant."
+    },
+    {
+      "name": "holmium-ore",
+      "category": "hard-solid",
+      "minable": {
+        "result": "holmium-ore"
+      },
+      "groundedRoute": "hard-solid: earned big drill is required for its actual mine-entity trigger, even if scrap recycling yields holmium items."
+    },
+    {
+      "name": "iron-ore",
+      "category": "basic-solid",
+      "minable": {
+        "result": "iron-ore"
+      },
+      "groundedRoute": "Character/burner/electric drill: basic-solid, no fluids."
+    },
+    {
+      "name": "lithium-brine",
+      "category": "basic-fluid",
+      "minable": {
+        "results": [
+          {
+            "type": "fluid",
+            "name": "lithium-brine",
+            "amount_min": 1,
+            "amount_max": 1,
+            "probability": 1
+          }
+        ]
+      },
+      "groundedRoute": "Pumpjack plus electricity; process with earned lithium recipe and ammonia after solar-system-edge-discovery."
+    },
+    {
+      "name": "scrap",
+      "category": "basic-solid",
+      "minable": {
+        "result": "scrap"
+      },
+      "groundedRoute": "basic-solid: hand/electric drill; scrap-recycling remains locked behind earned recycling. Mod removes scrap autoplace, so the map MUST place its field."
+    },
+    {
+      "name": "stone",
+      "category": "basic-solid",
+      "minable": {
+        "result": "stone"
+      },
+      "groundedRoute": "Character/burner/electric drill: basic-solid; supplies landfill, furnaces and exchange costs."
+    },
+    {
+      "name": "sulfuric-acid-geyser",
+      "category": "basic-fluid",
+      "minable": {
+        "results": [
+          {
+            "type": "fluid",
+            "name": "sulfuric-acid",
+            "amount_min": 10,
+            "amount_max": 10,
+            "probability": 1
+          }
+        ]
+      },
+      "groundedRoute": "Pumpjack plus electricity; chemistry is an alternative. EverythingOnNauvis autoplace is zero, so the map MUST place this guaranteed field."
+    },
+    {
+      "name": "tungsten-ore",
+      "category": "hard-solid",
+      "minable": {
+        "result": "tungsten-ore"
+      },
+      "groundedRoute": "hard-solid: hand-mine volcanic rocks first or use tungsten-carbide gated trade; first foundry and big drill need 140 ore at zero productivity."
+    },
+    {
+      "name": "uranium-ore",
+      "category": "basic-solid",
+      "minable": {
+        "result": "uranium-ore",
+        "required_fluid": "sulfuric-acid",
+        "fluid_amount": 10
+      },
+      "groundedRoute": "Electric drill with sulfuric-acid; earn uranium-mining. Character and burner drill cannot supply the mining fluid."
+    }
+  ],
+  "mapOwnedSources": {
+    "tiles": {
+      "water": "water",
+      "lava": "lava",
+      "ammoniacal-ocean": "ammoniacal-solution"
+    },
+    "plants": [
+      "yumako-tree",
+      "jellystem"
+    ],
+    "wood": "Guaranteed trees and seeds are main-map-owned; wood-processing startup recipe is outside this module.",
+    "placementWarning": "EON disables scrap autoplace and acid-geyser probability; existing guaranteed map fields are required.",
+    "renewabilityLimit": "Ore fields/volcanic starter rocks are finite. Exchanges are replenishable by payment, not a claim that finite land ores are infinite.",
+    "wildlife": [
+      {
+        "entity": "fish",
+        "minimumCount": 15,
+        "product": "raw-fish",
+        "owner": "main map water lake",
+        "purpose": "Harvest at least two fish to start earned fish-breeding; fish are not granted or frozen by progression.lua."
+      }
+    ]
+  },
+  "bootstrapDependencies": [
+    {
+      "id": "hard-ore-drill-loop",
+      "dependency": "tungsten ore -> carbide -> foundry -> big drill -> tungsten ore; calcite -> molten iron -> first big drill -> calcite",
+      "resolution": "80 harvestable volcanic rocks guarantee 160 tungsten and 160 calcite. First foundry needs 50 carbide and first drill 20: 70*2=140 tungsten, plus 70 carbon from 140 coal. One calcite yields 250 molten iron from lava or 500 from iron ore, exceeding the first drill need of 200. Recipes and MK3 drill research stay earned. Paid trades allow recovery after waste/loss.",
+      "minimumTungstenOre": 140,
+      "minimumCalcite": 1,
+      "guaranteedTungstenOre": 160,
+      "guaranteedCalcite": 160
+    },
+    {
+      "id": "holmium-mine-trigger",
+      "dependency": "Recycled/gifted holmium is not a mined holmium entity",
+      "resolution": "Finish the hard-ore drill bootstrap and recycling research; actually drill the guaranteed holmium field. Scrap-recycled holmium can supply plates but does not fake research credit."
+    },
+    {
+      "id": "stromatolite-triggers",
+      "dependency": "Agriculture requires iron-stromatolite; heating requires copper-stromatolite, not a fruit plant or generic ore",
+      "resolution": "Three named ground trigger specimens are supplied initially; each is replaced on a clear pad after live prerequisites are earned and until its native research is completed. Ordinary resources/plants remain map-owned."
+    },
+    {
+      "id": "biochamber-egg-loop",
+      "dependency": "biochamber consumes pentapod egg; egg multiplication requires a biochamber and a seed egg",
+      "resolution": "Earn biochamber technology by crafting nutrients first. Buy one egg to construct the chamber and a separate egg to seed breeding; each costs 20 steel + 20 nutrients. Nutrients-from-spoilage works by hand/assembler, so no egg, bioflux, captive spawner or robot technology is needed to pay. Fresh egg purchases remain repeatable for recovery."
+    },
+    {
+      "id": "biological-spoilage-and-cultures",
+      "dependency": "Stromatolite bacteria can spoil before biology is researched, and nutrition needs a seed source",
+      "resolution": "Map fruit naturally spoils; yumako/jellynut unlock hand-craftable bacteria recipes with spoilage byproducts. 100 spoilage -> 10 nutrients starts biochamber technology without a biochamber. Bacteria hand recipes restart cultures; multiplication becomes self-sustaining with bioflux. Fruit and bacterial spoil timers remain native."
+    },
+    {
+      "id": "captivity-and-biter-eggs",
+      "dependency": "biter-egg-handling requires actual capture; biter eggs need a captive spawner with bioflux",
+      "resolution": "Only after earned captivity does a dormant enemy biter spawner appear. Craft/fire a capture rocket, feed the native captured spawner with bioflux. A fresh paid biter-egg recovery offer is unlocked only after native capture research; it cannot substitute for capture. No eggs are held in a starting chest."
+    },
+    {
+      "id": "white-science-ice-loop",
+      "dependency": "No ground asteroid collection; bulk ammonia separation requires solar-system-edge-discovery which itself consumes space science",
+      "resolution": "After earned rocket-silo, bridge the two exact space-only triggers and sell oxide/carbonic chunks for ground materials. Crush them on ground to make ice/carbon and craft white science in a normal assembler. Ground scrap recycling is an additional ice route, after earned purple-science recycling. Neither thruster nor solar-system-edge-discovery is auto-researched."
+    },
+    {
+      "id": "asteroid-renewability",
+      "dependency": "Basic crushing returns a chunk with probability 0.2; advanced crushing 0.05; reprocessing totals 0.8; self-recycling 0.25. None starts from zero chunks or guarantees infinite supply.",
+      "resolution": "Three standard chunk offers repeat without stock limits for paid ground inputs after space-platform. These are explicit scripted imports; they do not count as natural resources, mined asteroids, recipes, or automated production."
+    },
+    {
+      "id": "lithium-and-first-cryogenic-plant",
+      "dependency": "Lithium research needs the specific big iceberg; bulk lithium needs ammonia; cryogenic plant must be crafted without already having one",
+      "resolution": "Supply lithium-iceberg-big and retry its native mine trigger after prerequisites. Research solar-system-edge-discovery with white science to separate lake fluid in an ordinary chemical plant; produce lithium from brine/holmium/ammonia and smelt plates. Assemble the first cryogenic plant in assembler 2/3. Ammonia separation is not gated behind a cryogenic plant."
+    },
+    {
+      "id": "first-electromagnetic-plant",
+      "dependency": "Holmium plates and superconductors must not be assumed available from the plant being bootstrapped",
+      "resolution": "Chemical plant makes holmium solution; assembler 2/3 makes holmium plates and the first electromagnetic plant. Only then make superconductors, electrolyte, supercapacitors and electromagnetic science in it."
+    },
+    {
+      "id": "promethium-chunk-loop",
+      "dependency": "No ground promethium resource or recipe from ground ingredients. Equipment recycling needs equipment already consuming 500 chunks; chunk self-recycling consumes the chunk.",
+      "resolution": "Only earned promethium-science-pack opens a paid exchange: 1 quantum processor + 100 tungsten plates + 20 superconductors -> 25 chunks. These payment ingredients require no promethium. The native science recipe still consumes another quantum processor plus 10 biter eggs per 25 chunks, yielding 10 science. All earlier science, fusion, capture and discovery prerequisites remain earned."
+    },
+    {
+      "id": "starter-items-not-research-credit",
+      "dependency": "Inventory gifts do not satisfy craft-item triggers",
+      "resolution": "Mine/smelt new iron/copper/steel and craft a new lab, foundry, drill, chamber and plants after the corresponding prerequisites. Module never forges crafting/mining statistics."
+    },
+    {
+      "id": "fish-breeding-seed",
+      "dependency": "fish-breeding consumes two raw-fish and returns three; no fish can be made from a zero seed inventory",
+      "resolution": "Main seeds 15 actual fish in the water lake. Harvest two to start fish-breeding after earned research; use water plus 100 nutrients per breeding cycle in a chemical plant/biochamber. Do not consume all fish before preserving breeders. No module exchange or research bypass."
+    },
+    {
+      "id": "kovarex-seed",
+      "dependency": "Kovarex enrichment needs 40 uranium-235 plus uranium-238 before it amplifies fissile material",
+      "resolution": "Use the earned uranium-processing recipe in a centrifuge on acid-mined uranium ore; its positive-probability U-235 output provides the seed. No gifted enriched uranium is required. This is probabilistic production, not a fixed guaranteed startup quantity."
+    },
+    {
+      "id": "coal-liquefaction-heavy-oil-seed",
+      "dependency": "Coal liquefaction consumes initial heavy oil before yielding more heavy oil",
+      "resolution": "Earn advanced-oil-processing and refine guaranteed crude oil to get heavy oil, or use earned simple-coal-liquefaction with coal, calcite and sulfuric acid. Neither route requires existing heavy oil; no scripted oil supply is needed."
+    },
+    {
+      "id": "fluoroketone-circulation-seed",
+      "dependency": "Fusion/cooling circulation must start with real coolant; a hot/cold recycle loop alone creates none",
+      "resolution": "Earn and assemble the first cryogenic plant without coolant. Its fluoroketone recipe uses fluorine, ammonia, solid fuel and lithium to make hot coolant; cool it in the same type of machine before charging the fusion loop. All input sources and ammonia/cryogenic research are grounded above. No free or perpetually recycled initial fluid assumption."
+    }
+  ],
+  "installedFacts": {
+    "residualSurfaceConditions": 0,
+    "characterMiningCategories": [
+      "basic-solid"
+    ],
+    "drillCategories": {
+      "electric-mining-drill": [
+        "basic-solid"
+      ],
+      "burner-mining-drill": [
+        "basic-solid"
+      ],
+      "pumpjack": [
+        "basic-fluid"
+      ],
+      "big-mining-drill": [
+        "basic-solid",
+        "hard-solid"
+      ],
+      "electric-mining-drill-mk2": [
+        "basic-solid"
+      ],
+      "electric-mining-drill-mk3": [
+        "basic-solid"
+      ],
+      "electric-mining-drill-mk4": [
+        "basic-solid"
+      ],
+      "electric-mining-drill-mk5": [
+        "basic-solid"
+      ],
+      "electric-mining-drill-mk6": [
+        "basic-solid"
+      ],
+      "big-mining-drill-mk2": [
+        "basic-solid",
+        "hard-solid"
+      ],
+      "big-mining-drill-mk3": [
+        "basic-solid",
+        "hard-solid"
+      ]
+    },
+    "nativeResearch": {
+      "calcite-processing": {
+        "prerequisites": [
+          "production-science-pack"
+        ],
+        "unit": {
+          "count": 100,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ],
+            [
+              "production-science-pack",
+              1
+            ]
+          ],
+          "time": 5
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "acid-neutralisation"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "steam-condensation"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "simple-coal-liquefaction"
+          }
+        ]
+      },
+      "tungsten-carbide": {
+        "prerequisites": [
+          "production-science-pack"
+        ],
+        "unit": {
+          "count": 100,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ],
+            [
+              "production-science-pack",
+              1
+            ]
+          ],
+          "time": 5
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "carbon"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "tungsten-carbide"
+          }
+        ]
+      },
+      "recycling": {
+        "prerequisites": [
+          "processing-unit",
+          "production-science-pack"
+        ],
+        "unit": {
+          "count": 100,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ],
+            [
+              "production-science-pack",
+              1
+            ]
+          ],
+          "time": 5
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "recycler"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "scrap-recycling"
+          }
+        ]
+      },
+      "concrete": {
+        "prerequisites": [
+          "advanced-material-processing",
+          "automation-2"
+        ],
+        "unit": {
+          "count": 250,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ]
+          ],
+          "time": 30
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "concrete"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "hazard-concrete"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "refined-concrete"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "refined-hazard-concrete"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "iron-stick"
+          }
+        ]
+      },
+      "construction-robotics": {
+        "prerequisites": [
+          "robotics"
+        ],
+        "unit": {
+          "count": 100,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ]
+          ],
+          "time": 30
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "roboport"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "passive-provider-chest"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "storage-chest"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "construction-robot"
+          },
+          {
+            "type": "create-ghost-on-entity-death",
+            "modifier": true
+          }
+        ]
+      },
+      "logistic-robotics": {
+        "prerequisites": [
+          "robotics"
+        ],
+        "unit": {
+          "count": 250,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ]
+          ],
+          "time": 30
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "roboport"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "passive-provider-chest"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "storage-chest"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "logistic-robot"
+          },
+          {
+            "type": "character-logistic-requests",
+            "modifier": true
+          },
+          {
+            "type": "character-logistic-trash-slots",
+            "modifier": 30
+          }
+        ]
+      },
+      "rocket-silo": {
+        "prerequisites": [
+          "concrete",
+          "rocket-fuel",
+          "processing-unit",
+          "logistic-robotics",
+          "low-density-structure",
+          "advanced-material-processing-2"
+        ],
+        "unit": {
+          "count": 1000,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ]
+          ],
+          "time": 60
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "rocket-silo"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "rocket-part"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "cargo-landing-pad"
+          },
+          {
+            "type": "unlock-space-platforms",
+            "modifier": true,
+            "hidden": true
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "space-platform-starter-pack"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "space-platform-foundation"
+          }
+        ]
+      },
+      "electric-mining-drill-mk3": {
+        "prerequisites": [
+          "mining-productivity-2",
+          "electric-mining-drill-mk2",
+          "speed-module"
+        ],
+        "unit": {
+          "count": 400,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              2
+            ],
+            [
+              "logistic-science-pack",
+              2
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ]
+          ],
+          "time": 40
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "electric-mining-drill-mk3"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "edrill-2to3"
+          }
+        ]
+      },
+      "captivity": {
+        "prerequisites": [
+          "agricultural-science-pack",
+          "military-3",
+          "rocketry"
+        ],
+        "unit": {
+          "count": 1000,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ],
+            [
+              "military-science-pack",
+              1
+            ],
+            [
+              "space-science-pack",
+              1
+            ],
+            [
+              "agricultural-science-pack",
+              1
+            ]
+          ],
+          "time": 60
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "capture-robot-rocket"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "biter-egg"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "nutrients-from-biter-egg"
+          }
+        ]
+      },
+      "space-platform-thruster": {
+        "prerequisites": [
+          "space-science-pack"
+        ],
+        "unit": {
+          "count": 500,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ],
+            [
+              "space-science-pack",
+              1
+            ]
+          ],
+          "time": 60
+        },
+        "effects": [
+          {
+            "type": "unlock-recipe",
+            "recipe": "thruster"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "ice-melting"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "thruster-fuel"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "thruster-oxidizer"
+          }
+        ]
+      },
+      "solar-system-edge-discovery": {
+        "prerequisites": [
+          "space-platform-thruster"
+        ],
+        "unit": {
+          "count": 500,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ],
+            [
+              "space-science-pack",
+              1
+            ]
+          ],
+          "time": 60
+        },
+        "effects": [
+          {
+            "type": "unlock-space-location",
+            "space_location": "solar-system-edge",
+            "use_icon_overlay_constant": true
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "ammoniacal-solution-separation"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "solid-fuel-from-ammonia"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "ammonia-rocket-fuel"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "ice-platform"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "lightning-rod"
+          }
+        ]
+      },
+      "promethium-science-pack": {
+        "prerequisites": [
+          "biter-egg-handling",
+          "fusion-reactor",
+          "solar-system-edge-discovery"
+        ],
+        "unit": {
+          "count": 2000,
+          "ingredients": [
+            [
+              "automation-science-pack",
+              1
+            ],
+            [
+              "logistic-science-pack",
+              1
+            ],
+            [
+              "chemical-science-pack",
+              1
+            ],
+            [
+              "production-science-pack",
+              1
+            ],
+            [
+              "utility-science-pack",
+              1
+            ],
+            [
+              "space-science-pack",
+              1
+            ],
+            [
+              "metallurgic-science-pack",
+              1
+            ],
+            [
+              "agricultural-science-pack",
+              1
+            ],
+            [
+              "electromagnetic-science-pack",
+              1
+            ],
+            [
+              "cryogenic-science-pack",
+              1
+            ]
+          ],
+          "time": 60
+        },
+        "effects": [
+          {
+            "type": "unlock-space-location",
+            "space_location": "solar-system-edge"
+          },
+          {
+            "type": "unlock-space-location",
+            "space_location": "shattered-planet"
+          },
+          {
+            "type": "unlock-recipe",
+            "recipe": "promethium-science-pack"
+          }
+        ]
+      }
+    },
+    "recipes": {
+      "carbon": {
+        "category": "chemistry-or-cryogenics",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "coal",
+            "amount": 2
+          },
+          {
+            "type": "fluid",
+            "name": "sulfuric-acid",
+            "amount": 20
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "carbon",
+            "amount": 1
+          }
+        ]
+      },
+      "tungsten-carbide": {
+        "category": "crafting-with-fluid",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "tungsten-ore",
+            "amount": 2
+          },
+          {
+            "type": "fluid",
+            "name": "sulfuric-acid",
+            "amount": 10
+          },
+          {
+            "type": "item",
+            "name": "carbon",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "tungsten-carbide",
+            "amount": 1
+          }
+        ]
+      },
+      "foundry": {
+        "category": "metallurgy-or-assembling",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "tungsten-carbide",
+            "amount": 50
+          },
+          {
+            "type": "item",
+            "name": "steel-plate",
+            "amount": 50
+          },
+          {
+            "type": "item",
+            "name": "electronic-circuit",
+            "amount": 30
+          },
+          {
+            "type": "item",
+            "name": "refined-concrete",
+            "amount": 20
+          },
+          {
+            "type": "fluid",
+            "name": "lubricant",
+            "amount": 20
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "foundry",
+            "amount": 1
+          }
+        ]
+      },
+      "big-mining-drill": {
+        "category": "metallurgy",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "electric-mining-drill",
+            "amount": 1
+          },
+          {
+            "type": "fluid",
+            "name": "molten-iron",
+            "amount": 200
+          },
+          {
+            "type": "item",
+            "name": "tungsten-carbide",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "electric-engine-unit",
+            "amount": 10
+          },
+          {
+            "type": "item",
+            "name": "advanced-circuit",
+            "amount": 10
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "big-mining-drill",
+            "amount": 1
+          }
+        ]
+      },
+      "big-drill-upgrade": {
+        "category": "metallurgy",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "electric-mining-drill-mk3",
+            "amount": 1
+          },
+          {
+            "type": "fluid",
+            "name": "molten-iron",
+            "amount": 100
+          },
+          {
+            "type": "item",
+            "name": "tungsten-carbide",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "electric-engine-unit",
+            "amount": 5
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "big-mining-drill",
+            "amount": 1
+          }
+        ]
+      },
+      "molten-iron": {
+        "category": "metallurgy",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "iron-ore",
+            "amount": 50
+          },
+          {
+            "type": "item",
+            "name": "calcite",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "fluid",
+            "name": "molten-iron",
+            "amount": 500
+          }
+        ]
+      },
+      "molten-iron-from-lava": {
+        "category": "metallurgy",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "fluid",
+            "name": "lava",
+            "amount": 500
+          },
+          {
+            "type": "item",
+            "name": "calcite",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "fluid",
+            "name": "molten-iron",
+            "amount": 250
+          },
+          {
+            "type": "item",
+            "name": "stone",
+            "amount": 10
+          }
+        ]
+      },
+      "biochamber": {
+        "category": "organic-or-assembling",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "nutrients",
+            "amount": 5
+          },
+          {
+            "type": "item",
+            "name": "pentapod-egg",
+            "amount": 1
+          },
+          {
+            "type": "item",
+            "name": "iron-plate",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "electronic-circuit",
+            "amount": 5
+          },
+          {
+            "type": "item",
+            "name": "landfill",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "biochamber",
+            "amount": 1
+          }
+        ]
+      },
+      "pentapod-egg": {
+        "category": "organic",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "pentapod-egg",
+            "amount": 1,
+            "ignored_by_stats": 1
+          },
+          {
+            "type": "item",
+            "name": "nutrients",
+            "amount": 30
+          },
+          {
+            "type": "fluid",
+            "name": "water",
+            "amount": 60
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "pentapod-egg",
+            "amount": 2,
+            "ignored_by_stats": 1,
+            "ignored_by_productivity": 1
+          }
+        ]
+      },
+      "nutrients-from-spoilage": {
+        "category": "organic-or-assembling",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "spoilage",
+            "amount": 10
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "nutrients",
+            "amount": 1,
+            "percent_spoiled": 0.5
+          }
+        ]
+      },
+      "iron-bacteria": {
+        "category": "organic-or-hand-crafting",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "jelly",
+            "amount": 6
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "iron-bacteria",
+            "amount": 1,
+            "probability": 0.1
+          },
+          {
+            "type": "item",
+            "name": "spoilage",
+            "amount": 4
+          }
+        ]
+      },
+      "copper-bacteria": {
+        "category": "organic-or-hand-crafting",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "yumako-mash",
+            "amount": 3
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "copper-bacteria",
+            "amount": 1,
+            "probability": 0.1
+          },
+          {
+            "type": "item",
+            "name": "spoilage",
+            "amount": 1
+          }
+        ]
+      },
+      "biter-egg": {
+        "category": "captive-spawner-process",
+        "enabled": false,
+        "ingredients": {},
+        "results": [
+          {
+            "type": "item",
+            "name": "biter-egg",
+            "amount": 5
+          }
+        ]
+      },
+      "capture-robot-rocket": {
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "flying-robot-frame",
+            "amount": 1
+          },
+          {
+            "type": "item",
+            "name": "steel-plate",
+            "amount": 2
+          },
+          {
+            "type": "item",
+            "name": "bioflux",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "processing-unit",
+            "amount": 2
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "capture-robot-rocket",
+            "amount": 1
+          }
+        ]
+      },
+      "holmium-solution": {
+        "category": "chemistry",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "holmium-ore",
+            "amount": 2
+          },
+          {
+            "type": "item",
+            "name": "stone",
+            "amount": 1
+          },
+          {
+            "type": "fluid",
+            "name": "water",
+            "amount": 10
+          }
+        ],
+        "results": [
+          {
+            "type": "fluid",
+            "name": "holmium-solution",
+            "amount": 100
+          }
+        ]
+      },
+      "holmium-plate": {
+        "category": "crafting-with-fluid-or-metallurgy",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "fluid",
+            "name": "holmium-solution",
+            "amount": 20,
+            "fluidbox_multiplier": 10
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "holmium-plate",
+            "amount": 1
+          }
+        ]
+      },
+      "electromagnetic-plant": {
+        "category": "electronics-or-assembling",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "holmium-plate",
+            "amount": 150
+          },
+          {
+            "type": "item",
+            "name": "steel-plate",
+            "amount": 50
+          },
+          {
+            "type": "item",
+            "name": "processing-unit",
+            "amount": 50
+          },
+          {
+            "type": "item",
+            "name": "refined-concrete",
+            "amount": 50
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "electromagnetic-plant",
+            "amount": 1
+          }
+        ]
+      },
+      "lithium": {
+        "category": "chemistry-or-cryogenics",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "holmium-plate",
+            "amount": 1
+          },
+          {
+            "type": "fluid",
+            "name": "lithium-brine",
+            "amount": 50
+          },
+          {
+            "type": "fluid",
+            "name": "ammonia",
+            "amount": 50
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "lithium",
+            "amount": 5
+          }
+        ]
+      },
+      "lithium-plate": {
+        "category": "smelting",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "lithium",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "lithium-plate",
+            "amount": 1
+          }
+        ]
+      },
+      "ammoniacal-solution-separation": {
+        "category": "chemistry-or-cryogenics",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "fluid",
+            "name": "ammoniacal-solution",
+            "amount": 50
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "ice",
+            "amount": 5
+          },
+          {
+            "type": "fluid",
+            "name": "ammonia",
+            "amount": 50
+          }
+        ]
+      },
+      "cryogenic-plant": {
+        "category": "cryogenics-or-assembling",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "refined-concrete",
+            "amount": 40
+          },
+          {
+            "type": "item",
+            "name": "superconductor",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "processing-unit",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "lithium-plate",
+            "amount": 20
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "cryogenic-plant",
+            "amount": 1
+          }
+        ]
+      },
+      "space-science-pack": {
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "iron-plate",
+            "amount": 2
+          },
+          {
+            "type": "item",
+            "name": "carbon",
+            "amount": 1
+          },
+          {
+            "type": "item",
+            "name": "ice",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "space-science-pack",
+            "amount": 5
+          }
+        ]
+      },
+      "promethium-science-pack": {
+        "category": "cryogenics",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "promethium-asteroid-chunk",
+            "amount": 25
+          },
+          {
+            "type": "item",
+            "name": "quantum-processor",
+            "amount": 1
+          },
+          {
+            "type": "item",
+            "name": "biter-egg",
+            "amount": 10
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "promethium-science-pack",
+            "amount": 10
+          }
+        ]
+      },
+      "scrap-recycling": {
+        "category": "recycling-or-hand-crafting",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "scrap",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "iron-gear-wheel",
+            "amount": 1,
+            "probability": 0.2,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "solid-fuel",
+            "amount": 1,
+            "probability": 0.07,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "concrete",
+            "amount": 1,
+            "probability": 0.06,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "ice",
+            "amount": 1,
+            "probability": 0.05,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "steel-plate",
+            "amount": 1,
+            "probability": 0.04,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "battery",
+            "amount": 1,
+            "probability": 0.04,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "stone",
+            "amount": 1,
+            "probability": 0.04,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "advanced-circuit",
+            "amount": 1,
+            "probability": 0.03,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "copper-cable",
+            "amount": 1,
+            "probability": 0.03,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "processing-unit",
+            "amount": 1,
+            "probability": 0.02,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "low-density-structure",
+            "amount": 1,
+            "probability": 0.01,
+            "show_details_in_recipe_tooltip": false
+          },
+          {
+            "type": "item",
+            "name": "holmium-ore",
+            "amount": 1,
+            "probability": 0.01,
+            "show_details_in_recipe_tooltip": false
+          }
+        ]
+      },
+      "77-fusion-reactor-mk3-equipment-recycling": {
+        "category": "recycling",
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "77-fusion-reactor-mk3-equipment",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "77-fusion-reactor-mk2-equipment",
+            "amount": 0.25,
+            "extra_count_fraction": 0.25
+          },
+          {
+            "type": "item",
+            "name": "fusion-power-cell",
+            "amount": 7.5,
+            "extra_count_fraction": 0.5
+          },
+          {
+            "type": "item",
+            "name": "supercapacitor",
+            "amount": 12.5,
+            "extra_count_fraction": 0.5
+          },
+          {
+            "type": "item",
+            "name": "quantum-processor",
+            "amount": 75,
+            "extra_count_fraction": 0
+          },
+          {
+            "type": "item",
+            "name": "promethium-asteroid-chunk",
+            "amount": 125,
+            "extra_count_fraction": 0
+          }
+        ]
+      },
+      "77-mech-armor-mk3-recycling": {
+        "category": "recycling",
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "77-mech-armor-mk3",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "promethium-asteroid-chunk",
+            "amount": 125,
+            "extra_count_fraction": 0
+          },
+          {
+            "type": "item",
+            "name": "quantum-processor",
+            "amount": 50,
+            "extra_count_fraction": 0
+          },
+          {
+            "type": "item",
+            "name": "superconductor",
+            "amount": 37.5,
+            "extra_count_fraction": 0.5
+          },
+          {
+            "type": "item",
+            "name": "supercapacitor",
+            "amount": 37.5,
+            "extra_count_fraction": 0.5
+          },
+          {
+            "type": "item",
+            "name": "77-mech-armor-mk2",
+            "amount": 0.25,
+            "extra_count_fraction": 0.25
+          }
+        ]
+      },
+      "advanced-carbonic-asteroid-crushing": {
+        "category": "crushing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "carbon",
+            "amount": 5
+          },
+          {
+            "type": "item",
+            "name": "sulfur",
+            "amount": 2
+          },
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.05
+          }
+        ]
+      },
+      "advanced-metallic-asteroid-crushing": {
+        "category": "crushing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "iron-ore",
+            "amount": 10
+          },
+          {
+            "type": "item",
+            "name": "copper-ore",
+            "amount": 4
+          },
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.05
+          }
+        ]
+      },
+      "advanced-oxide-asteroid-crushing": {
+        "category": "crushing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "ice",
+            "amount": 3
+          },
+          {
+            "type": "item",
+            "name": "calcite",
+            "amount": 2
+          },
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.05
+          }
+        ]
+      },
+      "carbonic-asteroid-chunk-recycling": {
+        "category": "recycling",
+        "enabled": true,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1,
+            "ignored_by_stats": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.25,
+            "ignored_by_stats": 1
+          }
+        ]
+      },
+      "carbonic-asteroid-crushing": {
+        "category": "crushing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "carbon",
+            "amount": 10
+          },
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.2
+          }
+        ]
+      },
+      "carbonic-asteroid-reprocessing": {
+        "category": "crushing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.4
+          },
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.2
+          },
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.2
+          }
+        ]
+      },
+      "metallic-asteroid-chunk-recycling": {
+        "category": "recycling",
+        "enabled": true,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1,
+            "ignored_by_stats": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.25,
+            "ignored_by_stats": 1
+          }
+        ]
+      },
+      "metallic-asteroid-crushing": {
+        "category": "crushing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "iron-ore",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.2
+          }
+        ]
+      },
+      "metallic-asteroid-reprocessing": {
+        "category": "crushing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.4
+          },
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.2
+          },
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.2
+          }
+        ]
+      },
+      "oxide-asteroid-chunk-recycling": {
+        "category": "recycling",
+        "enabled": true,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1,
+            "ignored_by_stats": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.25,
+            "ignored_by_stats": 1
+          }
+        ]
+      },
+      "oxide-asteroid-crushing": {
+        "category": "crushing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "ice",
+            "amount": 5
+          },
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.2
+          }
+        ]
+      },
+      "oxide-asteroid-reprocessing": {
+        "category": "crushing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "oxide-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.4
+          },
+          {
+            "type": "item",
+            "name": "metallic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.2
+          },
+          {
+            "type": "item",
+            "name": "carbonic-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.2
+          }
+        ]
+      },
+      "promethium-asteroid-chunk-recycling": {
+        "category": "recycling",
+        "enabled": true,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "promethium-asteroid-chunk",
+            "amount": 1,
+            "ignored_by_stats": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "promethium-asteroid-chunk",
+            "amount": 1,
+            "probability": 0.25,
+            "ignored_by_stats": 1
+          }
+        ]
+      },
+      "fish-breeding": {
+        "category": "organic-or-chemistry",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "raw-fish",
+            "amount": 2,
+            "ignored_by_stats": 2
+          },
+          {
+            "type": "item",
+            "name": "nutrients",
+            "amount": 100
+          },
+          {
+            "type": "fluid",
+            "name": "water",
+            "amount": 100
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "raw-fish",
+            "amount": 3,
+            "ignored_by_stats": 2,
+            "ignored_by_productivity": 2
+          }
+        ]
+      },
+      "kovarex-enrichment-process": {
+        "category": "centrifuging",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "uranium-235",
+            "amount": 40,
+            "ignored_by_stats": 40
+          },
+          {
+            "type": "item",
+            "name": "uranium-238",
+            "amount": 5,
+            "ignored_by_stats": 2
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "uranium-235",
+            "amount": 41,
+            "ignored_by_stats": 40,
+            "ignored_by_productivity": 40
+          },
+          {
+            "type": "item",
+            "name": "uranium-238",
+            "amount": 2,
+            "ignored_by_stats": 2,
+            "ignored_by_productivity": 2
+          }
+        ]
+      },
+      "uranium-processing": {
+        "category": "centrifuging",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "uranium-ore",
+            "amount": 10
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "uranium-235",
+            "probability": 0.007000000000000001,
+            "amount": 1
+          },
+          {
+            "type": "item",
+            "name": "uranium-238",
+            "probability": 0.993,
+            "amount": 1
+          }
+        ]
+      },
+      "coal-liquefaction": {
+        "category": "oil-processing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "coal",
+            "amount": 10
+          },
+          {
+            "type": "fluid",
+            "name": "heavy-oil",
+            "amount": 25,
+            "ignored_by_stats": 25
+          },
+          {
+            "type": "fluid",
+            "name": "steam",
+            "amount": 50
+          }
+        ],
+        "results": [
+          {
+            "type": "fluid",
+            "name": "heavy-oil",
+            "amount": 90,
+            "ignored_by_stats": 25,
+            "ignored_by_productivity": 25
+          },
+          {
+            "type": "fluid",
+            "name": "light-oil",
+            "amount": 20
+          },
+          {
+            "type": "fluid",
+            "name": "petroleum-gas",
+            "amount": 10
+          }
+        ]
+      },
+      "simple-coal-liquefaction": {
+        "category": "oil-processing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "coal",
+            "amount": 10
+          },
+          {
+            "type": "item",
+            "name": "calcite",
+            "amount": 2
+          },
+          {
+            "type": "fluid",
+            "name": "sulfuric-acid",
+            "amount": 25
+          }
+        ],
+        "results": [
+          {
+            "type": "fluid",
+            "name": "heavy-oil",
+            "amount": 50
+          }
+        ]
+      },
+      "advanced-oil-processing": {
+        "category": "oil-processing",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "fluid",
+            "name": "water",
+            "amount": 50
+          },
+          {
+            "type": "fluid",
+            "name": "crude-oil",
+            "amount": 100
+          }
+        ],
+        "results": [
+          {
+            "type": "fluid",
+            "name": "heavy-oil",
+            "amount": 25
+          },
+          {
+            "type": "fluid",
+            "name": "light-oil",
+            "amount": 45
+          },
+          {
+            "type": "fluid",
+            "name": "petroleum-gas",
+            "amount": 55
+          }
+        ]
+      },
+      "fluoroketone": {
+        "category": "cryogenics",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "fluid",
+            "name": "fluorine",
+            "amount": 50
+          },
+          {
+            "type": "fluid",
+            "name": "ammonia",
+            "amount": 50
+          },
+          {
+            "type": "item",
+            "name": "solid-fuel",
+            "amount": 1
+          },
+          {
+            "type": "item",
+            "name": "lithium",
+            "amount": 1
+          }
+        ],
+        "results": [
+          {
+            "type": "fluid",
+            "name": "fluoroketone-hot",
+            "amount": 50,
+            "temperature": 180
+          }
+        ]
+      },
+      "fluoroketone-cooling": {
+        "category": "cryogenics",
+        "enabled": false,
+        "ingredients": [
+          {
+            "type": "fluid",
+            "name": "fluoroketone-hot",
+            "amount": 10,
+            "ignored_by_stats": 10
+          }
+        ],
+        "results": [
+          {
+            "type": "fluid",
+            "name": "fluoroketone-cold",
+            "amount": 10,
+            "temperature": -150,
+            "ignored_by_stats": 10
+          }
+        ]
+      }
+    },
+    "simpleEntityMining": {
+      "big-volcanic-rock": [
+        {
+          "type": "item",
+          "name": "stone",
+          "amount_min": 2,
+          "amount_max": 12
+        },
+        {
+          "type": "item",
+          "name": "iron-ore",
+          "amount_min": 5,
+          "amount_max": 9
+        },
+        {
+          "type": "item",
+          "name": "copper-ore",
+          "amount_min": 3,
+          "amount_max": 7
+        },
+        {
+          "type": "item",
+          "name": "tungsten-ore",
+          "amount_min": 2,
+          "amount_max": 8
+        },
+        {
+          "type": "item",
+          "name": "calcite",
+          "amount_min": 2,
+          "amount_max": 8
+        }
+      ],
+      "iron-stromatolite": [
+        {
+          "type": "item",
+          "name": "stone",
+          "amount_min": 3,
+          "amount_max": 7
+        },
+        {
+          "type": "item",
+          "name": "iron-ore",
+          "amount_min": 13,
+          "amount_max": 17
+        },
+        {
+          "type": "item",
+          "name": "iron-bacteria",
+          "amount_min": 23,
+          "amount_max": 37
+        }
+      ],
+      "copper-stromatolite": [
+        {
+          "type": "item",
+          "name": "stone",
+          "amount_min": 3,
+          "amount_max": 7
+        },
+        {
+          "type": "item",
+          "name": "copper-ore",
+          "amount_min": 13,
+          "amount_max": 17
+        },
+        {
+          "type": "item",
+          "name": "copper-bacteria",
+          "amount_min": 23,
+          "amount_max": 37
+        }
+      ],
+      "lithium-iceberg-big": [
+        {
+          "type": "item",
+          "name": "ice-platform",
+          "amount": 1
+        },
+        {
+          "type": "item",
+          "name": "ice",
+          "amount_min": 3,
+          "amount_max": 7
+        },
+        {
+          "type": "item",
+          "name": "lithium",
+          "amount_min": 1,
+          "amount_max": 3
+        }
+      ]
+    }
+  },
+  "preciseExceptions": [
+    "Two auto-completed space trigger technologies only: space-platform after rocket-silo, and space-science-pack after space-platform. These omit the platform creation/collector placement actions and their construction/launch costs; they do not waive rocket-silo science or its logistic-robotics prerequisite.",
+    "80 seeded volcanic rocks plus three named mining specimens are scenario-provided entities. Trigger specimens regenerate only while their earned prerequisite gate is ready and the trigger remains incomplete; their native mining yields are real additional materials.",
+    "Eight paid market offers inject normal-quality items. Asteroid chunks including promethium are scripted exchange-only ground supplies, with explicit costs; they are not mined resources or native crafting outputs.",
+    "Pentapod eggs can be bought after earned biochamber research to break the egg/chamber cycle. Biter eggs require actual capture research first. Eggs do spoil/hatch after purchase.",
+    "A dormant enemy biter spawner is supplied after captivity for an authentic capture action. It is not a pre-captured production building; the native capture rocket, bioflux feeding and handling research remain required.",
+    "EverythingOnNauvis already removes prototype surface_conditions and hides planet-discovery tech. This module neither changes prototypes nor unhides/researches planet-discovery technologies. Engine-specific ground restrictions on platforms, collectors, thrusters and endpoints are not claimed removed.",
+    "The main map supplies two 3x3 shallow wetland pads at the stromatolite markers. Native can_place_entity rejects stromatolites on ground_tile grass; wetland-light-green-slime is walkable and supports their actual collision mask. Progression asserts their initial placement and never modifies tiles."
+  ],
+  "unsupportedEndpoints": [
+    "Ground-only spaceship travel, solar-system-edge victory, reaching the shattered planet and space-travel achievements. The module does not call game.set_game_state, create a space platform, teleport to space or fake victory."
+  ],
+  "validation": {
+    "static": "Tests compare all 29 installed triggers, 13 resource prototypes, preserved research, terrain collision requirements and bootstrap quantities against this snapshot. Qualitative installed recipe/category closure reaches all 315 visible technologies and science through promethium without starting machines/research; quantities, production timing, temperatures and throughput are not simulated.",
+    "luaBehavior": "Optional FLIGHT_LUA=path/to/lua executes the module under a mock Factorio API to check gating, idempotence and retry behavior.",
+    "nativeMilestones": "Passed in the main-owned disposable Factorio 2.0.77 scenario. node tests/flight-progression.test.mjs --print-native-audit emits the reproducible helper. Prerequisites are synthetically researched ONLY in that disposable scenario; deliverable map starts with normal technologies unresearched. Actual crafting, mining trigger credit, capture projectile behavior, purchasing and sustained production are not established by this helper.",
+    "nativeProduction": "Still separate: the source closure and native API milestone report do not prove sustained production, actual paid research or ground victory. Main owns further native production testing and deliverable save generation.",
+    "nativeApiEvidence": {
+      "report": "flight-map/native-api-report.json",
+      "kind": "synthetic-native-api-milestones",
+      "reportSha256": "157ba0d02aa9962bf6d56d4b570b84ed857d4f634bd30b05e377073b83072b18",
+      "progressionLuaSha256": "13914e42ef2afc0404b41dd75b07199dea97860d799393a421ed439bdf5b5750",
+      "rawDumpSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+      "passedChecks": 463,
+      "nativeProductionProof": false,
+      "verified": [
+        "zero-research startup",
+        "80 real volcanic rock entities",
+        "all three actual starter specimen entities",
+        "loss/replacement after prerequisite gates",
+        "no foundry/heating/recycling/robotics auto-grants",
+        "exactly two space-trigger assignments",
+        "eight earned paid offers and every displayed price",
+        "dormant real enemy capture target after captivity",
+        "late lithium and promethium gates",
+        "idempotent initialization"
+      ],
+      "notVerified": [
+        "actual market purchase and fresh-item spoil state",
+        "actual capture-rocket operation or production feeding",
+        "native crafting/mining research credit earned through factory operation",
+        "sustained production/throughput",
+        "spaceship victory"
+      ]
+    }
+  }
+}

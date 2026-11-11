@@ -1,0 +1,656 @@
+{
+  "schemaVersion": 1,
+  "prototypeSha256": "52e36bd91607c8b13aa6df0a8c259de8d4fbbf756ee46e59c45f8b032be2cd0c",
+  "surface": "nauvis",
+  "mode": "mixed",
+  "target": {
+    "id": "holmium-ore",
+    "type": "item",
+    "perSecond": 0.016666666666666666
+  },
+  "assumptions": [
+    "Normal-quality machines; no modules, beacons, or researched productivity bonuses.",
+    "Raw inputs are mined, harvested or pumped materials delivered at the factory boundary; mining and farming infrastructure is external.",
+    "All recipe unlocks and construction technologies must be researched by the player. No research is granted by these blueprints.",
+    "Rates are steady-state material balances. Rounded machine counts supply capacity; transport, spoilage, start-up and sustained rates require native tests."
+  ],
+  "status": "planned",
+  "planningMethod": "global-net-stoichiometric-linear-program",
+  "objective": "Weighted imports, active machine time and advanced-machine handling. Ordinary machines preferred; not a claim of global layout optimality.",
+  "steps": [
+    {
+      "recipe": "scrap-recycling",
+      "machine": "recycler",
+      "craftsPerSecond": 1.66666666667,
+      "machineCount": 1,
+      "exactMachineCount": 0.666666666667,
+      "utilization": 0.666666666667,
+      "craftingSpeed": 0.5,
+      "intrinsicProductivity": 0,
+      "unlockTechnologies": [
+        "recycling"
+      ],
+      "ingredients": [
+        {
+          "id": "scrap",
+          "type": "item",
+          "amount": 1,
+          "probability": 1,
+          "ignoredByProductivity": 0,
+          "perSecond": 1.66666666667
+        }
+      ],
+      "results": [
+        {
+          "id": "iron-gear-wheel",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.2,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.2,
+          "perSecond": 0.333333333333
+        },
+        {
+          "id": "solid-fuel",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.07,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.07,
+          "perSecond": 0.116666666667
+        },
+        {
+          "id": "concrete",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.06,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.06,
+          "perSecond": 0.1
+        },
+        {
+          "id": "ice",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.05,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.05,
+          "perSecond": 0.0833333333333
+        },
+        {
+          "id": "steel-plate",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.04,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.04,
+          "perSecond": 0.0666666666667
+        },
+        {
+          "id": "battery",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.04,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.04,
+          "perSecond": 0.0666666666667
+        },
+        {
+          "id": "stone",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.04,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.04,
+          "perSecond": 0.0666666666667
+        },
+        {
+          "id": "advanced-circuit",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.03,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.03,
+          "perSecond": 0.05
+        },
+        {
+          "id": "copper-cable",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.03,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.03,
+          "perSecond": 0.05
+        },
+        {
+          "id": "processing-unit",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.02,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.02,
+          "perSecond": 0.0333333333333
+        },
+        {
+          "id": "low-density-structure",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.01,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.01,
+          "perSecond": 0.0166666666667
+        },
+        {
+          "id": "holmium-ore",
+          "type": "item",
+          "amount": 1,
+          "probability": 0.01,
+          "ignoredByProductivity": 0,
+          "expectedAmount": 0.01,
+          "perSecond": 0.0166666666667
+        }
+      ],
+      "fuel": null,
+      "stochastic": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "scrap",
+      "type": "item",
+      "perSecond": 1.66666666667,
+      "source": "natural-resource",
+      "sources": [
+        {
+          "kind": "seeded-resource-extraction",
+          "entity": "scrap",
+          "requiredFluid": null,
+          "extractionIncluded": false,
+          "amount": 79700000,
+          "evidencePath": "flight-map/native-report.json",
+          "evidenceSha256": "1da8bc719902babcb18a5f96de47b41147f7b573ce799e13516038ce181b87c1",
+          "renewable": false
+        }
+      ],
+      "obtainableFromRaw": true,
+      "name": "scrap",
+      "label": "IN scrap",
+      "entityNumber": 45,
+      "displayEntity": 46,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "ratePerSecond": 1.66666666667,
+      "plannedPerSecond": 1.66666666667,
+      "supplyPolicy": "unlimited-external-boundary-fixture"
+    }
+  ],
+  "surplus": [
+    {
+      "id": "advanced-circuit",
+      "type": "item",
+      "perSecond": 0.05,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "battery",
+      "type": "item",
+      "perSecond": 0.0666666666667,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "concrete",
+      "type": "item",
+      "perSecond": 0.1,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "copper-cable",
+      "type": "item",
+      "perSecond": 0.05,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "ice",
+      "type": "item",
+      "perSecond": 0.0833333333333,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "iron-gear-wheel",
+      "type": "item",
+      "perSecond": 0.333333333333,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "low-density-structure",
+      "type": "item",
+      "perSecond": 0.0166666666667,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "processing-unit",
+      "type": "item",
+      "perSecond": 0.0333333333333,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "solid-fuel",
+      "type": "item",
+      "perSecond": 0.116666666667,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "steel-plate",
+      "type": "item",
+      "perSecond": 0.0666666666667,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    },
+    {
+      "id": "stone",
+      "type": "item",
+      "perSecond": 0.0666666666667,
+      "handling": "Export continuously; finite storage eventually blocks production."
+    }
+  ],
+  "startupStock": [],
+  "rawOnly": true,
+  "stochastic": true,
+  "warnings": [
+    "Random result rates are expectations, not guaranteed yields. Native throughput needs repeated measurement windows."
+  ],
+  "machineCount": 1,
+  "requiredResearch": {
+    "technologies": [
+      "advanced-circuit",
+      "advanced-material-processing",
+      "advanced-material-processing-2",
+      "advanced-oil-processing",
+      "automation",
+      "automation-2",
+      "automation-science-pack",
+      "battery",
+      "bulk-inserter",
+      "chemical-science-pack",
+      "circuit-network",
+      "concrete",
+      "construction-robotics",
+      "electric-energy-distribution-1",
+      "electric-energy-distribution-2",
+      "electric-engine",
+      "electronics",
+      "engine",
+      "fast-inserter",
+      "flammables",
+      "fluid-handling",
+      "logistic-robotics",
+      "logistic-science-pack",
+      "logistic-system",
+      "logistics",
+      "logistics-2",
+      "low-density-structure",
+      "lubricant",
+      "modules",
+      "oil-gathering",
+      "oil-processing",
+      "plastics",
+      "processing-unit",
+      "production-science-pack",
+      "productivity-module",
+      "railway",
+      "recycling",
+      "robotics",
+      "rocket-fuel",
+      "rocket-silo",
+      "space-platform",
+      "space-science-pack",
+      "steam-power",
+      "steel-processing",
+      "sulfur-processing"
+    ],
+    "requirements": [
+      {
+        "recipe": "scrap-recycling",
+        "unlockAlternatives": [
+          "recycling"
+        ],
+        "selected": "recycling"
+      },
+      {
+        "recipe": "bulk-inserter",
+        "unlockAlternatives": [
+          "bulk-inserter"
+        ],
+        "selected": "bulk-inserter"
+      },
+      {
+        "recipe": "passive-provider-chest",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "requester-chest",
+        "unlockAlternatives": [
+          "logistic-system"
+        ],
+        "selected": "logistic-system"
+      },
+      {
+        "recipe": "roboport",
+        "unlockAlternatives": [
+          "construction-robotics",
+          "logistic-robotics"
+        ],
+        "selected": "construction-robotics"
+      },
+      {
+        "recipe": "substation",
+        "unlockAlternatives": [
+          "electric-energy-distribution-2"
+        ],
+        "selected": "electric-energy-distribution-2"
+      },
+      {
+        "recipe": "display-panel",
+        "unlockAlternatives": [
+          "circuit-network"
+        ],
+        "selected": "circuit-network"
+      },
+      {
+        "recipe": "recycler",
+        "unlockAlternatives": [
+          "recycling"
+        ],
+        "selected": "recycling"
+      }
+    ],
+    "policy": "Required research listed for the player; blueprint import never grants it. Infinite productivity research excluded from the rate model."
+  },
+  "balance": {
+    "passed": true,
+    "maxResidual": 0,
+    "rows": [
+      {
+        "id": "advanced-circuit",
+        "type": "item",
+        "producedPerSecond": 0.0500000000001,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "battery",
+        "type": "item",
+        "producedPerSecond": 0.0666666666668,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "concrete",
+        "type": "item",
+        "producedPerSecond": 0.1,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "copper-cable",
+        "type": "item",
+        "producedPerSecond": 0.0500000000001,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "holmium-ore",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "ice",
+        "type": "item",
+        "producedPerSecond": 0.0833333333335,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "iron-gear-wheel",
+        "type": "item",
+        "producedPerSecond": 0.333333333334,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "low-density-structure",
+        "type": "item",
+        "producedPerSecond": 0.0166666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "processing-unit",
+        "type": "item",
+        "producedPerSecond": 0.0333333333334,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "scrap",
+        "type": "item",
+        "producedPerSecond": 0,
+        "consumedPerSecond": 1.66666666667,
+        "residual": 0
+      },
+      {
+        "id": "solid-fuel",
+        "type": "item",
+        "producedPerSecond": 0.116666666667,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "steel-plate",
+        "type": "item",
+        "producedPerSecond": 0.0666666666668,
+        "consumedPerSecond": 0,
+        "residual": 0
+      },
+      {
+        "id": "stone",
+        "type": "item",
+        "producedPerSecond": 0.0666666666668,
+        "consumedPerSecond": 0,
+        "residual": 0
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "id": "holmium-ore",
+      "type": "item",
+      "perSecond": 0.016666666666666666,
+      "target": true,
+      "name": "holmium-ore",
+      "entityNumber": 47,
+      "position": {
+        "x": 4.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.016666666666666666,
+      "minPerMinute": 0.9,
+      "role": "target"
+    },
+    {
+      "id": "advanced-circuit",
+      "type": "item",
+      "perSecond": 0.05,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "advanced-circuit",
+      "entityNumber": 48,
+      "position": {
+        "x": 8.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.05,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "battery",
+      "type": "item",
+      "perSecond": 0.0666666666667,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "battery",
+      "entityNumber": 49,
+      "position": {
+        "x": 12.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.0666666666667,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "concrete",
+      "type": "item",
+      "perSecond": 0.1,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "concrete",
+      "entityNumber": 50,
+      "position": {
+        "x": 16.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.1,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "copper-cable",
+      "type": "item",
+      "perSecond": 0.05,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "copper-cable",
+      "entityNumber": 51,
+      "position": {
+        "x": 20.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.05,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "ice",
+      "type": "item",
+      "perSecond": 0.0833333333333,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "ice",
+      "entityNumber": 52,
+      "position": {
+        "x": 24.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.0833333333333,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "iron-gear-wheel",
+      "type": "item",
+      "perSecond": 0.333333333333,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "iron-gear-wheel",
+      "entityNumber": 53,
+      "position": {
+        "x": 28.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.333333333333,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "low-density-structure",
+      "type": "item",
+      "perSecond": 0.0166666666667,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "low-density-structure",
+      "entityNumber": 54,
+      "position": {
+        "x": 32.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.0166666666667,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "processing-unit",
+      "type": "item",
+      "perSecond": 0.0333333333333,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "processing-unit",
+      "entityNumber": 55,
+      "position": {
+        "x": 36.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.0333333333333,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "solid-fuel",
+      "type": "item",
+      "perSecond": 0.116666666667,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "solid-fuel",
+      "entityNumber": 56,
+      "position": {
+        "x": 40.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.116666666667,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "steel-plate",
+      "type": "item",
+      "perSecond": 0.0666666666667,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "steel-plate",
+      "entityNumber": 57,
+      "position": {
+        "x": 44.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.0666666666667,
+      "minPerMinute": 0,
+      "role": "surplus"
+    },
+    {
+      "id": "stone",
+      "type": "item",
+      "perSecond": 0.0666666666667,
+      "handling": "Export continuously; finite storage eventually blocks production.",
+      "name": "stone",
+      "entityNumber": 58,
+      "position": {
+        "x": 48.5,
+        "y": 8.5
+      },
+      "ratePerSecond": 0.0666666666667,
+      "minPerMinute": 0,
+      "role": "surplus"
+    }
+  ],
+  "materialSeeds": [],
+  "blueprintSha256": "f4be5b74cb1f72d72a5210a4dc50f4c7f816842b6e90b8ea1687de147b657cc4",
+  "entityCount": 63
+}
