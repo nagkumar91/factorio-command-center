@@ -1,0 +1,1 @@
+Qualified underground layout. Exact original15+30+5/2/3 and separate60-minute full-storage evidence are preserved; fresh recovery uses2-minute settling and3-minute measurement. Pairing report verifies every new and retained underground endpoint. This is a measured alternative, not a global optimum.

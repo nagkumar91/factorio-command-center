@@ -1,3 +1,1 @@
-Separate full-storage recovery evidence
-
-Exact selected blueprint 664b81d34df0b9a6ef969cad3f3a45f70f9ae67b35464710f9200bcf586f7548. Original qualification remains separate. This additional audit uses 15-minute warmup, 30-minute measurement, 60-minute collection pause, 2-minute settling and 3-minute recovery. All ten output chests stayed full for the final two pause minutes and all science crafting stopped. Every pack was freshly crafted at >=60/min during recovery; independent production statistics agree. Collected backlog is not the production measure. Original report/control bytes are preserved.
+Exact combined underground/header blueprint fc03b906: original qualification remains separate. Additional15+30+60-minute pause+2-minute settling+3-minute recovery PASS. All10chests full and all science crafting stopped for final2pause minutes; every pack freshly produced>=60/min, independent statistics agree. Collection contains backlog and is not fresh production.

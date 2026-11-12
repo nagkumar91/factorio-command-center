@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
-import {decodeBlueprint} from '../scripts/blueprints.mjs';
+import {decodeBlueprint,encodeBlueprint} from '../scripts/blueprints.mjs';
+import {auditUndergroundRewrite} from '../scripts/flight-underground-audit.mjs';
+import {rewriteCompactUnderground,BASELINE_SHA,OPTIMIZED_SHA} from '../scripts/flight-science-sided/compact/underground/rewrite.mjs';
 
 const source=new URL('../blueprint-sources/flight-science-sided/compact/',import.meta.url);
 const bytes=fs.readFileSync(new URL('manifest.json',source));
@@ -86,4 +88,55 @@ test('native proof matches the exact manifest, blueprint, runner and harness and
  assert(native.inputs.every(p=>p.productiveRoute?.length&&p.acceptedDuringMeasurement>0));
  assert(native.outputPorts.every(p=>p.collectedDuringMeasurement>0));
  assert(native.recovery&&expected.every(item=>native.recovery.outputsPerMinute[item]>=59.5));
+});
+
+
+test('underground rewrite preserves the qualified baseline, protected entities and all native pairs',()=>{
+ const history=new URL('history/v2-17fc28fa/',source),oldCode=fs.readFileSync(new URL(manifest.file,history),'utf8').trim();
+ assert.equal(sha(oldCode),BASELINE_SHA);assert.equal(sha(code),OPTIMIZED_SHA);
+ const opt=manifest.undergroundOptimization;
+ assert.equal(opt.baselineBlueprintSha256,BASELINE_SHA);assert.equal(opt.pairs.length,49);
+ const audit=auditUndergroundRewrite(decodeBlueprint(oldCode),{blueprint},opt.pairs,opt.protectedEntityNumbers);
+ assert(audit.passed);assert.equal(audit.removedSurfaceEntities,277);assert.equal(blueprint.entities.length,1299);
+ assert.equal(opt.after.redBeltConstructionIronPlates-opt.before.redBeltConstructionIronPlates,465);
+ const original=JSON.parse(fs.readFileSync(new URL('native-belt-snapshot.json',history))).builds[0];
+ const current=JSON.parse(fs.readFileSync(new URL('underground-pairing-report.json',source))).builds[0];
+ assert.equal(original.blueprintSha256,BASELINE_SHA);assert.equal(current.blueprintSha256,OPTIMIZED_SHA);
+ assert.equal(original.pairs.length,44);assert.equal(current.pairs.length,142);assert(current.pairs.every(p=>p.matched));
+ for(const p of original.pairs){const q=current.pairs.find(q=>q.entity===p.entity);assert.equal(q?.neighbour,p.neighbour);assert.equal(q?.role,p.role);}
+ assert.deepEqual(current.readAllBeltComponentEntityNumbers,original.readAllBeltComponentEntityNumbers);
+ assert.equal(current.readAllBeltComponentEntityNumbers.length,346);
+ assert.deepEqual(current.readAllBeltComponents.map(c=>({entities:c.entities,readers:c.readers})),original.readAllBeltComponents.map(c=>({entities:c.entities,readers:c.readers})));
+});
+
+test('reviewed generation reproduces the exact optimized string and manifest',async t=>{
+ const rawFile=new URL('../.cache/flight-21/script-output/data-raw-dump.json',import.meta.url);
+ if(!fs.existsSync(rawFile)){t.skip('Pinned local prototype dump is not installed');return;}
+ const history=new URL('history/v2-17fc28fa/',source),oldCode=fs.readFileSync(new URL(manifest.file,history),'utf8').trim(),[oldManifest]=JSON.parse(fs.readFileSync(new URL('manifest.json',history)));
+ const result=await rewriteCompactUnderground(decodeBlueprint(oldCode),oldManifest,JSON.parse(fs.readFileSync(rawFile)));
+ assert.equal(encodeBlueprint(result.wrapper),code);assert.deepEqual(result.manifest,manifest);
+});
+
+test('original qualification and storage evidence remain bound to the preserved baseline',()=>{
+ const history=new URL('history/v2-17fc28fa/',source),oldBytes=fs.readFileSync(new URL('manifest.json',history));
+ const qualification=JSON.parse(fs.readFileSync(new URL('native-report.json',history))),storage=JSON.parse(fs.readFileSync(new URL('storage-30-report.json',history)));
+ for(const report of[qualification,storage]){assert.equal(report.builds[0].blueprintSha256,BASELINE_SHA);assert.equal(report.manifestSha256,sha(oldBytes));assert(report.passed);}
+ assert.equal(qualification.harnessSha256,sha(fs.readFileSync(new URL('qualification-control.lua',history))));
+ assert.equal(qualification.runnerSha256,sha(fs.readFileSync(new URL('qualification-runner.mjs',history))));
+ assert.equal(storage.harnessSha256,sha(fs.readFileSync(new URL('storage-control.lua',history))));
+ assert.equal(storage.runnerSha256,sha(fs.readFileSync(new URL('storage-runner-source.txt',history))));
+ const snapshot=JSON.parse(fs.readFileSync(new URL('native-belt-snapshot.json',history)));
+ assert.equal(snapshot.harnessSha256,sha(fs.readFileSync(new URL('native-belt-snapshot-control.lua',history))));
+ assert.equal(snapshot.runnerSha256,sha(fs.readFileSync(new URL('native-belt-snapshot-runner-source.txt',history))));
+});
+
+test('full-storage recovery proves complete blockage and fresh sixty-per-minute science',()=>{
+ const report=JSON.parse(fs.readFileSync(new URL('storage-30-report.json',source))),native=report.builds.find(b=>b.id===manifest.id);
+ assert(report.passed&&native.passed&&native.stressPassed);assert.equal(report.manifestSha256,sha(bytes));assert.equal(native.blueprintSha256,manifest.blueprintSha256);
+ assert.equal(report.runnerSha256,sha(fs.readFileSync(new URL('flight-science-sided-compact-storage-30.mjs',import.meta.url))));
+ assert.equal(report.harnessSha256,sha(fs.readFileSync(new URL('flight-science-sided-compact-storage-control.lua',import.meta.url))));
+ const stress=native.blockedStress;assert.equal(stress.pauseMinutes,30);assert.equal(stress.sampleCount,120);assert(stress.allChestsFull&&stress.zeroScienceProduction);
+ assert.equal(stress.endChests.length,6);assert(stress.chestFullSamples.every(n=>n===120));
+ assert(stress.startChests.every(c=>c.full&&c.stored===c.usableCapacity));assert(stress.endChests.every(c=>c.full&&c.stored===c.usableCapacity));
+ for(const item of expected){assert.equal(stress.productionDelta[item],0);assert.equal(stress.craftDelta[item],0);assert(native.recovery.scienceCraftedPerMinute[item]>=60);assert.equal(native.recovery.scienceCraftedPerMinute[item],native.recovery.scienceProductionStatisticsPerMinute[item]);}
 });

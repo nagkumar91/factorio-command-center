@@ -14,6 +14,9 @@ try{
   assert.equal(await page.locator('a[href="history/da625c-blueprint.txt"]').count(),1);
   assert.equal(await page.locator('a[href="history/da625c-native-report.json"]').count(),1);
   assert.equal(await page.locator('a[href="storage-stress-report.json"]').count(),1);
+  for(const file of ['ac9fca-blueprint.txt','ac9fca-native-report.json','ac9fca-storage-stress-report.json'])assert.equal(await page.locator(`a[href="history/${file}"]`).count(),1);
+  assert.equal(await page.locator('a[href="underground-pairing-report.json"]').count(),1);
+  const body=await page.locator('body').textContent();assert(body.includes('385 fewer'));assert(body.includes('638.5'));assert(body.includes('footprint remains 114 × 75'));
   assert(await page.locator('.map img').evaluate(e=>e.complete&&e.naturalWidth>0));
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   assert(await page.locator('.map').evaluate(e=>e.scrollHeight<=e.clientHeight),'Fit layout must show the whole blueprint');

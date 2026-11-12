@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {decodeBlueprint,encodeBlueprint} from '../../blueprints.mjs';
 import {Layout} from './layout.mjs';
+import {rewriteHybridUnderground} from './underground/rewrite.mjs';
 
 const root=path.resolve(new URL('../../..',import.meta.url).pathname);
 const out=path.join(root,'blueprint-sources/flight-science-sided/hybrid');
@@ -11,7 +12,8 @@ const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const bytes=await fs.readFile(path.join(root,'.cache/flight-21/script-output/data-raw-dump.json'));
 const raw=JSON.parse(bytes),layout=new Layout(raw);
 await fs.mkdir(path.join(out,'components'),{recursive:true});
-const frozen=process.argv.includes('--frozen');
+// The reviewed hybrid always uses its checked-in component snapshots.
+const frozen=true;
 // Preserve the first exact passing artifact before replacing any source snapshot.
 try{
  const [previous]=JSON.parse(await fs.readFile(path.join(out,'manifest.json')));
@@ -129,12 +131,15 @@ for(const e of bp.entities){const condition=e.control_behavior?.circuit_conditio
 assert.equal(stockChanges.length,2);
 for(const loop of layout.loops)for(const [item,limit]of Object.entries(stockTuning))if(loop.limits[item]!==undefined)loop.limits[item]=limit;
 const products=core.m.products,id='hybrid-six-pack-sided-60';
-const code=encodeBlueprint({blueprint:bp});
+let code=encodeBlueprint({blueprint:bp});
 const inputs=layout.ports.filter(p=>p.kind==='input').map(p=>({item:p.items[0],entity:p.entity,position:{x:p.x,y:p.y},direction:4,perMinute:p.perMinute,block:p.block||p.component}));
 const inputsPerMinute=Object.fromEntries([...new Set(inputs.map(p=>p.item))].sort().map(item=>[item,inputs.filter(p=>p.item===item).reduce((n,p)=>n+p.perMinute,0)]));
 assert.deepEqual(inputsPerMinute,{coal:300,'copper-plate':630,'electric-furnace':20,'flying-robot-frame':20,'iron-plate':1290,'low-density-structure':60,'plastic-bar':180,'processing-unit':40,'productivity-module':20,stone:300,'stone-wall':60,'steel-plate':375,sulfur:30});
 const machineCounts={};for(const e of bp.entities)if(e.recipe)machineCounts[e.recipe]=(machineCounts[e.recipe]||0)+1;
 const manifest={id,name:bp.label,file:id+'.txt',products,targetPerMinute:60,blueprintSha256:sha(code),prototypeSha256:sha(bytes),gameVersion:'2.1.24',ports:layout.ports,footprint,machineCounts,inputs,inputsPerMinute,outputs:layout.ports.filter(p=>p.kind==='output').map(p=>({item:p.items[0],entity:p.entity,position:{x:p.x,y:p.y},perMinute:60})),loopControl:layout.loops,components:layout.components.map(({map,ports,...c})=>c),interconnects,inletRoutes,setupNotes:[description,'Input rates are recipe demand at exactly 60/min per pack. Supply surplus while startup stocks fill and if operating above the target.','Multiple iron, copper and steel entrances serve separate workshops; every entrance is labeled and faces left.'],attribution:'Original local compact six-pack science design plus the parent-tested green-circuit, advanced-circuit and engine supply workshops. Frozen source components and SHA-256 identities are included. Hybrid placement and physical belt routing are new.',status:'awaiting-native-validation',stockTuning,previousBlueprintSha256:'da625c002d67bfd9959e84b5ee7cc61f0fe97ea20494de5085895dd754ca7d79',revision:{kind:'stock-limit-only',baseBlueprintSha256:'da625c002d67bfd9959e84b5ee7cc61f0fe97ea20494de5085895dd754ca7d79',changes:stockChanges}};
+const rewritten=await rewriteHybridUnderground({blueprint:bp},manifest,raw);
+Object.assign(manifest,rewritten.manifest);
+code=encodeBlueprint(rewritten.wrapper);
 try{
  const previous=JSON.parse(await fs.readFile(path.join(out,'native-report.json')));
  const evidence=previous.builds?.find(b=>b.id===id&&b.blueprintSha256===manifest.blueprintSha256&&b.passed);
@@ -142,6 +147,6 @@ try{
 }catch(error){if(error.code!=='ENOENT')throw error;}
 await fs.writeFile(path.join(out,'components/manifest.json'),JSON.stringify(componentManifest,null,2)+'\n');
 await fs.writeFile(path.join(out,id+'.txt'),code+'\n');
-await fs.writeFile(path.join(out,id+'.json'),JSON.stringify({blueprint:bp},null,2)+'\n');
+await fs.writeFile(path.join(out,id+'.json'),JSON.stringify(rewritten.wrapper,null,2)+'\n');
 await fs.writeFile(path.join(out,'manifest.json'),JSON.stringify([manifest],null,2)+'\n');
-console.log(JSON.stringify({id,footprint,area:footprint.width*footprint.height,machines:Object.values(machineCounts).reduce((a,b)=>a+b,0),entities:bp.entities.length,blueprintSha256:manifest.blueprintSha256},null,2));
+console.log(JSON.stringify({id,footprint,area:footprint.width*footprint.height,machines:Object.values(machineCounts).reduce((a,b)=>a+b,0),entities:rewritten.wrapper.blueprint.entities.length,blueprintSha256:manifest.blueprintSha256},null,2));

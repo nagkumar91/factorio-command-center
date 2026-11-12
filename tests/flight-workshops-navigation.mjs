@@ -8,7 +8,7 @@ try{
  for(const width of [1440,390]){
   await page.setViewportSize({width,height:900});
   await page.goto(new URL('index.html#commands',root).href);
-  for(const section of ['flight-robots','flight-forest','flight-science-sided'])assert.equal(await page.locator(`nav,aside`).locator(`a[href="${section}/index.html"]`).count(),1);
+  for(const section of ['flight-robots','flight-forest','flight-science-sided']){const href=section+'/index.html'+(section==='flight-science-sided'?'#compact':'');assert.equal(await page.locator(`nav,aside`).locator(`a[href="${href}"]`).count(),1);}
   for(const section of ['flight-robots','flight-forest','flight-science-sided']){
    await page.goto(new URL(section+'/index.html',root).href);
    assert.equal(await page.locator('h1').count(),1);

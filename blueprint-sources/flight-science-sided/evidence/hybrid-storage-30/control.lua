@@ -1,3 +1,4 @@
+local undergroundAudit=require('underground-audit')
 local payload=helpers.json_to_table(require('payload'))
 local function check(ok,msg) if not ok then error('FLIGHT_SCIENCE: '..msg) end end
 local function status(e) for n,v in pairs(defines.entity_status) do if v==e.status then return n end end return tostring(e.status) end
@@ -220,7 +221,7 @@ script.on_event(defines.events.on_tick,function()
   stress_sample(t,b)
   recovery_craft_sample(t,b)
   recovery_diagnostic_sample(t,b)
-  if game.tick==1 then t.force.enable_all_recipes();t.force.inserter_stack_size_bonus=0 end
+  if game.tick==1 then t.undergroundAuditStart=undergroundAudit(t,b,false);t.force.enable_all_recipes();t.force.inserter_stack_size_bonus=0 end
   -- The only ingredient writes are to the two lanes of the declared input belt.
   if game.tick%4==0 then for i,p in ipairs(b.inputs)do
    local belt=t.entities[p.entity]
@@ -266,7 +267,7 @@ script.on_event(defines.events.on_tick,function()
  if game.tick==payload.warmup+payload.measure then
   local report={builds={},feedPolicy='Declared exterior belt lanes only, no internal injection; collect every output chest every second',researchPolicy='All recipes enabled, no technologies researched, inserter stack bonus zero'}
   for index,t in ipairs(storage.tests)do
-   local b=payload.builds[index];local r={id=t.id,outputsPerMinute={},consumptionPerMinute={},inputs={},outputPorts={},machines={},powered=t.powered,importedEntities=#b.entities,loopSamples=t.loopSamples}
+   local b=payload.builds[index];local r={id=t.id,outputsPerMinute={},consumptionPerMinute={},inputs={},outputPorts={},machines={},powered=t.powered,importedEntities=#b.entities,loopSamples=t.loopSamples,undergroundAuditStart=t.undergroundAuditStart}
    for _,p in ipairs(b.products)do r.outputsPerMinute[p]=(t.output[p]or 0)/(payload.measure/3600)end
    for i,p in ipairs(b.inputs)do r.consumptionPerMinute[p.item]=(stats(t,p.item)-(t.baseline[p.item]or 0))/(payload.measure/3600);r.inputs[#r.inputs+1]={item=p.item,entity=p.entity,acceptedDuringMeasurement=t.measuredFed[i]or 0,productiveRoute=input_route(t,p)}end
    for i,p in ipairs(b.outputs)do r.outputPorts[#r.outputPorts+1]={item=p.item,entity=p.entity,collectedDuringMeasurement=t.portOutputs[i]or 0}end
@@ -280,6 +281,7 @@ script.on_event(defines.events.on_tick,function()
  end
  if payload.recovery and game.tick==payload.warmup+payload.measure+payload.recovery.pauseTicks+payload.recovery.settleTicks+payload.recovery.measureTicks then
   for index,t in ipairs(storage.tests)do
+   storage.report.builds[index].undergroundAuditEnd=undergroundAudit(t,payload.builds[index],false)
    local recovery={blockedMinutes=payload.recovery.pauseTicks/3600,settlingMinutes=payload.recovery.settleTicks/3600,measurementMinutes=payload.recovery.measureTicks/3600,outputsPerMinute={}}
    for _,item in ipairs(payload.builds[index].products)do recovery.outputsPerMinute[item]=(t.recoveryOutput[item]or 0)/(payload.recovery.measureTicks/3600)end
    storage.report.builds[index].recovery=recovery

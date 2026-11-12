@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {encodeBlueprint} from '../../blueprints.mjs';
 import {powerStarterLayout,starterBounds} from '../../science-factory/local-ports/compact-shared-layout.mjs';
+import {rewriteCompactUnderground} from './underground/rewrite.mjs';
 
 const root=path.resolve(new URL('../../..',import.meta.url).pathname);
 const out=path.join(root,'blueprint-sources/flight-science-sided/compact');
@@ -166,5 +167,6 @@ const inputs=ports.filter(p=>p.kind==='input').map(p=>({item:p.items[0],entity:p
 const boundary=Object.fromEntries([...new Set(inputs.map(p=>p.item))].sort().map(item=>[item,inputs.filter(p=>p.item===item).reduce((sum,p)=>sum+p.perMinute,0)]));
 assert.deepEqual(boundary,{'advanced-circuit':90,coal:300,'copper-plate':90,'electric-furnace':20,'electronic-circuit':60,'engine-unit':60,'flying-robot-frame':20,'iron-plate':810,'low-density-structure':60,'processing-unit':40,'productivity-module':20,stone:300,'stone-wall':60,'steel-plate':315,sulfur:30});
 const manifest={id,name:bp.label,file:id+'.txt',products,targetPerMinute:60,blueprintSha256:sha(code),prototypeSha256:sha(bytes),gameVersion:'2.1.24',ports,footprint,machineCounts:counts,inputs,inputsPerMinute:boundary,outputs:ports.filter(p=>p.kind==='output').map(p=>({item:p.items[0],entity:p.entity,position:{x:p.x,y:p.y},perMinute:60})),blocks,loopControl:loops,setupNotes:[bp.description,'Input rates are recipe demand at exactly 60/min each, excluding startup stock. Supply surplus when running above target.'],attribution:'Original local layout derived from the project four-pack sided science generator; advanced two-colour block designed for this task.',verification:'Use the matching native-report.json; generation alone is not proof.'};
-await fs.mkdir(out,{recursive:true});await fs.writeFile(path.join(out,id+'.txt'),code+'\n');await fs.writeFile(path.join(out,id+'.json'),JSON.stringify({blueprint:bp},null,2)+'\n');await fs.writeFile(path.join(out,'manifest.json'),JSON.stringify([manifest],null,2)+'\n');
-console.log(JSON.stringify({id,footprint,area:footprint.width*footprint.height,machines:counts,blueprintSha256:manifest.blueprintSha256},null,2));
+const optimized=await rewriteCompactUnderground({blueprint:bp},manifest,raw),finalCode=encodeBlueprint(optimized.wrapper);
+await fs.mkdir(out,{recursive:true});await fs.writeFile(path.join(out,id+'.txt'),finalCode+'\n');await fs.writeFile(path.join(out,id+'.json'),JSON.stringify(optimized.wrapper,null,2)+'\n');await fs.writeFile(path.join(out,'manifest.json'),JSON.stringify([optimized.manifest],null,2)+'\n');
+console.log(JSON.stringify({id,footprint,area:footprint.width*footprint.height,machines:counts,blueprintSha256:optimized.manifest.blueprintSha256},null,2));

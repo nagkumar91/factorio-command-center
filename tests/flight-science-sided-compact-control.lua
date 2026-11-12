@@ -47,6 +47,19 @@ script.on_init(function()
    local _,e,proxy=g.revive{raise_revive=true};check(e~=nil and not proxy,'revive failed '..id);t.entities[id]=e
   end
   inv.destroy()
+  check(b.undergroundEndpointAudit~=nil,'missing exact underground endpoint audit')
+  local byUnit,expected={},{}
+  for id,e in pairs(t.entities)do byUnit[e.unit_number]=id end
+  for _,entry in ipairs(b.undergroundEndpointAudit)do expected[entry.entity]=entry end
+  for id,e in pairs(t.entities)do if e.type=='underground-belt' then
+   local neighbour=e.underground_belt_neighbour;local actual=neighbour and byUnit[neighbour.unit_number] or false
+   local entry=expected[id];check(entry~=nil,'unexpected underground endpoint '..id)
+   check(not neighbour or actual,'underground neighbour outside blueprint')
+   check(entry.neighbour==actual,'changed underground neighbour '..id)
+   check(entry.role==e.belt_to_ground_type,'changed underground role '..id);expected[id]=nil
+  end end
+  check(next(expected)==nil,'missing expected underground endpoint')
+
   local first=b.entities[1];local actual=t.entities[first.entity_number];local dx=actual.position.x-first.position.x;local dy=actual.position.y-first.position.y
   for _,saved in ipairs(b.entities)do
    local e=t.entities[saved.entity_number];check(e.name==saved.name and e.position.x==saved.position.x+dx and e.position.y==saved.position.y+dy,'geometry changed')

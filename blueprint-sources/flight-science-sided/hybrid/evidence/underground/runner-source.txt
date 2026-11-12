@@ -1,0 +1,52 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import assert from 'node:assert/strict';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
+import {createHash} from 'node:crypto';
+import {decodeBlueprint} from '../../scripts/blueprints.mjs';
+const cache=path.dirname(new URL(import.meta.url).pathname),project=path.resolve(cache,'../..');
+const mode=process.argv[2],source=path.resolve(process.argv[3]||path.join(cache,'baseline'));
+assert(['pairing','qualification','storage-30'].includes(mode));assert(source.startsWith(cache+'/'));
+const sha=x=>createHash('sha256').update(x).digest('hex'),run=promisify(execFile);
+const app=path.join(os.homedir(),'Library/Application Support/Steam/steamapps/common/Factorio/factorio.app'),binary=path.join(app,'Contents/MacOS/factorio');
+const profile=path.join(project,'.cache/flight-21'),rawBytes=await fs.readFile(path.join(profile,'script-output/data-raw-dump.json')),raw=JSON.parse(rawBytes);
+const warmup=15*3600,measure=30*3600,recovery={pauseTicks:(mode==='storage-30'?30:5)*3600,settleTicks:2*3600,measureTicks:3*3600};
+const root=path.join(cache,'runs',mode,Date.now().toString());await fs.mkdir(root,{recursive:true});
+const builds=JSON.parse(await fs.readFile(path.join(source,'manifest.json')));assert.equal(builds.length,1);
+for(const b of builds){b.code=(await fs.readFile(path.join(source,b.file),'utf8')).trim();assert.equal(sha(b.code),b.blueprintSha256);b.entities=decodeBlueprint(b.code).blueprint.entities;b.recipeOutputs=Object.fromEntries(Object.keys(b.machineCounts).map(n=>[n,raw.recipe[n].results]));if(mode!=='pairing')assert(b.undergroundEndpointAudit?.length);}
+await fs.cp(path.join(profile,'mods'),path.join(root,'mods'),{recursive:true});
+const mod=path.join(root,'mods/flight_science_test');await fs.mkdir(mod);
+await fs.writeFile(path.join(mod,'info.json'),JSON.stringify({name:'flight_science_test',version:'1.0.0',title:'Private hybrid underground validation',author:'local',factorio_version:'2.1',dependencies:['base = 2.1.24']}));
+const list=JSON.parse(await fs.readFile(path.join(root,'mods/mod-list.json')));assert(!list.mods.some(m=>m.name==='flight_science_test'));list.mods.push({name:'flight_science_test',enabled:true});await fs.writeFile(path.join(root,'mods/mod-list.json'),JSON.stringify(list));
+await fs.writeFile(path.join(mod,'payload.lua'),'return [====['+JSON.stringify({builds,warmup,measure,recovery})+']====]');
+await fs.copyFile(path.join(cache,mode+'-control.lua'),path.join(mod,'control.lua'));
+await fs.copyFile(path.join(cache,'underground-audit.lua'),path.join(mod,'underground-audit.lua'));
+await fs.writeFile(path.join(root,'config.ini'),`[path]\nread-data=${app}/Contents/data\nwrite-data=${root}\n[general]\nlocale=en\n[other]\nupdate-runner-threads-count=1\n`);
+await fs.writeFile(path.join(root,'map.json'),JSON.stringify({seed:12345,width:32,height:32,default_enable_all_autoplace_controls:false}));
+async function factorio(args,log){try{const r=await run(binary,['--config',path.join(root,'config.ini'),'--mod-directory',path.join(root,'mods'),...args],{timeout:900000,maxBuffer:8e6});await fs.writeFile(path.join(root,log),r.stdout+r.stderr);}catch(e){await fs.writeFile(path.join(root,log),(e.stdout||'')+(e.stderr||''));throw Error('Factorio failed '+path.join(root,log)+'\n'+(e.stdout||'').slice(-2500));}}
+console.log(JSON.stringify({mode,root,blueprintSha256:builds[0].blueprintSha256}));
+await factorio(['--create',path.join(root,'test.zip'),'--map-gen-settings',path.join(root,'map.json')],'create.log');
+await factorio(['--benchmark',path.join(root,'test.zip'),'--benchmark-ticks',String(mode==='pairing'?2:warmup+measure+recovery.pauseTicks+recovery.settleTicks+recovery.measureTicks+1),'--benchmark-runs','1'],'benchmark.log');
+const result=JSON.parse(await fs.readFile(path.join(root,'script-output',mode==='pairing'?'pairing-audit.json':'result.json')));
+Object.assign(result,{gameVersion:'2.1.24',mode,prototypeSha256:sha(rawBytes),harnessSha256:sha(await fs.readFile(path.join(mod,'control.lua'))),undergroundAuditModuleSha256:sha(await fs.readFile(path.join(mod,'underground-audit.lua'))),runnerSha256:sha(await fs.readFile(new URL(import.meta.url))),modList:list,createdAt:new Date().toISOString(),runDirectory:root});
+if(mode!=='pairing'){
+ result.short=false;result.warmupMinutes=15;result.measurementMinutes=30;
+ for(const b of result.builds){const spec=builds.find(m=>m.id===b.id);b.blueprintSha256=spec.blueprintSha256;
+  b.baselineAndRecoveryPassed=spec.products.every(n=>(b.outputsPerMinute[n]||0)>=59.5)&&b.machines.every(m=>m.measuredCrafts>0)&&b.powered&&b.inputs.every(p=>p.productiveRoute?.length&&p.acceptedDuringMeasurement>0)&&b.outputPorts.every(p=>p.collectedDuringMeasurement>0)&&spec.products.every(n=>(b.recovery?.outputsPerMinute[n]||0)>=59.5);
+  b.undergroundAuditPassed=b.undergroundAuditStart?.passed===true&&b.undergroundAuditEnd?.passed===true&&[b.undergroundAuditStart,b.undergroundAuditEnd].every(a=>a.blueprintSha256===spec.blueprintSha256&&a.pairs.length===spec.undergroundEndpointAudit.length&&a.pairs.every(p=>p.matched));
+  b.passed=b.baselineAndRecoveryPassed&&b.undergroundAuditPassed;
+  if(mode==='storage-30'){
+   b.stressPassed=!!(b.stress?.allChestsFullForFinalWindow&&b.stress?.allScienceProductionZero&&b.stress?.allScienceMachineCraftsZero&&b.stress.chests.length===6&&b.stress.chests.every(c=>c.fullAtPauseEnd&&c.finalWindowSamples===121&&c.fullSamples===121&&c.finalAccessibleCount===c.accessibleCapacity));
+   b.recoveryCraftedPassed=spec.products.every(item=>(b.recoveryCrafted?.craftedPerMinute[item]||0)>=60);b.productionStatisticsAgree=b.recoveryCrafted?.productionStatisticsAgree===true;
+   b.passed=b.passed&&b.stressPassed&&b.recoveryCraftedPassed&&b.productionStatisticsAgree;
+  }
+ }
+ result.passed=result.builds.every(b=>b.passed);
+}
+await fs.writeFile(path.join(root,'report.json'),JSON.stringify(result,null,2)+'\n');
+const out=mode==='pairing'?path.join(source,'pairing-report.json'):path.join(source,'evidence',mode,'report.json');await fs.mkdir(path.dirname(out),{recursive:true});await fs.writeFile(out,JSON.stringify(result,null,2)+'\n');
+await fs.writeFile(path.join(cache,'latest-'+mode+'.json'),JSON.stringify({source,root,report:out,passed:result.passed},null,2)+'\n');
+console.log(JSON.stringify({mode,report:out,passed:result.passed,builds:result.builds.map(b=>({id:b.id,blueprintSha256:b.blueprintSha256,pairedEndpoints:b.pairs?.length,readAllIds:b.readAllBeltComponentEntityNumbers?.length,baselineAndRecoveryPassed:b.baselineAndRecoveryPassed,undergroundAuditPassed:b.undergroundAuditPassed,stressPassed:b.stressPassed,recoveryCraftedPassed:b.recoveryCraftedPassed,outputs:b.outputsPerMinute,recovery:b.recovery?.outputsPerMinute,craftedPerMinute:b.recoveryCrafted?.craftedPerMinute}))},null,2));
+process.exitCode=result.passed?0:1;

@@ -9,6 +9,7 @@ export async function storageEvidence(source,m){
  let raw,control;try{raw=await fs.readFile(path.join(source,reportFile));control=await fs.readFile(path.join(source,controlFile));}catch(e){if(e.code==='ENOENT')return null;throw e;}
  const r=JSON.parse(raw),b=r.builds?.find(b=>b.blueprintSha256===m.blueprintSha256&&b.id===m.id);
  if(!b)return null;
+ let moduleFile,moduleSha256;if(r.undergroundAuditModuleSha256){moduleFile=`${folder}/underground-audit.lua`;moduleSha256=sha(await fs.readFile(path.join(source,moduleFile)));if(moduleSha256!==r.undergroundAuditModuleSha256)throw new Error(`Invalid additional full-storage audit module for ${m.id}`);}
  const products=m.products,expectedOutputs=m.outputs,expectedChestCount=expectedOutputs?.length??products.length;
  const matchesOutputs=chests=>expectedOutputs?expectedOutputs.every(p=>chests.some(c=>c.entity===p.entity&&c.item===p.item)):products.every(p=>chests.some(c=>c.item===p));
  // The independently written hybrid probe records per-chest minima and per-machine
@@ -20,5 +21,5 @@ export async function storageEvidence(source,m){
  const v=c?{...b.recovery,scienceCraftedPerMinute:c.craftedPerMinute,scienceProductionStatisticsPerMinute:c.productionStatisticsPerMinute}:b.recovery;
  const valid=r.passed&&b.passed&&b.stressPassed&&r.gameVersion==='2.1.24'&&r.short===false&&r.warmupMinutes>=15&&r.measurementMinutes>=30&&r.prototypeSha256===m.prototypeSha256&&r.harnessSha256===sha(control)&&s?.pauseMinutes===pauseMinutes&&s.zeroProductionWindowMinutes===2&&s.sampleCount>=120&&s.allChestsFull&&s.zeroScienceProduction&&s.chestFullSamples?.length===expectedChestCount&&s.chestFullSamples.every(n=>n===s.sampleCount)&&['startChests','endChests'].every(k=>s[k]?.length===expectedChestCount&&matchesOutputs(s[k])&&s[k].every(c=>c.full&&c.usableCapacity>0&&c.stored===c.usableCapacity))&&products.every(p=>s.productionDelta[p]===0&&s.craftDelta[p]===0)&&v?.blockedMinutes===pauseMinutes&&v.settlingMinutes===2&&v.measurementMinutes===3&&products.every(p=>v.scienceCraftedPerMinute?.[p]>=60&&Math.abs(v.scienceCraftedPerMinute[p]-v.scienceProductionStatisticsPerMinute?.[p])<1e-8);
  if(!valid)throw new Error(`Invalid additional full-storage proof for ${m.id}`);
- return {reportFile,controlFile,outputChestCount:expectedChestCount,reportSha256:sha(raw),harnessSha256:sha(control),blueprintSha256:b.blueprintSha256,prototypeSha256:r.prototypeSha256,pauseMinutes,zeroProductionWindowMinutes:2,settlingMinutes:2,measurementMinutes:3,craftedPerMinute:v.scienceCraftedPerMinute,collectedPerMinute:v.outputsPerMinute};
+ return {reportFile,controlFile,...(moduleFile?{moduleFile,moduleSha256}:{}),outputChestCount:expectedChestCount,reportSha256:sha(raw),harnessSha256:sha(control),blueprintSha256:b.blueprintSha256,prototypeSha256:r.prototypeSha256,pauseMinutes,zeroProductionWindowMinutes:2,settlingMinutes:2,measurementMinutes:3,craftedPerMinute:v.scienceCraftedPerMinute,collectedPerMinute:v.outputsPerMinute};
 }

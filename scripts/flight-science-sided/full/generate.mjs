@@ -1,3 +1,4 @@
+import {applySelectedUnderground} from './apply-underground.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
@@ -298,12 +299,19 @@ assert(frameSource,'Missing internal frame workshop');channels.unshift({item:'fl
 // The input side is ordered by item, with adjacent parallel copper / iron inlets.
 channels.forEach((c,i)=>{c.x=-6-i*3;});
 const left=-10-channels.length*3;
-const minHeader=-channels.length*2-4;
+const HEADER_PITCH=1;
+const minHeader=-channels.length*HEADER_PITCH-4;
 const globalInputs=[];
 function ug(x1,x2,y,item){add('fast-underground-belt',x1,y,{direction:4,type:'input',tags:{material:item}});add('fast-underground-belt',x2,y,{direction:4,type:'output',tags:{material:item}});}
 for(const [i,c]of channels.entries()){
- const header=c.internal?Math.floor(frameSource.y):minHeader+i*2,maxY=Math.max(...c.ports.map(p=>Math.floor(p.y)));
- if(c.internal){for(let x=Math.floor(frameSource.x)-1;x>=c.x;x--)belt(x,header,x===c.x?8:12,{material:c.item,role:'internal-frame-trunk'});}else for(let x=left;x<=c.x;x++)belt(x,header,x===c.x?8:4,{material:c.item,role:'trunk-inlet'});
+ const header=c.internal?Math.floor(frameSource.y):minHeader+i*HEADER_PITCH,maxY=Math.max(...c.ports.map(p=>Math.floor(p.y)));
+ if(c.internal){for(let x=Math.floor(frameSource.x)-1;x>=c.x;x--)belt(x,header,x===c.x?8:12,{material:c.item,role:'internal-frame-trunk'});}else{
+  // Preserve both lanes and the surface inlet; buried tiles accommodate labels.
+  belt(left,header,4,{material:c.item,role:'trunk-inlet'});
+  add('fast-underground-belt',left+1,header,{direction:4,type:'input',tags:{material:c.item,role:'trunk-inlet'}});
+  add('fast-underground-belt',left+5,header,{direction:4,type:'output',tags:{material:c.item,role:'trunk-inlet'}});
+  for(let x=left+6;x<=c.x;x++)belt(x,header,x===c.x?8:4,{material:c.item,role:'trunk-inlet'});
+ }
  const tapRows=new Set(c.ports.map(p=>Math.floor(p.y)-1));
  for(let y=header+1;y<=maxY;y++){
   if(!c.internal&&tapRows.has(y)){
@@ -351,3 +359,5 @@ if(evidence?.passed&&!evidence.short&&evidence.warmupMinutes===15&&evidence.meas
  manifest.status='native-verified';manifest.nativeEvidence={file:'native-report.json',blueprintSha256:manifest.blueprintSha256,harnessSha256:evidence.harnessSha256,warmupMinutes:15,measurementMinutes:30,recovery:{collectionPauseMinutes:5,settlingMinutes:2,measurementMinutes:3}};
 }
 await fs.writeFile(path.join(out,id+'.txt'),code+'\n');await fs.writeFile(path.join(out,id+'.json'),JSON.stringify({blueprint:bp},null,2)+'\n');await fs.writeFile(path.join(out,'manifest.json'),JSON.stringify([manifest],null,2)+'\n');console.log(JSON.stringify({id,footprint,machineCounts,channels:channels.map(c=>({item:c.item,rate:c.rate})),entities:bp.entities.length}));
+
+await applySelectedUnderground(root,out);

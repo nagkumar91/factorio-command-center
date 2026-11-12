@@ -10,6 +10,9 @@ const output=path.join(root,'scripts/flight-science-sided/compact/.native/previe
 await fs.mkdir(output,{recursive:true});
 const [manifest]=JSON.parse(await fs.readFile(path.join(site,'manifest.json')));
 const code=(await fs.readFile(path.join(site,manifest.file),'utf8')).trim();
+const svg=await fs.readFile(path.join(site,manifest.id+'.svg'),'utf8');
+assert.equal((svg.match(/class="underground-tunnel"/g)||[]).length,manifest.undergroundOptimization.pairs.length);
+assert(svg.indexOf('class="underground-tunnel"')<svg.indexOf('<g>'),'Tunnel paths must be drawn beneath entities');
 const browser=await chromium.launch({headless:true});
 const errors=[];
 try{
@@ -19,6 +22,11 @@ try{
   assert.match(await page.locator('h1').innerText(),/Compact six-pack science/);
   assert.match(await page.locator('.status').innerText(),/Native verified/);
   assert.equal(await page.locator('textarea').inputValue(),code);
+  assert.match(await page.locator('.underground-note').innerText(),/277 fewer placed entities/);
+  assert.match(await page.locator('.underground-note').innerText(),/465 more iron plates/);
+  await page.getByText('Previous qualified version · 17fc28fa',{exact:true}).click();
+  assert.equal(await page.getByRole('link',{name:'Previous blueprint string'}).getAttribute('href'),'history/v2-17fc28fa/'+manifest.file);
+  await page.getByText('Previous qualified version · 17fc28fa',{exact:true}).click();
   assert.equal(await page.locator('a[download]').getAttribute('href'),manifest.file);
   assert(await page.locator('.map img').evaluate(img=>img.complete&&img.naturalWidth>0));
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Unexpected page overflow');

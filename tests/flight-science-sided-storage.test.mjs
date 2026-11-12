@@ -9,7 +9,7 @@ for(const tier of ['compact','hybrid','fully-integrated'])test(`${tier} storage 
  const folder=`evidence/${tier}-storage-${tier==='fully-integrated'?60:30}`,raw=await fs.readFile(new URL(`${folder}/report.json`,source)),control=await fs.readFile(new URL(`${folder}/control.lua`,source)),original=JSON.parse(raw),build=original.builds[0];
  const m={id:build.id,tier,blueprintSha256:build.blueprintSha256,prototypeSha256:original.prototypeSha256,products:Object.keys(build.outputsPerMinute),...(tier==='fully-integrated'?{outputs:build.stress.chests.map(c=>({entity:c.entity,item:c.item}))}:{})};
  const temp=await fs.mkdtemp(path.join(os.tmpdir(),'science-storage-gate-'));try{
-  await fs.mkdir(path.join(temp,folder),{recursive:true});await fs.writeFile(path.join(temp,folder,'control.lua'),control);
+  await fs.mkdir(path.join(temp,folder),{recursive:true});await fs.writeFile(path.join(temp,folder,'control.lua'),control);if(original.undergroundAuditModuleSha256)await fs.copyFile(new URL(`${folder}/underground-audit.lua`,source),path.join(temp,folder,'underground-audit.lua'));
   const write=r=>fs.writeFile(path.join(temp,folder,'report.json'),JSON.stringify(r));
   await write(original);assert(await storageEvidence(temp,m));
   const backlog=structuredClone(original);if(tier==='compact')backlog.builds[0].recovery.scienceCraftedPerMinute[m.products[0]]=59;else backlog.builds[0].recoveryCrafted.craftedPerMinute[m.products[0]]=59;

@@ -2,7 +2,7 @@
 
 Original local design for the flight-save recipe set in Factorio **2.1.24**. This is separate from the public catalogue's vanilla 2.0.77 baseline.
 
-The exact import string is [compact-six-pack-sided-60.txt](compact-six-pack-sided-60.txt). Its SHA-256 is `17fc28fa24029214b1aed34c100fbb8baabc4eb0821bd864d9ceb294bfc97d49`. The decoded blueprint, [manifest](manifest.json), and [native production report](native-report.json) accompany it.
+The exact import string is [compact-six-pack-sided-60.txt](compact-six-pack-sided-60.txt). Its SHA-256 is `e95653789ed6178ca080a151b3c4aec09a06a96992e27d399e348475015888a8`. The decoded blueprint, [manifest](manifest.json), and [native production report](native-report.json) accompany it.
 
 **100 × 54 tiles (5,400 tiles²), 81 normal assembling machine 2s.** Fast inserters, red belts, external electricity, no installed modules, no bots, no quality bonuses. All material entrances are on the left at x = −6.5; all six collection chests are on the right at x = 91.5. Their approaches are open, checked both statically and inside Factorio. Preserve the circuit wires, filters and stock limits.
 
@@ -16,6 +16,10 @@ The exact import string is [compact-six-pack-sided-60.txt](compact-six-pack-side
 | Yellow | 64.30 | 64.00 |
 
 The native run starts empty, warms up for 15 simulated minutes, then collects all six science types simultaneously for 30 minutes. Recovery pauses collection for five minutes, allows two minutes settling, and measures three minutes. Every machine produces during the sustained window, every declared input has a native productive route, and all machines and inserters share the declared power network. The report binds the exact blueprint, manifest, prototype dump, runner, Lua harness and configuration hashes.
+
+The reviewed underground rewrite adds 49 underground pairs and reduces placed entities from **1,576 to 1,299**. Surface belts drop from 1,035 to 660; underground endpoints rise from 44 to 142. The 100 × 54 bounding footprint is unchanged. Normal red-belt construction requires **465 more iron plates** (14,047.5 → 14,512.5 for surface belts and underground endpoints only), so this is an entity-count improvement rather than a material-cost reduction. All original 44 underground endpoint relationships and all 98 new endpoints were checked natively. The three read-entire-belt components retain exactly the same 346 belt entities; ports, readers and wire endpoints are protected.
+
+A separate [30-minute full-storage test](storage-30-report.json) starts from a fresh empty run. During the final two paused minutes all six chests are 200/200 for every one-second sample and both native production and science-craft deltas are zero. After two minutes settling, fresh production per minute is red 61.333, green 60.667, military 64, blue 63.333, purple 66 and yellow 64. Completed crafts agree exactly with native production statistics; collected backlog is excluded from these rates.
 
 Only the lanes of the declared exterior input belts receive fixture ingredients. No internal machine or belt receives test-only injection. Exterior belts are supplied on demand, rather than capped to recipe arithmetic. The rates below describe the recipe demand for exactly 60/min of each science; startup and the higher measured output need extra supply. Measured consumption and feed acceptance are separate fields in the report.
 
@@ -41,6 +45,8 @@ The last five materials and finished circuits/engines come from upstream factori
 
 The upper four-pack block derives from the project's original sided generator. A dedicated coal belt feeds the grenade end, and a second iron pickup supplies the inserter assembler. The lower purple/yellow block has a separate rail output belt. A third short loop makes rails, with stone on its outer lane and steel/sticks on the inner lane to avoid overloading one lane. Sulfur stock 40 covers the long four-pack circulation route and prevents the observed recovery shortage. No global optimality claim is made.
 
+The immediately preceding qualified `17fc28fa` blueprint, original 15+30/5+2+3 qualification, original 30-minute storage proof, controls, runner sources and native belt snapshot are preserved in [history/v2-17fc28fa](history/v2-17fc28fa/README.md). The generator first rebuilds that exact baseline, verifies its native protection snapshot, and applies the frozen reviewed optimizer; regeneration must reproduce the qualified `e9565378` string. A baseline or optimizer change fails closed and requires a new native assessment.
+
 The first six-pack steady candidate is preserved in [history/v1-steady](history/v1-steady/README.md). Its exact blueprint passed sustained output but failed blue recovery at 58.67/min. Its native recovery diagnostics show missing sulfur in the downstream blue assemblers. The final version retains the same footprint and 81 machines, correcting sulfur coverage. The hybrid tier separately retains its own exact tested snapshot; do not substitute this string into another tier without native retesting.
 
 Reproduce from the project root:
@@ -48,6 +54,7 @@ Reproduce from the project root:
 ```sh
 node scripts/flight-science-sided/compact/generate.mjs
 RECOVERY=1 node tests/flight-science-sided-compact-native.mjs
+node tests/flight-science-sided-compact-storage-30.mjs
 node --test tests/flight-science-sided-compact.test.mjs
 node scripts/flight-science-sided/compact/preview.mjs
 node tests/flight-science-sided-compact-browser.mjs

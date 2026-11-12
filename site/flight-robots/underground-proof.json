@@ -1,0 +1,458 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-11-12T14:41:55.361Z",
+  "status": "passed",
+  "optimizerSha256": "9f49e92e6d0dc8b2cb1c39653b182b9510bc137207caed0a7efd38949f9b8313",
+  "baselineBlueprintSha256": "1b76c53283330f3660e258e08e74b2a0c42a762f92ee37b4e9e439214c1d77b2",
+  "candidateBlueprintSha256": "30edbea366140a650cf0aedaaef9ef6e35f8d52c9d72161b3c935173b2374386",
+  "prototypeSha256": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
+  "assertions": [
+    {
+      "name": "frozen parent-reviewed optimizer hash",
+      "passed": true,
+      "details": {
+        "optimizerSha": "9f49e92e6d0dc8b2cb1c39653b182b9510bc137207caed0a7efd38949f9b8313",
+        "expectedOptimizer": "9f49e92e6d0dc8b2cb1c39653b182b9510bc137207caed0a7efd38949f9b8313"
+      }
+    },
+    {
+      "name": "15-minute warmup / 30-minute measurement",
+      "passed": true,
+      "details": {
+        "passed": true,
+        "warmupMinutes": 15,
+        "measurementMinutes": 30
+      }
+    },
+    {
+      "name": "exact prototype snapshot",
+      "passed": true,
+      "details": {
+        "native": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
+        "snapshot": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
+        "baseline": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f"
+      }
+    },
+    {
+      "name": "baseline and candidate exact-hash runs",
+      "passed": true,
+      "details": {
+        "baselineHash": "1b76c53283330f3660e258e08e74b2a0c42a762f92ee37b4e9e439214c1d77b2",
+        "candidateHash": "30edbea366140a650cf0aedaaef9ef6e35f8d52c9d72161b3c935173b2374386"
+      }
+    },
+    {
+      "name": "45-minute output block and recovery",
+      "passed": true,
+      "details": {
+        "recovery": {
+          "blockedMinutes": 45,
+          "settlingMinutes": 2,
+          "measurementMinutes": 3,
+          "outputsPerMinute": {
+            "construction-robot": 11.333333333333334,
+            "logistic-robot": 15,
+            "roboport": 1
+          },
+          "blockedStock": {
+            "construction-robot": 200,
+            "logistic-robot": 200,
+            "roboport": 20
+          }
+        },
+        "targets": {
+          "construction-robot": 10,
+          "logistic-robot": 10,
+          "roboport": 1
+        }
+      }
+    },
+    {
+      "name": "all shared output caps reached exactly",
+      "passed": true,
+      "details": {
+        "expected": {
+          "construction-robot": 200,
+          "logistic-robot": 200,
+          "roboport": 20
+        },
+        "actual": {
+          "construction-robot": 200,
+          "logistic-robot": 200,
+          "roboport": 20
+        }
+      }
+    },
+    {
+      "name": "all original underground pairs retained exactly",
+      "passed": true,
+      "details": {
+        "original": [
+          {
+            "inputEntityNumber": 221,
+            "outputEntityNumber": 222,
+            "distance": 2
+          },
+          {
+            "inputEntityNumber": 419,
+            "outputEntityNumber": 420,
+            "distance": 3
+          },
+          {
+            "inputEntityNumber": 433,
+            "outputEntityNumber": 434,
+            "distance": 3
+          }
+        ],
+        "candidate": [
+          {
+            "inputEntityNumber": 221,
+            "outputEntityNumber": 222
+          },
+          {
+            "inputEntityNumber": 419,
+            "outputEntityNumber": 420
+          },
+          {
+            "inputEntityNumber": 433,
+            "outputEntityNumber": 434
+          },
+          {
+            "inputEntityNumber": 467,
+            "outputEntityNumber": 473
+          },
+          {
+            "inputEntityNumber": 478,
+            "outputEntityNumber": 484
+          },
+          {
+            "inputEntityNumber": 489,
+            "outputEntityNumber": 495
+          },
+          {
+            "inputEntityNumber": 500,
+            "outputEntityNumber": 506
+          }
+        ]
+      }
+    },
+    {
+      "name": "all declared new pairs match native neighbors exactly",
+      "passed": true,
+      "details": {
+        "declared": [
+          {
+            "inputEntityNumber": 467,
+            "outputEntityNumber": 473
+          },
+          {
+            "inputEntityNumber": 478,
+            "outputEntityNumber": 484
+          },
+          {
+            "inputEntityNumber": 489,
+            "outputEntityNumber": 495
+          },
+          {
+            "inputEntityNumber": 500,
+            "outputEntityNumber": 506
+          }
+        ],
+        "native": [
+          {
+            "inputEntityNumber": 221,
+            "outputEntityNumber": 222
+          },
+          {
+            "inputEntityNumber": 419,
+            "outputEntityNumber": 420
+          },
+          {
+            "inputEntityNumber": 433,
+            "outputEntityNumber": 434
+          },
+          {
+            "inputEntityNumber": 467,
+            "outputEntityNumber": 473
+          },
+          {
+            "inputEntityNumber": 478,
+            "outputEntityNumber": 484
+          },
+          {
+            "inputEntityNumber": 489,
+            "outputEntityNumber": 495
+          },
+          {
+            "inputEntityNumber": 500,
+            "outputEntityNumber": 506
+          }
+        ],
+        "expectedPairsChecked": 4
+      }
+    },
+    {
+      "name": "no unpaired or undeclared tunnel inputs",
+      "passed": true,
+      "details": {
+        "unpairedCount": 0,
+        "baselinePairs": 3,
+        "newPairs": 4,
+        "nativePairs": 7
+      }
+    }
+  ],
+  "production": {
+    "runId": null,
+    "gameVersion": "2.1.24",
+    "warmupMinutes": 15,
+    "measurementMinutes": 30,
+    "baseline": {
+      "outputsPerMinute": {
+        "construction-robot": 10.133333333333333,
+        "logistic-robot": 10.133333333333333,
+        "roboport": 1.0666666666666667
+      },
+      "recovery": {
+        "blockedMinutes": 45,
+        "settlingMinutes": 2,
+        "measurementMinutes": 3,
+        "outputsPerMinute": {
+          "construction-robot": 11.333333333333334,
+          "logistic-robot": 15,
+          "roboport": 1
+        },
+        "blockedStock": {
+          "construction-robot": 200,
+          "logistic-robot": 200,
+          "roboport": 20
+        }
+      }
+    },
+    "candidate": {
+      "outputsPerMinute": {
+        "construction-robot": 10.133333333333333,
+        "logistic-robot": 10.133333333333333,
+        "roboport": 1.0666666666666667
+      },
+      "recovery": {
+        "blockedMinutes": 45,
+        "settlingMinutes": 2,
+        "measurementMinutes": 3,
+        "outputsPerMinute": {
+          "construction-robot": 11.333333333333334,
+          "logistic-robot": 15,
+          "roboport": 1
+        },
+        "blockedStock": {
+          "construction-robot": 200,
+          "logistic-robot": 200,
+          "roboport": 20
+        }
+      }
+    }
+  },
+  "topology": {
+    "snapshotReaderSeeds": [
+      1
+    ],
+    "baselinePairs": [
+      {
+        "inputEntityNumber": 221,
+        "outputEntityNumber": 222,
+        "distance": 2
+      },
+      {
+        "inputEntityNumber": 419,
+        "outputEntityNumber": 420,
+        "distance": 3
+      },
+      {
+        "inputEntityNumber": 433,
+        "outputEntityNumber": 434,
+        "distance": 3
+      }
+    ],
+    "candidatePairs": [
+      {
+        "inputEntityNumber": 221,
+        "outputEntityNumber": 222
+      },
+      {
+        "inputEntityNumber": 419,
+        "outputEntityNumber": 420
+      },
+      {
+        "inputEntityNumber": 433,
+        "outputEntityNumber": 434
+      },
+      {
+        "inputEntityNumber": 467,
+        "outputEntityNumber": 473
+      },
+      {
+        "inputEntityNumber": 478,
+        "outputEntityNumber": 484
+      },
+      {
+        "inputEntityNumber": 489,
+        "outputEntityNumber": 495
+      },
+      {
+        "inputEntityNumber": 500,
+        "outputEntityNumber": 506
+      }
+    ],
+    "declaredNewPairs": [
+      {
+        "inputEntityNumber": 467,
+        "outputEntityNumber": 473
+      },
+      {
+        "inputEntityNumber": 478,
+        "outputEntityNumber": 484
+      },
+      {
+        "inputEntityNumber": 489,
+        "outputEntityNumber": 495
+      },
+      {
+        "inputEntityNumber": 500,
+        "outputEntityNumber": 506
+      }
+    ],
+    "expectedPairsChecked": 4,
+    "unpairedCount": 0
+  },
+  "construction": {
+    "baselineBlueprintSha256": "1b76c53283330f3660e258e08e74b2a0c42a762f92ee37b4e9e439214c1d77b2",
+    "before": {
+      "placedEntities": 657,
+      "inventory": {
+        "fast-transport-belt": 341,
+        "fast-splitter": 2,
+        "fast-underground-belt": 6,
+        "chemical-plant": 3,
+        "fast-inserter": 179,
+        "assembling-machine-2": 46,
+        "pipe": 29,
+        "pipe-to-ground": 10,
+        "steel-chest": 1,
+        "big-electric-pole": 1,
+        "medium-electric-pole": 32,
+        "display-panel": 7
+      },
+      "redBelts": 341,
+      "redUndergroundEndpoints": 6,
+      "redBeltConstructionIronPlates": 4214,
+      "constructionBasis": "Normal crafting, no productivity; iron plates for red surface belts and red underground endpoints only. Not total factory cost."
+    },
+    "after": {
+      "placedEntities": 637,
+      "inventory": {
+        "fast-transport-belt": 313,
+        "fast-splitter": 2,
+        "fast-underground-belt": 14,
+        "chemical-plant": 3,
+        "fast-inserter": 179,
+        "assembling-machine-2": 46,
+        "pipe": 29,
+        "pipe-to-ground": 10,
+        "steel-chest": 1,
+        "big-electric-pole": 1,
+        "medium-electric-pole": 32,
+        "display-panel": 7
+      },
+      "redBelts": 313,
+      "redUndergroundEndpoints": 14,
+      "redBeltConstructionIronPlates": 4282,
+      "constructionBasis": "Normal crafting, no productivity; iron plates for red surface belts and red underground endpoints only. Not total factory cost."
+    },
+    "pairs": [
+      {
+        "inputEntityNumber": 467,
+        "outputEntityNumber": 473,
+        "inputPosition": {
+          "x": 23.5,
+          "y": -5.5
+        },
+        "outputPosition": {
+          "x": 29.5,
+          "y": -5.5
+        },
+        "direction": 4,
+        "endpointDistance": 6,
+        "removedInteriorEntityNumbers": [
+          468,
+          469,
+          470,
+          471,
+          472
+        ]
+      },
+      {
+        "inputEntityNumber": 478,
+        "outputEntityNumber": 484,
+        "inputPosition": {
+          "x": 34.5,
+          "y": -5.5
+        },
+        "outputPosition": {
+          "x": 40.5,
+          "y": -5.5
+        },
+        "direction": 4,
+        "endpointDistance": 6,
+        "removedInteriorEntityNumbers": [
+          479,
+          480,
+          481,
+          482,
+          483
+        ]
+      },
+      {
+        "inputEntityNumber": 489,
+        "outputEntityNumber": 495,
+        "inputPosition": {
+          "x": 45.5,
+          "y": -5.5
+        },
+        "outputPosition": {
+          "x": 51.5,
+          "y": -5.5
+        },
+        "direction": 4,
+        "endpointDistance": 6,
+        "removedInteriorEntityNumbers": [
+          490,
+          491,
+          492,
+          493,
+          494
+        ]
+      },
+      {
+        "inputEntityNumber": 500,
+        "outputEntityNumber": 506,
+        "inputPosition": {
+          "x": 56.5,
+          "y": -5.5
+        },
+        "outputPosition": {
+          "x": 62.5,
+          "y": -5.5
+        },
+        "direction": 4,
+        "endpointDistance": 6,
+        "removedInteriorEntityNumbers": [
+          501,
+          502,
+          503,
+          504,
+          505
+        ]
+      }
+    ]
+  }
+}

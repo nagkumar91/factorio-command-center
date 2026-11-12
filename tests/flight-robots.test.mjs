@@ -24,8 +24,21 @@ test('robot workshop has unique inlets, one shared capped chest and matching nat
  const stockNetwork=connected(m.loopControl[0].reader),chestNetwork=connected(m.outputs[0].entity);
  assert.ok(![...chestNetwork].some(id=>stockNetwork.has(id)));
  for(const p of m.outputs){const arm=[...chestNetwork].map(id=>ids.get(id)).find(e=>e.name==='fast-inserter'&&e.filters?.[0].name===p.item);assert.equal(arm.control_behavior.circuit_condition.constant,p.cap);}
- const report=JSON.parse(fs.readFileSync(new URL('native-report.json',dir))),n=report.builds[0];
+ const report=JSON.parse(fs.readFileSync(new URL('native-report.json',dir))),testedBuildId=m.nativeEvidence?.buildId||m.id,n=report.builds.find(b=>b.id===testedBuildId&&b.blueprintSha256===m.blueprintSha256);
+ assert.ok(n,'missing exact-hash native build '+testedBuildId);
  assert.equal(createHash('sha256').update(fs.readFileSync(new URL('flight-robots-control.lua',import.meta.url))).digest('hex'),report.harnessSha256);assert.equal(report.prototypeSha256,m.prototypeSha256);assert.equal(report.short,false);assert.equal(report.measurementMinutes,30);assert.equal(n.blueprintSha256,m.blueprintSha256);assert.equal(n.passed,true);assert.equal(n.powered,true);
  for(const [item,target]of Object.entries(m.targets)){assert.ok(n.outputsPerMinute[item]>=target-.05);assert.ok(n.recovery.outputsPerMinute[item]>=target-.05);assert.equal(n.recovery.blockedStock[item],m.outputs.find(p=>p.item===item).cap);}
  assert.ok(n.inputs.every(p=>p.productiveRoute.length&&p.acceptedDuringMeasurement>0));assert.ok(n.machines.every(p=>p.measuredCrafts>0));assert.equal(n.fluids[0].productiveConsumers.length,m.machineCounts['electric-engine-unit']);
+ if(m.undergroundOptimization){
+  const u=m.undergroundOptimization;
+  assert.equal(m.id,'robots-10-roboport-1');assert.equal(m.file,'robots-10-roboport-1.txt');
+  assert.equal(m.nativeEvidence.buildId,'robots-underground-candidate');assert.equal(report.builds.length,2);
+  assert.equal(u.baselineBlueprintSha256,'1b76c53283330f3660e258e08e74b2a0c42a762f92ee37b4e9e439214c1d77b2');
+  assert.equal(u.before.placedEntities-u.after.placedEntities,20);assert.equal(u.before.redBelts-u.after.redBelts,28);
+  assert.equal(u.after.redBeltConstructionIronPlates-u.before.redBeltConstructionIronPlates,68);assert.equal(u.pairs.length,4);
+  const pair=JSON.parse(fs.readFileSync(new URL('native-pairing-report.json',dir)));
+  assert.equal(pair.blueprintSha256,m.blueprintSha256);assert.equal(pair.expectedPairsChecked,u.pairs.length);assert.equal(pair.passed,true);
+  assert.equal(pair.undergroundInputPairs.length,7);assert.equal(pair.unpairedUndergroundInputs.length??Object.keys(pair.unpairedUndergroundInputs||{}).length,0);
+  const proof=JSON.parse(fs.readFileSync(new URL('underground-proof.json',dir)));assert.equal(proof.status,'passed');assert.equal(proof.candidateBlueprintSha256,m.blueprintSha256);
+ }
 });

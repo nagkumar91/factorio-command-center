@@ -9,7 +9,7 @@ import {Layout} from '../hybrid/layout.mjs';
 import {starterBounds} from '../../science-factory/local-ports/compact-shared-layout.mjs';
 const sha=s=>createHash('sha256').update(s).digest('hex');
 export async function makeBlueComponent(raw,root,out){
- const l=new Layout(raw),source=path.join(root,'blueprint-sources/flight-science-sided'),manifest=JSON.parse(await fs.readFile(path.join(source,'manifest.json'))),frozen=[];
+ const l=new Layout(raw),source=path.join(out,'components'),manifest=JSON.parse(await fs.readFile(path.join(source,'blue-manifest.json'))),frozen=[];
  await fs.mkdir(path.join(out,'components'),{recursive:true});
  async function addComponent(id,x,y){
   const m=manifest.find(m=>m.id===id),code=(await fs.readFile(path.join(source,m.file),'utf8')).trim();assert.equal(sha(code),m.blueprintSha256);

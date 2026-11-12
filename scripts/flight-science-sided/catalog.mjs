@@ -11,6 +11,7 @@ for(const m of manifests){if(!folder&&!m.id.endsWith('-supply'))continue;const c
 if(hash!==m.blueprintSha256)errors.push('Blueprint text differs from manifest hash');
 if(report.prototypeSha256!==m.prototypeSha256||m.prototypeSha256!==currentPrototypeSha256)errors.push('Prototype identity differs from manifest or installed flight profile');
 if(report.harnessSha256!==harnessSha256)errors.push('Native control harness changed after validation');
+if(report.undergroundAuditModuleSha256){const modulePath=path.join(root,`tests/flight-science-sided-${folder}-underground-audit.lua`);if(sha(await fs.readFile(modulePath))!==report.undergroundAuditModuleSha256)errors.push('Native underground audit module changed after validation');}
 if(report.gameVersion!=='2.1.24'||report.short!==false||report.warmupMinutes<15||report.measurementMinutes<30)errors.push('Full 2.1.24 native timing/version requirement not met');
 if(!proof?.passed)errors.push('Exact-hash native build did not pass');
 if(!proof?.powered||!proof?.machines?.length||!proof.machines.every(p=>p.measuredCrafts>0)||!proof.inputs?.every(p=>p.productiveRoute?.length&&p.acceptedDuringMeasurement>0)||!proof.outputPorts?.every(p=>p.collectedDuringMeasurement>0))errors.push('Power, machine activity, input routes or output collection missing');
