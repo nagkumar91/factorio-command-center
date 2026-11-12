@@ -1,3 +1,5 @@
+import {singleMaterialSpills} from './connection-checks.mjs';
+import {decodeBlueprint} from '../blueprints.mjs';
 import {storageEvidence} from './storage-evidence.mjs';
 import fs from 'node:fs/promises';import path from 'node:path';import{createHash}from'node:crypto';
 const root=path.resolve(new URL('../..',import.meta.url).pathname),source=path.join(root,'blueprint-sources/flight-science-sided'),sha=s=>createHash('sha256').update(s).digest('hex');
@@ -16,6 +18,7 @@ if(!m.products.every(n=>(proof?.outputsPerMinute?.[n]??-1)>=target-.5))errors.pu
 const recovery=proof?.recovery;
 if(!recovery||recovery.blockedMinutes!==5||recovery.settlingMinutes!==2||recovery.measurementMinutes!==3||!m.products.every(n=>(recovery.outputsPerMinute?.[n]??-1)>=target-.5))errors.push('Original blockage/recovery protocol or output floor not met');
 if(m.fluids?.length&&(!proof?.fluids||proof.fluids.length!==m.fluids.length||!proof.fluids.every(p=>p.productiveConsumers?.length&&p.productiveConsumers.every(id=>proof.machines.some(machine=>machine.entity===id&&machine.measuredCrafts>0)))))errors.push('Productive fluid connectivity proof missing');
+if(tier==='fully-integrated'){if(singleMaterialSpills(decodeBlueprint(code).blueprint).length)errors.push('Single-material belt end spills into a different ingredient/output route');const sums={};for(const p of [...m.inputs,...(m.fluids||[])])sums[p.item]=(sums[p.item]||0)+p.perMinute;const expected=m.externalInputsPerMinute||{};if(Object.keys(sums).length!==Object.keys(expected).length||Object.entries(expected).some(([item,rate])=>!Number.isFinite(sums[item])||Math.abs(sums[item]-rate)>1e-6))errors.push('Annotated solid/fluid inlet totals differ from raw recipe demand');}
 if(errors.length){pending.push(m.id);rejectionReasons[m.id]=errors;continue;}
 const stressEvidence=await storageEvidence(source,{...m,tier});
 entries.push({...m,tier,...(stressEvidence?{stressEvidence}:{}),sourceFile:path.join(folder,m.file),evidenceFile:path.join(folder,'native-report.json'),harnessFile,measuredOutputsPerMinute:proof.outputsPerMinute,native:{gameVersion:report.gameVersion,warmupMinutes:report.warmupMinutes,measurementMinutes:report.measurementMinutes,harnessSha256:report.harnessSha256,prototypeSha256:report.prototypeSha256,createdAt:report.createdAt,recovery},verified:true});}

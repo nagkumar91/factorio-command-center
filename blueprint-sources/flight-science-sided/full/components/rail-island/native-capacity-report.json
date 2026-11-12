@@ -1,0 +1,350 @@
+{
+  "builds": [
+    {
+      "id": "rail-island-200",
+      "outputsPerMinute": {
+        "rail": 300
+      },
+      "consumptionPerMinute": {
+        "stone": 150,
+        "steel-plate": 150,
+        "iron-plate": 75
+      },
+      "inputs": [
+        {
+          "item": "stone",
+          "entity": 11,
+          "acceptedDuringMeasurement": 4500,
+          "productiveRoute": [
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            4,
+            5,
+            21
+          ]
+        },
+        {
+          "item": "steel-plate",
+          "entity": 17,
+          "acceptedDuringMeasurement": 4500,
+          "productiveRoute": [
+            17,
+            18,
+            19,
+            20,
+            2,
+            3,
+            4,
+            5,
+            6,
+            21
+          ]
+        },
+        {
+          "item": "iron-plate",
+          "entity": 44,
+          "acceptedDuringMeasurement": 2250,
+          "productiveRoute": [
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            41
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "item": "rail",
+          "entity": 52,
+          "collectedDuringMeasurement": 4500
+        },
+        {
+          "item": "rail",
+          "entity": 54,
+          "collectedDuringMeasurement": 4500
+        }
+      ],
+      "machines": [
+        {
+          "entity": 21,
+          "recipe": "rail",
+          "measuredCrafts": 2250,
+          "status": "working",
+          "statusSamples": {
+            "recipe_not_researched": 1,
+            "item_ingredient_shortage": 344,
+            "working": 2322,
+            "full_output": 634
+          },
+          "inventory": [
+            {
+              "name": "stone",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 3
+            },
+            {
+              "name": "iron-stick",
+              "quality": "normal",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "entity": 26,
+          "recipe": "rail",
+          "measuredCrafts": 2250,
+          "status": "working",
+          "statusSamples": {
+            "recipe_not_researched": 1,
+            "item_ingredient_shortage": 689,
+            "working": 2277,
+            "full_output": 334
+          },
+          "inventory": [
+            {
+              "name": "stone",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "entity": 41,
+          "recipe": "iron-stick",
+          "measuredCrafts": 2250,
+          "status": "working",
+          "statusSamples": {
+            "recipe_not_researched": 1,
+            "item_ingredient_shortage": 344,
+            "working": 2331,
+            "full_output": 625
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 2
+            }
+          ]
+        }
+      ],
+      "powered": true,
+      "importedEntities": 58,
+      "loopSamples": {},
+      "recovery": {
+        "blockedMinutes": 5,
+        "settlingMinutes": 2,
+        "measurementMinutes": 3,
+        "outputsPerMinute": {
+          "rail": 300
+        },
+        "machines": [
+          {
+            "entity": 21,
+            "recipe": "rail",
+            "measuredCrafts": 224,
+            "statusSamples": {
+              "working": 158,
+              "full_output": 23
+            },
+            "initialInputs": [
+              {
+                "name": "stone",
+                "quality": "normal",
+                "count": 2
+              },
+              {
+                "name": "steel-plate",
+                "quality": "normal",
+                "count": 2
+              },
+              {
+                "name": "iron-stick",
+                "quality": "normal",
+                "count": 2
+              }
+            ],
+            "finalInputs": [
+              {
+                "name": "stone",
+                "quality": "normal",
+                "count": 1
+              },
+              {
+                "name": "steel-plate",
+                "quality": "normal",
+                "count": 1
+              },
+              {
+                "name": "iron-stick",
+                "quality": "normal",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "entity": 26,
+            "recipe": "rail",
+            "measuredCrafts": 226,
+            "statusSamples": {
+              "working": 137,
+              "full_output": 44
+            },
+            "initialInputs": [
+              {
+                "name": "iron-stick",
+                "quality": "normal",
+                "count": 1
+              }
+            ],
+            "finalInputs": [
+              {
+                "name": "stone",
+                "quality": "normal",
+                "count": 1
+              },
+              {
+                "name": "steel-plate",
+                "quality": "normal",
+                "count": 1
+              },
+              {
+                "name": "iron-stick",
+                "quality": "normal",
+                "count": 1
+              }
+            ]
+          },
+          {
+            "entity": 41,
+            "recipe": "iron-stick",
+            "measuredCrafts": 224,
+            "statusSamples": {
+              "working": 158,
+              "full_output": 23
+            },
+            "initialInputs": {},
+            "finalInputs": [
+              {
+                "name": "iron-plate",
+                "quality": "normal",
+                "count": 2
+              }
+            ]
+          }
+        ],
+        "actualProducedPerMinute": {
+          "rail": 300
+        }
+      },
+      "blueprintSha256": "e27ebdc800259986662ea4a0bca528e5802090b191b9a11a2a3971f11b8ac75c",
+      "passed": true,
+      "actualProducedPerMinute": {
+        "rail": 300
+      }
+    }
+  ],
+  "feedPolicy": "Declared exterior belt lanes only, no internal injection; collect every output chest every second",
+  "researchPolicy": "All recipes enabled, no technologies researched, inserter stack bonus zero",
+  "manifestSha256": "0e5c67e9af037abb17880f3a7eaf73fc827935074cb3a12b6b11e50dc947fce5",
+  "runnerSha256": "82f560b423edd0e7bd9feef6f78c24cc087fc5fb2b9a64fc964ff4dd862c1364",
+  "configurationSha256": "04ae4c04ffbc98335b77092c0a8ab64d6536e280b928e4a4231bda4be28c8e6b",
+  "gameVersion": "2.1.24",
+  "short": false,
+  "warmupMinutes": 15,
+  "measurementMinutes": 30,
+  "prototypeSha256": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
+  "harnessSha256": "b8a475710b0d01980acbf191508eedb569f5dc3e9bdaf6af38d5002878de3e91",
+  "modList": {
+    "mods": [
+      {
+        "name": "base",
+        "enabled": true
+      },
+      {
+        "name": "elevated-rails",
+        "enabled": true
+      },
+      {
+        "name": "quality",
+        "enabled": true
+      },
+      {
+        "name": "recycler",
+        "enabled": true
+      },
+      {
+        "name": "space-age",
+        "enabled": true
+      },
+      {
+        "name": "aai-containers",
+        "enabled": false
+      },
+      {
+        "name": "Better-Power-Armor-Grid",
+        "enabled": true
+      },
+      {
+        "name": "EON-FulgoraDiscovered",
+        "enabled": true
+      },
+      {
+        "name": "ev-assets",
+        "enabled": true
+      },
+      {
+        "name": "ev-machines",
+        "enabled": true
+      },
+      {
+        "name": "ev-mining-drills",
+        "enabled": true
+      },
+      {
+        "name": "ev-refining",
+        "enabled": false
+      },
+      {
+        "name": "EverythingOnNauvis",
+        "enabled": false
+      },
+      {
+        "name": "machine_output_override",
+        "enabled": false
+      },
+      {
+        "name": "starter_initializer",
+        "enabled": false
+      },
+      {
+        "name": "visible-planets",
+        "enabled": true
+      },
+      {
+        "name": "flight_science_test",
+        "enabled": true
+      }
+    ]
+  },
+  "createdAt": "2026-11-12T07:10:08.942Z",
+  "passed": true
+}
