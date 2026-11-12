@@ -60,3 +60,26 @@ test('hybrid full native proof matches the exact blueprint and harness',{skip:m.
  assert.equal(b.inputs.length,m.inputs.length);assert(b.inputs.every(x=>x.acceptedDuringMeasurement>0&&x.productiveRoute?.length));
  assert.equal(b.outputPorts.length,6);assert(b.outputPorts.every(x=>x.collectedDuringMeasurement>0));
 });
+
+test('hybrid v2 changes only two stock limits and preserves the published v1 proof',()=>{
+ const priorCode=fs.readFileSync(new URL('history/first-native/'+m.file,source),'utf8').trim();
+ assert.equal(sha(priorCode),'da625c002d67bfd9959e84b5ee7cc61f0fe97ea20494de5085895dd754ca7d79');
+ const prior=decodeBlueprint(priorCode).blueprint,restored=structuredClone(bp);
+ let reverted=0;for(const e of restored.entities){const c=e.control_behavior?.circuit_condition,n=c?.first_signal?.name;if(n==='sulfur'){assert.equal(c.constant,40);c.constant=24;reverted++;}if(n==='transport-belt'){assert.equal(c.constant,64);c.constant=48;reverted++;}}
+ assert.equal(reverted,2);assert.deepEqual(restored,prior);
+ const history=JSON.parse(fs.readFileSync(new URL('history/first-native/native-report.json',source)));assert(history.passed);assert.equal(history.builds[0].blueprintSha256,sha(priorCode));
+ assert.equal(fs.readFileSync(new URL('site/flight-science-sided/hybrid/history/da625c-blueprint.txt',root),'utf8').trim(),priorCode);
+ assert.deepEqual(JSON.parse(fs.readFileSync(new URL('site/flight-science-sided/hybrid/history/da625c-native-report.json',root))),history);
+});
+test('hybrid storage stress proves actual production after full backpressure',()=>{
+ const report=JSON.parse(fs.readFileSync(new URL('evidence/storage-30/report.json',source))),b=report.builds[0];
+ assert(report.passed&&b.passed&&b.stressPassed);assert.equal(b.blueprintSha256,m.blueprintSha256);
+ assert.equal(report.harnessSha256,sha(fs.readFileSync(new URL('tests/flight-science-sided-hybrid-storage-30-control.lua',root))));
+ assert.equal(report.prototypeSha256,m.prototypeSha256);
+ assert.equal(b.recovery.blockedMinutes,30);assert.equal(b.recovery.settlingMinutes,2);assert.equal(b.recovery.measurementMinutes,3);
+ const stress=b.stress;assert(stress.allChestsFullForFinalWindow&&stress.allScienceProductionZero&&stress.allScienceMachineCraftsZero);assert.equal(stress.finalWindowSamples,121);assert.equal(stress.chests.length,6);
+ for(const c of stress.chests){assert.equal(c.fullSamples,121);assert(c.fullAtPauseEnd);assert.equal(c.minimumAccessibleCount,c.accessibleCapacity);assert.equal(c.finalAccessibleCount,c.accessibleCapacity);}
+ assert.equal(stress.scienceMachineCraftsFinalWindow.length,60);assert(stress.scienceMachineCraftsFinalWindow.every(x=>x.craftsDuringFinalWindow===0));
+ assert(b.recoveryCrafted.productionStatisticsAgree);
+ for(const item of m.products){assert.equal(stress.scienceProductionInFinalWindow[item],0);assert(b.recoveryCrafted.craftedPerMinute[item]>=60);assert.equal(b.recoveryCrafted.productionStatisticsDelta[item],b.recoveryCrafted.crafted[item]);assert.equal(b.recoveryCrafted.productionStatisticsPerMinute[item],b.recoveryCrafted.craftedPerMinute[item]);}
+});

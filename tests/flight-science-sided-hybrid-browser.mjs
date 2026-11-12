@@ -9,8 +9,11 @@ try{
   const page=await browser.newPage({viewport:{width,height:900}}),errors=[];
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(new URL('site/flight-science-sided/hybrid/index.html',root).href);
-  assert.equal(await page.title(),'Hybrid six science packs · 60/min');
+  assert.equal(await page.title(),'Hybrid six science packs · ~60/min');
   assert.equal(await page.locator('h1').textContent(),'Hybrid six science packs');
+  assert.equal(await page.locator('a[href="history/da625c-blueprint.txt"]').count(),1);
+  assert.equal(await page.locator('a[href="history/da625c-native-report.json"]').count(),1);
+  assert.equal(await page.locator('a[href="storage-stress-report.json"]').count(),1);
   assert(await page.locator('.map img').evaluate(e=>e.complete&&e.naturalWidth>0));
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   assert(await page.locator('.map').evaluate(e=>e.scrollHeight<=e.clientHeight),'Fit layout must show the whole blueprint');

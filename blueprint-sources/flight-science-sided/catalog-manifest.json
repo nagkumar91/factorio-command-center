@@ -519,7 +519,7 @@
         "utility-science-pack"
       ],
       "targetPerMinute": 60,
-      "blueprintSha256": "da625c002d67bfd9959e84b5ee7cc61f0fe97ea20494de5085895dd754ca7d79",
+      "blueprintSha256": "ac9fca587c69eebf93c587406f9dd02df4b0dd124352cdce66c5a2b6f650cb3c",
       "prototypeSha256": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
       "gameVersion": "2.1.24",
       "ports": [
@@ -1364,14 +1364,14 @@
           "limits": {
             "copper-plate": 36,
             "steel-plate": 20,
-            "sulfur": 24,
+            "sulfur": 40,
             "coal": 240,
             "stone-wall": 40,
             "electronic-circuit": 70,
             "advanced-circuit": 110,
             "engine-unit": 80,
             "iron-gear-wheel": 140,
-            "transport-belt": 48,
+            "transport-belt": 64,
             "inserter": 60,
             "firearm-magazine": 48,
             "piercing-rounds-magazine": 48,
@@ -5628,15 +5628,74 @@
       ],
       "attribution": "Original local compact six-pack science design plus the parent-tested green-circuit, advanced-circuit and engine supply workshops. Frozen source components and SHA-256 identities are included. Hybrid placement and physical belt routing are new.",
       "status": "native-production-verified",
+      "stockTuning": {
+        "sulfur": 40,
+        "transport-belt": 64
+      },
+      "previousBlueprintSha256": "da625c002d67bfd9959e84b5ee7cc61f0fe97ea20494de5085895dd754ca7d79",
+      "revision": {
+        "kind": "stock-limit-only",
+        "baseBlueprintSha256": "da625c002d67bfd9959e84b5ee7cc61f0fe97ea20494de5085895dd754ca7d79",
+        "changes": [
+          {
+            "entity": 238,
+            "position": {
+              "x": 29.5,
+              "y": -0.5
+            },
+            "item": "transport-belt",
+            "from": 48,
+            "to": 64
+          },
+          {
+            "entity": 550,
+            "position": {
+              "x": 1.5,
+              "y": 4.5
+            },
+            "item": "sulfur",
+            "from": 24,
+            "to": 40
+          }
+        ]
+      },
       "measuredOutputsPerMinute": {
-        "automation-science-pack": 62.86666666666667,
-        "logistic-science-pack": 60.03333333333333,
-        "military-science-pack": 62.4,
-        "chemical-science-pack": 60.1,
+        "automation-science-pack": 62.56666666666667,
+        "logistic-science-pack": 59.766666666666666,
+        "military-science-pack": 62.833333333333336,
+        "chemical-science-pack": 60.13333333333333,
         "production-science-pack": 64.3,
         "utility-science-pack": 64.36666666666666
       },
       "tier": "hybrid",
+      "stressEvidence": {
+        "reportFile": "evidence/hybrid-storage-30/report.json",
+        "controlFile": "evidence/hybrid-storage-30/control.lua",
+        "reportSha256": "47835ec8efbdcab6f741f668c00d9fae3080b5ee8f5c51eac27d724c31686ffd",
+        "harnessSha256": "e7130014799aa34fbee5ad4fc457b156119f73aac7e8701bc4d7917410cca1cf",
+        "blueprintSha256": "ac9fca587c69eebf93c587406f9dd02df4b0dd124352cdce66c5a2b6f650cb3c",
+        "prototypeSha256": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
+        "pauseMinutes": 30,
+        "zeroProductionWindowMinutes": 2,
+        "settlingMinutes": 2,
+        "measurementMinutes": 3,
+        "craftedPerMinute": {
+          "automation-science-pack": 62,
+          "logistic-science-pack": 67.66666666666667,
+          "military-science-pack": 63.333333333333336,
+          "chemical-science-pack": 62.666666666666664,
+          "production-science-pack": 66,
+          "utility-science-pack": 64
+        },
+        "collectedPerMinute": {
+          "automation-science-pack": 60.333333333333336,
+          "logistic-science-pack": 70,
+          "military-science-pack": 63.666666666666664,
+          "chemical-science-pack": 59.666666666666664,
+          "production-science-pack": 115.66666666666667,
+          "utility-science-pack": 111.66666666666667
+        }
+      },
       "sourceFile": "hybrid/hybrid-six-pack-sided-60.txt",
       "evidenceFile": "hybrid/native-report.json",
       "harnessFile": "tests/flight-science-sided-hybrid-control.lua",
@@ -5646,16 +5705,16 @@
         "measurementMinutes": 30,
         "harnessSha256": "9d06cd23ef0dcfde0fcdc11ed0b7884894acaa7ecbd1c37b9f264dea119d92b4",
         "prototypeSha256": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
-        "createdAt": "2026-11-12T05:53:19.570Z",
+        "createdAt": "2026-11-12T06:28:44.637Z",
         "recovery": {
           "blockedMinutes": 5,
           "settlingMinutes": 2,
           "measurementMinutes": 3,
           "outputsPerMinute": {
             "automation-science-pack": 64.66666666666667,
-            "logistic-science-pack": 67.66666666666667,
-            "military-science-pack": 65.66666666666667,
-            "chemical-science-pack": 69,
+            "logistic-science-pack": 68.66666666666667,
+            "military-science-pack": 63,
+            "chemical-science-pack": 75,
             "production-science-pack": 65.33333333333333,
             "utility-science-pack": 64
           }
@@ -6543,6 +6602,34 @@
       "attribution": "Original local layout derived from the project four-pack sided science generator; advanced two-colour block designed for this task.",
       "verification": "Use the matching native-report.json; generation alone is not proof.",
       "tier": "compact",
+      "stressEvidence": {
+        "reportFile": "evidence/compact-storage-30/report.json",
+        "controlFile": "evidence/compact-storage-30/control.lua",
+        "reportSha256": "f0d9a32b1718cb04026a5cf5696eb4587ba75bb93c13ad243620067d8f9d39f1",
+        "harnessSha256": "2291019d4b17dfd13780f74c0c030e56681baf10e82972718b4b35a27895000f",
+        "blueprintSha256": "17fc28fa24029214b1aed34c100fbb8baabc4eb0821bd864d9ceb294bfc97d49",
+        "prototypeSha256": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
+        "pauseMinutes": 30,
+        "zeroProductionWindowMinutes": 2,
+        "settlingMinutes": 2,
+        "measurementMinutes": 3,
+        "craftedPerMinute": {
+          "automation-science-pack": 61.333333333333336,
+          "logistic-science-pack": 60.666666666666664,
+          "military-science-pack": 64,
+          "chemical-science-pack": 63.333333333333336,
+          "production-science-pack": 66,
+          "utility-science-pack": 64
+        },
+        "collectedPerMinute": {
+          "automation-science-pack": 64.66666666666667,
+          "logistic-science-pack": 68.33333333333333,
+          "military-science-pack": 63.333333333333336,
+          "chemical-science-pack": 65.33333333333333,
+          "production-science-pack": 89,
+          "utility-science-pack": 94.33333333333333
+        }
+      },
       "sourceFile": "compact/compact-six-pack-sided-60.txt",
       "evidenceFile": "compact/native-report.json",
       "harnessFile": "tests/flight-science-sided-compact-control.lua",
@@ -9587,5 +9674,5 @@
       "Manifest, native report or harness not yet present"
     ]
   },
-  "generatedAt": "2026-11-12T05:56:47.727Z"
+  "generatedAt": "2026-11-12T06:32:45.867Z"
 }

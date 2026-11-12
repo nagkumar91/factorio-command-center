@@ -55,6 +55,15 @@ if(!standing){
  for(let x=0;x<7;x++)for(let y=0;y<2;y++){const e=add('accumulator',14+x*2,10+y*2);e.position.x+=.5;e.position.y+=.5;}
  m.solarPanels=16;m.accumulators=14;
 }else{const pole=add('medium-electric-pole',3,0);m.power=pole.entity_number;wire(tower,pole);const seed=add('steel-chest',0,-3,{bar:10});arm(0,-2,0);m.seedChest=seed.entity_number;m.inputs=[{item:'tree-seed',entity:seed.entity_number}];add('display-panel',2,-3,{icon:signal('tree-seed'),text:'Plant only. Supply seeds + grid power, then REMOVE tower/pole/chest after planting.',always_show:true});}
+if(autonomous){
+ // Apply the exact compact 6/6 layout tested as the fourth build in the full suite.
+ let index=0;b.entities=b.entities.filter(e=>e.name==='solar-panel'?e.position.x<=19.5&&e.position.y<=1.5:e.name==='accumulator'?index++<6:e.name==='medium-electric-pole'?e.position.x!==25.5&&e.position.y!==15.5:true);
+ index=0;for(const e of b.entities)if(e.name==='accumulator'){e.position={x:15+index%3*2,y:7+Math.floor(index/3)*2};index++;}
+ b.entities.find(e=>e.name==='medium-electric-pole'&&e.position.x===17.5&&e.position.y===7.5).position.y=5.5;
+ const ids=new Set(b.entities.map(e=>e.entity_number));b.wires=b.wires.filter(w=>ids.has(w[0])&&ids.has(w[2]));
+ b.label='Autonomous forest candidate · 6 solar / 6 accumulators';m.label='Autonomous forest · compact 6/6 solar reserve control';
+ m.solarPanels=6;m.accumulators=6;m.structureFootprint={width:22,height:19,area:418};m.plantingEnvelope={width:31,height:21,area:651};m.previousVersion='history/v1-solar-16-14/autonomous-forest.txt';
+}
 m.initialSeeds=50;await save(o);
 }
 await fs.writeFile(out+'/manifest.json',JSON.stringify(builds,null,2)+'\n');

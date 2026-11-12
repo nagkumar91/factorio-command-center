@@ -47,7 +47,7 @@ const entries=[];
   const splitter=add('fast-splitter',x+width+1,y,{position:{x:x+width+1.5,y:y+1},direction:4});
   assert(!occupied.has(key(x+width+1,y+1)));occupied.set(key(x+width+1,y+1),splitter);
   const extraBelt=(dx,dy,d)=>{const e=belt(x+width+dx,y+dy,d,{tags:{compact_block:name}});const nearest=[...loop].sort((a,b)=>Math.hypot(a.position.x-e.position.x,a.position.y-e.position.y)-Math.hypot(b.position.x-e.position.x,b.position.y-e.position.y))[0];wire(e,nearest);loop.push(e);return e;};
-  for(const [dx,dy,d]of [[2,0,4],[3,0,8],[3,1,8],[3,2,8],[3,3,12],[2,3,12],[1,3,12],[4,3,12],[2,1,8],[2,5,4],[3,5,0],[3,4,0]])extraBelt(dx,dy,d);
+  for(const [dx,dy,d]of [[2,0,4],[3,0,8],[3,1,8],[3,2,8],[3,3,12],[2,3,12],[1,3,12],[4,3,12],[2,1,8],[2,5,4],[3,5,0],[3,4,0]].filter(([dx])=>process.env.ROBOT_BALANCER_DUMMY==='1'||dx!==4))extraBelt(dx,dy,d);
   add('fast-underground-belt',x+width+2,y+2,{direction:8,type:'input'});
   add('fast-underground-belt',x+width+2,y+4,{direction:8,type:'output'});
 
