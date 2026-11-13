@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171a1c">
+  <meta name="description" content="Offline build plan for a Nauvis-orbit space platform that produces and returns space science.">
+  <title>Space science from orbit · Long game flight plans</title>
+  <style>
+    :root{color-scheme:dark;--bg:#171a1c;--panel:#22292a;--panel2:#29302e;--line:#3d4942;--text:#e9e3d2;--muted:#a9b1a4;--gold:#e4bd72;--green:#91bd79;--blue:#87b6ca;--red:#d98c75;--max:1120px}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% -5%,#58472a55,transparent 43%),var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:#a9d2df}a:hover{color:#e8c778}button{font:inherit}.wrap{max-width:var(--max);margin:auto;padding:24px clamp(18px,4vw,48px) 72px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding:4px 0 18px}.brand{color:var(--gold);font-size:12px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;font-weight:800}.print{background:#303833;border:1px solid #687363;border-radius:6px;color:var(--text);padding:8px 12px;cursor:pointer}.hero{padding:52px 0 28px}.eyebrow{color:var(--gold);font-size:12px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}.hero h1{font-size:clamp(34px,6vw,61px);line-height:1.06;max-width:850px;margin:14px 0}.hero p{font-size:19px;color:#c2c7ba;max-width:800px}.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.badge{border:1px solid #5b644f;background:#343d31;border-radius:999px;padding:5px 11px;font-size:12px;color:#d2dfbf}.notice{background:#3b3324;border:1px solid #79623b;padding:16px 18px;border-radius:8px;color:#e4d4b3;margin:20px 0}.notice strong{color:#f1d391}.section{margin-top:42px}.section h2{font-size:27px;margin:0 0 8px}.lede{color:var(--muted);margin-top:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{background:linear-gradient(145deg,#28302d,#202625);border:1px solid var(--line);border-radius:10px;padding:20px}.card h3{margin:0 0 9px;color:#e8d49e}.card p:last-child{margin-bottom:0}.steps{counter-reset:step;display:grid;gap:12px}.step{counter-increment:step;display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:start;background:var(--panel);border:1px solid var(--line);padding:15px 17px;border-radius:8px}.step:before{content:counter(step,decimal-leading-zero);color:var(--gold);font-weight:800;font-size:16px}.step h3{margin:0 0 3px;font-size:17px}.step p{margin:0;color:#b7bdb3}.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:stretch;margin:18px 0}.node{position:relative;display:flex;flex-direction:column;justify-content:center;text-align:center;min-height:104px;background:var(--panel2);border:1px solid #4a574e;border-radius:8px;padding:12px 9px;font-weight:700}.node small{display:block;font-weight:450;color:var(--muted);font-size:12px}.node:not(:last-child):after{content:"›";position:absolute;right:-10px;top:34%;z-index:1;color:var(--gold);font-size:25px}.node.output{border-color:#6b7549;background:#30382d}.recipe{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:#1c2222;border:1px solid var(--line);border-radius:8px;padding:15px 17px;font-weight:700}.recipe .arrow{color:var(--gold);font-size:22px}.recipe .yield{color:var(--green)}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}table{width:100%;border-collapse:collapse;min-width:430px;background:#202626}th,td{text-align:left;padding:12px 15px;border-bottom:1px solid var(--line)}th{color:#e4d5aa;background:#2a312d;font-size:13px}td{color:#d5d7ce}tr:last-child td{border-bottom:0}.list{padding-left:22px}.list li{padding:4px 0}.small{font-size:13px;color:var(--muted)}.label{color:var(--blue);font-weight:700}.callout{border-left:3px solid var(--green);background:#283129;padding:13px 16px;margin:15px 0;color:#c8d3c1}.warn{border-left-color:var(--gold);background:#332f25}.source-list{display:flex;flex-wrap:wrap;gap:12px;font-size:13px}.foot{border-top:1px solid var(--line);margin-top:48px;padding-top:18px;color:var(--muted);font-size:12px}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.node{min-height:68px}.node:not(:last-child):after{content:"⌄";right:calc(50% - 7px);top:auto;bottom:-21px}.hero{padding-top:35px}.section{margin-top:32px}}
+    @media print{body{background:white;color:#222;font-size:11pt}.wrap{max-width:none;padding:0}.top,.print,.source-list a{display:none}.hero{padding:12px 0}.hero p,.lede,.small,.step p{color:#444}.card,.step,.node,.table-wrap,.recipe{background:white;border-color:#aaa;color:#222;break-inside:avoid}.card h3,.section h2,.step h3,th,td{color:#222}.notice,.callout{background:#f4f1e7;color:#222;border-color:#aaa}.section{break-inside:avoid}.foot{color:#555}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="../index.html">← Factorio Command Center</a>
+      <button class="print" type="button" onclick="window.print()">Print / save as PDF</button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">Long game flight plans &amp; strategies</div>
+        <h1>Make white science in Nauvis orbit</h1>
+        <p>A stationary Space Age platform can collect asteroids, make space science, and deliver it to a Nauvis cargo landing pad. You can place and manage the platform from remote view; you do not need to ride a rocket.</p>
+        <div class="badges"><span class="badge">Factorio 2.1 / Space Age</span><span class="badge">AM2 · no modules</span><span class="badge">Design target: 60 packs/min</span><span class="badge">Offline instructions</span></div>
+      </section>
+
+      <div class="notice"><strong>Validation status:</strong> the compact orbital assembler cell below was tested in Factorio 2.1.24 on a real zero-gravity Nauvis platform. It delivered 150 packs to the platform hub during a 10-minute run (15/min). The integrated asteroid collection, crushing, and Nauvis delivery system remains a design plan and has not been throughput-tested end to end.</div>
+
+      <section class="section">
+        <h2>Tested blueprint · Orbital white-science cell</h2>
+        <p class="lede">Import the blueprint string and place it on connected platform foundation near the hub. The west-facing inserter feeds space science directly into the hub; no chest is used.</p>
+        <div class="grid">
+          <article class="card"><h3>Import and measured result</h3><ul class="list"><li><a href="blueprints/orbital-space-science-cell.txt" download>Download the tested blueprint string</a> (28 entities; 14 × 15 tiles; one AM2; no modules).</li><li>Feed iron plates, carbon, and ice on the three south-side belts, left to right. Measured demand is 6 iron plates/min, 3 carbon/min, and 3 ice/min.</li><li>Measured output: 15 space science packs/min inserted into the platform hub.</li><li><a href="validation/native-report.json">Open the native Factorio test report</a>. It records the exact blueprint SHA-256 and the 10-minute zero-gravity run.</li></ul></article>
+          <article class="card"><h3>Scaling</h3><ul class="list"><li>Place four cells, each with its own three input belts and hub-facing output inserter, for a 60 packs/min assembler capacity.</li><li>At that rate, supply 24 iron plates/min, 12 carbon/min, and 12 ice/min total.</li><li>The cell test validates assembly, electrical connection, and transfer into the platform hub. It does not validate asteroid collection, crusher balance, rocket requests, or delivery to a Nauvis landing pad.</li></ul></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Build order</h2>
+        <div class="steps">
+          <article class="step"><div><h3>Research Rocket Silo</h3><p>That enables the platform-start trigger in this save. If the platform technology still says “Available,” the starter pack has not yet been launched from a rocket silo.</p></div></article>
+          <article class="step"><div><h3>Launch a Space Platform Starter Pack</h3><p>In the rocket silo, choose the new-platform action and select Nauvis orbit. This creates the platform hub and starter foundation, and completes the platform trigger.</p></div></article>
+          <article class="step"><div><h3>Place the platform factory blueprint in remote view</h3><p>Place foundation and machine ghosts. Enable requests for missing construction materials from Nauvis. The platform hub automatically requests the items needed to build those ghosts.</p></div></article>
+          <article class="step"><div><h3>Craft an Asteroid Collector</h3><p>This triggers the Space Science Pack technology in the flight save. Assign the collectors to Nauvis-orbit asteroids and filter one collector line for each chunk type.</p></div></article>
+          <article class="step"><div><h3>Request packs on Nauvis</h3><p>At the cargo landing pad, request space science packs. Add an unloading bay if you want inserters to move packs directly to a belt or train.</p></div></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Blueprint A · Nauvis launch and receiving station</h2>
+        <p class="lede">Place beside your rocket-silo logistics area. The landing pad is the output buffer; it does not need an extra chest.</p>
+        <div class="grid">
+          <article class="card"><h3>Launch side</h3><ul class="list"><li>1 rocket silo with access for the platform starter pack and construction supplies.</li><li>Use hub construction requests to supply the orbital ghosts from Nauvis. If the silo uses logistic requests, it can pull those requested items automatically once your logistic network is available.</li><li>For the first launch, select “Build new space platform” and choose Nauvis. Later launches can deliver requested buildings and materials.</li></ul></article>
+          <article class="card"><h3>Return side</h3><ul class="list"><li>1 cargo landing pad on Nauvis, requested item: <strong>space science pack</strong>.</li><li>Request 1,000 packs for a useful local buffer (about 16 minutes at 60/min).</li><li>Place an unloading bay beside the pad, then a fast inserter to your science belt or lab feed.</li><li>Keep the pad inventory able to accept deliveries; a full pad can spill cargo onto the ground.</li></ul></article>
+        </div>
+        <div class="callout">Factorio 2.1 rockets can carry multiple item types in one launch. The platform can drop requested items to Nauvis in cargo pods; returning space science does not consume a return rocket.</div>
+      </section>
+
+      <section class="section">
+        <h2>Blueprint B · Compact stationary orbital science factory</h2>
+        <p class="lede">Build a connected foundation patch, keep the platform parked over Nauvis, and route the three ingredients into a four-machine assembler bank.</p>
+        <div class="flow" aria-label="Production flow">
+          <div class="node">Metallic asteroid<small>filtered collector</small></div>
+          <div class="node">Crusher<small>iron ore → electric furnace → plates</small></div>
+          <div class="node">4 × AM2<small>iron plate + carbon + ice</small></div>
+          <div class="node output">Space science<small>shared output belt → hub</small></div>
+          <div class="node output">Nauvis pad<small>request and unload to labs</small></div>
+        </div>
+        <div class="grid">
+          <article class="card"><h3>Asteroid and smelting block</h3><ul class="list"><li>3 asteroid collectors on the platform edge: one filtered for metallic chunks, one carbonic, one oxide.</li><li>3 crushers, one dedicated to each chunk type. Use the matching basic crushing recipe.</li><li>After each crusher, use a filtered splitter to return matching asteroid chunks to that crusher’s input loop.</li><li>Route metallic crushing’s iron ore through 1 electric furnace to an iron-plate belt.</li><li>Route carbonic crushing’s carbon and oxide crushing’s ice to their own belts.</li></ul></article>
+          <article class="card"><h3>Science and power block</h3><ul class="list"><li>4 AM2 assemblers, all set to Space Science Pack, no modules.</li><li>Bring iron plates, carbon, and ice to the assembler input side; merge the finished packs onto one output belt to the hub.</li><li>Put a cargo bay beside the hub for additional platform inventory.</li><li>Start with about 40 solar panels for headroom. Space has no day/night cycle; check the platform power graph after the crushers and assemblers are running and add panels if needed.</li><li>No poles are required on a platform. Its whole foundation is one electric network.</li></ul></article>
+        </div>
+        <div class="callout warn"><strong>Chunk-return loops matter:</strong> crushers can return asteroid chunks as a by-product. Split those chunks back to the matching crusher so they do not block the useful output or accumulate in the hub. If the splitter priorities or loop starve a crusher, the pack rate will fall.</div>
+      </section>
+
+      <section class="section">
+        <h2>Balanced production at 60 packs/min</h2>
+        <div class="recipe"><span>2 iron plates</span><span>+</span><span>1 carbon</span><span>+</span><span>1 ice</span><span class="arrow">→</span><span class="yield">5 space science packs / 15 s</span></div>
+        <p>The recipe runs at 0.75 crafting speed in an AM2: 3 crafts/minute × 5 packs = 15 packs/minute per assembler.</p>
+        <div class="table-wrap"><table><thead><tr><th>At full 60/min output</th><th>Required</th></tr></thead><tbody><tr><td>AM2 assemblers</td><td>4</td></tr><tr><td>Iron plates</td><td>24/min</td></tr><tr><td>Carbon</td><td>12/min</td></tr><tr><td>Ice</td><td>12/min</td></tr><tr><td>Outside raw inputs to the platform</td><td>None for this recipe; the ingredients come from asteroids</td></tr></tbody></table></div>
+        <p class="small">The assembler capacity is exact for the target. Actual delivered rate depends on collector output, crusher availability, power, and the chunk-return routing. Watch the three ingredient belts and the platform production statistics for sustained output.</p>
+      </section>
+
+      <section class="section">
+        <h2>Starter pack and one-time supplies</h2>
+        <div class="recipe"><span>60 platform foundations</span><span>+</span><span>20 steel plates</span><span>+</span><span>20 processing units</span><span class="arrow">→</span><span class="yield">1 Space Platform Starter Pack</span></div>
+        <p>The starter pack creates the hub, 36 foundation tiles around it, and 10 foundations in hub inventory. It does not include the collectors, crushers, furnace, assemblers, belts, or solar panels in this plan. Those are requested from Nauvis as the orbital ghosts are placed.</p>
+        <div class="grid">
+          <article class="card"><h3>Blueprint construction inventory</h3><p>3 asteroid collectors, 3 crushers, 1 electric furnace, 4 AM2 assemblers, 40 solar panels to start, fast inserters, red belts, 3 filtered splitters and enough platform foundations to connect the factory footprint.</p></article>
+          <article class="card"><h3>Platform guardrails</h3><p>Keep all foundation connected to the hub. Collectors must sit on an edge. Chests, roboports, and robots do not work on platforms; use the hub and cargo bays for storage. Stationary Nauvis orbit is the safe, simple location for this factory.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>What you should see when it works</h2>
+        <ol class="list"><li>Metallic, carbonic, and oxide chunks are collected separately.</li><li>Crusher output loops return chunks to the matching crusher.</li><li>Iron plates, carbon, and ice reach all four AM2s without backing up.</li><li>The shared output belt inserts space science into the platform hub.</li><li>The Nauvis landing pad’s request is satisfied, and delivered packs unload toward your labs.</li></ol>
+        <div class="callout">A useful first check: temporarily watch the factory for several minutes. If one ingredient belt empties while the others back up, the platform’s delivered rate is set by that ingredient. Increase collection or processing on that branch before adding more assemblers.</div>
+      </section>
+
+      <section class="section">
+        <h2>Sources and version note</h2>
+        <p>This guide includes the working steps and ratios so it remains usable offline. These links are supplemental and require internet:</p>
+        <div class="source-list"><a href="https://wiki.factorio.com/Space_platform">Space platform</a><a href="https://wiki.factorio.com/Space_platform_starter_pack">Starter pack</a><a href="https://wiki.factorio.com/Cargo_landing_pad">Cargo landing pad</a><a href="https://github.com/wube/factorio-data/blob/master/space-age/prototypes/recipe.lua">Official Space Age recipe data</a></div>
+        <p class="small">This plan is for Factorio 2.1 with Space Age. The one-AM2 cell is an importable, native-tested blueprint. The larger asteroid-to-landing-pad layout is still an untested integration plan; verify those collection, processing, and delivery stages in game before relying on the 60/min system target.</p>
+      </section>
+    </main>
+    <footer class="foot">Factorio Command Center · Long game flight plans &amp; strategies · This page is self-contained for offline use.</footer>
+  </div>
+</body>
+</html>

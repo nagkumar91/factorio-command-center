@@ -6,12 +6,16 @@ const browser=await chromium.launch({headless:true});
 try {
  for(const width of [1440,390]){
   const page=await browser.newPage({viewport:{width,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(String(e)));
-  for(const route of ['index.html','flight-forest/index.html','flight-science/index.html','flight-science-sided/index.html#compact','flight-science-sided/full/index.html']){
+  for(const route of ['index.html','flight-forest/index.html','flight-science/index.html','flight-science-sided/index.html#compact','flight-science-sided/full/index.html','flight-space-science/index.html']){
    await page.goto(pathToFileURL(path.resolve('site',route.split('#')[0])).href+(route.includes('#')?'#compact':''));
    await page.evaluate(()=>document.fonts.ready);
-   assert.ok(await page.locator('.flight-category').count());
-   assert.equal(await page.locator('aside a[href$="flight-science-sided/index.html#compact"]').count(),1);
-   assert.equal(await page.locator('aside a[href$="flight-science/index.html"]').count(),1);
+   if(route==='flight-space-science/index.html')assert.equal(await page.locator('.flight-category').count(),0);
+   else assert.ok(await page.locator('.flight-category').count());
+   if(route!=='flight-space-science/index.html'){
+    assert.equal(await page.locator('aside a[href$="flight-science-sided/index.html#compact"]').count(),1);
+    assert.equal(await page.locator('aside a[href$="flight-science/index.html"]').count(),1);
+    assert.equal(await page.locator('aside a[href$="flight-space-science/index.html"]').count(),1,route+' should link the orbital white-science guide');
+   }else assert.equal(await page.locator('a.brand[href="../index.html"]').count(),1);
    for(const link of await page.locator('aside a').all()){
     const target=await link.evaluate(a=>a.href);const url=new URL(target);
     const fs=await import('node:fs/promises');const {fileURLToPath}=await import('node:url');
@@ -41,17 +45,21 @@ try {
     await page.locator('aside a[href="#compact"]').click();await assertTarget('compact');
    }
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,route+' overflow '+width);
-   if(route!=='index.html'){
+   if(route==='flight-space-science/index.html'){
+    assert.equal(await page.locator('h2').filter({hasText:'Tested blueprint'}).count(),1);
+    assert.equal(await page.locator('a[download][href="blueprints/orbital-space-science-cell.txt"]').count(),1);
+    assert.equal(await page.locator('a[href="validation/native-report.json"]').count(),1);
+   }else if(route!=='index.html'){
     assert.ok(await page.locator('textarea').count());
     if(width===390){const b=page.locator('[data-flight-menu]');await b.click();assert.equal(await b.getAttribute('aria-expanded'),'true');await page.keyboard.press('Escape');assert.equal(await b.getAttribute('aria-expanded'),'false');}
-   }else assert.equal(await page.locator('.flight-plan-card').count(),4);
+   }else assert.equal(await page.locator('.flight-plan-card').count(),5);
    if(route.endsWith('#compact')){
     if(width===390)await page.locator('[data-flight-menu]').click();
     await page.locator('aside a[href="#compact"]').click();
     const box=await page.locator('#compact > h2').boundingBox();assert.ok(box.y>=0&&box.y+box.height<=1000);
     if(width===390){const menu=await page.locator('[data-flight-menu]').boundingBox();const bar=await page.locator('.topbar').boundingBox();assert.ok(menu.y>=0&&menu.y+menu.height<=1000);assert.ok(box.y>=bar.y+bar.height);}
    }
-   if(width===390&&route!=='index.html'){
+   if(width===390&&route!=='index.html'&&route!=='flight-space-science/index.html'){
     await page.waitForFunction(()=>document.querySelector('#flight-sidebar').getBoundingClientRect().right<=1);
     assert.ok(await page.locator('[data-flight-menu]').evaluate(e=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}),'Mobile menu must be unobscured');
    }
