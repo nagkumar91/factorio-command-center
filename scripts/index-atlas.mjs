@@ -51,3 +51,6 @@ blueprints.push(...power.blueprints);sources.push(...power.sources);
 const coverage=blueprintCoverage(catalog,production,[...existing,...blueprints]);
 await writeData('library',library);await writeData('community',community);await writeData('atlas',{sources,blueprints,coverage,starterResearch:starters.research,updatedAt:new Date().toISOString()});
 console.log(JSON.stringify({added:blueprints.length,community:blueprints.filter(b=>b.collection==='Community additions').length,cells:manifest.length,covered:coverage.covered,total:coverage.total,missing:coverage.missing},null,2));
+
+await import('./index-autosaved-derivatives.mjs');
+await import('./index-designed-blueprints.mjs');

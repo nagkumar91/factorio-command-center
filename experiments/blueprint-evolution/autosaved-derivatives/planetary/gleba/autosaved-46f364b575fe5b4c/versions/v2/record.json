@@ -1,0 +1,127 @@
+{
+  "schema": "factorio-no-module-derivative/v2",
+  "source": {
+    "id": "autosaved-46f364b575fe5b4c",
+    "title": "Nutrient kickstart",
+    "attribution": "https://autosaved.org/factorio/blueprints",
+    "sourceBlueprintSha256": "8f233fdcda224c3ddcba5954a1fc756fb71e748eec72316bab2a4fab3501fb9c",
+    "snapshotFile": "source-blueprint.txt",
+    "preservedV1CandidateSha256": "6d0a611d2acd947f7692372078b908a0ad61e95e48e619ba29fec91747ec2607"
+  },
+  "candidate": {
+    "label": "Nutrient kickstart — compact routed v2",
+    "file": "blueprint.txt",
+    "codeSha256": "c05847655cd261b698ce2b43b2617e3147814af77b949800c5365234db64bc85",
+    "version": 2,
+    "entityCount": 15,
+    "moduleRequests": 0,
+    "beacons": 0,
+    "footprint": {
+      "widthTiles": 10,
+      "heightTiles": 6,
+      "areaTiles": 60
+    }
+  },
+  "productCorrection": {
+    "frozenInventoryDeclaredProducts": [],
+    "correctedDeclaredProducts": [
+      "nutrients"
+    ],
+    "evidenceFile": "recipe-evidence.json",
+    "rationale": "Pinned Factorio 2.1.24 prototype data for the exact saved recipe explicitly declares nutrients as its result."
+  },
+  "staticGate": {
+    "file": "static-gate.json",
+    "passed": true
+  },
+  "physicalPorts": {
+    "file": "port-map.json"
+  },
+  "native": {
+    "file": "native-report.json",
+    "gameVersion": "2.1.24",
+    "exactCandidateSha256": "c05847655cd261b698ce2b43b2617e3147814af77b949800c5365234db64bc85",
+    "passed": true,
+    "protocol": {
+      "warmupMinutes": 15,
+      "measurementMinutes": 30,
+      "outputCollection": "Continuously emptied passive-provider chest; warmup output excluded from measured total.",
+      "statistics": "Factorio item statistics output_counts recorded consumption; input_counts recorded production.",
+      "startup": "One nutrients item inserted into biochamber burner at initialization; measurement began at tick 54000 and excludes startup stock.",
+      "power": "Isolated 12-engine grid linked to the west service pole; explicit copper-wire link to internal pole."
+    },
+    "warmup": {
+      "deliveredToProviderChest": 285,
+      "spoilageConsumed": 2330,
+      "nutrientsProduced": 348,
+      "nutrientsFuelConsumed": 59
+    },
+    "measurement": {
+      "deliveredNutrients": 588,
+      "nutrientsPerMinute": 19.6,
+      "inputs": {
+        "spoilageConsumed": 4690,
+        "nutrientsProduced": 705,
+        "nutrientsConsumed": 117
+      },
+      "spoilagePerMinute": 156.33333333333334,
+      "nutrientNetBalance": 588
+    },
+    "boundaryWarmupProductCleared": {
+      "providerChest": 0,
+      "outputInserter": 0,
+      "outputBelts": 0
+    },
+    "feedAcceptance": {
+      "spoilage": 7131
+    },
+    "startupFuel": {
+      "item": "nutrients",
+      "insertedIntoBiochamber": 1,
+      "excludedFromMeasuredProduction": true
+    },
+    "poweredEngines": 12,
+    "inserterSamples": {
+      "2": {
+        "active": 1800,
+        "energySamples": 1800,
+        "statuses": {
+          "1": 1800
+        }
+      },
+      "6": {
+        "active": 313,
+        "energySamples": 1800,
+        "statuses": {
+          "1": 313,
+          "36": 1487
+        }
+      },
+      "10": {
+        "active": 39,
+        "energySamples": 1800,
+        "statuses": {
+          "1": 39,
+          "36": 1761
+        }
+      },
+      "11": {
+        "active": 235,
+        "energySamples": 1800,
+        "statuses": {
+          "1": 235,
+          "36": 1565
+        }
+      }
+    }
+  },
+  "status": {
+    "review": "exact-hash native-verified routed derivative",
+    "throughput": "19.6 nutrients/min sustained measured output",
+    "limitations": [
+      "Requires one nutrients startup item in the biochamber burner.",
+      "Single fast-inserter spoilage feed delivered 156.33 spoilage/min; the biochamber reported item-ingredient shortage in 1331 of 1800 samples, which limits throughput.",
+      "External electric grid must connect to service pole 4. The biochamber’s 500 kW process fuel is nutrients."
+    ]
+  }
+}

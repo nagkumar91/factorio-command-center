@@ -1,0 +1,353 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "autosaved-462b2f97477b9e45",
+  "sourceName": "Pipes",
+  "category": "Late Game Beaconed Builds",
+  "version": "v3-west-east-ports",
+  "status": "native-validated-v3",
+  "attribution": {
+    "sourceCatalogue": "autosaved.org",
+    "sourceUrl": "https://autosaved.org/factorio/blueprints"
+  },
+  "exactHashes": {
+    "source": "9ce91a6b6ef30af7f2f861dd910bfd6529bacf05c9ea080cf2540c273d06f684",
+    "parentV1StaticDraft": "26251fb4b9ac0fafaf73813fd83213fe71d40ec6a09b6d3f265f6a9a47fdda0f",
+    "failedV2": "f7af1c3ba468a7e095a465c1af6adbc88cc499cf6420c685f908a887fc4ab0cc",
+    "candidate": "dd7c90800461fe4a6d088b8281319c821cc49ddcfc94a6e93289896e2c371769"
+  },
+  "preservedHistory": {
+    "v1StaticDraft": {
+      "repositoryPath": "experiments/blueprint-evolution/autosaved-derivatives/late-game-resources/blueprints/v1/autosaved-462b2f97477b9e45.txt",
+      "sha256": "26251fb4b9ac0fafaf73813fd83213fe71d40ec6a09b6d3f265f6a9a47fdda0f",
+      "status": "static-only; tested at 0 pipes/min because input route was disconnected"
+    },
+    "v2FailedWestEastDraft": {
+      "repositoryPath": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/versions/v2-west-east-ports/candidate.blueprint.txt",
+      "sha256": "f7af1c3ba468a7e095a465c1af6adbc88cc499cf6420c685f908a887fc4ab0cc",
+      "status": "native failed; exact report retained"
+    },
+    "v3ValidatedWestEast": {
+      "repositoryPath": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/versions/v3-west-east-ports/candidate.blueprint.txt",
+      "sha256": "dd7c90800461fe4a6d088b8281319c821cc49ddcfc94a6e93289896e2c371769",
+      "status": "current"
+    }
+  },
+  "recipe": {
+    "id": "pipe",
+    "inputs": [
+      "iron-plate"
+    ],
+    "outputs": [
+      "pipe"
+    ]
+  },
+  "equipment": {
+    "machine": "assembling-machine-3",
+    "installedModuleCount": 0,
+    "outputChest": "passive-provider-chest"
+  },
+  "footprint": {
+    "source": {
+      "width": 6,
+      "height": 13,
+      "area": 78
+    },
+    "candidate": {
+      "bounds": {
+        "minX": -3,
+        "maxX": 4,
+        "minY": -1,
+        "maxY": 3
+      },
+      "width": 7,
+      "height": 4,
+      "area": 28
+    },
+    "areaReduction": 50,
+    "areaReductionPercent": 64.1
+  },
+  "entityCounts": {
+    "assembling-machine-3": 1,
+    "bulk-inserter": 2,
+    "display-panel": 2,
+    "passive-provider-chest": 1,
+    "requester-chest": 1,
+    "small-electric-pole": 1
+  },
+  "ports": {
+    "inputs": [
+      {
+        "item": "iron-plate",
+        "edge": "west",
+        "entity": 1,
+        "prototype": "requester-chest",
+        "inserter": 2,
+        "direction": 12,
+        "consumer": 3,
+        "display": 7,
+        "physicalPath": "west requester chest -> bulk inserter picks west and drops east into assembler"
+      }
+    ],
+    "outputs": [
+      {
+        "item": "pipe",
+        "edge": "east",
+        "producer": 3,
+        "inserter": 4,
+        "direction": 12,
+        "entity": 5,
+        "prototype": "passive-provider-chest",
+        "display": 8,
+        "physicalPath": "assembler -> bulk inserter picks west and drops east into passive-provider chest"
+      }
+    ]
+  },
+  "power": {
+    "poleEntity": 6,
+    "serviceInput": "external electric network"
+  },
+  "designNotes": [
+    "Raw iron plates enter independently at the west requester chest.",
+    "Finished pipes leave at the east passive-provider chest.",
+    "Each side has a display panel adjacent to its port.",
+    "No modules, beacons, belts, or intermediate recipes."
+  ],
+  "files": {
+    "candidateBlueprint": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/versions/v3-west-east-ports/candidate.blueprint.txt",
+    "candidateJson": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/versions/v3-west-east-ports/candidate.blueprint.json",
+    "record": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/versions/v3-west-east-ports/record.json",
+    "nativeReport": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/versions/v3-west-east-ports/native-exact-candidate-report.json",
+    "staticAudit": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/versions/v3-west-east-ports/static-audit.json",
+    "portMap": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/PORT-MAP.md",
+    "nativeValidator": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/versions/v3-west-east-ports/validate-native.mjs",
+    "nativeControl": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-462b2f97477b9e45/versions/v3-west-east-ports/native-validation-control.lua"
+  },
+  "validation": {
+    "gameVersion": "2.1.24",
+    "mods": [
+      "base",
+      "quality",
+      "elevated-rails",
+      "space-age"
+    ],
+    "testWindow": {
+      "warmupMinutes": 15,
+      "measuredMinutes": 30,
+      "drainTailMinutes": 1,
+      "simulatedMinutes": 46
+    },
+    "candidate": {
+      "exactHash": "dd7c90800461fe4a6d088b8281319c821cc49ddcfc94a6e93289896e2c371769",
+      "imported": true,
+      "importedEntityCount": 8,
+      "expectedEntityCount": 8,
+      "inputObservedAtAssembler": true,
+      "rawInputEvidence": {
+        "externalItemsInsertedIntoRequesters": 7212,
+        "requesterChestStockAtEnd": 300,
+        "maximumObservedInConsumingMachine": 15,
+        "observedAtMachine": true
+      },
+      "productReachedPassiveProvider": true,
+      "providerOutputCountsMeasured": {
+        "5": {
+          "pipe": 4500
+        }
+      },
+      "powerPassed": true,
+      "powerSnapshots": [
+        {
+          "tick": 600,
+          "networkId": 2,
+          "consumers": [
+            {
+              "entity": 2,
+              "name": "bulk-inserter",
+              "type": "inserter",
+              "networkId": 2,
+              "connected": true,
+              "energy": 3004.4444444444443,
+              "status": "waiting_for_space_in_destination"
+            },
+            {
+              "entity": 3,
+              "name": "assembling-machine-3",
+              "type": "assembling-machine",
+              "networkId": 2,
+              "connected": true,
+              "energy": 6888.888888888889,
+              "status": "working"
+            },
+            {
+              "entity": 4,
+              "name": "bulk-inserter",
+              "type": "inserter",
+              "networkId": 2,
+              "connected": true,
+              "energy": 3004.4444444444443,
+              "status": "working"
+            }
+          ],
+          "poles": [
+            {
+              "entity": 6,
+              "networkId": 2,
+              "connected": false
+            }
+          ],
+          "issues": {}
+        },
+        {
+          "tick": 54000,
+          "networkId": 2,
+          "consumers": [
+            {
+              "entity": 2,
+              "name": "bulk-inserter",
+              "type": "inserter",
+              "networkId": 2,
+              "connected": true,
+              "energy": 3004.4444444444443,
+              "status": "waiting_for_space_in_destination"
+            },
+            {
+              "entity": 3,
+              "name": "assembling-machine-3",
+              "type": "assembling-machine",
+              "networkId": 2,
+              "connected": true,
+              "energy": 6888.888888888889,
+              "status": "working"
+            },
+            {
+              "entity": 4,
+              "name": "bulk-inserter",
+              "type": "inserter",
+              "networkId": 2,
+              "connected": true,
+              "energy": 3004.4444444444443,
+              "status": "working"
+            }
+          ],
+          "poles": [
+            {
+              "entity": 6,
+              "networkId": 2,
+              "connected": false
+            }
+          ],
+          "issues": {}
+        },
+        {
+          "tick": 162000,
+          "networkId": 2,
+          "consumers": [
+            {
+              "entity": 2,
+              "name": "bulk-inserter",
+              "type": "inserter",
+              "networkId": 2,
+              "connected": true,
+              "energy": 3004.4444444444443,
+              "status": "waiting_for_space_in_destination"
+            },
+            {
+              "entity": 3,
+              "name": "assembling-machine-3",
+              "type": "assembling-machine",
+              "networkId": 2,
+              "connected": true,
+              "energy": 6888.888888888889,
+              "status": "working"
+            },
+            {
+              "entity": 4,
+              "name": "bulk-inserter",
+              "type": "inserter",
+              "networkId": 2,
+              "connected": true,
+              "energy": 3004.4444444444443,
+              "status": "working"
+            }
+          ],
+          "poles": [
+            {
+              "entity": 6,
+              "networkId": 2,
+              "connected": false
+            }
+          ],
+          "issues": {}
+        },
+        {
+          "tick": 165600,
+          "networkId": 2,
+          "consumers": [
+            {
+              "entity": 2,
+              "name": "bulk-inserter",
+              "type": "inserter",
+              "networkId": 2,
+              "connected": true,
+              "energy": 3004.4444444444443,
+              "status": "waiting_for_space_in_destination"
+            },
+            {
+              "entity": 3,
+              "name": "assembling-machine-3",
+              "type": "assembling-machine",
+              "networkId": 2,
+              "connected": true,
+              "energy": 6888.888888888889,
+              "status": "working"
+            },
+            {
+              "entity": 4,
+              "name": "bulk-inserter",
+              "type": "inserter",
+              "networkId": 2,
+              "connected": true,
+              "energy": 3004.4444444444443,
+              "status": "working"
+            }
+          ],
+          "poles": [
+            {
+              "entity": 6,
+              "networkId": 2,
+              "connected": false
+            }
+          ],
+          "issues": {}
+        }
+      ],
+      "recipeMachinesProduced": true,
+      "productsPerMinute": 150,
+      "passed": true
+    },
+    "matchedExactHashRatesPerMinute": {
+      "originalSource": 150,
+      "preservedV1Draft": 0,
+      "candidateV3": 150
+    },
+    "limitations": [
+      "Requester inventory was replenished by the isolated native fixture; robot delivery itself was not measured.",
+      "Source comparison uses the exact imported community blueprint and the same clean-surface, no-inserted-modules test fixture. Rates apply only to this measured fixture.",
+      "No global optimality claim."
+    ],
+    "matchedRateEvidence": {
+      "sourceAndV3": "Measured together in the exact-hash v3 run recorded in the native report.",
+      "v1StaticDraft": "Measured in the preceding exact-hash Factorio run at the same 15-minute warmup and 30-minute measured protocol; report stored in the v2 failure history.",
+      "ratesPerMinute": {
+        "source": 150,
+        "v1": 0,
+        "v3": 150
+      }
+    },
+    "requestFilter": {
+      "item": "iron-plate",
+      "verifiedInBlueprint": true
+    }
+  },
+  "pathBase": "repository-root"
+}

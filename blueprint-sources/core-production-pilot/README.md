@@ -1,0 +1,17 @@
+# Autosaved science production pilot
+
+Five isolated, unpublished derivatives from the Autosaved `Science` collection. The generator freezes each source by its catalogue ID, removes only efficiency module requests and the downstream lab/roboport wing, and retains all recipe machines and their inserter contacts. The modules in these sources are efficiency modules, so removing them does not lower nominal craft speed. The candidate strings are in the adjacent `.txt` files; exact source and candidate blueprint-string SHA-256 values, footprints, capacity, input and output route probes, and static results are in `evidence.json`.
+
+Run `node scripts/generate-core-production-pilot.mjs` to reproduce the candidates. Capacity is the sum of final science assembler recipe capacities using unmoduled machine speeds and Factorio 2.0.77 recipe time. The route probes follow directed belts, splitters, and paired underground segments from each west-side source inserter's drop to the production corridors, and from the science corridor to the east terminal. The native `edge-native-validation.json` run supplies iron and copper only through external chests at those inserters' west pickup positions, with external inlet power. Every recipe machine crafted and both raw inputs were consumed. The east output tile is the rightmost entity, faces east, has no successor, and was the exact tile counted in the native run. The source/candidate hashes, fixture coordinates, placement counts, 15-minute warmup, 30-minute measured rates, and remaining checks are in the evidence files. `native-validation.json` retains the earlier internal-feed diagnostic and is superseded for boundary validation. The available native executable is Factorio 2.1.24 with Space Age; a 2.0.77 comparison remains outstanding before publication.
+
+| Source | Candidate | Area | Capacity/min | Native delivered/min after 15-minute warmup |
+| --- | --- | ---: | ---: | --- |
+| Automation Science AM1 (`autosaved-09d5d55c7ecaf685`) | `automation-am1.txt` | 1200 → 390 (−67.5%) | automation 30 | automation 30 |
+| Automation Science AM2 (`autosaved-6ea87e9204717d97`) | `automation-am2.txt` | 1200 → 390 (−67.5%) | automation 45 | automation 45 |
+| Automation Science AM3 (`autosaved-9b8a795a91bfd224`) | `automation-am3.txt` | 1200 → 390 (−67.5%) | automation 75 | automation 75 |
+| Logistic Science AM1 (`autosaved-6f7076d71ad45a16`) | `logistic-am1.txt` | 1200 → 585 (−51.25%) | automation 30; logistic 30 | automation 30; logistic 30 |
+| Logistic Science AM2 (`autosaved-8dd9cb19fcf520f8`) | `logistic-am2.txt` | 1200 → 585 (−51.25%) | automation 45; logistic 45 | automation 45; logistic 45 |
+
+**Status:** all five are validated for edge-fed production in the isolated Factorio 2.1.24 protocol. The exact-hash sources ran under identical raw feeds and power fixtures. They matched these rates except Logistic AM1, which crafted 30 logistic packs/min but delivered 28.33/min at the sampled pre-lab port; its candidate delivered 30/min at the terminal. The 30-minute figures exclude startup and do not measure a 2.0.77 deployment.
+
+The five-candidate pilot is one batch of 22 Autosaved `Science` entries classified as Production with a science-pack output in the checked-in catalogue. The next batch is tracked in `../core-production-batch/`; its placement checks and production evidence are separate. Circuit-only designs are outside this slice.

@@ -1,0 +1,111 @@
+{
+  "autonomous-forest": {
+    "externalBeltPorts": [],
+    "ports": [
+      {
+        "kind": "wood-output-and-local-buffer",
+        "entity_number": 2,
+        "prototype": "passive-provider-chest",
+        "position": {
+          "x": 3.5,
+          "y": 0.5
+        },
+        "material": "wood",
+        "route": "wood delivery path is the internal loop used by the tree-seed assembler; the blueprint-level crafting outcome is native-tested, but individual inserter/chest side transfer was not separately sampled",
+        "logisticNetworkAccess": "provider chest prototype; no roboport included",
+        "direction": "output"
+      },
+      {
+        "kind": "seed-bootstrap-and-return-output",
+        "entity_number": 6,
+        "prototype": "passive-provider-chest",
+        "position": {
+          "x": 6.5,
+          "y": -2.5
+        },
+        "material": "tree-seed",
+        "bootstrap": "insert 50 tree seeds before starting",
+        "route": "seed reserve/bootstrap chest; the native run measures returned reserve and tower growth, but does not separately sample each inserter/belt handoff",
+        "direction": "output"
+      }
+    ],
+    "robotCoverage": {
+      "entity_number": 53,
+      "prototype": "roboport",
+      "position": {
+        "x": 11.5,
+        "y": -4.5
+      },
+      "logisticRadiusTiles": 25,
+      "constructionRadiusTiles": 55,
+      "networkIncludesSeedAndWoodProviders": true
+    }
+  },
+  "standing-grove": {
+    "externalBeltPorts": [],
+    "ports": [
+      {
+        "kind": "seed-input",
+        "entity_number": 3,
+        "prototype": "passive-provider-chest",
+        "position": {
+          "x": 0.5,
+          "y": -2.5
+        },
+        "material": "tree-seed",
+        "bootstrap": "insert 50 tree seeds before starting",
+        "route": "local seed feed; the native run measures planting with this exact layout, but does not separately sample inserter-side transfer",
+        "direction": "input"
+      }
+    ],
+    "robotCoverage": {
+      "entity_number": 6,
+      "prototype": "roboport",
+      "position": {
+        "x": 5.5,
+        "y": 3.5
+      },
+      "logisticRadiusTiles": 25,
+      "constructionRadiusTiles": 55,
+      "networkIncludesSeedProvider": true
+    }
+  },
+  "robot-serviced-forest": {
+    "externalBeltPorts": [],
+    "robotCoverage": {
+      "entity_number": 6,
+      "prototype": "roboport",
+      "position": {
+        "x": 5.5,
+        "y": 3.5
+      },
+      "logisticRadiusTiles": 25,
+      "constructionRadiusTiles": 55,
+      "networkIncludesRequester": true
+    },
+    "ports": [
+      {
+        "kind": "seed-bootstrap-input",
+        "direction": "input",
+        "entity_number": 3,
+        "prototype": "requester-chest",
+        "position": {
+          "x": 0.5,
+          "y": -2.5
+        },
+        "material": "tree-seed",
+        "requestCount": 50,
+        "route": "existing logistic-network provider -> logistic robot -> requester chest 3 -> fast inserter 4 -> Agricultural Tower 1"
+      }
+    ],
+    "externalInputs": [
+      {
+        "kind": "seed-supply",
+        "direction": "input",
+        "material": "tree-seed",
+        "prototype": "passive-provider-chest somewhere in the connected factory network",
+        "bootstrap": "keep at least 50 tree seeds available; no supplier chest is embedded in this blueprint"
+      }
+    ]
+  }
+}

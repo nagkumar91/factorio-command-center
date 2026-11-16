@@ -2,6 +2,8 @@ import { cp, mkdir, readFile, rm } from 'node:fs/promises';
 import { writeData } from './write-data.mjs';
 import {execFileSync} from 'node:child_process';
 execFileSync('python3', ['scripts/package-mod.py'], {stdio:'inherit'});
+execFileSync('node', ['scripts/index-autosaved-derivatives.mjs'], {stdio:'inherit'});
+execFileSync('node', ['scripts/index-designed-blueprints.mjs'], {stdio:'inherit'});
 const mod=JSON.parse(await readFile('starter_initializer/info.json','utf8'));
 await cp(`${mod.name}_${mod.version}.zip`,`site/sources/${mod.name}_${mod.version}.zip`);
 for (const name of ['catalog', 'library', 'production', 'community', 'atlas']) {

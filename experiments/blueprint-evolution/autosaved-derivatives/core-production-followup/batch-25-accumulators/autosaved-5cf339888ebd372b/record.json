@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "status": "native-validated",
+  "source": {
+    "id": "autosaved-5cf339888ebd372b",
+    "name": "Accumulators",
+    "collection": "Autosaved",
+    "edition": "Book variant",
+    "category": "Fulgora",
+    "section": "Accumulators",
+    "sourceUrls": [
+      "https://autosaved.org/factorio/blueprints"
+    ],
+    "sha256": "09389e1db31a54c9cddffb34a5f17e5b08dd09a45a9e127926da83a505e744e0",
+    "file": "source.blueprint.txt",
+    "preserved": true
+  },
+  "candidate": {
+    "file": "candidate.blueprint.txt",
+    "sha256": "ce4b2ddea77260db85c14df17a0edf44473912b370e69d3f12ce4a0f78636777",
+    "label": "Accumulators · compact physical ports · electromagnetic plant",
+    "recipe": "accumulator",
+    "product": "accumulator",
+    "machine": "electromagnetic-plant",
+    "moduleCount": 0,
+    "beaconCount": 0,
+    "entityCount": 13,
+    "footprint": {
+      "widthTiles": 11,
+      "heightTiles": 8,
+      "areaTiles": 88,
+      "selectionBoxArea": 78.6328125,
+      "basis": "Exact Factorio 2.1.24 imported selection boxes."
+    }
+  },
+  "production": {
+    "inputs": [
+      "battery",
+      "iron-plate"
+    ],
+    "outputs": [
+      "accumulator"
+    ],
+    "recipe": "accumulator",
+    "recipeEvidence": {
+      "ingredients": [
+        {
+          "type": "item",
+          "name": "iron-plate",
+          "amount": 2
+        },
+        {
+          "type": "item",
+          "name": "battery",
+          "amount": 5
+        }
+      ],
+      "products": [
+        {
+          "independent_probability": 1,
+          "shared_probability": {
+            "min": 0,
+            "max": 1
+          },
+          "type": "item",
+          "name": "accumulator",
+          "amount": 1,
+          "affected_by_quality": true
+        }
+      ],
+      "baseRecipeCrafts": 360,
+      "electromagneticPlantProductivityBonus": 0.5,
+      "expectedOutput": 540
+    }
+  },
+  "baselineAssessment": {
+    "moduleRequests": 3,
+    "requesterLogistics": true,
+    "rateComparable": false,
+    "reason": "Frozen source has module requests and requester-chest logistics, unlike the physical-belt derivative."
+  },
+  "boundaryMap": {
+    "coordinateBasis": "Raw Factorio blueprint coordinates; north is up, west is decreasing x.",
+    "inputs": [
+      {
+        "item": "battery",
+        "side": "west",
+        "beltEntity": 2,
+        "inserterEntity": 3,
+        "contact": {
+          "x": -2.5,
+          "y": -0.5
+        },
+        "direction": "east",
+        "lanes": "both; batteries only",
+        "clearApproach": {
+          "x": -3.5,
+          "y": -0.5
+        },
+        "displayPanelEntity": 9
+      },
+      {
+        "item": "iron-plate",
+        "side": "west",
+        "beltEntity": 4,
+        "inserterEntity": 5,
+        "contact": {
+          "x": -2.5,
+          "y": 1.5
+        },
+        "direction": "east",
+        "lanes": "both; iron plates only",
+        "clearApproach": {
+          "x": -3.5,
+          "y": 1.5
+        },
+        "displayPanelEntity": 10
+      }
+    ],
+    "machine": {
+      "entity": 1,
+      "name": "electromagnetic-plant",
+      "position": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "recipe": "accumulator",
+      "quality": "normal"
+    },
+    "output": {
+      "item": "accumulator",
+      "side": "east",
+      "inserterEntity": 6,
+      "providerChestEntity": 7,
+      "chestMode": "passive-provider",
+      "contact": {
+        "x": 4.5,
+        "y": 0.5
+      },
+      "clearApproach": {
+        "x": 5.5,
+        "y": 0.5
+      },
+      "displayPanelEntity": 11
+    },
+    "power": {
+      "poleEntity": 8,
+      "poleEntities": [
+        8,
+        12,
+        13
+      ],
+      "name": "medium-electric-pole",
+      "positions": [
+        {
+          "x": 0.5,
+          "y": 4.5
+        },
+        {
+          "x": -3.5,
+          "y": 2.5
+        },
+        {
+          "x": 4.5,
+          "y": 2.5
+        }
+      ],
+      "connection": "Connect any included medium electric pole to the factory grid at an open approach. The included poles are wire-connected.",
+      "clearConnectionApproach": {
+        "x": 0.5,
+        "y": 5.5
+      }
+    }
+  },
+  "design": {
+    "footprint": "Measured from imported Factorio selection boxes during native run.",
+    "undergroundBelts": "Not used: each west feed is a short dedicated route; underground endpoints would add entities without reducing footprint.",
+    "power": "Connect included pole to an external powered grid."
+  },
+  "validation": {
+    "status": "passed",
+    "factorioVersion": "2.1.24",
+    "sourceSha256": "09389e1db31a54c9cddffb34a5f17e5b08dd09a45a9e127926da83a505e744e0",
+    "candidateSha256": "ce4b2ddea77260db85c14df17a0edf44473912b370e69d3f12ce4a0f78636777",
+    "configurationSha256": "47baf0190e980cca324419149d5d957d79d81c6f404d453a1f5790704caa93bb",
+    "warmupTicks": 54000,
+    "measurementTicks": 108000,
+    "nativeReport": "native-report.json",
+    "nativeRaw": "native-raw.json",
+    "nativeNormalized": "native-normalized.json",
+    "nativeIdentity": "native-identity.json",
+    "staticAudit": "static-audit.json",
+    "nativeLog": "native-runs/2026-11-13T09-56-38-735Z-benchmark.log",
+    "all30MeasurementMinutesProductive": true,
+    "outputsDeliveredFromPassiveProvider": true,
+    "poweredConsumers": 4
+  },
+  "acceptance": [
+    "Exact frozen source ID/hash and attribution retained",
+    "Zero module requests, beacons, requester chests",
+    "Dedicated connected west belts and visible item-icon/text labels",
+    "One product-specific east passive-provider output and visible label",
+    "Clear exterior contacts and powered consumers proved natively",
+    "Exact-hash Factorio 2.1.24 run: 15-minute warmup + 30-minute measurement",
+    "Ingredient consumption balanced to base recipe crafts; account for electromagnetic-plant productivity bonus",
+    "Collected output reconciles with base crafts, the productivity bonus, and every measured minute produces"
+  ],
+  "productionEvidence": {
+    "measuredMinutes": 30,
+    "outputPerMinute": 18,
+    "outputPerMinuteByWindow": [
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18,
+      18
+    ],
+    "outputCollected": 540,
+    "baseRecipeCrafts": 360,
+    "productivityBonus": 0.5,
+    "inputsConsumedPerMinute": {
+      "iron-plate": 24,
+      "battery": 60
+    },
+    "inputFlows": {
+      "iron-plate": {
+        "feedAccepted": 1100,
+        "heldStackObserved": true,
+        "transferSamples": 1084,
+        "consumed": 720
+      },
+      "battery": {
+        "feedAccepted": 2728,
+        "heldStackObserved": true,
+        "transferSamples": 2714,
+        "consumed": 1800
+      }
+    },
+    "allConsumersConnected": true,
+    "externalPowerContactConnected": true,
+    "passiveProviderChest": "passive-provider-chest",
+    "allMeasurementMinutesProductive": true,
+    "footprint": {
+      "widthTiles": 11,
+      "heightTiles": 8,
+      "areaTiles": 88,
+      "selectionBoxArea": 78.6328125,
+      "basis": "Exact Factorio 2.1.24 imported selection boxes."
+    }
+  },
+  "nativeEvidenceScope": "Candidate-only. No matched throughput comparison is claimed because the frozen source uses module requests and requester logistics."
+}

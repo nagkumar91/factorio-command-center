@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "status": "native-passed",
+  "source": {
+    "id": "autosaved-5554854e49aca589",
+    "name": "Rockets",
+    "collection": "Autosaved",
+    "sourceURL": "https://autosaved.org/factorio/blueprints",
+    "sources": [
+      "https://autosaved.org/factorio/blueprints"
+    ],
+    "sha256": "8b4e2c14dfd915d7f3988da9ab17df1abe7544c2233e65b9dcaee6cf001727fb",
+    "file": "source.blueprint.txt",
+    "footprint": {
+      "widthTiles": 6,
+      "heightTiles": 13,
+      "areaTiles": 78,
+      "bounds": {
+        "minX": 98,
+        "maxX": 104,
+        "minY": -455,
+        "maxY": -442
+      },
+      "basis": "Factorio 2.1.24 pinned prototype selection boxes around every original entity"
+    },
+    "entityCount": 11,
+    "beaconCount": 4,
+    "moduleCounts": {
+      "speed-module-2": 12
+    },
+    "functionalBoundary": "Requester chest filtered for explosives and iron plates; requires logistic supply and has no west-side physical belt terminal."
+  },
+  "candidate": {
+    "path": "candidate.blueprint.txt",
+    "sha256": "e7201be55d96a54ed8feb4c67d67bf8cbe0680fe6bb570f0999560e81ad44414",
+    "label": "Autosaved Rockets · physical dual west ports · v6",
+    "recipe": "rocket",
+    "moduleCount": 0,
+    "beaconCount": 0,
+    "footprint": {
+      "widthTiles": 8,
+      "heightTiles": 5,
+      "areaTiles": 40,
+      "bounds": {
+        "minX": 0,
+        "maxX": 8,
+        "minY": 0,
+        "maxY": 5
+      }
+    },
+    "entityCount": 13,
+    "measured": {
+      "ratePerMinute": 18.733333333333334,
+      "measuredRocketCount": 562,
+      "measuredRecipeCrafts": 562,
+      "windowRatesPerMinute": [
+        18.7,
+        18.8,
+        18.7
+      ],
+      "inputConsumptionPerMinute": {
+        "explosives": 18.733333333333334,
+        "iron-plate": 37.46666666666667
+      },
+      "tilesPerItemPerMinute": 2.1352313167259784
+    }
+  },
+  "baseline": {
+    "path": "baseline.blueprint.txt",
+    "sha256": "b5e83d0305214f65e3480f40956d6fe3d09b27ca2aa642b933d439065fda860e",
+    "machine": "assembling-machine-2",
+    "moduleCount": 0,
+    "beaconCount": 0,
+    "footprint": {
+      "widthTiles": 8,
+      "heightTiles": 5,
+      "areaTiles": 40,
+      "bounds": {
+        "minX": 0,
+        "maxX": 8,
+        "minY": 0,
+        "maxY": 5
+      }
+    },
+    "measured": {
+      "ratePerMinute": 11.233333333333333,
+      "measuredRocketCount": 337,
+      "measuredRecipeCrafts": 337,
+      "windowRatesPerMinute": [
+        11.2,
+        11.3,
+        11.2
+      ],
+      "inputConsumptionPerMinute": {
+        "explosives": 11.233333333333333,
+        "iron-plate": 22.466666666666665
+      },
+      "tilesPerItemPerMinute": 3.560830860534125
+    }
+  },
+  "production": {
+    "inputs": [
+      "explosives",
+      "iron-plate"
+    ],
+    "outputs": [
+      "rocket"
+    ],
+    "recipe": "rocket",
+    "recipeIngredients": {
+      "explosives": 1,
+      "iron-plate": 2
+    },
+    "recipeResults": {
+      "rocket": 1
+    }
+  },
+  "boundaryMap": {
+    "orientation": "north is up",
+    "inputs": [
+      {
+        "type": "item",
+        "name": "explosives",
+        "entityNumber": 1,
+        "position": {
+          "x": 0.5,
+          "y": 1.5
+        },
+        "feedDirection": "east",
+        "lane": "dedicated belt; right lane fed by native fixture",
+        "downstream": [
+          {
+            "entityNumber": 2,
+            "direction": "east"
+          },
+          {
+            "entityNumber": 3,
+            "direction": "east"
+          }
+        ],
+        "edge": "west"
+      },
+      {
+        "type": "item",
+        "name": "iron-plate",
+        "entityNumber": 4,
+        "position": {
+          "x": 0.5,
+          "y": 3.5
+        },
+        "feedDirection": "east",
+        "lane": "dedicated belt; right lane fed by native fixture",
+        "downstream": [
+          {
+            "entityNumber": 5,
+            "direction": "east"
+          },
+          {
+            "entityNumber": 6,
+            "direction": "east"
+          }
+        ],
+        "edge": "west"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "item",
+        "name": "rocket",
+        "entityNumber": 11,
+        "position": {
+          "x": 7.5,
+          "y": 2.5
+        },
+        "entity": "passive-provider-chest",
+        "edge": "east",
+        "inserterEntityNumber": 10
+      }
+    ],
+    "serviceInputs": [
+      {
+        "type": "electricity",
+        "poleEntityNumber": 8,
+        "position": {
+          "x": 4.5,
+          "y": 0.5
+        }
+      }
+    ]
+  },
+  "design": {
+    "undergroundBeltPairs": 0,
+    "undergroundBeltRationale": "The two independent feed runs are only two tiles long. Underground belts add endpoints and do not shorten either route. No underground transport needed.",
+    "power": "External electricity required at the single medium electric pole.",
+    "otherRequirements": [
+      "Factorio 2.1.24 vanilla rocket recipe availability and assembler 3 research",
+      "Continuous explosives and iron-plate supply on separate west terminals",
+      "External electric network connected to the included pole",
+      "Output chest must be emptied to sustain measured delivery"
+    ],
+    "sourceAssessment": "Original is preserved exactly. It uses a requester chest and has no physical west belt terminals; its logistics-based boundary cannot be compared fairly to a physical-belt fixture without adding external robot logistics. Native source throughput is therefore marked not comparable."
+  },
+  "validation": {
+    "status": "passed",
+    "factorioVersion": "2.1.24",
+    "exactCandidateSha256": "e7201be55d96a54ed8feb4c67d67bf8cbe0680fe6bb570f0999560e81ad44414",
+    "exactBaselineSha256": "b5e83d0305214f65e3480f40956d6fe3d09b27ca2aa642b933d439065fda860e",
+    "prototypeDumpSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "configurationSha256": "cdcb81a9ac76be837ea30968fc9010bfe446dde9c09ed99e01ec658325cec33a",
+    "runId": "2026-11-13T01-58-38-174Z-77762",
+    "nativeReport": "native-report.json",
+    "nativeReportSha256": "8d31566e28b48d8a792e4beb1b5224b97ecdaa0701123be09d3ec93a2387fab3",
+    "staticAudit": "static-audit.json",
+    "warmupMinutes": 15,
+    "measurementMinutes": 30,
+    "measuredWindows": 3
+  }
+}

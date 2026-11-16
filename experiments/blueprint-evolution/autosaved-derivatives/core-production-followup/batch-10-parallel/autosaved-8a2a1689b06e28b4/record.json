@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "status": "native-passed",
+  "source": {
+    "id": "autosaved-8a2a1689b06e28b4",
+    "name": "Personal battery",
+    "collection": "Autosaved",
+    "sourceURL": "https://autosaved.org/factorio/blueprints",
+    "sources": [
+      "https://autosaved.org/factorio/blueprints"
+    ],
+    "sha256": "3d5786529e6026d3d2f260a5d31a1747ff034568bf03bb8c6fdd2ac666b1e152",
+    "file": "source.blueprint.txt",
+    "footprint": {
+      "widthTiles": 6,
+      "heightTiles": 13,
+      "areaTiles": 78,
+      "bounds": {
+        "minX": -3,
+        "maxX": 3,
+        "minY": -64,
+        "maxY": -51
+      },
+      "basis": "Factorio 2.1.24 pinned prototype selection boxes"
+    },
+    "entityCount": 11,
+    "beaconCount": 4,
+    "requestedModules": {
+      "speed-module-2": 12
+    },
+    "functionalBoundary": "Requester chest configured for steel-plate and battery plus module/beacon requests; no physical west belt port."
+  },
+  "candidate": {
+    "file": "candidate.blueprint.txt",
+    "sha256": "4b871c4ed285fcc59309d8ee74bdd637e09a07b9e525481a77875d8c980add86",
+    "label": "Autosaved Personal battery · physical west inputs · v1",
+    "recipe": "battery-equipment",
+    "moduleCount": 0,
+    "beaconCount": 0,
+    "entityCount": 13,
+    "footprint": {
+      "widthTiles": 8,
+      "heightTiles": 5,
+      "areaTiles": 40,
+      "bounds": {
+        "minX": 0,
+        "maxX": 8,
+        "minY": 0,
+        "maxY": 5
+      }
+    },
+    "measured": {
+      "ratePerMinute": 7.5,
+      "measuredProduced": 225,
+      "windowRatesPerMinute": [
+        7.5,
+        7.5,
+        7.5
+      ],
+      "inputConsumptionPerMinute": {
+        "battery": 37.5,
+        "steel-plate": 75
+      },
+      "tilesPerItemPerMinute": 5.333333333333333
+    }
+  },
+  "baseline": {
+    "file": "baseline.blueprint.txt",
+    "sha256": "b7633cd46d0b58d567ecf24d88a19dc4c2186ba72b7dd696881e5dce00bf1f26",
+    "machine": "assembling-machine-2",
+    "moduleCount": 0,
+    "beaconCount": 0,
+    "footprint": {
+      "widthTiles": 8,
+      "heightTiles": 5,
+      "areaTiles": 40,
+      "bounds": {
+        "minX": 0,
+        "maxX": 8,
+        "minY": 0,
+        "maxY": 5
+      }
+    },
+    "measured": {
+      "ratePerMinute": 4.5,
+      "measuredProduced": 135,
+      "windowRatesPerMinute": [
+        4.5,
+        4.5,
+        4.5
+      ],
+      "inputConsumptionPerMinute": {
+        "battery": 22.5,
+        "steel-plate": 45
+      },
+      "tilesPerItemPerMinute": 8.88888888888889
+    }
+  },
+  "production": {
+    "inputs": [
+      "battery",
+      "steel-plate"
+    ],
+    "outputs": [
+      "battery-equipment"
+    ],
+    "recipe": "battery-equipment",
+    "recipeIngredients": {
+      "battery": 5,
+      "steel-plate": 10
+    },
+    "recipeResults": {
+      "battery-equipment": 1
+    },
+    "craftingTimeSeconds": 10
+  },
+  "boundaryMap": {
+    "orientation": "north is up",
+    "inputs": [
+      {
+        "type": "item",
+        "name": "battery",
+        "entityNumber": 1,
+        "position": {
+          "x": 0.5,
+          "y": 1.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "dedicated belt; native fixture supplies both lanes",
+        "downstream": [
+          {
+            "entityNumber": 2,
+            "direction": "east"
+          },
+          {
+            "entityNumber": 3,
+            "direction": "east"
+          }
+        ],
+        "inserterEntityNumber": 3,
+        "clearApproach": {
+          "x": -0.5,
+          "y": 1.5
+        }
+      },
+      {
+        "type": "item",
+        "name": "steel-plate",
+        "entityNumber": 4,
+        "position": {
+          "x": 0.5,
+          "y": 3.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "dedicated belt; native fixture supplies both lanes",
+        "downstream": [
+          {
+            "entityNumber": 5,
+            "direction": "east"
+          },
+          {
+            "entityNumber": 6,
+            "direction": "east"
+          }
+        ],
+        "inserterEntityNumber": 6,
+        "clearApproach": {
+          "x": -0.5,
+          "y": 3.5
+        }
+      }
+    ],
+    "outputs": [
+      {
+        "type": "item",
+        "name": "battery-equipment",
+        "entityNumber": 11,
+        "position": {
+          "x": 7.5,
+          "y": 2.5
+        },
+        "edge": "east",
+        "entity": "passive-provider-chest",
+        "inserterEntityNumber": 10,
+        "clearApproach": {
+          "x": 8.5,
+          "y": 2.5
+        }
+      }
+    ],
+    "externalPower": {
+      "poleEntityNumber": 8,
+      "position": {
+        "x": 4.5,
+        "y": 0.5
+      },
+      "clearApproach": {
+        "x": 4.5,
+        "y": -0.5
+      }
+    }
+  },
+  "design": {
+    "undergroundBeltPairs": 0,
+    "undergroundBeltRationale": "Each feed is two belt tiles long. Underground routing would add parts without reducing the footprint or transport length.",
+    "power": "External electricity connects to the included medium pole.",
+    "otherRequirements": [
+      "battery-equipment recipe unlocked in the actual game (Battery Equipment research)",
+      "Continuous batteries and steel plates supplied on the two west-facing belts",
+      "Output chest emptied to sustain production"
+    ],
+    "sourceAssessment": "The frozen source is preserved exactly. It uses a requester chest and requests speed-module-2s through beacons and the assembler; it has no west physical belt ports. Candidate and AM2 control share identical physical boundaries and zero modules/beacons, so that is the fair native comparison. No source throughput comparison is claimed."
+  },
+  "validation": {
+    "status": "passed",
+    "factorioVersion": "2.1.24",
+    "exactCandidateSha256": "4b871c4ed285fcc59309d8ee74bdd637e09a07b9e525481a77875d8c980add86",
+    "exactBaselineSha256": "b7633cd46d0b58d567ecf24d88a19dc4c2186ba72b7dd696881e5dce00bf1f26",
+    "prototypeDumpSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "configurationSha256": "3d7774a22b03b91eb561a059f8dc74e14982fd2311c3e3602e815074f341be47",
+    "baselineConfigurationSha256": "90ba4fb3699bdb55b40270d483cd10aceda4718d27c592c1f9bd31b38139bcb9",
+    "runId": "2026-11-13T02-14-38-623Z-83974",
+    "warmupTicks": 36000,
+    "warmupMinutes": 15,
+    "measurementTicks": 108000,
+    "measurementMinutes": 30,
+    "measuredWindows": 3,
+    "sourceRateTested": false,
+    "sourceRateReason": "Requester chest plus module/beacon-dependent source has no comparable physical west-side item ports; fair AM2 zero-module port baseline used instead.",
+    "nativeEvidence": {
+      "candidate": "native-candidate-raw.json",
+      "candidateSha256": "61341efbeecb4d855b7caf450a74819fb08209c194c60481c9a7395c7b6cec99",
+      "baseline": "native-baseline-raw.json",
+      "baselineSha256": "e2442c2c49fa9bbb710e48dbabf3962b10927815e0b3c3750054cce0fc5b25d8",
+      "summary": "native-summary-raw.json",
+      "summarySha256": "501b53d7838724b7a4fbf79a451dbc8edd1a6beddac4f0ec911bc3e785c7aad5"
+    },
+    "staticAudit": "static-audit.json",
+    "powerAudit": {
+      "candidateAllConsumersConnected": true,
+      "baselineAllConsumersConnected": true,
+      "candidateConnectedConsumers": 5
+    },
+    "inputFlowAudit": {
+      "candidate": {
+        "battery": 37.5,
+        "steel-plate": 75
+      },
+      "baseline": {
+        "battery": 22.5,
+        "steel-plate": 45
+      }
+    },
+    "steadyWindows": {
+      "candidate": [
+        7.5,
+        7.5,
+        7.5
+      ],
+      "baseline": [
+        4.5,
+        4.5,
+        4.5
+      ]
+    }
+  }
+}

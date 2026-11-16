@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "status": "native-passed",
+  "source": {
+    "id": "autosaved-39671dfad79bfeed",
+    "name": "Recycler",
+    "collection": "Autosaved",
+    "sourceURL": "https://autosaved.org/factorio/blueprints",
+    "sha256": "18c6ffd8fb33d50b2ed93167b8210c47eda3ad4e9a8404f25f8a612450a39e08",
+    "file": "source/blueprint.txt",
+    "attribution": "Autosaved Factorio blueprints; original preserved exactly",
+    "footprint": {
+      "widthTiles": 3,
+      "heightTiles": 5,
+      "areaTiles": 15,
+      "basis": "Factorio 2.1.24 native entity selection-box envelope"
+    },
+    "functionalBoundary": "Original requester chest for four ingredients and passive-provider output; source rate tested separately with the original chest and a physical robot supply fixture."
+  },
+  "candidate": {
+    "file": "candidate.txt",
+    "sha256": "17a8feeadd1fa25679d6456988af60c0ef96453c709c94b1e9abe1cc0c10b51c",
+    "label": "Autosaved Recycler · four physical west ports · v2",
+    "recipe": "recycler",
+    "moduleCount": 0,
+    "beaconCount": 0,
+    "entityCount": 24,
+    "footprint": {
+      "widthTiles": 9,
+      "heightTiles": 5,
+      "areaTiles": 45,
+      "basis": "Factorio 2.1.24 native entity selection-box envelope"
+    },
+    "measured": {
+      "ratePerMinute": 22.5,
+      "measuredOutput": 675,
+      "windowRatesPerMinute": [
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23
+      ],
+      "inputConsumptionPerMinute": {
+        "steel-plate": 450,
+        "iron-gear-wheel": 900,
+        "processing-unit": 135,
+        "concrete": 450
+      },
+      "tilesPerItemPerMinute": 2
+    }
+  },
+  "production": {
+    "inputs": [
+      "concrete",
+      "iron-gear-wheel",
+      "processing-unit",
+      "steel-plate"
+    ],
+    "outputs": [
+      "recycler"
+    ],
+    "recipe": "recycler"
+  },
+  "boundaryMap": {
+    "inputs": [
+      {
+        "type": "item",
+        "name": "concrete",
+        "entityNumber": 2,
+        "position": {
+          "x": 0.5,
+          "y": -2.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "both, this item only",
+        "displayEntityNumber": 4,
+        "clearApproach": {
+          "x": -0.5,
+          "y": -2.5
+        },
+        "route": [
+          2,
+          3,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "type": "item",
+        "name": "iron-gear-wheel",
+        "entityNumber": 9,
+        "position": {
+          "x": 0.5,
+          "y": -0.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "both, this item only",
+        "displayEntityNumber": 11,
+        "clearApproach": {
+          "x": -0.5,
+          "y": -0.5
+        },
+        "route": [
+          9,
+          10
+        ]
+      },
+      {
+        "type": "item",
+        "name": "processing-unit",
+        "entityNumber": 13,
+        "position": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "both, this item only",
+        "displayEntityNumber": 15,
+        "clearApproach": {
+          "x": -0.5,
+          "y": 0.5
+        },
+        "route": [
+          13,
+          14
+        ]
+      },
+      {
+        "type": "item",
+        "name": "steel-plate",
+        "entityNumber": 17,
+        "position": {
+          "x": 0.5,
+          "y": 1.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "both, this item only",
+        "displayEntityNumber": 19,
+        "clearApproach": {
+          "x": -0.5,
+          "y": 1.5
+        },
+        "route": [
+          17,
+          18
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "item",
+        "name": "recycler",
+        "entityNumber": 22,
+        "position": {
+          "x": 8.5,
+          "y": 0.5
+        },
+        "edge": "east",
+        "entity": "passive-provider-chest",
+        "displayEntityNumber": null,
+        "clearApproach": {
+          "x": 9.5,
+          "y": 0.5
+        },
+        "route": [
+          1,
+          21,
+          22
+        ]
+      }
+    ],
+    "externalPower": {
+      "pole": 23,
+      "position": {
+        "x": 4.5,
+        "y": -1.5
+      },
+      "external": true
+    },
+    "lightningProtection": {
+      "entity": 24,
+      "position": {
+        "x": 3.5,
+        "y": -1.5
+      },
+      "note": "Same lightning-rod entity as source; does not replace continuous external electricity."
+    }
+  },
+  "design": {
+    "undergroundPairs": 4,
+    "modules": 0,
+    "beacons": 0,
+    "lightningRodPreserved": true,
+    "externalApproachTiles": 4,
+    "sourceAreaTiles": 15,
+    "candidateAreaTiles": 45,
+    "comparison": "No claim of smaller area per throughput than source. V2 is substantially smaller/faster than its failed v1 while satisfying explicit physical-port requirements."
+  },
+  "validation": {
+    "status": "passed",
+    "factorioVersion": "2.1.24",
+    "exactCandidateSha256": "17a8feeadd1fa25679d6456988af60c0ef96453c709c94b1e9abe1cc0c10b51c",
+    "exactSourceSha256": "18c6ffd8fb33d50b2ed93167b8210c47eda3ad4e9a8404f25f8a612450a39e08",
+    "warmupMinutes": 15,
+    "measurementMinutes": 30,
+    "measuredWindows": 30,
+    "nativeCandidateReport": "validation/candidate-native.json",
+    "verification": "validation/verification.json",
+    "nativeFormat": "candidate-only-v1"
+  }
+}

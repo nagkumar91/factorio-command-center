@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "status": "exact-hash-native-passed",
+  "source": {
+    "id": "autosaved-db681c31ed127027",
+    "name": "Transport Belt",
+    "collection": "Autosaved",
+    "edition": "Book + web page",
+    "category": "Late Game Beaconed Builds",
+    "sourceUrls": [
+      "https://autosaved.org/factorio/blueprints"
+    ],
+    "sha256": "62dfd37e8c68f004ae89250f18920a6fcf8c7d7d1e5c1d452ff4d40db019f291",
+    "file": "source.blueprint.txt",
+    "preservedExactly": true
+  },
+  "candidate": {
+    "file": "candidate.blueprint.txt",
+    "sha256": "38f01b8f51a10b1a3058d3d2d2ecfc013ff2f6dc70e90ecdc83eefbf95321f87",
+    "entityCount": 11,
+    "modules": 0,
+    "beacons": 0,
+    "selectionBoxArea": 41.1875,
+    "tileEnvelope": {
+      "width": 8,
+      "height": 6,
+      "area": 48
+    }
+  },
+  "production": {
+    "recipe": "transport-belt",
+    "inputs": {
+      "iron-gear-wheel": 150,
+      "iron-plate": 150
+    },
+    "outputs": {
+      "transport-belt": 300
+    },
+    "all30MinutesProductive": true
+  },
+  "boundaryMap": {
+    "coordinateBasis": "Raw blueprint coordinates; west is decreasing x and east is increasing x.",
+    "inputs": [
+      {
+        "item": "iron-gear-wheel",
+        "quantityPerCraft": "runtime recipe prototype",
+        "side": "west",
+        "beltEntity": 2,
+        "inserterEntity": 3,
+        "contact": {
+          "x": -2.5,
+          "y": -0.5
+        },
+        "direction": "east",
+        "lanes": "both; iron gear wheels only",
+        "clearApproach": {
+          "x": -3.5,
+          "y": -0.5
+        },
+        "displayPanelEntity": 9
+      },
+      {
+        "item": "iron-plate",
+        "quantityPerCraft": "runtime recipe prototype",
+        "side": "west",
+        "beltEntity": 4,
+        "inserterEntity": 5,
+        "contact": {
+          "x": -2.5,
+          "y": 0.5
+        },
+        "direction": "east",
+        "lanes": "both; iron plates only",
+        "clearApproach": {
+          "x": -3.5,
+          "y": 0.5
+        },
+        "displayPanelEntity": 10
+      }
+    ],
+    "machine": {
+      "entity": 1,
+      "position": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "recipe": "transport-belt",
+      "tier": 3
+    },
+    "output": {
+      "item": "transport-belt",
+      "side": "east",
+      "inserterEntity": 6,
+      "providerChestEntity": 7,
+      "chestMode": "passive-provider",
+      "contact": {
+        "x": 3.5,
+        "y": 0.5
+      },
+      "clearApproach": {
+        "x": 4.5,
+        "y": 0.5
+      },
+      "displayPanelEntity": 11
+    },
+    "power": {
+      "poleEntity": 8,
+      "position": {
+        "x": 0.5,
+        "y": 2.5
+      },
+      "type": "medium-electric-pole",
+      "connection": "Connect included pole to factory grid at open south side.",
+      "clearConnectionApproach": {
+        "x": 0.5,
+        "y": 3.5
+      }
+    }
+  },
+  "native": {
+    "report": "native-report.json",
+    "raw": "native-raw.json",
+    "normalized": "native-normalized.json",
+    "gameVersion": "2.1.24",
+    "configurationSha256": "d0635d7c0de682c21fe40cd18b702c3131f02632275b39e29f016677a4b0e384",
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "exactHash": true,
+    "inputRoutesObserved": true,
+    "inputsConsumed": true,
+    "outputCollected": true,
+    "providerOutput": true,
+    "powerConnected": true,
+    "allEntitiesRevived": true
+  },
+  "staticAudit": "static-audit.json",
+  "render": {
+    "portMap": "port-map.svg",
+    "image": "render.png"
+  },
+  "rejectedAttempts": "rejected/ (empty; no candidate attempts were rejected)",
+  "notes": [
+    "Candidate-only native run; no throughput comparison against the module/beacon/requester source.",
+    "Blueprint area includes every entity and display panel."
+  ]
+}

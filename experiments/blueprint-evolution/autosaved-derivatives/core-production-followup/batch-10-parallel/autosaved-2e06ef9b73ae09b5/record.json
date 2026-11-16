@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "status": "native-validated",
+  "source": {
+    "id": "autosaved-2e06ef9b73ae09b5",
+    "name": "Cargo Bay",
+    "category": "Late Game Beaconed Builds",
+    "section": "Late Game Beaconed Builds",
+    "collection": "Autosaved",
+    "sourceURL": "https://autosaved.org/factorio/blueprints",
+    "sources": [
+      "https://autosaved.org/factorio/blueprints"
+    ],
+    "sha256": "58fe60ea5259ae922b477169daf6703a86ce2552ee608f0f8cf0e9db8cabe3f9",
+    "path": "source.blueprint.txt",
+    "usesRequesterLogistics": true
+  },
+  "candidate": {
+    "path": "candidate.blueprint.txt",
+    "sha256": "e1ed39ef04a39bf1441152f4e466d71ce1d31e5dd3f504949cf1c26355a5b975",
+    "label": "Autosaved Cargo Bay · physical west inputs · v3",
+    "machine": "assembling-machine-3",
+    "recipe": "cargo-bay",
+    "moduleCount": 0,
+    "beaconCount": 0,
+    "entityCount": 17,
+    "footprint": {
+      "approximateWidthTiles": 8,
+      "approximateHeightTiles": 7,
+      "approximateAreaTiles": 56,
+      "method": "Tile-aligned envelope of Factorio selection boxes, including display panels, port belts and power pole."
+    }
+  },
+  "production": {
+    "inputs": [
+      "low-density-structure",
+      "processing-unit",
+      "steel-plate"
+    ],
+    "outputs": [
+      "cargo-bay"
+    ],
+    "recipe": "cargo-bay"
+  },
+  "boundaryMap": {
+    "orientation": "north is up",
+    "inputs": [
+      {
+        "type": "item",
+        "name": "low-density-structure",
+        "entityNumber": 1,
+        "position": {
+          "x": 0.5,
+          "y": 4.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "dedicated two-tile red-belt run feeding east-facing fast inserter",
+        "downstream": [
+          {
+            "entityNumber": 2,
+            "direction": "east"
+          },
+          {
+            "entityNumber": 3,
+            "direction": "east"
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "name": "processing-unit",
+        "entityNumber": 4,
+        "position": {
+          "x": 0.5,
+          "y": 5.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "dedicated two-tile red-belt run feeding east-facing fast inserter",
+        "downstream": [
+          {
+            "entityNumber": 5,
+            "direction": "east"
+          },
+          {
+            "entityNumber": 6,
+            "direction": "east"
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "name": "steel-plate",
+        "entityNumber": 7,
+        "position": {
+          "x": 0.5,
+          "y": 6.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "dedicated two-tile red-belt run feeding east-facing fast inserter",
+        "downstream": [
+          {
+            "entityNumber": 8,
+            "direction": "east"
+          },
+          {
+            "entityNumber": 9,
+            "direction": "east"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "item",
+        "name": "cargo-bay",
+        "entityNumber": 16,
+        "position": {
+          "x": 7.5,
+          "y": 5.5
+        },
+        "edge": "east",
+        "entity": "passive-provider-chest",
+        "viaInserter": 15
+      }
+    ],
+    "serviceInputs": [
+      {
+        "type": "electricity",
+        "poleEntityNumber": 13,
+        "position": {
+          "x": 4.5,
+          "y": 1.5
+        }
+      }
+    ]
+  },
+  "design": {
+    "undergroundBeltPairs": 0,
+    "undergroundBeltRationale": "Each input run is two tiles long; underground belts add entities without reducing span.",
+    "power": "External electric grid must cover the included medium electric pole at y=3.5.",
+    "sourceAssessment": "The frozen community source uses a requester chest, four beacons and 12 requested speed modules. The candidate uses three physical west belt ports and zero modules/beacons. No fair source baseline was measured; footprint superiority is not claimed."
+  },
+  "validation": {
+    "status": "passed",
+    "factorioVersion": "2.1.24",
+    "exactCandidateSha256": "e1ed39ef04a39bf1441152f4e466d71ce1d31e5dd3f504949cf1c26355a5b975",
+    "prototypeDumpSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "runId": "2026-11-13T04-06-57-273Z-30858",
+    "nativeReport": "native/native-run-15m.json",
+    "nativeReportSha256": "c1e49b015c35cc3d08dcb3f1fece7b452723a4e88258d7649d5801092323a51b",
+    "nativeSummary": "native/native-run-summary.json",
+    "warmupTicks": 54000,
+    "measurementTicks": 108000,
+    "windows": 3,
+    "allConsumersPowered": true,
+    "importedEntityCount": 17,
+    "physicalInserterRoutes": {
+      "3": {
+        "pickup": 2,
+        "drop": 14
+      },
+      "6": {
+        "pickup": 5,
+        "drop": 14
+      },
+      "9": {
+        "pickup": 8,
+        "drop": 14
+      },
+      "15": {
+        "pickup": 14,
+        "drop": 16
+      }
+    }
+  },
+  "productionEvidence": {
+    "measuredMinutes": 30,
+    "outputPerMinute": 7.5,
+    "outputWindows": [
+      7.5,
+      7.5,
+      7.5
+    ],
+    "inputConsumptionPerMinute": {
+      "item:low-density-structure": 150,
+      "item:processing-unit": 37.5,
+      "item:steel-plate": 150
+    },
+    "allConsumersConnected": true,
+    "importedEntityCount": 17,
+    "rateBasis": "Physical items/fluids removed only at declared output ports after warmup, less any startup stock. Per-window native statistics or completed crafts of exact recipe-product machines prove production; no theoretical rate is reported as measured."
+  }
+}

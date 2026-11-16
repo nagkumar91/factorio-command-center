@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "autosaved-599ee80b6a96796a",
+  "sourceBlueprintSha256": "1d4907be2a3c289944f352565a95ec826ab876850ecc135d6956aede05826c91",
+  "sourceMatchedComparison": false,
+  "gameVersion": "2.1.24",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "rawReport": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-599ee80b6a96796a/native/autosaved-599ee80b6a96796a-native-report.json",
+  "rawReportSha256": "30c113ce8bfbe96fb82cddc27e3cc155fe5e8b8b2850b84120ed3f3a32a12b77",
+  "comparisons": {
+    "candidateAgainstUnmoduledBaseline": {
+      "available": true,
+      "outputRateRatio": 1,
+      "footprintAreaDeltaTiles": -4,
+      "tilesPerItemPerMinuteDelta": -0.013333333333333336,
+      "improvementClaim": true
+    },
+    "candidateAgainstFrozenSource": {
+      "available": true,
+      "outputRateRatio": 1.25,
+      "footprintAreaDeltaTiles": -16,
+      "tilesPerItemPerMinuteDelta": -0.08999999999999998,
+      "improvementClaim": true
+    }
+  },
+  "connectionAudit": {
+    "westPorts": [
+      {
+        "item": "iron-plate",
+        "entity": 1,
+        "entityType": "steel-chest",
+        "labelPanel": 9,
+        "pickupInserter": 3,
+        "nativePickupTarget": "steel-chest",
+        "nativeDropTarget": "assembling-machine-3",
+        "suppliedItems": 38569
+      },
+      {
+        "item": "pipe",
+        "entity": 2,
+        "entityType": "steel-chest",
+        "labelPanel": 10,
+        "pickupInserter": 4,
+        "nativePickupTarget": "steel-chest",
+        "nativeDropTarget": "assembling-machine-3",
+        "suppliedItems": 72336
+      }
+    ],
+    "eastOutput": {
+      "item": "pipe-to-ground",
+      "inserter": 6,
+      "nativePickupTarget": "assembling-machine-3",
+      "nativeDropTarget": "passive-provider-chest",
+      "chestEntity": 7,
+      "labelPanel": 11
+    },
+    "nativeEntityPlacement": "All 11 entities placed and revived in Factorio 2.1.24.",
+    "nativeRouteTargets": "All three inserters had the declared pickup and drop entities. Plate inserter was waiting for source items at the sampled final tick while its chest remained stocked; production remained stable at 300/min in all measured windows.",
+    "collisionAudit": "No same-position collisions in the static audit; Factorio blueprint placement/revival succeeded."
+  },
+  "optimizationDiagnosis": {
+    "v1Candidate": {
+      "ratePerMinute": 254.066666667,
+      "areaTiles": 32,
+      "westBeltAcceptedPerSecond": {
+        "ironPlate": 10.596296296296297,
+        "pipe": 21.18074074074074
+      }
+    },
+    "expressBeltRevision": "Raised belt tier without changing measured rate or accepted input totals; the single-tile belt-to-inserter feed remained the limiting path.",
+    "v3Change": "Replaced both belt-fed inputs with continuously supplied west-side steel-chest ports, retaining the same assembler tier, recipe, inserters, output, and external power. The measured result reached the 300/min machine rate and compacted label placement reduced the bounding footprint to 28 tiles.",
+    "recipeDemandAt300PerMinute": {
+      "ironPlatePerSecond": 12.5,
+      "pipePerSecond": 25,
+      "derivation": "pipe-to-ground consumes 5 iron plate + 10 pipe and produces 2; 300 products/min = 2.5 crafts/s."
+    }
+  },
+  "cases": [
+    {
+      "sourceId": "autosaved-599ee80b6a96796a",
+      "variant": "candidate",
+      "blueprintHash": "8c19384e80a3f78acaba2a54627aae17665001f9086daae361fb272e511a919b",
+      "perMinute": 300,
+      "outputs": [
+        {
+          "material": "pipe-to-ground",
+          "observedItemsPerSecond": 5
+        }
+      ],
+      "geometryPassed": true,
+      "laneChecksPassed": true,
+      "allMachinesProduced": true,
+      "allOutputPortsDelivered": true,
+      "powerCoveragePassed": true,
+      "steadyWindows": [
+        300,
+        300,
+        300
+      ]
+    }
+  ]
+}

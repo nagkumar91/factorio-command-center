@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "status": "native-validated",
+  "source": {
+    "id": "autosaved-9451ef0af8e00013",
+    "name": "Distractor Capsule",
+    "category": "Late Game Robot Builds",
+    "section": "Distractor Capsule",
+    "collection": "Autosaved",
+    "sourceURL": "https://autosaved.org/factorio/blueprints",
+    "sources": [
+      "https://autosaved.org/factorio/blueprints"
+    ],
+    "sha256": "57233eb4d9f16e4f2427b523cc9a59b827db93991494d4f61057a60c0596b58d",
+    "path": "source.blueprint.txt",
+    "usesRequesterLogistics": true
+  },
+  "candidate": {
+    "path": "candidate.blueprint.txt",
+    "sha256": "9a075af388f52e4acfdaf7b37190949fb261b253c9e10c44896a8eba8e99ca7c",
+    "label": "Autosaved Distractor Capsule · physical west inputs · v1",
+    "machine": "assembling-machine-3",
+    "recipe": "distractor-capsule",
+    "moduleCount": 0,
+    "beaconCount": 0,
+    "entityCount": 13,
+    "footprint": {
+      "approximateWidthTiles": 8,
+      "approximateHeightTiles": 5,
+      "approximateAreaTiles": 40
+    }
+  },
+  "production": {
+    "inputs": [
+      "advanced-circuit",
+      "defender-capsule"
+    ],
+    "outputs": [
+      "distractor-capsule"
+    ],
+    "recipe": "distractor-capsule"
+  },
+  "boundaryMap": {
+    "orientation": "north is up",
+    "inputs": [
+      {
+        "type": "item",
+        "name": "advanced-circuit",
+        "entityNumber": 1,
+        "position": {
+          "x": 0.5,
+          "y": 1.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "dedicated belt; both lanes supplied by native fixture",
+        "downstream": [
+          {
+            "entityNumber": 2,
+            "direction": "east"
+          },
+          {
+            "entityNumber": 3,
+            "direction": "west"
+          }
+        ]
+      },
+      {
+        "type": "item",
+        "name": "defender-capsule",
+        "entityNumber": 4,
+        "position": {
+          "x": 0.5,
+          "y": 3.5
+        },
+        "edge": "west",
+        "feedDirection": "east",
+        "lane": "dedicated belt; both lanes supplied by native fixture",
+        "downstream": [
+          {
+            "entityNumber": 5,
+            "direction": "east"
+          },
+          {
+            "entityNumber": 6,
+            "direction": "west"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "item",
+        "name": "distractor-capsule",
+        "entityNumber": 11,
+        "position": {
+          "x": 7.5,
+          "y": 2.5
+        },
+        "edge": "east",
+        "entity": "passive-provider-chest",
+        "viaInserter": 10
+      }
+    ],
+    "serviceInputs": [
+      {
+        "type": "electricity",
+        "poleEntityNumber": 8,
+        "position": {
+          "x": 4.5,
+          "y": 0.5
+        }
+      }
+    ]
+  },
+  "design": {
+    "undergroundBeltPairs": 0,
+    "undergroundBeltRationale": "Each dedicated belt run is two tiles long; underground endpoints would add space.",
+    "power": "External electric grid must cover the included medium electric pole.",
+    "sourceAssessment": "Not comparable: source has requester-chest logistics plus beacons and speed-module requests. Candidate uses physical west belt ports and no modules or beacons; no source throughput claim."
+  },
+  "validation": {
+    "status": "passed",
+    "factorioVersion": "2.1.24",
+    "exactCandidateSha256": "9a075af388f52e4acfdaf7b37190949fb261b253c9e10c44896a8eba8e99ca7c",
+    "prototypeDumpSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "runId": "2026-11-13T03-40-19-258Z-18832",
+    "nativeReport": "native/native-run-15m.json",
+    "nativeReportSha256": "ebd1500f1f1015bd76db5e36f9a98c47ac49a86b69c29602a15eb48afb5fae1a",
+    "candidateReport": "native/native-candidate-15m.json",
+    "warmupTicks": 54000,
+    "measurementTicks": 108000,
+    "windows": 3
+  },
+  "productionEvidence": {
+    "measuredMinutes": 30,
+    "outputPerMinute": 5,
+    "outputWindows": [
+      5,
+      5,
+      5
+    ],
+    "inputConsumptionPerMinute": {
+      "item:advanced-circuit": 15,
+      "item:defender-capsule": 20
+    },
+    "allConsumersConnected": true,
+    "importedEntities": 13
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "id": "autosaved-6b8f3e1b326f0760",
+    "sha256": "586fd13f672e999716beb4ab65c75b2163d0c2d0d37821da569c16d0f6021667",
+    "attributionFile": "attribution.json"
+  },
+  "candidate": {
+    "file": "candidate.blueprint.txt",
+    "exactByteSha256": "d1e6eb7a2ee31510a232874044499697a07e1b7fac1d7fd614e186f021ad80e9",
+    "entityCount": 14
+  },
+  "production": {
+    "recipe": "processing-unit",
+    "machine": "assembling-machine-3",
+    "machines": 1,
+    "modules": 0,
+    "beacons": 0,
+    "productivityResearch": false,
+    "quality": "normal",
+    "targetPerMinute": {
+      "processing-unit": 6,
+      "electronic-circuit": 120,
+      "advanced-circuit": 12,
+      "sulfuric-acid": 30
+    },
+    "rationale": "One processing unit per 10 seconds; this is an 80% utilization target for a module-free assembling machine 3 at the normal 2.1.24 recipe speed, with ingredient rates balanced exactly to the installed recipe."
+  },
+  "design": {
+    "beltLayout": "One short, eastbound yellow-belt route for each item input; the native feeder extends each route west during the test.",
+    "undergroundBelts": "Not needed: each item route reaches its dedicated inserter directly.",
+    "fluidLayout": "Two contiguous west-to-east pipes from the single west acid handoff to the recipe machine.",
+    "output": "One fast inserter into one unbarred east-side passive-provider chest.",
+    "displays": "Always-visible item/fluid icon and text beside each input and output."
+  },
+  "validationProtocol": {
+    "gameVersion": "2.1.24",
+    "warmupMinutes": 15,
+    "measurementMinutes": 30
+  }
+}

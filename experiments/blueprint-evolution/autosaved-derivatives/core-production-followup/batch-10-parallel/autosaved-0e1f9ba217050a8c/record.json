@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "status": "native-validated",
+  "source": {
+    "id": "autosaved-0e1f9ba217050a8c",
+    "name": "Railgun ammo",
+    "collection": "Autosaved",
+    "sourceURL": "https://autosaved.org/factorio/blueprints",
+    "sha256": "19a48caa48abe2ffd2bc610cff6d3f5c4ecd5ad05ca2b2eebeee70c369eafe49",
+    "path": "source.blueprint.txt",
+    "preservedByteForByte": true
+  },
+  "candidate": {
+    "path": "candidate.blueprint.txt",
+    "sha256": "daa415412eb18e1d2c174c88c14b8d2a38ec4710845fdedf843f85cedb7833e5",
+    "version": 2,
+    "label": "Autosaved Railgun Ammo · 3 physical west inputs · v2",
+    "recipe": "railgun-ammo",
+    "machine": "assembling-machine-3",
+    "modules": 0,
+    "beacons": 0,
+    "entityCount": 17,
+    "footprint": {
+      "widthTiles": 8,
+      "heightTiles": 6,
+      "areaTiles": 48
+    }
+  },
+  "production": {
+    "recipe": "railgun-ammo",
+    "inputs": {
+      "steel-plate": 5,
+      "copper-cable": 10,
+      "explosives": 2
+    },
+    "outputs": {
+      "railgun-ammo": 1
+    },
+    "targetPerMinute": 3,
+    "nativePerMinute": 3,
+    "windowPerMinute": [
+      3,
+      3,
+      3
+    ],
+    "inputConsumptionPerMinute": {
+      "item:steel-plate": 15,
+      "item:copper-cable": 30,
+      "item:explosives": 6
+    }
+  },
+  "boundaryMap": {
+    "inputs": [
+      {
+        "item": "steel-plate",
+        "entryEntity": 1,
+        "continuationEntity": 2,
+        "inserterEntity": 3,
+        "position": {
+          "x": 0.5,
+          "y": 2.5
+        },
+        "edge": "west",
+        "direction": "east",
+        "displayPanel": 10,
+        "physicalPath": [
+          1,
+          2,
+          3,
+          14
+        ]
+      },
+      {
+        "item": "copper-cable",
+        "entryEntity": 4,
+        "continuationEntity": 5,
+        "inserterEntity": 6,
+        "position": {
+          "x": 0.5,
+          "y": 3.5
+        },
+        "edge": "west",
+        "direction": "east",
+        "displayPanel": 11,
+        "physicalPath": [
+          4,
+          5,
+          6,
+          14
+        ]
+      },
+      {
+        "item": "explosives",
+        "entryEntity": 7,
+        "continuationEntity": 8,
+        "inserterEntity": 9,
+        "position": {
+          "x": 0.5,
+          "y": 4.5
+        },
+        "edge": "west",
+        "direction": "east",
+        "displayPanel": 12,
+        "physicalPath": [
+          7,
+          8,
+          9,
+          14
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "item": "railgun-ammo",
+        "edge": "east",
+        "passiveProviderChest": 16,
+        "inserter": 15,
+        "position": {
+          "x": 7.5,
+          "y": 3.5
+        },
+        "physicalPath": [
+          14,
+          15,
+          16
+        ]
+      }
+    ],
+    "power": {
+      "pole": 13,
+      "externalGridRequired": true,
+      "position": {
+        "x": 4.5,
+        "y": 1.5
+      }
+    }
+  },
+  "design": {
+    "layout": "Three separate eastbound west-edge belt entries, each feeding the assembler through a dedicated fast inserter; east-side fast inserter feeds one passive-provider chest.",
+    "sourceAssessment": "No fair module-free source comparison: original uses a requester chest, 4 beacons, and 12 speed module 2 requests. Candidate-only native validation."
+  },
+  "validation": {
+    "status": "passed",
+    "gameVersion": "2.1.24",
+    "exactCandidateSha256": "daa415412eb18e1d2c174c88c14b8d2a38ec4710845fdedf843f85cedb7833e5",
+    "prototypeDumpSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "warmupTicks": 54000,
+    "measurementTicks": 108000,
+    "windows": 3,
+    "importedEntities": 17,
+    "nativeReport": "native/native-run-15m.json",
+    "nativeReportSha256": "308b8ae083bba01a87ad0dd32cfbca51abad07e179ce10bf7419f1a6e6925505",
+    "nativeSummary": "native/native-summary-15m.json",
+    "nativeSummarySha256": "6bc6498926adad1a00493f8739211751df61e0ab175daa22cd22987254a656ea",
+    "checks": {
+      "threeInputBeltsPhysicallyReachAssembler": true,
+      "outputInserterPhysicallyReachesPassiveProvider": true,
+      "allConsumersPowered": true,
+      "exactOutputRate": true,
+      "stableWindows": true,
+      "inputRatesExact": true,
+      "zeroModules": true,
+      "zeroBeacons": true
+    }
+  }
+}

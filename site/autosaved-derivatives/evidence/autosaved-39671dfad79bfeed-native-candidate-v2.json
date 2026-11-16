@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "autosaved-39671dfad79bfeed",
+  "sourceBlueprintSha256": "18c6ffd8fb33d50b2ed93167b8210c47eda3ad4e9a8404f25f8a612450a39e08",
+  "candidateBlueprintSha256": "17a8feeadd1fa25679d6456988af60c0ef96453c709c94b1e9abe1cc0c10b51c",
+  "rawReport": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-39671dfad79bfeed/v2/validation/candidate-native.json",
+  "rawReportSha256": "f153b02959e6de6b898f32575d4582aff5e9510e1ff4871cd94e6c811da21810",
+  "sourceMatchedComparison": false,
+  "gameVersion": "2.1.24",
+  "warmupMinutes": 15,
+  "measuredMinutes": 30,
+  "cases": [
+    {
+      "sourceId": "autosaved-39671dfad79bfeed",
+      "variant": "candidate",
+      "blueprintHash": "17a8feeadd1fa25679d6456988af60c0ef96453c709c94b1e9abe1cc0c10b51c",
+      "perMinute": 22.5,
+      "outputs": [
+        {
+          "item": "recycler",
+          "observedItemsPerSecond": 0.375
+        }
+      ],
+      "geometryPassed": true,
+      "laneChecksPassed": true,
+      "allMachinesProduced": true,
+      "allOutputPortsDelivered": true,
+      "powerCoveragePassed": true,
+      "modulesInstalled": 0,
+      "steadyWindows": [
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23,
+        22,
+        23
+      ],
+      "measuredInputsPerMinute": {
+        "steel-plate": 450,
+        "iron-gear-wheel": 900,
+        "processing-unit": 135,
+        "concrete": 450
+      },
+      "notes": [
+        "Exact-hash native candidate run on Fulgora properties, 15-minute warmup + 30-minute measured interval; 30 one-minute output bins were productive.",
+        "All four independent labeled west inputs fed the recycler at recipe ratios; east passive-provider output was drained and reconciled.",
+        "Source native rate: 20.933/min under requester logistics; candidate rate: 22.5/min with physical west belt ports. Their inbound interfaces differ and the source is much smaller, so no area-efficiency improvement over the source is claimed."
+      ]
+    }
+  ],
+  "limitation": "Physical ports, four material labels, external feeder access, and output handling make this 45-tile candidate larger than the 15-tile requester-chest source. The derivative improves on its rejected v1, not on the source’s area-per-throughput."
+}

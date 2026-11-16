@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "id": "autosaved-8de55c3e795bf053",
+    "name": "Boiler",
+    "collection": "Autosaved",
+    "edition": "Book + web page",
+    "sourceUrls": [
+      "https://autosaved.org/factorio/blueprints"
+    ],
+    "sha256": "d35378aab962a54d9f7d0b664d8a579988712f597378fd679d944bee1469f8a7",
+    "file": "source.blueprint.txt",
+    "attributionFile": "attribution.json",
+    "preserved": true
+  },
+  "candidate": {
+    "version": "v1-compact-west-east",
+    "file": "candidate.blueprint.txt",
+    "sha256": "0435a731b4260dab4e66b60622162e9ed2eb3ec62005b7e1d8103aec43d22b25",
+    "recipe": "boiler",
+    "product": "boiler",
+    "inputs": [
+      {
+        "item": "pipe",
+        "quantityPerCraft": 4,
+        "port": "west",
+        "lane": "both"
+      },
+      {
+        "item": "stone-furnace",
+        "quantityPerCraft": 1,
+        "port": "west",
+        "lane": "both"
+      }
+    ],
+    "output": {
+      "item": "boiler",
+      "side": "east",
+      "chest": "passive-provider-chest"
+    },
+    "assembler": "assembling-machine-3",
+    "modules": 0,
+    "beacons": 0,
+    "footprint": {
+      "widthTiles": 8,
+      "heightTiles": 6,
+      "areaTiles": 48,
+      "basis": "Native selection-box envelope in Factorio 2.1.24 including display panels."
+    }
+  },
+  "baseline": {
+    "file": "baseline.blueprint.txt",
+    "sha256": "f815e584755ca0d94554a7c5d2c352726627dc8681e1a783e7db78c4d7f91ab3",
+    "assembler": "assembling-machine-2",
+    "footprintMatchesCandidate": true
+  },
+  "comparisonFile": "comparison.json",
+  "validation": {
+    "status": "passed",
+    "gameVersion": "2.1.24",
+    "exactCandidateHash": true,
+    "exactBaselineHash": true,
+    "protocol": {
+      "gameVersion": "2.1.24",
+      "warmupTicks": 54000,
+      "warmupMinutes": 15,
+      "measurementTicks": 108000,
+      "measurementMinutes": 30,
+      "ticksPerSecond": 60,
+      "collection": "Drain only the saved passive-provider boiler chest each tick interval; output measured after warmup.",
+      "supply": "Dedicated external eastbound belt placed at each west clear-approach tile; normal pipe and stone-furnace items inserted onto both feeder lanes, then must pass through each saved west belt and matching inserter into the recipe machine. No machine/chest inventory injection.",
+      "power": "External electric-energy-interface attached to the included medium-electric-pole network; no power fixture included in measured blueprint area.",
+      "research": "All official 2.1.24 technologies and recipes enabled identically for both separate forces; normal quality.",
+      "comparison": "AM3 candidate versus same-geometry AM2 baseline. Zero modules/beacons on both; all flow, power, collection and research conditions identical."
+    },
+    "outputPerMinute": 112.5,
+    "baselineOutputPerMinute": 90,
+    "sourceRateCompared": false,
+    "sourceRateReason": "Requester chest, 12 speed-module-2 items, and four beacons in source; no matched native source run claimed.",
+    "nativeEvidence": {
+      "report": "native-report.json",
+      "raw": "native-raw.json",
+      "normalized": "native-normalized.json",
+      "identity": "native-identity.json"
+    },
+    "staticAudit": "static-audit.json",
+    "portMap": "port-map.json",
+    "render": [
+      "port-map.svg",
+      "port-map.png"
+    ],
+    "history": "history/README.md"
+  },
+  "generatedAt": "2026-11-13T02:41:10.477Z"
+}

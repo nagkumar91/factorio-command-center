@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "autosaved-594228e00329cbff",
+  "sourceBlueprintSha256": "28dc139b605b26e660a0024e64db4fce3c7b7b48a49c4a264dfed23554f064c9",
+  "candidateVersion": 1,
+  "candidateFile": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-594228e00329cbff/candidate/copper-wire-v1.blueprint.txt",
+  "candidateBlueprintSha256": "3eedc663878c5c59c563b2294c1113136b2def1cf052e076ca7ec57e86e81b1c",
+  "recordFile": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-594228e00329cbff/record.json",
+  "status": "validated-user-runtime-2.1.24-candidate-only",
+  "validation": {
+    "runtimeVersion": "2.1.24",
+    "catalogueTarget": "2.0.77",
+    "catalogueTargetStatus": "not-run",
+    "warmupMinutes": 15,
+    "measuredMinutes": 30,
+    "sourceMatchedComparison": false,
+    "sourceFixtureNote": "The exact source screening run ended with item_ingredient_shortage at 58 copper cable/min and 14 copper plates/min; this was an invalid source baseline, so no rate ratio is claimed.",
+    "nativeReport": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-594228e00329cbff/candidate/native-candidate-normalized.json",
+    "nativeReportFormat": "candidate-only-v1",
+    "nativeReportFile": "evidence/autosaved-594228e00329cbff-native-candidate.json"
+  },
+  "footprint": {
+    "sourceAreaTiles": 78,
+    "candidateAreaTiles": 40,
+    "deltaTiles": -38
+  },
+  "products": [
+    {
+      "item": "copper-cable",
+      "sourceToCandidateRateRatio": null,
+      "meetsMinimum": false,
+      "candidateItemsPerMinute": 300
+    }
+  ],
+  "ports": [
+    {
+      "role": "input",
+      "material": "copper-plate",
+      "side": "west",
+      "entity": 2,
+      "prototype": "transport-belt",
+      "position": {
+        "x": -3.5,
+        "y": 0.5
+      },
+      "connectionPosition": {
+        "x": -4.5,
+        "y": 0.5
+      },
+      "lanes": "Both belt lanes carry copper plates east; Factorio 2.1.24 measured 150 plates/min consumed by the assembler.",
+      "displayEntity": 1,
+      "proof": "Exact candidate run accepted 6,768 input plates at the belt, consumed 4,500 during the 30-minute interval, and measured 300 copper cable/min."
+    },
+    {
+      "role": "output",
+      "material": "copper-cable",
+      "side": "east",
+      "entity": 7,
+      "prototype": "passive-provider-chest",
+      "position": {
+        "x": 3.5,
+        "y": 0.5
+      },
+      "connectionPosition": {
+        "x": 4.5,
+        "y": 0.5
+      },
+      "lanes": "Collect finished copper cable from the passive-provider chest.",
+      "displayEntity": 8,
+      "proof": "Exact candidate run measured 9,000 copper cable delivered to the provider over 30 minutes."
+    }
+  ],
+  "sourceName": "Copper Wires",
+  "sourceAttribution": "https://autosaved.org/factorio/blueprints",
+  "recipe": "copper-cable",
+  "machine": "assembling-machine-3",
+  "installedModules": 0,
+  "notes": [
+    "Candidate-only native measurement.",
+    "Exact source comparison unavailable due to sustained raw-input starvation in the source fixture.",
+    "Requester-chest logistics delivery was not tested; candidate uses an exterior belt input."
+  ]
+}

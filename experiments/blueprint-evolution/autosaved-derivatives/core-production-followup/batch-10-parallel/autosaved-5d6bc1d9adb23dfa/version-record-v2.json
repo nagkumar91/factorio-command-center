@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "autosaved-5d6bc1d9adb23dfa",
+  "sourceName": "Firearm magazine",
+  "attribution": {
+    "url": "https://autosaved.org/factorio/blueprints",
+    "sourceFile": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-5d6bc1d9adb23dfa/source-original.txt",
+    "sourceSha256": "3266c12712414e47e6e8153d60b3bedc28ece60f4798eea15283500cd47847eb"
+  },
+  "version": "v2",
+  "status": "native-validated",
+  "candidateFile": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-5d6bc1d9adb23dfa/candidate/firearm-magazine-v2.blueprint.txt",
+  "candidateJsonFile": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-5d6bc1d9adb23dfa/candidate/firearm-magazine-v2.blueprint.json",
+  "candidateSha256": "74a32f482e84be8c94ef3122818dfe44cfe721602ee9dae11d7a208aeb85cbe7",
+  "previousVersion": {
+    "version": "v1 draft",
+    "candidateFile": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-5d6bc1d9adb23dfa/history/v1-draft.blueprint.txt",
+    "candidateSha256": "697b9fe56c8a1a56e107ef112b133ac658053ba141f33644f9b763a236435c7a",
+    "recordLocation": "late-game-resources/manifest-v1.json"
+  },
+  "recipe": {
+    "id": "firearm-magazine",
+    "inputs": {
+      "iron-plate": 4
+    },
+    "outputs": {
+      "firearm-magazine": 1
+    },
+    "craftingTimeSeconds": 1
+  },
+  "design": {
+    "machine": "assembling-machine-3",
+    "machineCount": 1,
+    "modules": 0,
+    "entityCount": 8,
+    "footprintTiles": [
+      7,
+      4
+    ],
+    "footprintAreaTiles": 28,
+    "rawInputBoundary": "west",
+    "productBoundary": "east",
+    "ports": {
+      "west": [
+        {
+          "material": "iron-plate",
+          "entity": 1,
+          "port": "requester chest",
+          "path": [
+            1,
+            2,
+            3
+          ],
+          "labelEntity": 7
+        }
+      ],
+      "east": [
+        {
+          "material": "firearm-magazine",
+          "entity": 5,
+          "port": "passive provider chest",
+          "path": [
+            3,
+            4,
+            5
+          ],
+          "labelEntity": 8
+        }
+      ],
+      "allDeclaredPortsConnected": true
+    }
+  },
+  "measured": {
+    "gameVersion": "2.1.24",
+    "warmupMinutes": 15,
+    "measurementMinutes": 30,
+    "sourceRatePerMinute": 75,
+    "candidateRatePerMinute": 75,
+    "exactNativeReport": "experiments/blueprint-evolution/autosaved-derivatives/core-production-followup/batch-10-parallel/autosaved-5d6bc1d9adb23dfa/native-report-v2.json"
+  },
+  "limitations": [
+    "Input requester chest is replenished directly by the native fixture; logistic-robot delivery is not included in this measurement.",
+    "Source/candidate production rates are matched under the same 15-minute warmup and 30-minute measured window; source retains its installed speed modules/beacons while v2 has no modules."
+  ]
+}

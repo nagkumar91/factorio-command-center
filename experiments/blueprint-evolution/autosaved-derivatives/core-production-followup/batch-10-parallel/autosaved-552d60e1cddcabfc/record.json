@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "derivativeVersion": 3,
+  "status": "native-passed",
+  "priorVersions": [
+    {
+      "version": 1,
+      "status": "native-rejected",
+      "blueprintSha256": "1f2a73baced9e406950c5c6628e749e5382b6811d61e4030c7c9cb58152f0713",
+      "recordPath": "history/v1-record.json",
+      "reason": "display panels lacked stable entity tags"
+    },
+    {
+      "version": 2,
+      "status": "native-failed",
+      "blueprintSha256": "d868adbde8e58a36be7de2b007e545675e12420b07e3391c950c4b3952538cef",
+      "recordPath": "history/v2-record.json",
+      "reason": "inserter orientations reversed transport flow"
+    }
+  ],
+  "source": {
+    "id": "autosaved-552d60e1cddcabfc",
+    "name": "Efficiency Modules",
+    "sha256": "d56c4d7dee814bd79c7a6e41c4d24d12aa805716b342713ac5139896df798613",
+    "sha256Encoding": "SHA-256 of exact compressed community blueprint code",
+    "sourceURL": "https://autosaved.org/factorio/blueprints",
+    "sources": [
+      "https://autosaved.org/factorio/blueprints"
+    ],
+    "attribution": "Autosaved.org"
+  },
+  "candidate": {
+    "path": "candidate.blueprint.txt",
+    "sha256": "116c36b80985622937ab09d552cf9e45cca03d19a9fe90e26c9dfc0f4c168e7c",
+    "label": "Efficiency Modules · Connected No Modules v3",
+    "entityCount": 13,
+    "footprint": {
+      "widthTiles": 8,
+      "heightTiles": 5,
+      "areaTiles": 40
+    },
+    "moduleCount": 0,
+    "beaconCount": 0
+  },
+  "production": {
+    "recipe": "efficiency-module",
+    "ingredients": {
+      "advanced-circuit": 5,
+      "electronic-circuit": 5
+    },
+    "product": "efficiency-module",
+    "recipeTimeSeconds": 15,
+    "machine": "assembling-machine-3",
+    "craftingSpeed": 1.25,
+    "theoreticalCeilingPerMinute": 5,
+    "measuredRatePerMinute": 5,
+    "tilesPerItemPerMinute": 8,
+    "measuredOutputCount": 150,
+    "windowCounts": [
+      50,
+      50,
+      50
+    ],
+    "measuredInputConsumptionPerMinute": {
+      "advancedCircuit": 25,
+      "electronicCircuit": 25
+    }
+  },
+  "boundaryMap": {
+    "orientation": "north is up",
+    "inputs": [
+      {
+        "material": "advanced-circuit",
+        "entityNumber": 1,
+        "position": {
+          "x": 0.5,
+          "y": 1.5
+        },
+        "edge": "west",
+        "beltDirection": "east",
+        "lane": "dedicated upper lane"
+      },
+      {
+        "material": "electronic-circuit",
+        "entityNumber": 4,
+        "position": {
+          "x": 0.5,
+          "y": 3.5
+        },
+        "edge": "west",
+        "beltDirection": "east",
+        "lane": "dedicated lower lane"
+      }
+    ],
+    "outputs": [
+      {
+        "material": "efficiency-module",
+        "entityNumber": 10,
+        "position": {
+          "x": 7.5,
+          "y": 2.5
+        },
+        "edge": "east",
+        "entity": "passive-provider-chest"
+      }
+    ],
+    "power": {
+      "entityNumber": 7,
+      "position": {
+        "x": 4.5,
+        "y": 4.5
+      },
+      "externalRequirement": "electricity"
+    },
+    "machineEntityNumber": 8
+  },
+  "design": {
+    "undergroundBelts": 0,
+    "undergroundRationale": "Each feed is only two belt tiles long and there are no crossings; an underground pair would add footprint without shortening the route.",
+    "collisionAudit": "static audit checks entity collision boxes, inserter reach, belt direction, lane continuity, and clearance at declared west/east ports.",
+    "modules": "none"
+  },
+  "validation": {
+    "status": "passed",
+    "factorioVersion": "2.1.24",
+    "exactCandidateSha256": "116c36b80985622937ab09d552cf9e45cca03d19a9fe90e26c9dfc0f4c168e7c",
+    "prototypeDumpSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "nativeRunId": "2026-11-13T01-45-09-542Z-71606",
+    "buildId": "autosaved-552d60e1cddcabfc-v3",
+    "warmupTicks": 54000,
+    "measurementTicks": 108000,
+    "measurementMinutes": 30,
+    "windows": [
+      {
+        "count": 50,
+        "ratePerMinute": 5
+      },
+      {
+        "count": 50,
+        "ratePerMinute": 5
+      },
+      {
+        "count": 50,
+        "ratePerMinute": 5
+      }
+    ],
+    "report": "native-candidate-report.json",
+    "reportSha256": "b20961ed0e4764086a1bfa509485041c6940d0469ee032aefbe38304d4dfe305",
+    "summary": "native-run-summary.json",
+    "summarySha256": "2dc2304172451da9927fd8c8261c283fc1f7f1ddb289a223b8a693e642503a67",
+    "staticAudit": "static-audit.json",
+    "staticAuditPassed": true,
+    "prototypeVerification": {
+      "sourceSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+      "runtimeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+      "canonicalSha256": "bf1ed12fe310426ea70d41d959ffba179198b404b8d9654afaaf340b176d8b59",
+      "exactBytes": true,
+      "matched": true
+    },
+    "matchedSourceComparison": "not-run: original uses requester logistics plus 12 speed modules and 4 beacons; harness boundary-feed contract cannot supply requester chest"
+  },
+  "comparison": {
+    "source": {
+      "footprintTiles": {
+        "width": 6,
+        "height": 13,
+        "area": 78
+      },
+      "speedModuleCount": 12,
+      "beaconCount": 4,
+      "nativeRatePerMinute": null,
+      "rateStatus": "not-measured"
+    },
+    "candidate": {
+      "footprintTiles": 40,
+      "measuredRatePerMinute": 5,
+      "tilesPerItemPerMinute": 8
+    },
+    "fairUnmoduledRateBaseline": {
+      "machine": "assembling-machine-3",
+      "recipe": "efficiency-module",
+      "modules": 0,
+      "ratePerMinute": 5,
+      "areasCompared": false,
+      "note": "Same machine and recipe with no modules. Rate ceiling and candidate measured rate both equal 5/min; no throughput improvement. Baseline footprint is excluded because an unconnected machine has no physically supplied ports."
+    },
+    "improvementClaim": "None. This derivative is smaller by placement bounding area than the frozen, module-boosted source (40 vs 78 tiles), but no matched native source output rate was measured and the original has speed modules/beacons."
+  }
+}

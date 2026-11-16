@@ -2,6 +2,9 @@
 (function () {
   const title = 'Long game flight plans and strategies';
   const plans = [
+    {id:'catalogue',href:'index.html?collection=flight-plans#blueprints',label:'All flight blueprints',detail:'Search workshops by operating inputs, finished outputs and purpose.',icon:'blueprint-book'},
+    {id:'early-loops',href:'early-controlled-loops/index.html',label:'Early controlled loops',detail:'Compact solid-fuel feeder, red/green science, belts, machines and poles.',icon:'logistic-science-pack'},
+    {id:'optimized',href:'index.html?collection=optimized#blueprints',label:'Autosaved · optimized v2',detail:'Module-free revisions with exact native evidence and passive-provider outputs.',icon:'assembling-machine-2'},
     {id:'six-pack',href:'flight-science-sided/index.html#compact',label:'Six-pack science',detail:'Three input tiers: compact, hybrid and fully integrated.',icon:'production-science-pack'},
     {id:'starter-science',href:'flight-science/index.html',label:'Starter science · compact',detail:'Red, green and blue, with an optional military science variant.',icon:'chemical-science-pack'},
     {id:'forest',href:'flight-forest/index.html',label:'Forest management',detail:'Autonomous replanting, renewable seeds and pollution sizing.',icon:'agricultural-tower'},
