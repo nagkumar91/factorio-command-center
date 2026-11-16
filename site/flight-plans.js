@@ -2,6 +2,7 @@
 (function () {
   const title = 'Long game flight plans and strategies';
   const plans = [
+    {id:'five-science',href:'five-science/index.html',label:'Five-pack science + labs',detail:'Adds purple production science, internal rail production and substations.',icon:'production-science-pack'},
     {id:'rgby-science',href:'rgby-science/index.html',label:'Four-pack science + labs',detail:'Red, green, blue and yellow from plates, with connected research labs.',icon:'utility-science-pack'},
     {id:'expansion',href:'compact-expansion-workshop/index.html',label:'Compact expansion workshop',detail:'Blue inserters, red transport and electric furnaces from plates, bricks and plastic.',icon:'electric-furnace'},
     {id:'catalogue',href:'index.html?collection=flight-plans#blueprints',label:'All flight blueprints',detail:'Search workshops by operating inputs, finished outputs and purpose.',icon:'blueprint-book'},

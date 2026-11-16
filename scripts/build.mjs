@@ -5,6 +5,7 @@ execFileSync('python3', ['scripts/package-mod.py'], {stdio:'inherit'});
 execFileSync('node', ['scripts/index-autosaved-derivatives.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/compact-expansion-workshop/preview.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/rgby-science/build-page.mjs'], {stdio:'inherit'});
+execFileSync('node', ['scripts/five-science/build-page.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/index-designed-blueprints.mjs'], {stdio:'inherit'});
 const mod=JSON.parse(await readFile('starter_initializer/info.json','utf8'));
 await cp(`${mod.name}_${mod.version}.zip`,`site/sources/${mod.name}_${mod.version}.zip`);

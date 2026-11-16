@@ -147,6 +147,8 @@ export function optimizeUnderground(blueprint, ports=[]) {
     const input={...a,name:UNDERGROUND,type:'input'},output={...b,name:UNDERGROUND,type:'output'};
     const middle=new Set(segment.slice(1,-1).map(e=>e.entity_number));
     const candidate=working.filter(e=>!middle.has(e.entity_number)).map(e=>e.entity_number===a.entity_number?input:e.entity_number===b.entity_number?output:e);
+    const [vx,vy]=STEP.get(direction(a));
+    if(working.some(e=>e.name===UNDERGROUND&&direction(e)===(direction(a)+8)%16&&(e.position.x-a.position.x)*vy===(e.position.y-a.position.y)*vx&&Math.min(Math.abs((e.position.x-a.position.x)*vx+(e.position.y-a.position.y)*vy),Math.abs((e.position.x-b.position.x)*vx+(e.position.y-b.position.y)*vy))<=MAX_SPAN))continue;
     const pairs=pairings(candidate);
     if(!pairs || pairs.get(a.entity_number)!==b.entity_number || [...oldPairs].some(([id,partner])=>pairs.get(id)!==partner))continue;
     // All previously accepted new pairs must also retain their exact partners.

@@ -102,9 +102,12 @@ export class Layout {
     const tunnelSafe = (x, y, ex, ey, d) => {
       const [vx, vy] = dirs[d / 4];
       for (const e of this.entities) {
-        if (e.name !== 'fast-underground-belt' || e.direction !== d) continue;
+        if (e.name !== 'fast-underground-belt' || (e.direction ?? 0) % 8 !== d % 8) continue;
         const px = Math.floor(e.position.x), py = Math.floor(e.position.y);
         if (vx ? py !== y : px !== x) continue;
+        // Opposed undergrounds can reorient one another during native revival.
+        // Reserve their collinear reach as well as same-direction partners.
+        if (e.direction !== d && Math.min(Math.abs((px-x)*vx+(py-y)*vy),Math.abs((px-ex)*vx+(py-ey)*vy))<=7) return false;
         const inputSpan = (px - x) * vx + (py - y) * vy;
         const outputSpan = (ex - px) * vx + (ey - py) * vy;
         if (e.type === 'output' && inputSpan > 0 && inputSpan <= 7 || e.type === 'input' && outputSpan > 0 && outputSpan <= 7) return false;
