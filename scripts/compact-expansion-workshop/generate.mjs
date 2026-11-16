@@ -1,0 +1,61 @@
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {encodeBlueprint,decodeBlueprint} from '../blueprints.mjs';
+import {powerStarterLayout,starterBounds} from '../science-factory/local-ports/compact-shared-layout.mjs';
+const raw=JSON.parse(await fs.readFile(process.env.FACTORIO_RAW||'.cache/compact-expansion-workshop/data-raw-dump.json'));
+// Power-layout geometry helper indexes ordinary containers; include logistic containers in that geometry view.
+raw.container={...raw.container,...raw['logistic-container']};
+const root='blueprint-sources/compact-expansion-workshop',id='compact-expansion-workshop',width=18,height=6;
+const products=['fast-inserter','fast-transport-belt','fast-underground-belt','fast-splitter','electric-furnace'];
+const feeds=['iron-plate','copper-plate','steel-plate','stone-brick','plastic-bar'];
+const limits={'iron-plate':40,'copper-plate':12,'steel-plate':6,'stone-brick':6,'plastic-bar':4,'iron-gear-wheel':16,'copper-cable':24,'electronic-circuit':12,'advanced-circuit':4,'transport-belt':6,'underground-belt':4,splitter:2,inserter:4,'fast-inserter':4,'fast-transport-belt':4,'fast-underground-belt':4,'fast-splitter':2,'electric-furnace':2};
+let next=1;const entities=[],wires=[],occupied=new Set(),ports=[],loop=[],controlled=[],machines=[];
+function add(name,x,y,extra={}){
+ const pos=extra.position||{x:x+.5,y:y+.5};const p=Object.values(raw).map(g=>g[name]).find(p=>p?.selection_box);assert(p,name);let[[a,b],[c,d]]=p.selection_box;if(name==='display-panel')[a,b,c,d]=[-.5,-.5,.5,.5];if([4,12].includes(extra.direction))[a,b,c,d]=[b,a,d,c];
+ for(let u=Math.floor(pos.x+a+.01);u<pos.x+c-.01;u++)for(let v=Math.floor(pos.y+b+.01);v<pos.y+d-.01;v++){assert(!occupied.has(u+','+v),name+' collision '+u+','+v);occupied.add(u+','+v);}
+ const e={entity_number:next++,name,position:pos,...extra};entities.push(e);return e;
+}
+const belt=(x,y,d)=>add('fast-transport-belt',x,y,{direction:d});
+const arm=(x,y,d,extra={})=>add('fast-inserter',x,y,{direction:d,override_stack_size:1,...extra});
+const wire=(a,b)=>wires.push([a.entity_number,1,b.entity_number,1]);
+const filter=items=>({use_filters:true,filters:items.map((name,i)=>({index:i+1,name,quality:'normal',comparator:'='}))});
+const below=item=>({circuit_enabled:true,circuit_condition:{first_signal:{type:'item',name:item,quality:'normal'},comparator:'<',constant:limits[item]}});
+for(let x=0;x<=width;x++)loop.push(belt(x,0,x===width?8:4));for(let y=1;y<=height;y++)loop.push(belt(width,y,y===height?12:8));for(let x=width-1;x>=0;x--)loop.push(belt(x,height,x===0?0:12));for(let y=height-1;y>=1;y--)loop.push(belt(0,y,0));
+const at=(x,y)=>loop.find(e=>e.position.x===x+.5&&e.position.y===y+.5),reader=loop[0];reader.control_behavior={circuit_read_hand_contents:true,circuit_contents_read_mode:2};for(let i=0;i<loop.length;i++)wire(loop[i],loop[(i+1)%loop.length]);
+function station(recipe,col,row){
+ const cx=3+3*col,cy=row==='top'?-3:row==='inside'?3:9,m=add('assembling-machine-2',cx,cy,{recipe});machines.push({recipe,entity:m.entity_number});
+ const ingredients=raw.recipe[recipe].ingredients.map(i=>typeof i==='object'&&i.name?i.name:i[0]);
+ const ay=row==='top'?-1:row==='inside'?1:7,by=row==='bottom'?6:0,d=row==='top'?8:0;
+ const positions=row==='inside'?recipe==='electronic-circuit'?[-1,0,1]:['iron-gear-wheel','inserter'].includes(recipe)?[-1,0]:[-1]:[-1];
+ const phase={'fast-transport-belt':0,'fast-underground-belt':1,'fast-splitter':2}[recipe];
+ for(const dx of positions){const behavior=recipe==='electronic-circuit'?{circuit_enabled:true,circuit_condition:{first_signal:{type:'item',name:'copper-cable',quality:'normal'},comparator:'>',constant:8}}:phase===undefined?undefined:{circuit_enabled:true,circuit_condition:{first_signal:{type:'virtual',name:'signal-P'},comparator:'=',constant:phase}};const e=arm(cx+dx,ay,d,{...filter(ingredients),...(behavior?{control_behavior:behavior}:{})});wire(e,at(cx+dx,by));if(behavior)controlled.push(e.entity_number);}
+ const oy=row==='inside'?5:ay,dropDirection=row==='inside'?0:(d+8)%16,targetY=row==='inside'?6:by;
+ const e=arm(cx+1,oy,dropDirection,{...filter([recipe]),control_behavior:below(recipe)});wire(e,at(cx+1,targetY));controlled.push(e.entity_number);
+ if(recipe==='copper-cable'){const extra=arm(cx,oy,dropDirection,{...filter([recipe]),control_behavior:below(recipe)});wire(extra,at(cx,targetY));controlled.push(extra.entity_number);}
+}
+['fast-transport-belt','fast-underground-belt','fast-splitter','fast-inserter','electric-furnace'].forEach((r,i)=>station(r,i,'top'));
+['advanced-circuit','copper-cable','electronic-circuit','iron-gear-wheel','inserter'].forEach((r,i)=>station(r,i,'inside'));
+['transport-belt','underground-belt','splitter','copper-cable'].forEach((r,i)=>station(r,i,'bottom'));
+for(const[i,item]of feeds.entries()){
+ const y=i===0?1:i+2;const external=belt(-3,y,4),near=belt(-2,y,item==='iron-plate'?8:4);
+ const e=arm(-1,y,12,{...filter([item]),control_behavior:below(item)});wire(e,at(0,y));controlled.push(e.entity_number);
+ if(item==='iron-plate'){belt(-2,2,4);const more=arm(-1,2,12,{...filter([item]),control_behavior:below(item)});wire(more,at(0,2));controlled.push(more.entity_number);}
+ add('display-panel',item==='plastic-bar'?-3:1,item==='plastic-bar'?7:y,{icon:{type:'item',name:item},text:`IN ${i+1}: ${item}\nWEST entrance, row ${y}. ${item==='iron-plate'?'Both iron admission arms share this one entrance.':''}`,always_show:true});
+ ports.push({kind:'input',item,items:[item],entity:external.entity_number,x:external.position.x,y:external.position.y,position:external.position,direction:4,externalSide:'west'});
+}
+for(const[i,item]of products.entries()){
+ const y=i+1,e=arm(width+1,y,12,filter([item]));wire(e,at(width,y));const chest=add('passive-provider-chest',width+2,y,{bar:1});
+ add('display-panel',width-1,y,{icon:{type:'item',name:item},text:`OUT ${i+1}: ${item}\nEAST passive provider; one stack. Collect to resume.`,always_show:true});ports.push({kind:'output',item,items:[item],entity:chest.entity_number,x:chest.position.x,y:chest.position.y,externalSide:'east'});
+}
+const signal=name=>({type:'virtual',name});
+function comb(x,y,operation,first,out,constant){return add('arithmetic-combinator',x,y,{direction:4,position:{x:x+1,y:y+.5},control_behavior:{arithmetic_conditions:{first_signal:signal(first),second_constant:constant,operation,output_signal:signal(out)}}});}
+const timer=comb(14,8,'+','signal-T','signal-T',1),divide=comb(14,9,'/','signal-T','signal-U',600),phase=comb(14,10,'%','signal-U','signal-P',3);
+wires.push([timer.entity_number,3,timer.entity_number,1],[timer.entity_number,3,divide.entity_number,1],[divide.entity_number,3,phase.entity_number,1],[phase.entity_number,3,at(12,height).entity_number,1]);
+ports.push({kind:'power',items:[],entity:0,x:0,y:0});
+const version=decodeBlueprint(await fs.readFile('blueprint-sources/early-controlled-loops/science-fast-loop.txt','utf8')).blueprint.version;
+const bp={item:'blueprint',version,label:'Compact expansion workshop · Fast inserters, red transport and electric furnaces',description:'Inputs WEST: iron plates, copper plates, steel plates, stone bricks and plastic. All five outputs EAST in labeled passive-provider chests. Circuits, gears and yellow transport parts are made inside. 14 AM2, red belts, fast inserters, no modules. Three machine rows share one controlled red-belt loop. The three arithmetic combinators allocate transport ingredient pickups in 10-second windows to prevent undergrounds monopolizing gears. Preserve circuit wires, entire-belt reader, filters, stock limits and chest bars. Electricity supplied externally at P.',icons:products.slice(0,4).map((name,i)=>({index:i+1,signal:{type:'item',name}})),entities};
+powerStarterLayout(bp,ports,raw);bp.wires.push(...wires);for(const e of bp.entities)e.tags={...e.tags,flight_science_entity:e.entity_number};
+const code=encodeBlueprint({blueprint:bp});await fs.mkdir(root,{recursive:true});await fs.writeFile(root+'/'+id+'.txt',code+'\n');
+const record={id,name:bp.label,file:id+'.txt',blueprintSha256:createHash('sha256').update(code).digest('hex'),products,inputs:ports.filter(p=>p.kind==='input'),optionalInputs:[],outputs:ports.filter(p=>p.kind==='output'),ports,machines,machineCounts:machines.reduce((counts,m)=>(counts[m.recipe]=(counts[m.recipe]||0)+1,counts),{}),construction:Object.fromEntries([...new Set(bp.entities.map(e=>e.name))].map(n=>[n,bp.entities.filter(e=>e.name===n).length])),footprint:starterBounds(bp.entities,raw),loopControl:[{name:id,reader:reader.entity_number,controlled,loop:loop.map(e=>e.entity_number),capacity:loop.length*8,maximumStock:Object.values(limits).reduce((a,b)=>a+b,0),limits}],minimumPerMinute:{'fast-inserter':1,'fast-transport-belt':1,'fast-underground-belt':.2,'fast-splitter':.2,'electric-furnace':.2},status:'native-validation-pending'};
+assert(record.loopControl[0].maximumStock<loop.length*4*.85,'stock needs lane headroom');await fs.writeFile(root+'/manifest.json',JSON.stringify([record],null,2)+'\n');console.log(JSON.stringify({footprint:record.footprint,construction:record.construction,stock:record.loopControl[0]},null,2));

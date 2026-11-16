@@ -2,6 +2,7 @@
 (function () {
   const title = 'Long game flight plans and strategies';
   const plans = [
+    {id:'expansion',href:'compact-expansion-workshop/index.html',label:'Compact expansion workshop',detail:'Blue inserters, red transport and electric furnaces from plates, bricks and plastic.',icon:'electric-furnace'},
     {id:'catalogue',href:'index.html?collection=flight-plans#blueprints',label:'All flight blueprints',detail:'Search workshops by operating inputs, finished outputs and purpose.',icon:'blueprint-book'},
     {id:'early-loops',href:'early-controlled-loops/index.html',label:'Early controlled loops',detail:'Compact solid-fuel feeder, red/green science, belts, machines and poles.',icon:'logistic-science-pack'},
     {id:'optimized',href:'index.html?collection=optimized#blueprints',label:'Autosaved · optimized v2',detail:'Module-free revisions with exact native evidence and passive-provider outputs.',icon:'assembling-machine-2'},

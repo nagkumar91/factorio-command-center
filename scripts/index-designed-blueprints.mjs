@@ -38,6 +38,7 @@ async function register({file,info={},category,purpose,page,proof,report,version
  entries.push(entry);seen.set(sha,entry);audit.push({id:recordId,name:title,blueprintSha256:sha,file:localSource,collection:sourceCollection,section:category,purpose,inputs:inputIds,outputs:productIds,validation:entry.validation.status,report:reportURL,gameVersion:version,lifecycle:entry.lifecycle});
 }
 const specs=[
+ ['compact-expansion-workshop','Malls · building expansion','Production','compact-expansion-workshop/index.html'],
  ['early-controlled-loops','Early game · controlled loops','Production','early-controlled-loops/index.html'],
  ['flight-science','Science · three and four packs','Science production','flight-science/index.html'],
  ['flight-robots','Robots and logistics','Robot production','flight-robots/index.html'],
@@ -50,8 +51,10 @@ const specs=[
 for(const [folder,category,purpose,page]of specs){
  const dir='blueprint-sources/'+folder,manifest=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',report=await read(reportFile);
  for(const info of manifest){const proof=report.builds?.find(b=>b.blueprintSha256===info.blueprintSha256&&b.passed);
+ if(folder==='compact-expansion-workshop'&&(!report.passed||!proof))throw Error('Compact expansion workshop requires exact-hash passing native production proof.');
  let outputs=info.products||info.outputs?.map(p=>p.item);if(folder==='flight-forest'&&info.id!=='forest-kit')outputs=[]; // Standing trees are services, not exported recipe products.
  await register({file:dir+'/'+info.file,info,category,purpose:folder==='early-controlled-loops'?(info.id.includes('feeder')?'Smelting and intermediates':info.products.some(p=>p.endsWith('science-pack'))?'Science production':'Production'):purpose,page,proof,report:reportFile,outputs,version:report.gameVersion||'2.1.24',setup:folder==='flight-forest'?['Keep the planting area clear and on suitable terrain; preserve the seed reserve and harvesting controls. Open the forestry guide for seed-loop and pollution-sizing instructions.']:[]});}
+ if(folder==='compact-expansion-workshop'){const entry=entries.at(-1);entry.recommendedProducts=[...entry.products];entry.recommendation='Latest compact shared workshop';entry.setupNotes.push('Five west inputs: iron plates, copper plates, steel plates, stone bricks and plastic. Five east output passive providers. All circuits, gears and yellow transport components are made inside. Keep the transport phase clock, stock-control wires and chest bars. This is an on-demand shared building workshop; see the guide for measured rates.');}
  // Keep the existing detailed pages available for the offline collection too.
  if(folder==='early-controlled-loops'){await fs.cp(dir,'site/early-controlled-loops',{recursive:true});}
 }
