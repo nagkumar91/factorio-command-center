@@ -4,9 +4,8 @@ import fs from 'node:fs';
 import { createHash } from 'node:crypto';
 import { calculateRequirements, DEFAULT_TARGETS, EXTERNAL_INPUTS } from '../scripts/rgby-science/requirements.mjs';
 
-// Deliberately pinned to the requested installed 2.1.24 dump, not catalogue data.
-const dumpPath = '/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
-const dump = fs.readFileSync(dumpPath);
+// Portable relevant fields from the exact native 2.1.24 prototype snapshot.
+const dump = fs.readFileSync(new URL('./fixtures/rgby-prototypes.json', import.meta.url));
 const raw = JSON.parse(dump);
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-9, `${actual} != ${expected}`);
 
@@ -25,9 +24,10 @@ const expectedCrafts = {
   'electric-engine-unit': 10, battery: 20,
 };
 
-test('uses the exact installed dump requested for the independent audit', () => {
-  assert.equal(createHash('sha256').update(dump).digest('hex'),
-    'ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3');
+test('pins the portable fixture and its original native prototype profile', () => {
+  assert.equal(createHash('sha256').update(dump).digest('hex'), '2027108829dab62d20ac9490443226c45400077b536efddeeee5dad39eec720c');
+  const native=JSON.parse(fs.readFileSync(new URL('../blueprint-sources/rgby-science/native-report.json',import.meta.url)));
+  assert.equal(raw.sourcePrototypeSha256,native.prototypeSha256);
 });
 
 test('30 RGBY/min expands every intermediate to the fixed external boundary', () => {
