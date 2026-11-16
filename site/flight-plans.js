@@ -2,6 +2,10 @@
 (function () {
   const title = 'Long game flight plans and strategies';
   const plans = [
+    {id:'today',href:'index.html?collection=today#blueprints',label:"Today's flight builds",detail:'All nine imports from the 16–17 November session, with the full library filters.',icon:'blueprint-book'},
+    {id:'today-overview',href:'todays-flight-builds/index.html',label:'Today · import overview',detail:'Materials, outputs, footprints, guides and exact native evidence for nine imports.',icon:'blueprint'},
+    {id:'robot-logistics-workshop',href:'robot-logistics-workshop/index.html',label:'Robot logistics workshop',detail:'Robots, roboports, passive providers and storage chests from plates and operating fluids.',icon:'construction-robot'},
+    {id:'inserter-workshop',href:'inserter-workshop/index.html',label:'Inserter workshop · four arms',detail:'Normal, long-handed, fast and bulk inserters with internally manufactured circuits and gears.',icon:'bulk-inserter'},
     {id:'five-science',href:'five-science/index.html',label:'Five-pack science + labs',detail:'Adds purple production science, internal rail production and substations.',icon:'production-science-pack'},
     {id:'rgby-science',href:'rgby-science/index.html',label:'Four-pack science + labs',detail:'Red, green, blue and yellow from plates, with connected research labs.',icon:'utility-science-pack'},
     {id:'expansion',href:'compact-expansion-workshop/index.html',label:'Compact expansion workshop',detail:'Blue inserters, red transport and electric furnaces from plates, bricks and plastic.',icon:'electric-furnace'},

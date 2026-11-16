@@ -14,6 +14,20 @@ const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
 const [catalog,production,library,community,atlas]=await Promise.all(['catalog','production','library','community','atlas'].map(n=>read(`site/data/${n}.json`)));
 const entries=[],seen=new Map(),audit=[];
 const collection='Long game flight plans and strategies';
+const releaseGroup='flight-workshops-20261117';
+const todayFolders=new Set(['compact-expansion-workshop','rgby-science','five-science','robot-logistics-workshop','inserter-workshop']);
+// BEGIN workshop recommendation promotion
+function promoteWorkshop(entries,entry){
+ if(entry.validation?.status!=='game-tested'||entry.validation.blueprintSha256!==entry.blueprintSha256)throw Error('Workshop promotion requires exact-hash native qualification');
+ const promoted=new Set(entry.products);
+ // Only earlier recommendations for these products are superseded. Keep the
+ // records, other recommendations and all source/version history intact.
+ for(const earlier of entries.slice(0,entries.indexOf(entry))){
+  if(earlier.recommendedProducts)earlier.recommendedProducts=earlier.recommendedProducts.filter(id=>!promoted.has(id));
+ }
+ entry.recommendedProducts=[...entry.products];
+}
+// END workshop recommendation promotion
 const destination='sources/designed-blueprints';
 await fs.mkdir('site/'+destination,{recursive:true});
 const unique=a=>[...new Set(a.filter(Boolean))];
@@ -34,7 +48,8 @@ async function register({file,info={},category,purpose,page,proof,report,version
  if(info.initialSeeds)notes.push(`Bootstrap with ${info.initialSeeds} tree seeds. Seeds already circulating inside the nursery are retained for replanting; they are not a continuous imported ingredient.`);
  if(file.includes('solid-science-complete'))notes.push('Supply only iron ore, copper ore and finished solid fuel plus electricity. Leave the inherited east gear tap unused; it is not a supported input for the complete factory.');
  if(archive)notes.unshift('Preserved earlier design. Use a current workshop for new construction; this version is not promoted as a verified optimization.');
- const entry={id:recordId,name:title,collection:sourceCollection,category,section:category,purpose,designedCollection:true,lifecycle:archive?'archive':'current',gameVersion:version,profile:profile||'Space Age',...(operatingBoundary?{operatingBoundary}:{}),coverageExcluded:coverageExcluded||archive,author:sourceAuthor,sourceURL:sourceURL||page||localSource,file:localSource,isBook:false,icons:unique([...(b.icons||[]).map(i=>i.signal?.name),...productIds]).slice(0,4),...blueprintMaterials(object,catalog),code,products:productIds,analysis:{...analysis,kind:purpose,inputs:inputIds,outputs:productIds,netOutputs:productIds,internal:analysis.internal.filter(id=>!productIds.includes(id)&&!inputIds.includes(id)),serviceInputs:unique([...(analysis.serviceInputs||[]),...(info.initialSeeds?['Initial tree seeds']:[])]),serviceOutputs:category==='Forestry'&&info.id!=='forest-kit'?['Tree planting and pollution absorption']:analysis.serviceOutputs,notes:unique([...(analysis.notes||[]),...notes])},setupNotes:notes,operatingPorts:{inputs:info.inputs||[],fluids:info.fluids||[],outputs:info.outputs||[],optional:info.optionalInputs||[]},blueprintSha256:sha,validation:{status:verified?'game-tested':'untested',note:verified?`Exact blueprint SHA-256 matched native Factorio ${version} evidence. ${measured?'Measured delivery: '+Object.entries(measured).map(([id,n])=>id+' '+Number(n).toFixed(2)+'/min').join('; ')+'.':'Operational behavior tested; no manufacturing throughput claim.'}`:'Preserved design; no matching native production qualification is published for this exact version. Recipe/layout analysis does not establish connected routing or sustained output.',blueprintSha256:sha,...(reportURL?{report:reportURL}:{})},...(measured?{measuredOutputsPerMinute:measured}:{}),sources:unique([localSource,page,reportURL,sourceURL]),alternateSources:[],preview:preview||await blueprintPreview(b,recordId,production),...(info.footprint&&!Array.isArray(info.footprint)?{footprint:info.footprint}:{})};
+ const releaseFolder=file.replace(/^blueprint-sources\//,'').split('/')[0];
+ const entry={...(todayFolders.has(releaseFolder)?{releaseGroup}:{}),id:recordId,name:title,collection:sourceCollection,category,section:category,purpose,designedCollection:true,lifecycle:archive?'archive':'current',gameVersion:version,profile:profile||'Space Age',...(operatingBoundary?{operatingBoundary}:{}),coverageExcluded:coverageExcluded||archive,author:sourceAuthor,sourceURL:sourceURL||page||localSource,file:localSource,isBook:false,icons:unique([...(b.icons||[]).map(i=>i.signal?.name),...productIds]).slice(0,4),...blueprintMaterials(object,catalog),code,products:productIds,analysis:{...analysis,kind:purpose,inputs:inputIds,outputs:productIds,netOutputs:productIds,internal:analysis.internal.filter(id=>!productIds.includes(id)&&!inputIds.includes(id)),serviceInputs:unique([...(analysis.serviceInputs||[]),...(info.initialSeeds?['Initial tree seeds']:[])]),serviceOutputs:category==='Forestry'&&info.id!=='forest-kit'?['Tree planting and pollution absorption']:analysis.serviceOutputs,notes:unique([...(analysis.notes||[]),...notes])},setupNotes:notes,operatingPorts:{inputs:info.inputs||[],fluids:info.fluids||[],outputs:info.outputs||[],optional:info.optionalInputs||[]},blueprintSha256:sha,validation:{status:verified?'game-tested':'untested',note:verified?`Exact blueprint SHA-256 matched native Factorio ${version} evidence. ${measured?'Measured delivery: '+Object.entries(measured).map(([id,n])=>id+' '+Number(n).toFixed(2)+'/min').join('; ')+'.':'Operational behavior tested; no manufacturing throughput claim.'}`:'Preserved design; no matching native production qualification is published for this exact version. Recipe/layout analysis does not establish connected routing or sustained output.',blueprintSha256:sha,...(reportURL?{report:reportURL}:{})},...(measured?{measuredOutputsPerMinute:measured}:{}),sources:unique([localSource,page,reportURL,sourceURL]),alternateSources:[],preview:preview||await blueprintPreview(b,recordId,production),...(info.footprint&&!Array.isArray(info.footprint)?{footprint:info.footprint}:{})};
  entries.push(entry);seen.set(sha,entry);audit.push({id:recordId,name:title,blueprintSha256:sha,file:localSource,collection:sourceCollection,section:category,purpose,inputs:inputIds,outputs:productIds,validation:entry.validation.status,report:reportURL,gameVersion:version,lifecycle:entry.lifecycle});
 }
 const specs=[
@@ -73,6 +88,24 @@ for(const info of fiveManifest){
  const research=!!info.researchProbe,proof=research?{...native,outputsPerMinute:undefined}:native;
  await register({file:fiveDir+'/'+info.file,info:{...info,outputs:research?[]:info.outputs},category:'Science · five packs from plates',purpose:research?'Science research':'Science production',page:'five-science/index.html',proof,report:fiveReportFile,outputs:research?[]:info.products,coverageExcluded:research,version:fiveReport.gameVersion,setup:['Plate-fed red, green, blue, yellow and purple science. Supply every labeled west input in both banks, including stone and stone bricks for purple. All circuits, engines, batteries, frames, processors, rails, furnaces and productivity modules are manufactured inside. Substations distribute electricity; no modules are installed.',research?'Five packs feed the connected labs directly. Effective lab speed and technology time determine continuously supported lab count; see guide.':'Five adjacent east passive-provider chests collect science; preserve chest limits and isolated stock-control wiring.']});
  if(!research){entries.at(-1).recommendedProducts=['production-science-pack'];entries.at(-1).recommendation='Latest five-pack science workshop with substations';}
+}
+// New workshops are admitted only after exact-code native qualification. Never infer
+// manufacturing coverage from their construction inventory or intermediate recipes.
+for(const [folder,category,purpose,expected] of [
+ ['robot-logistics-workshop','Robots and logistics','Robot production',['construction-robot','logistic-robot','roboport','passive-provider-chest','storage-chest']],
+ ['inserter-workshop','Inserters','Production',['inserter','long-handed-inserter','fast-inserter','bulk-inserter']]
+]){
+ const dir='blueprint-sources/'+folder,manifest=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',report=await read(reportFile);
+ if(manifest.length!==1)throw Error('Expected one current workshop: '+folder);
+ for(const info of manifest){
+  const sha=hash(await fs.readFile(dir+'/'+info.file,'utf8'));
+  const proof=report.builds?.find(b=>b.blueprintSha256===sha&&b.passed===true);
+  if(report.passed!==true||!proof||info.blueprintSha256!==sha)throw Error('Workshop requires exact-hash passing native production proof: '+folder);
+  if(JSON.stringify([...info.products].sort())!==JSON.stringify([...expected].sort()))throw Error('Unexpected workshop products: '+folder);
+  await register({file:dir+'/'+info.file,info,category,purpose,page:folder+'/index.html',proof,report:reportFile,outputs:info.products,version:report.gameVersion,setup:['Supply every labeled operating input, including fluids where listed, and external electricity. Preserve stock controls, circuit wires and passive-provider chest limits. Intermediates are manufactured inside; construction materials are not operating inputs.']});
+  const entry=entries.at(-1);
+  promoteWorkshop(entries,entry);entry.recommendation='Latest qualified '+folder.replaceAll('-',' ');
+ }
 }
 const space=await read('blueprint-sources/flight-space-science/manifest.json'),spaceReport='blueprint-sources/flight-space-science/validation/native-report.json',spaceProof=await read(spaceReport);
 await register({file:'blueprint-sources/flight-space-science/'+space.file,info:space,category:'Space science · orbital cell',purpose:'Science production',page:'flight-space-science/index.html',proof:{...spaceProof,passed:spaceProof.outputItems>0&&spaceProof.hubSciencePacks>0},report:spaceReport,outputs:[space.output.item],setup:['Zero-gravity surface required. Attach the foundation to a space-platform hub. Feed iron plates, carbon and ice from separate asteroid-processing equipment; the cell does not collect or process asteroids. Science is transferred into the hub and requested down to Nauvis.']});
