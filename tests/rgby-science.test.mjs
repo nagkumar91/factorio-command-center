@@ -1,0 +1,8 @@
+import test from'node:test';import assert from'node:assert/strict';import fs from'node:fs';import{createHash}from'node:crypto';import{decodeBlueprint}from'../scripts/blueprints.mjs';
+const dir=new URL('../blueprint-sources/rgby-science/',import.meta.url),manifest=JSON.parse(fs.readFileSync(new URL('manifest.json',dir))),report=JSON.parse(fs.readFileSync(new URL('native-report.json',dir)));
+for(const m of manifest)test(m.id+' preserves its native qualified operating boundary',()=>{
+ const code=fs.readFileSync(new URL(m.file,dir),'utf8').trim(),sha=createHash('sha256').update(code).digest('hex'),b=decodeBlueprint(code).blueprint,native=report.builds.find(b=>b.blueprintSha256===sha&&b.id===m.id);
+ assert.equal(m.blueprintSha256,sha);assert(native?.passed,'matching passing native qualification required');assert(b.entities.every(e=>Object.keys(e.items||{}).length===0),'no modules');assert(b.entities.filter(e=>e.recipe&&e.name.startsWith('assembling-machine')).every(e=>e.name==='assembling-machine-2'));
+ assert(m.inputs.every(p=>p.externalSide==='west'));assert(m.fluids.every(p=>p.externalSide==='west'));assert.equal(m.underground.existingUnpairedEndpoints.length,0);
+ if(m.researchProbe){assert.equal(b.entities.filter(e=>e.name==='lab').length,m.expectedLabCount);assert(native.researchProbe.unitsPerMinute>=29.5);assert(native.researchProbe.allPowered&&native.researchProbe.allActive);}else{assert(m.outputs.every(p=>p.externalSide==='east'&&b.entities.find(e=>e.entity_number===p.entity)?.name==='passive-provider-chest'));for(const p of m.products){assert(native.outputsPerMinute[p]>=29.5);assert(native.recovery.outputsPerMinute[p]>=29.5);}assert.equal(native.recovery.blockedOutputFilled.length,4);}
+});

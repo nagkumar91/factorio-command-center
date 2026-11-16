@@ -1,0 +1,1 @@
+data:extend{{type='technology',name='rgby-test',icon='__base__/graphics/technology/automation.png',icon_size=256,unit={count=100000,time=60,ingredients={{'automation-science-pack',1},{'logistic-science-pack',1},{'chemical-science-pack',1},{'utility-science-pack',1}}},effects={}}}

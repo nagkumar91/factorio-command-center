@@ -128,6 +128,10 @@ export class Layout {
         const [dx, dy] = dirs[d / 4];
         const add = (x, y, distance, tunnel) => {
           if (!free(x, y)) return;
+          // A saved belt occupies one surface tile. Revisiting a coordinate with
+          // another heading would overwrite that earlier segment in the plan.
+          for (let ancestor = node; ancestor; ancestor = prev.get(ancestor.key)?.node)
+            if (ancestor.x === x && ancestor.y === y) return;
           if (x === tx && y === ty && (d === (endDirection + 8) % 16 || tunnel || options.endDirection !== undefined && d !== options.endDirection)) return;
           if (tunnel && (node.d !== d || !tunnelSafe(node.x, node.y, x, y, d) || node.key === initial.key && startId || node.x === tx && node.y === ty)) return;
           const g = node.g + distance + (node.d >= 0 && node.d !== d ? 1.25 : 0) + (tunnel ? 7 : 0);

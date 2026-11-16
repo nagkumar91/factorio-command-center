@@ -1,0 +1,316 @@
+{
+  "id": "rgby-processors",
+  "gameVersion": "2.1.24",
+  "file": "processors.txt",
+  "blueprintSha256": "6eead5e8da4c470efcaa324a3595ce113bdf0ed6cee4508ee2ddebfc0442fcd2",
+  "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+  "ports": [
+    {
+      "kind": "input",
+      "item": "electronic-circuit",
+      "items": [
+        "electronic-circuit"
+      ],
+      "entity": 61,
+      "x": -3.5,
+      "y": 2.5,
+      "position": {
+        "x": -3.5,
+        "y": 2.5
+      },
+      "externalSide": "west",
+      "perMinute": 450,
+      "direction": 4
+    },
+    {
+      "kind": "input",
+      "item": "advanced-circuit",
+      "items": [
+        "advanced-circuit"
+      ],
+      "entity": 67,
+      "x": -3.5,
+      "y": 3.5,
+      "position": {
+        "x": -3.5,
+        "y": 3.5
+      },
+      "externalSide": "west",
+      "perMinute": 45,
+      "direction": 4
+    },
+    {
+      "kind": "fluid",
+      "item": "sulfuric-acid",
+      "items": [
+        "sulfuric-acid"
+      ],
+      "entity": 71,
+      "x": -3.5,
+      "y": -4.5,
+      "position": {
+        "x": -3.5,
+        "y": -4.5
+      },
+      "externalSide": "west",
+      "perMinute": 112.5
+    },
+    {
+      "kind": "output",
+      "item": "processing-unit",
+      "items": [
+        "processing-unit"
+      ],
+      "entity": 92,
+      "x": 19.5,
+      "y": 1.5,
+      "position": {
+        "x": 19.5,
+        "y": 1.5
+      },
+      "externalSide": "east",
+      "perMinute": 22.5
+    }
+  ],
+  "loopControl": [
+    {
+      "name": "Processors",
+      "reader": 1,
+      "controlled": [
+        44,
+        48,
+        52,
+        56,
+        60,
+        65,
+        66,
+        70
+      ],
+      "loop": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ],
+      "limits": {
+        "electronic-circuit": 96,
+        "advanced-circuit": 16,
+        "processing-unit": 8
+      },
+      "capacity": 320,
+      "maximumStock": 120,
+      "width": 17,
+      "height": 3,
+      "admission": {
+        "item": "electronic-circuit",
+        "inserter": "bulk-inserter",
+        "entities": [
+          65,
+          66
+        ],
+        "baseHandCapacity": 2,
+        "requiredTechnology": "bulk-inserter",
+        "laterCapacityUpgrades": false,
+        "note": "The bulk-inserter unlock itself grants +1 capacity in installed 2.1.24; two items per hand, with no later capacity upgrades."
+      }
+    }
+  ],
+  "machineCounts": {
+    "processing-unit": 5
+  },
+  "footprint": {
+    "left": -4,
+    "top": -5,
+    "right": 20,
+    "bottom": 4,
+    "width": 24,
+    "height": 9
+  },
+  "capacityPerMinute": 22.5,
+  "powerPoleIds": [
+    93,
+    94,
+    95,
+    96,
+    97
+  ],
+  "geometry": {
+    "machineCenters": [
+      {
+        "x": 3.5,
+        "y": -2.5
+      },
+      {
+        "x": 6.5,
+        "y": -2.5
+      },
+      {
+        "x": 9.5,
+        "y": -2.5
+      },
+      {
+        "x": 12.5,
+        "y": -2.5
+      },
+      {
+        "x": 15.5,
+        "y": -2.5
+      }
+    ],
+    "acidManifold": {
+      "from": {
+        "x": -3.5,
+        "y": -4.5
+      },
+      "to": {
+        "x": 15.5,
+        "y": -4.5
+      }
+    },
+    "loopBounds": {
+      "left": 0.5,
+      "top": 0.5,
+      "right": 17.5,
+      "bottom": 3.5
+    },
+    "inputArms": [
+      {
+        "x": -0.5,
+        "y": 1.5
+      },
+      {
+        "x": -0.5,
+        "y": 2.5
+      }
+    ],
+    "chest": {
+      "x": 19.5,
+      "y": 1.5
+    }
+  },
+  "status": "standalone-native-verified",
+  "construction": {
+    "fast-transport-belt": 47,
+    "assembling-machine-2": 5,
+    "fast-inserter": 17,
+    "bulk-inserter": 2,
+    "pipe": 20,
+    "passive-provider-chest": 1,
+    "medium-electric-pole": 5
+  },
+  "native": {
+    "passed": true,
+    "outputPerMinute": 22.533333333333335,
+    "producedPerMinute": 22.4,
+    "machines": [
+      {
+        "id": 41,
+        "products": 67,
+        "perMinute": 4.466666666666667,
+        "status": "working"
+      },
+      {
+        "id": 45,
+        "products": 68,
+        "perMinute": 4.533333333333333,
+        "status": "working"
+      },
+      {
+        "id": 49,
+        "products": 67,
+        "perMinute": 4.466666666666667,
+        "status": "working"
+      },
+      {
+        "id": 53,
+        "products": 67,
+        "perMinute": 4.466666666666667,
+        "status": "working"
+      },
+      {
+        "id": 57,
+        "products": 67,
+        "perMinute": 4.466666666666667,
+        "status": "working"
+      }
+    ],
+    "supplied": {
+      "electronic-circuit": 9136,
+      "advanced-circuit": 948
+    },
+    "statusSamples": {
+      "working": 4500
+    },
+    "maxLoopStock": 85,
+    "loopCapacity": 320,
+    "bulkInserters": [
+      {
+        "entity": 162,
+        "prototypeStackSizeBonus": 0,
+        "usesNonBulkBonus": true,
+        "observedMaxHand": 2,
+        "position": {
+          "y": 2.5,
+          "x": -8.5
+        }
+      },
+      {
+        "entity": 163,
+        "prototypeStackSizeBonus": 0,
+        "usesNonBulkBonus": true,
+        "observedMaxHand": 2,
+        "position": {
+          "y": 3.5,
+          "x": -8.5
+        }
+      }
+    ],
+    "warmupMinutes": 5,
+    "measurementMinutes": 15,
+    "feedPolicy": "Saturated declared west belts and west acid pipe only; no internal inventory injection; east chest drained each second",
+    "inserterCapacityResearch": {
+      "fast": 0,
+      "bulkUnlockBonus": 1,
+      "technology": "bulk-inserter unlock only; no later capacity upgrades"
+    },
+    "blueprintSha256": "6eead5e8da4c470efcaa324a3595ce113bdf0ed6cee4508ee2ddebfc0442fcd2",
+    "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "gameVersion": "2.1.24"
+  }
+}

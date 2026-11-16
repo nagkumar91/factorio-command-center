@@ -1,0 +1,14 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {makeFrames} from '../../../../../scripts/rgby-science/frames.mjs';
+import {encodeBlueprint} from '../../../../../scripts/blueprints.mjs';
+const rawPath='/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
+const bytes=await fs.readFile(rawPath),raw=JSON.parse(bytes),c=makeFrames(raw);
+const bp={blueprint:{item:'blueprint',version:562954249961472,label:'Compact frames · 10/min',entities:c.entities,wires:c.wires,icons:[{index:1,signal:{type:'item',name:'flying-robot-frame'}}]}};
+const code=encodeBlueprint(bp),sha=s=>createHash('sha256').update(s).digest('hex');
+const out='blueprint-sources/rgby-science/components/frames';
+const m={attribution:'New RGBY local frame layout; circulating controls and lane balancer adapted from scripts/flight-robots/generate.mjs; wet-machine orientations checked against supplied 2.1.24 prototypes and flight-science-sided/full/components/frames.',status:'candidate-see-exact-hash-native-report',id:'frames-10',name:'Compact frames · 10/min',file:'frames-10.txt',blueprintSha256:sha(code),prototypeSha256:sha(bytes),products:['flying-robot-frame'],targets:{'flying-robot-frame':10},...c,inputs:c.ports.filter(p=>p.kind==='input').map(p=>({item:p.items[0],...p})),fluids:c.ports.filter(p=>p.kind==='fluid').map(p=>({item:p.items[0],...p})),outputs:c.ports.filter(p=>p.kind==='output').map(p=>({item:p.items[0],...p}))};
+delete m.entities;delete m.wires;
+await fs.writeFile(out+'/frames-10.txt',code+'\n');await fs.writeFile(out+'/frames-10.json',JSON.stringify(bp,null,2)+'\n');await fs.writeFile(out+'/manifest.json',JSON.stringify([m],null,2)+'\n');
+console.log(JSON.stringify({footprint:c.footprint,counts:c.machineCounts,sha:m.blueprintSha256}));
