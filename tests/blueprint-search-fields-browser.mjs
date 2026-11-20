@@ -17,5 +17,17 @@ try{
  const card=page.locator('.blueprint-card').filter({has:page.locator('h3',{hasText:four})});assert.equal(await card.count(),1);
  assert.ok((await card.first().textContent()).includes('MAKES AND USES INSIDE'),'card label');
  await card.first().getByRole('button',{name:/Explore/}).click();assert.ok((await page.locator('#modal').textContent()).includes('Made and used inside'),'detail line');
- assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search.');
+ // Essentials round: an output search for one product of each design finds it, and an input search
+ // for electronic circuits finds the three consumers (the supplier produces them instead).
+ const supplier='Green-circuit supplier · 360/min',mall='Essentials mall · eight building products on demand',robots='Robot essentials · 5/5/0.5/2/2 per minute',six='Six-pack science · 30/min each';
+ await page.keyboard.press('Escape');await page.locator('#modal').evaluate(d=>d.open&&d.close());await page.locator('#blueprint-search').fill('');
+ for(const [query,title] of [['electronic circuit',supplier],['electric mining drill',mall],['roboport',robots],['military science pack',six]]){const found=await search('outputs',query);assert.ok(found.includes(title),'outputs: '+query+' gave '+found.join(' | '));}
+ const consumers=await search('inputs','electronic circuit');for(const title of [mall,robots,six])assert.ok(consumers.includes(title),'inputs: electronic circuit finds '+title);assert.ok(!consumers.includes(supplier),'the supplier does not need circuits');
+ await page.goto(url+'?collection=essentials#blueprints');await page.reload();await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ assert.equal(await page.locator('#blueprint-source').inputValue(),'Essentials · 21 November');
+ assert.deepEqual([...await titles()].sort(),[supplier,mall,robots,six].sort(),'essentials view lists exactly the four');
+ assert.ok((await page.locator('.collection-banner').textContent()).includes('Essentials builds'));
+ assert.deepEqual([...await search('inputs','electronic circuit')].sort(),[mall,robots,six].sort());
+ assert.deepEqual(await search('outputs','electronic circuit'),[supplier]);
+ assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials are findable by input and output.');
 }finally{await browser.close();}

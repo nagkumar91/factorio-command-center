@@ -98,18 +98,27 @@ test('Recommended workshop products lead coverage while earlier versions remain 
  }
 });
 
-test('Actual release coverage promotes fast inserters and storage chests ahead of older builds',async t=>{
+// The essentials round (21 November) supersedes these recommendations: the essentials mall leads fast
+// inserters, robot essentials leads storage chests and six-pack science leads the ground packs. The
+// 17 November workshops stay registered and listed in coverage as alternatives.
+test('Actual release coverage keeps the today workshops listed behind their essentials successors',async t=>{
  const atlas=JSON.parse(await fs.readFile('site/data/atlas.json'));
- const workshops=['inserter-workshop','robot-logistics-workshop'].map(folder=>atlas.blueprints.find(b=>b.file?.startsWith('sources/designed-blueprints/'+folder+'/')));
+ const find=folder=>atlas.blueprints.find(b=>b.file?.startsWith('sources/designed-blueprints/'+folder+'/'));
+ const workshops=['inserter-workshop','robot-logistics-workshop'].map(find);
  if(workshops.some(b=>!b))return t.skip('Run after the parent indexes both exact-hash qualified workshops');
- for(const [id,workshop] of [['fast-inserter',workshops[0]],['storage-chest',workshops[1]]]){
+ for(const [id,workshop,successor] of [['fast-inserter',workshops[0],find('essentials-mall')],['storage-chest',workshops[1],find('robot-essentials')]]){
   assert.equal(workshop.validation.status,'game-tested');assert.equal(workshop.validation.blueprintSha256,workshop.blueprintSha256);
-  assert.equal(atlas.coverage.items.find(i=>i.id===id).builds[0],workshop.id,`${id} must recommend the new workshop first`);
-  assert.ok(workshop.recommendedProducts.includes(id));
-  assert.ok(atlas.blueprints.filter(b=>b.id!==workshop.id&&b.recommendedProducts?.includes(id)).length===0,'Earlier product recommendations are superseded');
+  const builds=atlas.coverage.items.find(i=>i.id===id).builds;
+  assert.equal(builds[0],successor.id,`${id} must recommend the essentials successor first`);
+  assert.ok(builds.includes(workshop.id),`${id} keeps the today workshop listed`);
+  assert.ok(!workshop.recommendedProducts.includes(id));
+  assert.ok(atlas.blueprints.filter(b=>b.id!==successor.id&&b.recommendedProducts?.includes(id)).length===0,'Earlier product recommendations are superseded');
  }
- const compact=atlas.blueprints.find(b=>b.file?.startsWith('sources/designed-blueprints/compact-expansion-workshop/'));
+ assert.deepEqual([...workshops[0].recommendedProducts].sort(),['inserter','long-handed-inserter'],'The inserter workshop keeps the arms the mall does not make');
+ const compact=find('compact-expansion-workshop');
  assert.ok(compact.products.includes('fast-inserter'),'Earlier compact blueprint stays available');
  assert.ok(!compact.recommendedProducts.includes('fast-inserter'));
- for(const folder of ['rgby-science','five-science'])assert.ok(atlas.blueprints.find(b=>b.file?.startsWith('sources/designed-blueprints/'+folder+'/')&&b.recommendedProducts?.some(id=>id.endsWith('science-pack'))),'Science recommendations remain intact');
+ const six=find('six-science');
+ for(const folder of ['rgby-science','five-science']){const b=atlas.blueprints.find(b=>b.file?.startsWith('sources/designed-blueprints/'+folder+'/')&&b.products.length);assert.ok(b,'Plate-fed science stays registered');for(const id of b.products)assert.ok(atlas.coverage.items.find(i=>i.id===id).builds.includes(b.id),folder+' stays listed for '+id);}
+ for(const id of six.products)assert.equal(atlas.coverage.items.find(i=>i.id===id).builds[0],six.id);
 });
