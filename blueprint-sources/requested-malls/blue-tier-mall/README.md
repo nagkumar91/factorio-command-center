@@ -1,119 +1,132 @@
 # Blue-tier on-demand mall
 
-Reviewable **Factorio 2.1.24 Space Age** candidate: seven AM2s, fast handling inserters, red transport belts, **one passive-provider output chest**, no modules or beacons. The blueprint has **149 entities**. Its full selection envelope is **33 × 13 = 429 tiles**, including display-panel overhang; the occupied construction grid is **33 × 12 = 396 tiles**. External supply infrastructure is excluded. No minimum-area or items/min claim is made.
+**Factorio 2.1.24 Space Age.** Seven assembling machines 2, fast inserters, red transport belts, one passive-provider output chest, no modules or beacons. It keeps a small stock of the three express belt items and the four inserters, and makes more only when stock is taken.
 
-Import [candidate/blueprint.txt](candidate/blueprint.txt). Inspect the [decoded blueprint](candidate/blueprint.json), [layout schematic](layout.png), [static audit](static-audit.json), and [manifest](manifest.json).
+- **Size:** 24 × 9 = 216 tiles (selection envelope of every entity; external supply excluded).
+- **Entities:** 136: 7 machines, 52 belts, 31 inserters, 23 pipes, 5 medium poles, 7 input chests, 1 provider chest, 10 labels.
+- **Static audit:** 132 of 132 checks pass ([static-audit.json](static-audit.json)).
+- **Native test:** **passed** the full protocol for this exact string ([native-report.json](native-report.json)).
+- No items-per-minute figure is claimed. The measured times to full stock are below.
 
-**Status:** 138 static checks and 11 audit tests pass. Native production is **not validated**. The installed 2.1.24 executable and prototype identity were checked, and an isolated native runner was prepared for the integrator. The only game invocation performed for this candidate was an isolated `--dump-data`; it loaded no save. See [native status](validation/native-status.json).
+Import [blueprint.txt](blueprint.txt). See also the [layout schematic](layout.svg), the [manifest](manifest.json), the [ports](ports.json) and the [footprint](footprint.json).
 
-Candidate SHA-256, over the blueprint string with surrounding whitespace removed:
+Blueprint SHA-256, over the string with surrounding whitespace removed:
 
 ```text
-6762edae35e066d821cc12143411004e1fe1b0a3a7cb6e6998360d385f5a867f
+f537f1f1d2502cccba4da53eaeb11802bd5e23042b7270e6cb56e43f5e434bc5
 ```
 
-## Requested outputs and recipes
+## What changed from the first version
 
-“Blue inserter” means **fast-inserter**. The corrected scope excludes `stack-inserter` and `stack-filter-inserter`. There are no unrelated output recipes. Every product below is actually assigned to an assembler and has a physical route to the shared provider; construction inventory is not counted as production coverage.
+The first version (`6762edae`, kept under [history/four-row-ring-6762edae](history/four-row-ring-6762edae/)) put the ring around a two-row empty middle and used two rows for lubricant. This version has the same seven products, the same stock caps, the same seven input chests in the same order on the north edge, lubricant from the west and the one provider chest at the east end.
 
-| Product / recipe ID | Ingredients per craft | Result per craft | Recipe seconds | Default stock cap |
+| | First version | This version |
+| --- | --- | --- |
+| Size | 33 × 13 = 429 tiles | 24 × 9 = 216 tiles (49.7% fewer) |
+| Machines | 7 | 7 |
+| Belts / inserters / pipes / poles | 66 / 33 / 16 / 9 | 52 / 31 / 23 / 5 |
+| Entities | 149 | 136 |
+| Full stock from empty | 9.1 min | 7.8 min |
+| Full stock after a complete collection | 6.4 min | 5.6 min |
+| Full stock after the input outage | 8.7 min | 7.9 min |
+
+Both columns of times were measured with the same harness (the first version was run again on 21 November 2026; that report is in the history folder).
+
+How the area came down: the ring is two rows tall instead of four; the lubricant runs in one row instead of two; the three express machines touch; the labels moved off the north edge row, where their selection boxes used to add a whole row; the lubricant inlet no longer sticks out two tiles on the west.
+
+Why it also fills faster: the ring now runs counter-clockwise, so the input chests sit just upstream of the machines instead of almost a full lap away. The gear feed arm is the bottleneck of both versions. It can move about 149 gears a minute; in the first version the long trip kept the ring at its gear cap and held the arm to about 134 a minute for most of a fill, and now it runs at about 149 until the last product is full. The machines are served in the same order as before: the four inserters first, then splitters, undergrounds and belts.
+
+The lubricant pipe is longer (23 pipes instead of 16) because the express machines moved to the east end of the row; the feed caps on the ring are lower (58 items in total instead of 100) because the trip from chest to machine is shorter.
+
+## Products and recipes
+
+"Blue inserter" means `fast-inserter`. There is no stack inserter in scope. Each product has its own machine.
+
+| Product | Ingredients per craft | Result per craft | Recipe seconds | Stock cap |
 | --- | --- | --- | --- | --- |
-| `express-transport-belt` | 10 iron gears + 1 fast transport belt + 20 lubricant | 1 | 0.5 | 30 |
-| `express-underground-belt` | 80 iron gears + 2 fast underground belts + 40 lubricant | 2 | 2 | 10 |
-| `express-splitter` | 1 fast splitter + 10 iron gears + 10 advanced circuits + 80 lubricant | 1 | 2 | 5 |
-| `inserter` | 1 electronic circuit + 1 iron gear + 1 iron plate | 1 | 0.5 | 5 |
-| `long-handed-inserter` | 1 iron gear + 1 iron plate + 1 inserter | 1 | 0.5 | 5 |
-| `fast-inserter` | 2 electronic circuits + 2 iron plates + 1 inserter | 1 | 0.5 | 5 |
-| `bulk-inserter` | 15 iron gears + 15 electronic circuits + 1 advanced circuit + 1 fast inserter | 1 | 0.5 | 5 |
+| `express-transport-belt` | 10 iron-gear-wheel + 1 fast-transport-belt + 20 lubricant | 1 | 0.5 | 30 |
+| `express-underground-belt` | 80 iron-gear-wheel + 2 fast-underground-belt + 40 lubricant | 2 | 2 | 10 |
+| `express-splitter` | 1 fast-splitter + 10 iron-gear-wheel + 10 advanced-circuit + 80 lubricant | 1 | 2 | 5 |
+| `inserter` | 1 electronic-circuit + 1 iron-gear-wheel + 1 iron-plate | 1 | 0.5 | 5 |
+| `long-handed-inserter` | 1 iron-gear-wheel + 1 iron-plate + 1 inserter | 1 | 0.5 | 5 |
+| `fast-inserter` | 2 electronic-circuit + 2 iron-plate + 1 inserter | 1 | 0.5 | 5 |
+| `bulk-inserter` | 15 iron-gear-wheel + 15 electronic-circuit + 1 advanced-circuit + 1 fast-inserter | 1 | 0.5 | 5 |
 
-AM2 crafting speed is 0.75. The times above are recipe times, not promised production rates. [coverage.json](coverage.json) records exact recipes, ingredients, batch sizes, machine IDs and collecting inserters.
+Assembling machine 2 crafting speed is 0.75. The stock cap counts the product in the provider chest plus any of it still on the ring.
 
-## Stable input boundary
+## Inputs
 
-Use **normal-quality** ingredients. There is exactly one entrance for each of seven solid materials and one lubricant entrance. Upstream gears, circuits, red-tier belt items and lubricant are supplied externally; this is an upgrade mall, not an ore-to-products factory. There are no duplicate material entrances and no external yellow/fast/bulk inserter inputs.
+Use normal-quality items. One steel chest (limited to one slot) per solid material on the north edge, filled by hand or by your own inserter from the north. Lubricant enters the pipe at the west edge. Coordinates are entity centres in the blueprint; north is negative y.
 
-Coordinates below are entity centers in the decoded blueprint. Importing can translate the entire layout; relative geometry remains the same. North is negative Y. Solid inputs are labeled **steel chests**, each barred to one slot. Fill those chests manually or with external belt-to-chest inserters. They are not requester chests and do not require robots. The external contact is a clear adjacent tile for an external feeder, not another included chest.
-
-| Port | Material | Chest/pipe center | External contact | Flow | Exact display-panel text | Loop cap |
+| Port | Material | Chest or pipe | Clear tile for your feeder | Flow | Label text | Stock kept on the ring |
 | --- | --- | --- | --- | --- | --- | --- |
-| IN-1 | `iron-gear-wheel` | (2.5, -1.5) | (2.5, -2.5) | North → south | `IN 1: iron-gear-wheel \| N -> S` | 32 |
-| IN-2 | `iron-plate` | (4.5, -1.5) | (4.5, -2.5) | North → south | `IN 2: iron-plate \| N -> S` | 12 |
-| IN-3 | `electronic-circuit` | (6.5, -1.5) | (6.5, -2.5) | North → south | `IN 3: electronic-circuit \| N -> S` | 32 |
-| IN-4 | `advanced-circuit` | (8.5, -1.5) | (8.5, -2.5) | North → south | `IN 4: advanced-circuit \| N -> S` | 12 |
-| IN-5 | `fast-transport-belt` | (10.5, -1.5) | (10.5, -2.5) | North → south | `IN 5: fast-transport-belt \| N -> S` | 4 |
-| IN-6 | `fast-underground-belt` | (12.5, -1.5) | (12.5, -2.5) | North → south | `IN 6: fast-underground-belt \| N -> S` | 4 |
-| IN-7 | `fast-splitter` | (14.5, -1.5) | (14.5, -2.5) | North → south | `IN 7: fast-splitter \| N -> S` | 4 |
-| IN-8 | `lubricant` | (-1.5, 9.5) | (-2.5, 9.5) | West → east | `IN 8: lubricant \| W -> E` | Fluid supply |
+| IN-1 | `iron-gear-wheel` | (1.5, -1.5) | (1.5, -2.5) | North → south | `IN 1: iron-gear-wheel \| N -> S` | 20 |
+| IN-2 | `iron-plate` | (3.5, -1.5) | (3.5, -2.5) | North → south | `IN 2: iron-plate \| N -> S` | 8 |
+| IN-3 | `electronic-circuit` | (5.5, -1.5) | (5.5, -2.5) | North → south | `IN 3: electronic-circuit \| N -> S` | 14 |
+| IN-4 | `advanced-circuit` | (7.5, -1.5) | (7.5, -2.5) | North → south | `IN 4: advanced-circuit \| N -> S` | 8 |
+| IN-5 | `fast-transport-belt` | (9.5, -1.5) | (9.5, -2.5) | North → south | `IN 5: fast-transport-belt \| N -> S` | 4 |
+| IN-6 | `fast-underground-belt` | (11.5, -1.5) | (11.5, -2.5) | North → south | `IN 6: fast-underground-belt \| N -> S` | 2 |
+| IN-7 | `fast-splitter` | (13.5, -1.5) | (13.5, -2.5) | North → south | `IN 7: fast-splitter \| N -> S` | 2 |
+| IN-8 | `lubricant` | (0.5, 6.5) | (-0.5, 6.5) | West → east | `IN 8: lubricant \| W -> E` | pipe |
 
-The material-to-recipe mapping is included in [ports.json](ports.json). Lubricant is the only external fluid. Its surface-pipe manifold reaches the south-facing input of all three express-belt AM2s. No underground crossings are needed; all installed belts are red transport belts. Red underground belts are input ingredients for the express underground recipe, not construction entities in this layout.
+The label of each chest is the display panel one tile east of its feed arm. The lubricant label is at the east end of the pipe, at (23.5, 6.5). Gears, circuits, the red-tier belt items and lubricant come from outside: this is an upgrade mall, not an ore-to-product factory.
 
-**Electricity:** connect an external pole to the medium pole at (1.5, 1.5). The documented external pole position is (-1.5, -3.5), within its wire reach. Its panel reads `POWER: connect medium pole | external electricity`. The included copper network connects nine medium poles and supplies every AM2 and inserter. Provide electricity for the full mall; the validation fixture supplies 5 MW without treating that fixture capacity as a measured load.
+**Electricity:** any outside pole within reach of one of the 5 medium poles powers the mall. The native test connects a pole at (-1.5, -3.5) to the pole at (3.5, 2.5); the pole inside the collector bend at (22.5, -0.5) is the nearest to the north edge. The label `POWER: connect medium pole \| external electricity` is at (0.5, -0.5).
 
-**Output:** the sole passive provider is at **(28.5, 2.5)**. Its north collector moves south into the chest; its east collector moves west into the same chest. Two collectors are used because a fast inserter has five filter slots and this mall has seven products. The panel reads `OUT: 3 express belts + 4 inserters | one provider`. Take items directly from this chest, or cover it with an external logistics network.
+**Output:** the one passive provider chest is at (21.5, 0.5), inside the bend at the east end, labelled `OUT: 3 express belts + 4 inserters \| one provider`. Take items by hand or cover it with a logistics network.
 
-## Physical routes and on-demand behavior
+## How it works
 
-The 66 red belt tiles form a single clockwise, unbranched closed loop. Input inserters transfer from the seven boundary chests onto the loop. Each AM2 has two filtered ingredient pickup arms and one capped product output arm. Every finished product circulates to one of the two filtered collectors feeding the common provider.
+- **One ring.** 52 red belt tiles form a single counter-clockwise loop two rows tall, with no splitter, side-load or underground. The westbound row passes under the seven chest feed arms; the eastbound row passes the machine arms. At the east end the loop bends north around the provider so that two collector arms reach the one chest (one arm has five filter slots, there are seven products).
+- **One reader.** One belt reads the whole ring; the provider adds its contents to the same green wire.
+- **Feed caps.** Each chest feed arm runs only while its material on the ring is below its cap (the last column above). The caps total 58.
+- **Product caps.** Each machine's product arm runs only while ring plus provider hold less than the stock cap. Taking items from the provider reopens it. A product can overshoot its cap by one item in an arm's hand.
+- **Three direct hand-offs,** always on, so a full stock of one inserter never starves the next recipe: yellow inserter → long-handed machine at (11.5, 4.5), yellow inserter → fast machine at (7.5, 4.5), fast inserter → bulk machine at (3.5, 4.5).
+- **Arms.** All 31 arms are fast inserters with hand size one and whitelist filters. The splitter and underground machines have one ingredient arm each, the other five machines have two.
+- **Lane room.** Everything rides the inner lane. Feed caps 58 + product caps 65 + one item in hand for each of the 14 capped arms = 137 items at the very most, against 184 inner-lane places when the 6 turn tiles are not counted at all. The most the native run ever saw on the ring was 63 items. Raise caps only together with this check.
+- Machines keep their ordinary ingredient and product buffers while idle; those are not the advertised stock.
 
-Three always-enabled direct transfers preserve intermediate supply independently of finished-product stock caps:
+## Native test
 
-- `inserter` AM2 → `long-handed-inserter` AM2, westward through (16.5, 6.5).
-- `inserter` AM2 → `fast-inserter` AM2, eastward through (20.5, 6.5).
-- `fast-inserter` AM2 → `bulk-inserter` AM2, eastward through (24.5, 6.5).
+Protocol (unchanged from the first version): supply only the seven chests, the outside pipe and outside power; 15 minutes to fill all stocks from empty; collect everything; 15 minutes to refill; collect; 5 minutes with the input chests emptied; collect; 15 minutes to recover. All seven products must sit at their caps at the end of each fill phase, never more than one over, and the provider may hold nothing else. The run also checks every route, recipe, circuit and power connection of the imported blueprint.
 
-One belt reader reports the entire loop. The provider reports its contents onto the same green circuit. Each input feeder runs while its material count is below its loop cap; each product output arm runs while the sum of that product in the loop and provider is below its stock cap. Taking items from the provider therefore reopens the corresponding output arm. Machines may retain ordinary ingredient/output buffers while idle. Those buffers are not the advertised available stock.
+Result for `f537f1f1`: **passed**, 97 of 97 checks, 180000 ticks.
 
-All handling arms have hand size one. The input caps total 100 and product caps total 65. Allowing one additional in-flight item for each of 14 producers gives a conservative circulating bound of **179 items**. These feeds use the inner lane; ignoring all four corner tiles gives at least **248 straight-lane slots**, leaving 69 slots free under this model. At most seven provider slots are needed for the current product caps, including one-item overshoot. This is structural capacity evidence; native liveness is still pending.
+| Phase | All seven at cap after | Each product at cap after (minutes; belt / underground / splitter / inserter / long / fast / bulk) |
+| --- | --- | --- |
+| Fill from empty | 7.8 min | 7.8 / 4.8 / 1.9 / 0.9 / 0.9 / 1.3 / 1.3 |
+| Refill after collection | 5.6 min | 5.6 / 2.8 / 0.8 / 0.8 / 0.3 / 0.9 / 0.4 |
+| Recovery after outage | 7.9 min | 7.9 / 5.4 / 2.0 / 1.0 / 0.9 / 1.1 / 1.1 |
 
-Keep the stock caps modest. Increasing all caps without rechecking lane capacity can fill the circulation lane. The generator and audit keep that constraint reviewable. No spoilable material enters this corrected design.
+Crafts in the run: 96 express-transport-belt, 19 express-underground-belt, 19 express-splitter, 91 inserter, 23 long-handed-inserter, 48 fast-inserter, 26 bulk-inserter. Times are read once a second of game time; they are measurements, not pass limits.
 
-## Tier and technology gates
+Checked beyond the protocol, on this exact string (exploration runs; their reports are not kept in the repository):
 
-The prototype snapshot comes from the installed **2.1.24** game with base, Space Age, quality and elevated rails enabled. The user's corrected recipe scope is applied while retaining the original requested 2.1.24 target; backward import compatibility with the site's 2.0.77 catalogue is not claimed.
+- One-hour hold at full stock (`--explore --ticks stockFillTicks=216000`): the provider stayed at 30 / 10 / 5 / 5 / 5 / 5 / 6 (never more than cap + 1), at most 68 items rode the ring, and the later refill and recovery phases still passed.
+- No advanced circuits (`--explore --withhold advanced-circuit`): the five products that do not need them still reached their caps in every phase; only express splitters and bulk inserters stayed at zero.
+- No lubricant (`--explore --withhold lubricant`): the four inserter products still reached their caps in every phase; the three express products stayed at zero.
 
-- **Express products:** `logistics-3`, gated by `production-science-pack` (purple science) and `lubricant`; external lubricant is required.
-- **Inserters:** `electronics` for yellow inserters, `automation` for long-handed inserters, `fast-inserter` for blue fast inserters, and `bulk-inserter` for bulk inserters. Bulk requires fast inserters, logistics 2 and advanced circuits; it does not require Gleba.
-- **Construction/control:** `automation-2`, `electric-energy-distribution-1`, and `circuit-network` for AM2s, medium poles, circuits and display panels.
-- **Provider:** `construction-robotics` is the selected unlock; `logistic-robotics` is an alternative unlock. The chest works as an ordinary container without robots. Robot collection additionally needs an external powered roboport and logistics robots.
+## Technology
 
-No carbon fiber, jelly, agricultural science, Gleba research or stack-inserter technology is required. [technology-prerequisites.json](technology-prerequisites.json) contains the complete 34-technology prerequisite closure in research order, unlock alternatives and science/trigger requirements. Upstream module technologies in that closure are ordinary prerequisites for purple science; no modules are installed in this blueprint.
+- **Express products:** `logistics-3`, which needs production science and lubricant.
+- **Inserters:** `electronics`, `automation`, `fast-inserter` and `bulk-inserter`. No Gleba research is needed.
+- **Building it:** `automation-2`, `electric-energy-distribution-1`, `circuit-network`, and `construction-robotics` (or `logistic-robotics`) for the provider chest. The chest works as a plain chest without robots.
 
-## Reference review and provenance
+The full prerequisite list, in research order, is `technologyClosure` in the manifest (34 technologies); the native test researches exactly that list.
 
-Reviewed `mall/compact_turbo_tesla_mall.txt` and `scripts/generate-belt-tesla-mall.mjs`. The source has 1,678 entities and 16 passive providers. Its relevant recipe nodes are 1157 (`inserter`), 1161 (`fast-inserter`), 1165 (`bulk-inserter`), 1170 (`long-handed-inserter`), 1244–1254 (the three express products).
+## Provenance
 
-This candidate reuses the source's capped-loop design principle and recipe subgraph with fresh compact geometry. It replaces AM3s, stack handling arms and turbo transport with AM2s, fast handling arms and red transport. Ore processing, Tesla, robots, power infrastructure and all unrelated production chains are omitted. It imports shared intermediates once per material and consolidates finished output into one provider. This is not a measured performance comparison against the much broader source mall.
+The design principle (one capped circulating belt read by one belt reader) and the seven recipe nodes come from `mall/compact_turbo_tesla_mall.txt` and `scripts/generate-belt-tesla-mall.mjs` in this repository; the manifest records their hashes under `reference`. Geometry, machines (assembling machine 2 instead of 3) and handling (fast inserters, red belts) are new. No performance comparison with that much larger mall is claimed.
 
-[reference-review.json](reference-review.json) records source hashes and exact recipe nodes. Frozen source copies are in [references/](references/). Rebuilding uses these frozen copies so later changes elsewhere in the repository do not silently alter provenance. [prototypes.json](prototypes.json) records the native raw-dump hash, installed source hashes, relevant recipes, item stack sizes, collision/connection prototypes and technology data.
+## Reproduce
 
-The first candidate had two direct-transfer arms outside pole coverage. Its exact blueprint and failing audit are retained under `history/5a9f8b32d4da2491bda1d5bc7116c789e387e1c79a9f93be1ce36d34583e7701/`. The current candidate fixes pole coverage without enlarging the footprint.
-
-## Reproduce and hand off
-
-Run these commands **from this directory**:
-
-```sh
-npm run build
-npm test
-node run-native.mjs --prepare
-```
-
-Build regenerates only this artifact set and runs the static audit. Tests deliberately break belt direction, ingredient contacts, direct transfers, fluid taps, collector filters, circuit sensing, wiring, collisions and recipe scope to verify that the audit rejects them. These are experiment-local npm scripts. The repository-root build writes `site/` and `dist/`, so it was not run under the user's path restriction.
-
-For the integrator's isolated native test:
+From the `factorio-command-center` folder:
 
 ```sh
-node run-native.mjs --run
+node scripts/requested-malls/blue-tier-mall/generate.mjs     # rewrites this folder; byte-identical on a re-run
+node scripts/requested-malls/blue-tier-mall/audit.mjs        # static audit
+node scripts/requested-malls/blue-tier-mall/validate.mjs     # full native protocol, about one minute
+node --test tests/requested-malls.test.mjs
 ```
 
-The runner checks the candidate and prototype hashes and installed game source identity. It creates a new config, mod directory, force, surface and save under `.runtime/native-<timestamp>/`; it accepts no existing-save argument. It imports and revives the exact blueprint without adding or repairing candidate entities. It supplies only the declared input chests, an external lubricant pipe, and external electricity. It researches only the documented prerequisite closure.
-
-The protocol allows 15 simulated minutes to fill stocks from empty, collects everything, allows 15 minutes to refill, collects again, stops boundary supply for 5 minutes while preserving internal buffers, then restores supply and allows 15 minutes to recover. All seven products must reach their stock caps in each fill phase. The report binds actual recipe/circuit/power/route checks, delivered collections, stock samples and production/consumption statistics to the exact blueprint and configuration hashes. Accepted boundary supply is recorded separately from recipe consumption. There is no items/min threshold.
-
-Current native status is **prepared-not-run**. Native reports will be written under `validation/` only after the integrator runs the command. The schematic is not an in-game screenshot. Benchmark acceptance, actual lane behavior and exact blueprint import remain unverified until then.
-
-`FACTORIO_APP`, or the pair `FACTORIO_DATA`/`FACTORIO_BIN`, may point the runner at another **matching 2.1.24** installation. `npm run prototypes` performs a new isolated prototype dump; it is not required to rebuild this frozen candidate. Runtime configurations, the complete raw dump, logs and future test saves remain in ignored `.runtime/` directories and are not publishing inputs.
-
-No live save, site/index, shared script, queue/ledger, Git history or remote was modified. No files were deleted. Site integration, native acceptance and publishing belong to the integrator. The separate `design-2026-11-13T15-08-43-481Z-fa1cdff5/` work in this directory is not part of this candidate and was not modified by this task.
-
-API references used for the runner and serializer: [BlueprintEntity](https://lua-api.factorio.com/2.1.24/concepts/BlueprintEntity.html), [BlueprintWire](https://lua-api.factorio.com/2.1.24/concepts/BlueprintWire.html), and [transport-belt control behavior](https://lua-api.factorio.com/2.1.24/classes/LuaTransportBeltControlBehavior.html).
+The generator and the tests need only the pinned `scripts/requested-malls/blue-tier-mall/prototypes.json` (taken from the installed 2.1.24 game). The validator needs the Steam install of Factorio 2.1.24 with Space Age and runs it headless in a private profile under `.cache/blue-tier-mall/`; it never opens the player's saves. After a full run, run the generator again so this page states the new result.

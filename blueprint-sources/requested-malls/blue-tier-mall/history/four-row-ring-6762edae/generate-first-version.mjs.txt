@@ -1,0 +1,149 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { ROOT, read, write, sha, encode, decode, box, distance, filters, condition } from './lib.mjs';
+
+const p = await read('prototypes.json');
+assert.equal(p.gameVersion, '2.1.24');
+const sourceRoot = path.resolve(ROOT, '../../../../..');
+const sourcePath = 'mall/compact_turbo_tesla_mall.txt';
+const generatorPath = 'scripts/generate-belt-tesla-mall.mjs';
+const source = (await fs.readFile(path.join(ROOT, 'references/compact_turbo_tesla_mall.txt'), 'utf8').catch(() => fs.readFile(path.join(sourceRoot, sourcePath), 'utf8'))).trim();
+const sourceGenerator = await fs.readFile(path.join(ROOT, 'references/generate-belt-tesla-mall.mjs.txt'), 'utf8').catch(() => fs.readFile(path.join(sourceRoot, generatorPath), 'utf8'));
+const original = decode(source).blueprint;
+const products = ['express-transport-belt', 'express-underground-belt', 'express-splitter', 'inserter', 'long-handed-inserter', 'fast-inserter', 'bulk-inserter'];
+const stockCaps = Object.fromEntries(products.map((n, i) => [n, [30, 10, 5, 5, 5, 5, 5][i]]));
+const inputs = [
+  ['iron-gear-wheel', 32], ['iron-plate', 12], ['electronic-circuit', 32],
+  ['advanced-circuit', 12], ['fast-transport-belt', 4], ['fast-underground-belt', 4], ['fast-splitter', 4],
+];
+const entities = [], loop = [], controlled = [], poles = [], cells = [], ports = [];
+function add(name, x, y, extra = {}) {
+  const e = { entity_number: entities.length + 1, name, position: { x: x + 0.5, y: y + 0.5 }, ...extra };
+  entities.push(e); return e;
+}
+const byId = id => entities[id - 1];
+const belt = (x, y, direction) => { const e = add('fast-transport-belt', x, y, { direction }); loop.push(e.entity_number); return e; };
+const arm = (x, y, direction, names, extra = {}) => add('fast-inserter', x, y, { direction, override_stack_size: 1, ...filters(names), ...extra });
+const panel = (x, y, text, name, type = 'item') => add('display-panel', x, y, { text, always_show: true, icon: { type, name } });
+// One clockwise loop, no belt branches, no side loading, no underground pairs.
+for (let x = 0; x <= 30; x++) belt(x, 0, x === 30 ? 8 : 4);
+for (let y = 1; y <= 3; y++) belt(30, y, y === 3 ? 12 : 8);
+for (let x = 29; x >= 0; x--) belt(x, 3, x === 0 ? 0 : 12);
+for (let y = 2; y >= 1; y--) belt(0, y, 0);
+const reader = byId(loop[5]);
+reader.control_behavior = { circuit_read_hand_contents: true, circuit_contents_read_mode: 2 };
+for (const [i, [item, cap]] of inputs.entries()) {
+  const x = 2 + i * 2;
+  const chest = add('steel-chest', x, -2, { bar: 1 });
+  const feed = arm(x, -1, 0, [item], { control_behavior: condition(item, cap) });
+  controlled.push(feed);
+  const label = `IN ${i + 1}: ${item} | N -> S`;
+  const sign = panel(x + 1, -2, label, item);
+  ports.push({ id: `IN-${i + 1}`, item, kind: 'item', mode: 'boundary-chest', side: 'north', flow: 'south', position: chest.position, externalContact: { x: chest.position.x, y: chest.position.y - 1 }, chest: chest.entity_number, inserter: feed.entity_number, panel: sign.entity_number, label, loopCap: cap, consumers: products.filter(n => p.recipes[n].ingredients.some(v => v.name === item)) });
+}
+// Left-to-right order permits unconditional yellow -> long/fast -> bulk transfers.
+const order = [products[0], products[1], products[2], 'long-handed-inserter', 'inserter', 'fast-inserter', 'bulk-inserter'];
+for (const [i, recipe] of order.entries()) {
+  const x = 2 + 4 * i;
+  const machine = add('assembling-machine-2', x, 6, { direction: i < 3 ? 8 : 0, recipe });
+  const solids = p.recipes[recipe].ingredients.filter(v => v.type === 'item' && !['inserter', 'fast-inserter'].includes(v.name)).map(v => v.name);
+  const inputArms = [-1, 1].map(dx => arm(x + dx, 4, 0, solids).entity_number);
+  const output = arm(x, 4, 8, [recipe], { control_behavior: condition(recipe, stockCaps[recipe]) });
+  controlled.push(output);
+  cells.push({ recipe, product: recipe, machine: machine.entity_number, inputArms, outputArm: output.entity_number, stockCap: stockCaps[recipe], directInputs: [] });
+}
+const cell = recipe => cells.find(c => c.recipe === recipe);
+const directTransfers = [];
+for (const [from, to, x, direction] of [
+  ['inserter', 'long-handed-inserter', 16, 4],
+  ['inserter', 'fast-inserter', 20, 12],
+  ['fast-inserter', 'bulk-inserter', 24, 12],
+]) {
+  const a = arm(x, 6, direction, [from]);
+  const transfer = { item: from, source: cell(from).machine, destination: cell(to).machine, inserter: a.entity_number };
+  directTransfers.push(transfer); cell(to).directInputs.push(transfer);
+}
+const pipes = [];
+for (let x = -2; x <= 10; x++) pipes.push(add('pipe', x, 9).entity_number);
+for (const x of [2, 6, 10]) pipes.push(add('pipe', x, 8).entity_number);
+const fluidLabel = 'IN 8: lubricant | W -> E';
+const fluidPanel = panel(-2, 8, fluidLabel, 'lubricant', 'fluid');
+ports.push({ id: 'IN-8', item: 'lubricant', kind: 'fluid', mode: 'pipe', side: 'west', flow: 'east', position: byId(pipes[0]).position, externalContact: { x: -2.5, y: 9.5 }, pipe: pipes[0], panel: fluidPanel.entity_number, label: fluidLabel, consumers: products.slice(0, 3) });
+// Two filtered fast inserters are necessary: seven products exceed five filter slots.
+const provider = add('passive-provider-chest', 28, 2);
+const collectNorth = arm(28, 1, 0, products.slice(0, 5));
+const collectEast = arm(29, 2, 4, products.slice(5));
+const outputLabel = 'OUT: 3 express belts + 4 inserters | one provider';
+const outputPanel = panel(29, 1, outputLabel, 'passive-provider-chest');
+for (const [x, y] of [[1, 1], [9, 1], [17, 1], [26, 1], [4, 5], [12, 5], [16, 5], [20, 5], [24, 5]]) poles.push(add('medium-electric-pole', x, y));
+const powerLabel = 'POWER: connect medium pole | external electricity';
+const powerPanel = panel(-1, -2, powerLabel, 'medium-electric-pole');
+// 2.1 blueprint wires belong to entities. A tuple is stored once at its source.
+function wire(a, connector, b) { (a.wires ||= []).push([a.entity_number, connector, b.entity_number, connector]); }
+function tree(nodes, connector, limit) {
+  const reached = new Set([nodes[0]]);
+  while (reached.size < nodes.length) {
+    let best;
+    for (const a of reached) for (const b of nodes) if (!reached.has(b)) {
+      const d = distance(a, b);
+      if (d <= limit(a, b) && (!best || d < best.d)) best = { a, b, d };
+    }
+    assert(best, `Disconnected wire network ${connector}`);
+    wire(best.a, connector, best.b); reached.add(best.b);
+  }
+}
+tree(poles, 5, () => p.entities['medium-electric-pole'].maximum_wire_distance);
+tree([reader, provider, ...controlled], 2, (a, b) => Math.min(p.entities[a.name].circuit_wire_max_distance, p.entities[b.name].circuit_wire_max_distance));
+const bp = { blueprint: { item: 'blueprint', label: 'Blue-tier on-demand mall | AM2 | seven products', description: 'Factorio 2.1.24 Space Age. Seven solid input chests along north; lubricant west; connect power. One output provider. Stock caps include circulating products. No stack inserters, modules or beacons. See experiment README for ports and native-test status.', version: Number((2n << 48n) + (1n << 32n) + (24n << 16n)), icons: [products[0], 'fast-inserter', 'bulk-inserter', 'passive-provider-chest'].map((name, i) => ({ index: i + 1, signal: { type: 'item', name } })), entities } };
+const code = encode(bp), hash = sha(code);
+const boxes = entities.map(e => box(e, p, 'selection_box'));
+const bounds = { left: Math.floor(Math.min(...boxes.map(b => b.left))), top: Math.floor(Math.min(...boxes.map(b => b.top))), right: Math.ceil(Math.max(...boxes.map(b => b.right))), bottom: Math.ceil(Math.max(...boxes.map(b => b.bottom))) };
+const footprint = { bounds, width: bounds.right - bounds.left, height: bounds.bottom - bounds.top, area: (bounds.right - bounds.left) * (bounds.bottom - bounds.top), includes: 'all entities, panels, poles, fluid inlet and output chest; external supply excluded', counts: Object.fromEntries([...new Set(entities.map(e => e.name))].sort().map(n => [n, entities.filter(e => e.name === n).length])), entities: entities.length };
+const coverage = { candidateSha256: hash, status: 'recipe-and-route-reviewed; native production pending', products: products.map(n => ({ item: n, recipe: n, machine: cell(n).machine, results: p.recipes[n].results, ingredients: p.recipes[n].ingredients, craftingCategories: p.recipes[n].categories || [p.recipes[n].category || 'crafting'], recipeSeconds: p.recipes[n].energy_required ?? 0.5, stockCap: stockCaps[n], provider: provider.entity_number, collectionInserter: products.indexOf(n) < 5 ? collectNorth.entity_number : collectEast.entity_number })), exactRequestedProductsCovered: 7, requestedProducts: products, excluded: ['stack-inserter', 'stack-filter-inserter'], reason: 'User clarified blue inserters means fast-inserter; removed Gleba stack tier. No unrelated products included.', installedEntitiesDoNotCountAsProductCoverage: true };
+const unlockers = recipe => Object.values(p.technologies).filter(t => t.effects?.some(e => e.type === 'unlock-recipe' && e.recipe === recipe)).map(t => t.name).sort();
+const operatingRecipes = products;
+const constructionRecipes = [...new Set(entities.map(e => e.name))];
+const requirements = [...new Set([...operatingRecipes, ...constructionRecipes])].map(recipe => ({ recipe, enabledByDefault: p.recipes[recipe]?.enabled !== false, alternatives: unlockers(recipe) }));
+for (const r of requirements) r.selected = r.enabledByDefault ? null : (r.alternatives.includes('construction-robotics') ? 'construction-robotics' : r.alternatives[0]);
+const closure = [], visited = new Set();
+function visit(n) { if (!n || visited.has(n)) return; assert(p.technologies[n], n); for (const parent of p.technologies[n].prerequisites || []) visit(parent); visited.add(n); closure.push(n); }
+requirements.forEach(r => { assert(r.enabledByDefault || r.selected, `Missing unlock ${r.recipe}`); visit(r.selected); });
+const tech = { candidateSha256: hash, gameVersion: p.gameVersion, requirements, closureInResearchOrder: closure, technologies: Object.fromEntries(closure.map(n => [n, p.technologies[n]])), externalMaterials: 'Intermediate materials and red-tier belt items are supplied from outside; their production plants are outside this blueprint.', optionalForBots: 'Passive provider functions as a chest without a roboport. Logistics robot collection requires an external powered roboport and logistic-robotics.', gating: 'Express belts require logistics-3, lubricant and production science (purple). Bulk requires bulk-inserter. Automation-2, electric-energy-distribution-1, circuit-network and construction-robotics support the build. No Gleba, carbon fiber, jelly or agricultural science is required.' };
+const reference = { sourcePath, sourceSha256: sha(source), generatorPath, generatorSha256: sha(sourceGenerator), sourceLabel: original.label, sourceEntityCount: original.entities.length, sourceProviderCount: original.entities.filter(e => e.name === 'passive-provider-chest').length, retainedRecipeNodes: original.entities.filter(e => products.includes(e.recipe)).map(e => ({ entity_number: e.entity_number, recipe: e.recipe, machine: e.name, position: e.position })), designReuse: ['One unbranched circulating belt', 'One whole-belt inventory reader', 'Per-material circuit caps', 'Filtered ingredient pickup', 'Original recipe identities retained'], changes: ['Seven recipes only', 'New compact geometry; AM2 and fast inserters; red belts', 'Shared intermediates imported once per material', 'Three physical direct transfers preserve intermediate supply when output stocks are full', 'Two collectors feed one passive provider'], performanceComparison: 'No claim of a native performance improvement against the full reference; scopes differ.' };
+const manifest = { schema: 1, id: 'blue-tier-mall', revision: 1, candidateSha256: hash, requiredGameVersion: '2.1.24', prototypeSha256: sha(await fs.readFile(path.join(ROOT, 'prototypes.json'))), reference, intendedUse: 'on-demand stock replenishment; no items/min target', products, stockCaps, equipment: { machine: 'assembling-machine-2', inserter: 'fast-inserter', transport: 'fast-transport-belt', undergroundPolicy: 'Only fast-underground-belt permitted if needed; none needed in this candidate', modules: 0, beacons: 0, quality: 'normal' }, footprint, inputPorts: ports, cells, directTransfers, loop, reader: reader.entity_number, pipes, output: { chest: provider.entity_number, collectors: [collectNorth.entity_number, collectEast.entity_number], panel: outputPanel.entity_number, label: outputLabel, position: provider.position }, power: { entryPole: poles[0].entity_number, panel: powerPanel.entity_number, label: powerLabel, externalPolePosition: { x: -1.5, y: -3.5 }, poles: poles.map(e => e.entity_number) }, nativeProtocol: { seed: 21024, stockFillTicks: 54000, refillTicks: 54000, outageTicks: 18000, recoveryTicks: 54000, externalPowerWatts: 5000000, samplingTicks: 3600, targetRate: null, acceptance: 'All seven products reach their stock caps from empty, refill after complete collection, and recover after a boundary-input outage; imported blueprint unchanged.' }, status: { static: 'see static-audit.json', native: 'pending-integrator', published: false } };
+// Keep superseded candidates and audits; no file is deleted by this generator.
+const previous = await fs.readFile(path.join(ROOT, 'candidate/blueprint.txt'), 'utf8').catch(() => null);
+if (previous && sha(previous.trim()) !== hash) {
+  const archive = 'history/' + sha(previous.trim());
+  for (const file of ['candidate/blueprint.txt', 'candidate/blueprint.json', 'manifest.json', 'static-audit.json', 'coverage.json', 'ports.json', 'footprint.json', 'layout.svg']) {
+    const contents = await fs.readFile(path.join(ROOT, file), 'utf8').catch(() => null);
+    if (contents !== null) await write(`${archive}/${file}`, contents);
+  }
+}
+await write('candidate/blueprint.txt', code + '\n'); await write('candidate/blueprint.json', bp);
+await write('manifest.json', manifest); await write('coverage.json', coverage); await write('footprint.json', footprint);
+await write('ports.json', { candidateSha256: hash, inputs: ports, output: manifest.output, power: manifest.power });
+await write('technology-prerequisites.json', tech); await write('reference-review.json', reference);
+await write('references/compact_turbo_tesla_mall.txt', source + '\n');
+await write('references/generate-belt-tesla-mall.mjs.txt', sourceGenerator);
+// A schematic, not an in-game screenshot. Coordinates and arrows come from entities.
+const esc = s => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+const scale = 30, left = 52, top = 95, colors = { 'fast-transport-belt': '#b74c41', 'assembling-machine-2': '#477196', 'fast-inserter': '#41a9d2', pipe: '#75bd95', 'medium-electric-pole': '#e0af60', 'steel-chest': '#8c97a7', 'passive-provider-chest': '#d78352', 'display-panel': '#dac77a' };
+let shapes = '';
+for (const e of entities) {
+  const b = box(e, p, 'selection_box'), x = left + (b.left - bounds.left) * scale, y = top + (b.top - bounds.top) * scale;
+  shapes += `<g><title>#${e.entity_number} ${esc(e.recipe || e.text || e.name)} (${e.position.x}, ${e.position.y})</title><rect x="${x}" y="${y}" width="${(b.right - b.left) * scale}" height="${(b.bottom - b.top) * scale}" rx="3" fill="${colors[e.name]}" stroke="#101b29"/>`;
+  const cx = left + (e.position.x - bounds.left) * scale, cy = top + (e.position.y - bounds.top) * scale;
+  if (e.name.includes('belt') || e.name === 'fast-inserter') {
+    const actual = e.name === 'fast-inserter' ? ((e.direction || 0) + 8) % 16 : e.direction;
+    shapes += `<text x="${cx}" y="${cy + 5}" text-anchor="middle" fill="#fff" font-size="16">${{ 0: '↑', 4: '→', 8: '↓', 12: '←' }[actual]}</text>`;
+  }
+  if (e.recipe) { const i = products.indexOf(e.recipe); shapes += `<text x="${cx}" y="${cy + 5}" text-anchor="middle" fill="#fff" font-size="18">${i + 1}</text>`; }
+  if (e.name === 'steel-chest') shapes += `<text x="${cx}" y="${cy + 5}" text-anchor="middle" fill="#101b29" font-size="13">I${ports.find(v => v.chest === e.entity_number).id.slice(3)}</text>`;
+  shapes += '</g>';
+}
+const width = 1100, height = 740;
+const legend = products.map((n, i) => `<text x="${52 + (i > 3 ? 530 : 0)}" y="${550 + (i % 4) * 25}" fill="#e8eff7" font-size="16">${i + 1}. ${n} — stock ${stockCaps[n]}</text>`).join('');
+await write('layout.svg', `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" fill="#101b29"/><g font-family="Arial,sans-serif"><text x="52" y="38" fill="#f2f6fc" font-size="25">Blue-tier on-demand mall</text><text x="52" y="66" fill="#a8bed4" font-size="16">${footprint.width} × ${footprint.height} tiles · 7 AM2 · 1 provider · schematic · native validation pending</text>${shapes}${legend}<text x="52" y="680" fill="#a8bed4" font-size="14">North: 7 material chests · West: lubricant · Green circuit reads entire loop + provider</text><text x="52" y="706" fill="#a8bed4" font-size="14">Three direct transfers: yellow → long / fast; fast → bulk. All handling arms are fast inserters.</text></g></svg>\n`);
+console.log(JSON.stringify({ candidateSha256: hash, products, footprint, status: 'generated; native pending' }, null, 2));

@@ -1,0 +1,615 @@
+{
+  "schema": 1,
+  "id": "blue-tier-mall",
+  "revision": 1,
+  "candidateSha256": "6762edae35e066d821cc12143411004e1fe1b0a3a7cb6e6998360d385f5a867f",
+  "requiredGameVersion": "2.1.24",
+  "prototypeSha256": "39874deb90e57912e02da4644c40f8cdd8273fc5c08aa4af78f880f07770f42e",
+  "reference": {
+    "sourcePath": "mall/compact_turbo_tesla_mall.txt",
+    "sourceSha256": "4699ae9384f11a84408ea93e7a296444e08e3cdaba40b3b18e5b5d1e02d7a753",
+    "generatorPath": "scripts/generate-belt-tesla-mall.mjs",
+    "generatorSha256": "6035a2c2c1dff806cb1709ee4308161ffaa9d82d080b970093fa1a2e2b147d28",
+    "sourceLabel": "Substation Turbo Mall - 5x5 Robot Extension",
+    "sourceEntityCount": 1678,
+    "sourceProviderCount": 16,
+    "retainedRecipeNodes": [
+      {
+        "entity_number": 1157,
+        "recipe": "inserter",
+        "machine": "assembling-machine-3",
+        "position": {
+          "x": 78.5,
+          "y": 62.5
+        }
+      },
+      {
+        "entity_number": 1161,
+        "recipe": "fast-inserter",
+        "machine": "assembling-machine-3",
+        "position": {
+          "x": 85.5,
+          "y": 62.5
+        }
+      },
+      {
+        "entity_number": 1165,
+        "recipe": "bulk-inserter",
+        "machine": "assembling-machine-3",
+        "position": {
+          "x": 22.5,
+          "y": 70.5
+        }
+      },
+      {
+        "entity_number": 1170,
+        "recipe": "long-handed-inserter",
+        "machine": "assembling-machine-3",
+        "position": {
+          "x": 29.5,
+          "y": 70.5
+        }
+      },
+      {
+        "entity_number": 1244,
+        "recipe": "express-transport-belt",
+        "machine": "assembling-machine-3",
+        "position": {
+          "x": 29.5,
+          "y": 86.5
+        }
+      },
+      {
+        "entity_number": 1249,
+        "recipe": "express-underground-belt",
+        "machine": "assembling-machine-3",
+        "position": {
+          "x": 36.5,
+          "y": 86.5
+        }
+      },
+      {
+        "entity_number": 1254,
+        "recipe": "express-splitter",
+        "machine": "assembling-machine-3",
+        "position": {
+          "x": 43.5,
+          "y": 86.5
+        }
+      }
+    ],
+    "designReuse": [
+      "One unbranched circulating belt",
+      "One whole-belt inventory reader",
+      "Per-material circuit caps",
+      "Filtered ingredient pickup",
+      "Original recipe identities retained"
+    ],
+    "changes": [
+      "Seven recipes only",
+      "New compact geometry; AM2 and fast inserters; red belts",
+      "Shared intermediates imported once per material",
+      "Three physical direct transfers preserve intermediate supply when output stocks are full",
+      "Two collectors feed one passive provider"
+    ],
+    "performanceComparison": "No claim of a native performance improvement against the full reference; scopes differ."
+  },
+  "intendedUse": "on-demand stock replenishment; no items/min target",
+  "products": [
+    "express-transport-belt",
+    "express-underground-belt",
+    "express-splitter",
+    "inserter",
+    "long-handed-inserter",
+    "fast-inserter",
+    "bulk-inserter"
+  ],
+  "stockCaps": {
+    "express-transport-belt": 30,
+    "express-underground-belt": 10,
+    "express-splitter": 5,
+    "inserter": 5,
+    "long-handed-inserter": 5,
+    "fast-inserter": 5,
+    "bulk-inserter": 5
+  },
+  "equipment": {
+    "machine": "assembling-machine-2",
+    "inserter": "fast-inserter",
+    "transport": "fast-transport-belt",
+    "undergroundPolicy": "Only fast-underground-belt permitted if needed; none needed in this candidate",
+    "modules": 0,
+    "beacons": 0,
+    "quality": "normal"
+  },
+  "footprint": {
+    "bounds": {
+      "left": -2,
+      "top": -3,
+      "right": 31,
+      "bottom": 10
+    },
+    "width": 33,
+    "height": 13,
+    "area": 429,
+    "includes": "all entities, panels, poles, fluid inlet and output chest; external supply excluded",
+    "counts": {
+      "assembling-machine-2": 7,
+      "display-panel": 10,
+      "fast-inserter": 33,
+      "fast-transport-belt": 66,
+      "medium-electric-pole": 9,
+      "passive-provider-chest": 1,
+      "pipe": 16,
+      "steel-chest": 7
+    },
+    "entities": 149
+  },
+  "inputPorts": [
+    {
+      "id": "IN-1",
+      "item": "iron-gear-wheel",
+      "kind": "item",
+      "mode": "boundary-chest",
+      "side": "north",
+      "flow": "south",
+      "position": {
+        "x": 2.5,
+        "y": -1.5
+      },
+      "externalContact": {
+        "x": 2.5,
+        "y": -2.5
+      },
+      "chest": 67,
+      "inserter": 68,
+      "panel": 69,
+      "label": "IN 1: iron-gear-wheel | N -> S",
+      "loopCap": 32,
+      "consumers": [
+        "express-transport-belt",
+        "express-underground-belt",
+        "express-splitter",
+        "inserter",
+        "long-handed-inserter",
+        "bulk-inserter"
+      ]
+    },
+    {
+      "id": "IN-2",
+      "item": "iron-plate",
+      "kind": "item",
+      "mode": "boundary-chest",
+      "side": "north",
+      "flow": "south",
+      "position": {
+        "x": 4.5,
+        "y": -1.5
+      },
+      "externalContact": {
+        "x": 4.5,
+        "y": -2.5
+      },
+      "chest": 70,
+      "inserter": 71,
+      "panel": 72,
+      "label": "IN 2: iron-plate | N -> S",
+      "loopCap": 12,
+      "consumers": [
+        "inserter",
+        "long-handed-inserter",
+        "fast-inserter"
+      ]
+    },
+    {
+      "id": "IN-3",
+      "item": "electronic-circuit",
+      "kind": "item",
+      "mode": "boundary-chest",
+      "side": "north",
+      "flow": "south",
+      "position": {
+        "x": 6.5,
+        "y": -1.5
+      },
+      "externalContact": {
+        "x": 6.5,
+        "y": -2.5
+      },
+      "chest": 73,
+      "inserter": 74,
+      "panel": 75,
+      "label": "IN 3: electronic-circuit | N -> S",
+      "loopCap": 32,
+      "consumers": [
+        "inserter",
+        "fast-inserter",
+        "bulk-inserter"
+      ]
+    },
+    {
+      "id": "IN-4",
+      "item": "advanced-circuit",
+      "kind": "item",
+      "mode": "boundary-chest",
+      "side": "north",
+      "flow": "south",
+      "position": {
+        "x": 8.5,
+        "y": -1.5
+      },
+      "externalContact": {
+        "x": 8.5,
+        "y": -2.5
+      },
+      "chest": 76,
+      "inserter": 77,
+      "panel": 78,
+      "label": "IN 4: advanced-circuit | N -> S",
+      "loopCap": 12,
+      "consumers": [
+        "express-splitter",
+        "bulk-inserter"
+      ]
+    },
+    {
+      "id": "IN-5",
+      "item": "fast-transport-belt",
+      "kind": "item",
+      "mode": "boundary-chest",
+      "side": "north",
+      "flow": "south",
+      "position": {
+        "x": 10.5,
+        "y": -1.5
+      },
+      "externalContact": {
+        "x": 10.5,
+        "y": -2.5
+      },
+      "chest": 79,
+      "inserter": 80,
+      "panel": 81,
+      "label": "IN 5: fast-transport-belt | N -> S",
+      "loopCap": 4,
+      "consumers": [
+        "express-transport-belt"
+      ]
+    },
+    {
+      "id": "IN-6",
+      "item": "fast-underground-belt",
+      "kind": "item",
+      "mode": "boundary-chest",
+      "side": "north",
+      "flow": "south",
+      "position": {
+        "x": 12.5,
+        "y": -1.5
+      },
+      "externalContact": {
+        "x": 12.5,
+        "y": -2.5
+      },
+      "chest": 82,
+      "inserter": 83,
+      "panel": 84,
+      "label": "IN 6: fast-underground-belt | N -> S",
+      "loopCap": 4,
+      "consumers": [
+        "express-underground-belt"
+      ]
+    },
+    {
+      "id": "IN-7",
+      "item": "fast-splitter",
+      "kind": "item",
+      "mode": "boundary-chest",
+      "side": "north",
+      "flow": "south",
+      "position": {
+        "x": 14.5,
+        "y": -1.5
+      },
+      "externalContact": {
+        "x": 14.5,
+        "y": -2.5
+      },
+      "chest": 85,
+      "inserter": 86,
+      "panel": 87,
+      "label": "IN 7: fast-splitter | N -> S",
+      "loopCap": 4,
+      "consumers": [
+        "express-splitter"
+      ]
+    },
+    {
+      "id": "IN-8",
+      "item": "lubricant",
+      "kind": "fluid",
+      "mode": "pipe",
+      "side": "west",
+      "flow": "east",
+      "position": {
+        "x": -1.5,
+        "y": 9.5
+      },
+      "externalContact": {
+        "x": -2.5,
+        "y": 9.5
+      },
+      "pipe": 119,
+      "panel": 135,
+      "label": "IN 8: lubricant | W -> E",
+      "consumers": [
+        "express-transport-belt",
+        "express-underground-belt",
+        "express-splitter"
+      ]
+    }
+  ],
+  "cells": [
+    {
+      "recipe": "express-transport-belt",
+      "product": "express-transport-belt",
+      "machine": 88,
+      "inputArms": [
+        89,
+        90
+      ],
+      "outputArm": 91,
+      "stockCap": 30,
+      "directInputs": []
+    },
+    {
+      "recipe": "express-underground-belt",
+      "product": "express-underground-belt",
+      "machine": 92,
+      "inputArms": [
+        93,
+        94
+      ],
+      "outputArm": 95,
+      "stockCap": 10,
+      "directInputs": []
+    },
+    {
+      "recipe": "express-splitter",
+      "product": "express-splitter",
+      "machine": 96,
+      "inputArms": [
+        97,
+        98
+      ],
+      "outputArm": 99,
+      "stockCap": 5,
+      "directInputs": []
+    },
+    {
+      "recipe": "long-handed-inserter",
+      "product": "long-handed-inserter",
+      "machine": 100,
+      "inputArms": [
+        101,
+        102
+      ],
+      "outputArm": 103,
+      "stockCap": 5,
+      "directInputs": [
+        {
+          "item": "inserter",
+          "source": 104,
+          "destination": 100,
+          "inserter": 116
+        }
+      ]
+    },
+    {
+      "recipe": "inserter",
+      "product": "inserter",
+      "machine": 104,
+      "inputArms": [
+        105,
+        106
+      ],
+      "outputArm": 107,
+      "stockCap": 5,
+      "directInputs": []
+    },
+    {
+      "recipe": "fast-inserter",
+      "product": "fast-inserter",
+      "machine": 108,
+      "inputArms": [
+        109,
+        110
+      ],
+      "outputArm": 111,
+      "stockCap": 5,
+      "directInputs": [
+        {
+          "item": "inserter",
+          "source": 104,
+          "destination": 108,
+          "inserter": 117
+        }
+      ]
+    },
+    {
+      "recipe": "bulk-inserter",
+      "product": "bulk-inserter",
+      "machine": 112,
+      "inputArms": [
+        113,
+        114
+      ],
+      "outputArm": 115,
+      "stockCap": 5,
+      "directInputs": [
+        {
+          "item": "fast-inserter",
+          "source": 108,
+          "destination": 112,
+          "inserter": 118
+        }
+      ]
+    }
+  ],
+  "directTransfers": [
+    {
+      "item": "inserter",
+      "source": 104,
+      "destination": 100,
+      "inserter": 116
+    },
+    {
+      "item": "inserter",
+      "source": 104,
+      "destination": 108,
+      "inserter": 117
+    },
+    {
+      "item": "fast-inserter",
+      "source": 108,
+      "destination": 112,
+      "inserter": 118
+    }
+  ],
+  "loop": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66
+  ],
+  "reader": 6,
+  "pipes": [
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134
+  ],
+  "output": {
+    "chest": 136,
+    "collectors": [
+      137,
+      138
+    ],
+    "panel": 139,
+    "label": "OUT: 3 express belts + 4 inserters | one provider",
+    "position": {
+      "x": 28.5,
+      "y": 2.5
+    }
+  },
+  "power": {
+    "entryPole": 140,
+    "panel": 149,
+    "label": "POWER: connect medium pole | external electricity",
+    "externalPolePosition": {
+      "x": -1.5,
+      "y": -3.5
+    },
+    "poles": [
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148
+    ]
+  },
+  "nativeProtocol": {
+    "seed": 21024,
+    "stockFillTicks": 54000,
+    "refillTicks": 54000,
+    "outageTicks": 18000,
+    "recoveryTicks": 54000,
+    "externalPowerWatts": 5000000,
+    "samplingTicks": 3600,
+    "targetRate": null,
+    "acceptance": "All seven products reach their stock caps from empty, refill after complete collection, and recover after a boundary-input outage; imported blueprint unchanged."
+  },
+  "status": {
+    "static": "see static-audit.json",
+    "native": "pending-integrator",
+    "published": false
+  }
+}
