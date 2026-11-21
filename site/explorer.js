@@ -155,13 +155,41 @@ function create(ui) {
     }).join('')}</div>${b.entries.some(r => r.id === 'requester-chest') && !b.entries.some(r => r.id === 'roboport') ? `<div class="delivery-support"><h4>Robot delivery support</h4><p class="small muted">Connect the requesters to your existing powered logistics network. To extend it, click an item for its recipe and matching blueprints.</p><div class="token-wrap">${tokens(['roboport', 'logistic-robot', 'passive-provider-chest'], Infinity, true)}</div></div>` : ''}</section>`;
   }
   function versionOptions() {
-    if (!versionFamily?.publication?.version) return [];
-    return [...(versionFamily.publication.history || []), {version: versionFamily.publication.version, blueprintSha256: versionFamily.blueprintSha256, code: versionFamily.publication.snapshots.code}].sort((a, b) => b.version - a.version);
+    const family = versionFamily, publication = family?.publication;
+    if (!publication?.version) return [];
+    // Every version carries its own size, machine count and measured output per minute (steady, and recovery where
+    // its native report has one); the current one reads them from the record itself.
+    const current = {version: publication.version, label: publication.label, summary: publication.summary, blueprintSha256: family.blueprintSha256, code: publication.snapshots.code, footprint: family.footprint, machines: publication.machines, entityCount: family.entityCount, perMinute: publication.perMinute || family.benchmark?.perMinute || family.measuredOutputsPerMinute || null, recoveryPerMinute: publication.recoveryPerMinute || null};
+    return [...(publication.history || []), current].sort((a, b) => b.version - a.version);
+  }
+  const versionName = v => `Version ${v.version}${v.label ? ' · ' + v.label : ''}`;
+  const versionSize = v => v.footprint ? `${v.footprint.width} × ${v.footprint.height} tiles` : 'Size not recorded';
+  function versionProducts(versions) {
+    const measured = new Set(versions.flatMap(v => Object.keys(v.perMinute || {})));
+    return [...new Set([...productsOf(versionFamily).filter(id => measured.has(id)), ...measured])];
+  }
+  // The headline is the product whose rate differs most between versions, in items per minute (the first
+  // product when they agree).
+  function headlineProduct(versions, products) {
+    let best = products[0], spread = -1;
+    for (const id of products) {
+      const values = versions.map(v => v.perMinute?.[id]).filter(Number.isFinite);
+      const s = values.length ? Math.max(...values) - Math.min(...values) : -1;
+      if (s > spread + 1e-9) { best = id; spread = s; }
+    }
+    return best;
   }
   function versionSelector(b) {
     const versions = versionOptions();
     if (!versions.length) return '';
-    return `<section class="blueprint-version-picker"><label for="blueprint-version">Tested version</label><select id="blueprint-version">${versions.map(v => `<option value="${v.version}" ${v.version === b.publication?.version ? 'selected' : ''}>Version ${v.version}${v.version === versionFamily.publication.version ? ' · Recommended' : ''}${v.footprint ? ` · ${v.footprint.width} × ${v.footprint.height} tiles` : ''}</option>`).join('')}</select><p class="small muted">The recommended layout opens by default. Each version keeps its own blueprint, materials and native test results.</p><div class="version-downloads">${versions.map(v => `<a class="source-link" href="${esc(v.code)}" download>Download v${v.version}</a>`).join(' · ')}</div></section>`;
+    const products = versionProducts(versions), headline = headlineProduct(versions, products), recommended = versionFamily.publication.version;
+    const withRecovery = versions.some(v => v.recoveryPerMinute);
+    const selected = versions.find(v => v.version === b.publication?.version) || versions[0];
+    const option = v => `<option value="${v.version}" ${v === selected ? 'selected' : ''}>${esc(versionName(v))}${v.version === recommended ? ' · Recommended' : ''} · ${esc(versionSize(v))}${headline ? ` · ${esc(name(headline))} ${esc(rateNumber(v.perMinute?.[headline]))}${Number.isFinite(v.perMinute?.[headline]) ? '/min' : ''}` : ''}</option>`;
+    const cell = (v, id) => `<td data-rate-item="${esc(id)}">${esc(rateNumber(v.perMinute?.[id]))}${withRecovery ? `<small>recovery ${esc(rateNumber(v.recoveryPerMinute?.[id]))}</small>` : ''}</td>`;
+    const row = v => `<tr data-version="${v.version}" class="${v === selected ? 'selected-version' : ''}" ${v === selected ? 'aria-current="true"' : ''}><th scope="row">${esc(versionName(v))}${v.version === recommended ? ' <span class="version-recommended">Recommended</span>' : ''}</th><td>${esc(versionSize(v))}${v.footprint ? `<small>${number(v.footprint.width * v.footprint.height)} tiles</small>` : ''}</td><td>${Number.isFinite(v.machines) ? number(v.machines) : 'Not counted'}</td>${products.map(id => cell(v, id)).join('')}</tr>`;
+    const table = `<div class="version-compare-scroll"><table class="version-compare" aria-label="Versions compared: size, machines and measured output per minute"><thead><tr><th scope="col">Version</th><th scope="col">Size</th><th scope="col">Machines</th>${products.map(id => `<th scope="col" title="${esc(name(id))}">${image(id)}<span>${esc(name(id))}</span></th>`).join('')}</tr></thead><tbody>${versions.map(row).join('')}</tbody></table></div>`;
+    return `<section class="blueprint-version-picker"><label for="blueprint-version">Tested version</label><select id="blueprint-version">${versions.map(option).join('')}</select><p class="small muted">The recommended layout opens by default. Each version keeps its own blueprint, materials and native test results.</p><h4>Measured output per minute, by version</h4>${products.length ? table : '<p class="small muted">Output not measured for any version.</p>'}<p class="small muted">From each version's own native test${withRecovery ? ': steady rate, and below it the rate after output was blocked and resumed (recovery)' : ''}. "Not measured" means that version's report has no rate for the product.</p>${selected.summary ? `<p class="version-summary">${esc(selected.summary)}</p>` : ''}<div class="version-downloads">${versions.map(v => `<a class="source-link" href="${esc(v.code)}" download>Download v${v.version}${v.label ? ' · ' + esc(v.label) : ''}</a>`).join(' · ')}</div></section>`;
   }
   async function selectVersion(version) {
     const family = versionFamily, selected = versionOptions().find(v => v.version === version);

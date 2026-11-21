@@ -1,0 +1,1 @@
+Replaced by `sixteen-rows` (23 × 16 = 368 tiles, 5.9% smaller, same 19 machines, same entrances and chest order), which passes the same protocol and holds it from 1.7 times the panel supply where this 23 × 17 layout needed 2 times; this folder keeps the string, manifest and qualified report of `one-column-west` (SHA-256 d894c04a…) and its two supply screens.

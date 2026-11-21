@@ -22,7 +22,7 @@ for (const e of entities) {
   if (e.name === 'medium-electric-pole') { put(x, y, 'p'); continue; }
   if (e.name === 'display-panel') { put(x, y, 'D'); continue; }
   if (e.name === 'constant-combinator') { put(x, y, 'K'); continue; }
-  if (e.name.endsWith('combinator')) { put(Math.floor(e.position.x - .5), y, '='); put(Math.floor(e.position.x), y, '='); continue; }
+  if (e.name.endsWith('combinator')) { if (d === 0 || d === 8) { put(x, Math.floor(e.position.y - .5), '='); put(x, Math.floor(e.position.y), '='); } else { put(Math.floor(e.position.x - .5), y, '='); put(Math.floor(e.position.x), y, '='); } continue; }
   put(x, y, '?');
 }
 const xs = [...grid.keys()].map(k => +k.split(',')[0]), ys = [...grid.keys()].map(k => +k.split(',')[1]);

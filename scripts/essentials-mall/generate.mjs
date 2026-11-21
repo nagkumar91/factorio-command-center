@@ -9,7 +9,8 @@ import {createHash} from 'node:crypto';
 import {encodeBlueprint} from '../blueprints.mjs';
 import {starterBounds} from '../science-factory/local-ports/compact-shared-layout.mjs';
 import {powerInsideLayout} from './power.mjs';
-import {VARIANTS, PUBLISHED_VARIANT} from './variants.mjs';
+import {VARIANTS, PUBLISHED_VARIANT, VERSIONS} from './variants.mjs';
+import {familyVersions} from '../blueprint-versions.mjs';
 
 export const RAW = process.env.FACTORIO_RAW || '/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
 export const ID = 'essentials-mall';
@@ -74,7 +75,8 @@ export function build(raw, v) {
   const combinator = (name, x, y, control_behavior, vertical = false) => place({entity_number: next++, name, position: vertical ? {x: x + .5, y: y + 1} : {x: x + 1, y: y + .5}, direction: vertical ? 0 : 4, control_behavior});
 
   const W = v.ringEast; // east column of the ring
-  const H = 6;          // ring bottom row y
+  const H = v.ringBottom ?? 6; // ring bottom row y (5 when the inside row has one arm row)
+  const rearArmY = H + 5, rearY = H + 6; // rear iron band behind the bottom row
   const limits = {...v.limits};
 
   // ---- Ring: top east, east column south, bottom west, west column north.
@@ -93,7 +95,7 @@ export function build(raw, v) {
   // ---- Machines. Rows: top (finals), inside, bottom (rear iron).
   const machines = [];
   const machine = (recipe, slot, row) => {
-    const x0 = v.slotX(slot), cy = {top: -3, inside: 3, bottom: 9}[row];
+    const x0 = v.slotX(slot), cy = {top: -3, inside: 3, bottom: H + 3}[row];
     const m = add('assembling-machine-2', x0 + 1, cy, {recipe});
     machineCounts[recipe] = (machineCounts[recipe] || 0) + 1;
     const rec = {recipe, slot, row, x0, entity: m.entity_number, m};
@@ -102,7 +104,7 @@ export function build(raw, v) {
   // Input arm from the ring into a machine; outputs onto the ring.
   const feed = (rec, dx, items, opts = {}) => {
     const {row, x0} = rec, x = x0 + dx;
-    const [ay, d, ry] = row === 'top' ? [-1, 8, 0] : row === 'inside' ? [1, 0, 0] : [7, 0, H];
+    const [ay, d, ry] = row === 'top' ? [-1, 8, 0] : row === 'inside' ? [1, 0, 0] : [H + 1, 0, H];
     const e = arm(x, ay, d, {...(opts.name ? {name: opts.name} : {}), ...filters(items)});
     if (opts.phase !== undefined) { e.control_behavior = phaseIs(opts.phase); wire(e, ringAt(x, ry)); for (const k of phasesOf(opts.phase, N)) clockArms[k].push(e.entity_number); }
     if (opts.reserve !== undefined) { e.control_behavior = above(items[0], opts.reserve); wire(e, ringAt(x, ry)); reserveArms.push({entity: e.entity_number, item: items[0], reserve: opts.reserve}); }
@@ -113,13 +115,32 @@ export function build(raw, v) {
   };
   const output = (rec, dx, item = rec.recipe) => {
     const {row, x0} = rec, x = x0 + dx;
-    const [ay, d, ry] = row === 'top' ? [-1, 0, 0] : row === 'inside' ? [5, 0, H] : [7, 8, H];
+    // With `insideOutTop` the inside row has one arm row: its outputs also go to the top belt.
+    const [ay, d, ry] = row === 'top' ? [-1, 0, 0] : row === 'inside' ? (v.insideOutTop ? [1, 8, 0] : [5, 0, H]) : [H + 1, 8, H];
     const e = arm(x, ay, d, filters([item]));
     ringControl(e, item, ringAt(x, ry));
     return e;
   };
-  const rear = (rec, dx, opts = {}) => arm(rec.x0 + dx, 11, 8, {...(opts.name ? {name: opts.name} : {}), ...filters(['iron-plate'])});
+  const rear = (rec, dx, opts = {}) => {
+    const e = arm(rec.x0 + dx, rearArmY, 8, {...(opts.name ? {name: opts.name} : {}), ...filters(opts.items || ['iron-plate'])});
+    // A rear iron arm gated on its product's chest signal stops a machine that delivers straight to its chest.
+    if (opts.capGate) { e.control_behavior = {circuit_enabled: true, circuit_condition: {first_signal: itemSignal(opts.capGate), comparator: '<', constant: 0}}; greenSide.push(e); capGatedArms.push({entity: e.entity_number, product: opts.capGate}); }
+    return e;
+  };
 
+  // A machine's own product handed to its neighbour behind the bottom row: the arm drops it on a
+  // short dead-end belt (tiles x..x+`tiles`-1 of the rear row, east-bound, apart from the iron belt)
+  // that the neighbour's rear arm picks from. The arm is bounded by the belt's few slots, and may
+  // also carry a clock window or a ring reserve.
+  const rearOutput = (rec, dx, opts = {}) => {
+    const x = rec.x0 + dx, e = arm(x, rearArmY, 0, {...(opts.name ? {name: opts.name} : {}), ...filters([rec.recipe])});
+    const handOff = []; for (let k = 0; k < (opts.tiles || 2); k++) handOff.push(belt(x + k, rearY, 4).entity_number);
+    if (opts.phase !== undefined) { e.control_behavior = phaseIs(opts.phase); wire(e, ringAt(x, H)); for (const k of phasesOf(opts.phase, N)) clockArms[k].push(e.entity_number); }
+    if (opts.reserve !== undefined) { e.control_behavior = above(rec.recipe, opts.reserve); wire(e, ringAt(x, H)); reserveArms.push({entity: e.entity_number, item: rec.recipe, reserve: opts.reserve}); }
+    rearOutputs.push({entity: e.entity_number, item: rec.recipe, from: rec.entity, belt: handOff});
+    return e;
+  };
+  const rearOutputs = [];
   for (const [slot, recipe] of v.top.entries()) if (recipe) machine(recipe, slot + 1, 'top');
   for (const [slot, recipe] of v.inside.entries()) if (recipe && recipe !== 'bay') machine(recipe, slot + 1, 'inside');
   for (const [slot, recipe] of v.bottom.entries()) if (recipe) machine(recipe, slot + 1, 'bottom');
@@ -127,13 +148,15 @@ export function build(raw, v) {
 
   // Arm plans per recipe (dx 0..2 within the slot). Each entry: [dx, kind, items|item, opts].
   const plans = v.arms;
-  const finalOutputs = {};
+  const finalOutputs = {}, directChests = [];
   for (const rec of machines) {
     const plan = plans[`${rec.recipe}@${rec.row}${rec.slot}`] || plans[`${rec.recipe}@${rec.row}`] || plans[rec.recipe]; assert(plan, 'no arm plan for ' + rec.recipe);
     for (const [dx, kind, items, opts = {}] of plan) {
       if (kind === 'in') feed(rec, dx, items, opts);
       else if (kind === 'out') { const e = output(rec, dx); finalOutputs[rec.recipe] = e.entity_number; }
-      else if (kind === 'rear') rear(rec, dx, opts);
+      else if (kind === 'rear') rear(rec, dx, items || opts);
+      else if (kind === 'chest') directChests.push({rec, dx});
+      else if (kind === 'rearOut') rearOutput(rec, dx, items || opts);
       else if (kind === 'none') {}
       else throw Error('bad arm kind ' + kind);
     }
@@ -200,25 +223,24 @@ export function build(raw, v) {
   // Iron: entrance at the rear row; a splitter sends one branch up to the ring admission at (0,7).
   // With `ironLift` the entrance runs straight into the rear belt and one bulk arm at (0,11) lifts
   // iron onto a short belt (0,10)-(0,8) for the same admission arm.
-  const rearY = 12;
   if (!v.noRear) {
     const item = 'iron-plate', entrance = belt(west, rearY, 4);
     let bx;
     if (v.ironLift) {
       assert(west === -1, 'iron lift needs the one-column west zone'); bx = 0;
       arm(0, rearY - 1, 8, {name: 'bulk-inserter', ...filters([item])});
-      for (let y = rearY - 2; y >= 8; y--) belt(0, y, 0);
+      for (let y = rearY - 2; y >= H + 2; y--) belt(0, y, 0);
     } else {
       for (let x = west + 1; x < -2; x++) belt(x, rearY, 4);
       const sx = west + 1; bx = west + 2; // splitter column, branch column
       place({entity_number: next++, name: 'fast-splitter', position: {x: sx + .5, y: rearY}, direction: 4});
       // Upper branch: north from (bx, rearY-1) to row 8, ending at (0,8) where the admission arm picks.
-      if (bx === 0) for (let y = rearY - 1; y >= 8; y--) belt(0, y, 0);
-      else { for (let y = rearY - 1; y >= 9; y--) belt(bx, y, 0); belt(bx, 8, 4); for (let x = bx + 1; x <= 0; x++) belt(x, 8, 4); }
+      if (bx === 0) for (let y = rearY - 1; y >= H + 2; y--) belt(0, y, 0);
+      else { for (let y = rearY - 1; y >= H + 3; y--) belt(bx, y, 0); belt(bx, H + 2, 4); for (let x = bx + 1; x <= 0; x++) belt(x, H + 2, 4); }
     }
-    const e = arm(0, 7, 8, filters([item])); ringControl(e, item, ringAt(0, H)); admissions[item] = [e.entity_number];
+    const e = arm(0, H + 1, 8, filters([item])); ringControl(e, item, ringAt(0, H)); admissions[item] = [e.entity_number];
     // Rear belt: both lanes iron, dead end at the last rear arm.
-    const rearEnd = Math.max(...entities.filter(e => e.name.endsWith('inserter') && e.position.y === 11.5).map(e => e.position.x - .5));
+    const rearEnd = Math.max(...entities.filter(e => e.name.endsWith('inserter') && e.position.y === rearArmY + .5 && e.filters?.[0]?.name === 'iron-plate').map(e => e.position.x - .5));
     // A substation hole in the rear band is bridged by one underground pair.
     const gap = v.rearGap || [];
     for (let x = bx; x <= rearEnd; x++) {
@@ -268,6 +290,14 @@ export function build(raw, v) {
       chestReserve = {item, reserve: reserve.reserve, decider: d.entity_number, arm: e.entity_number, chest: chest.entity_number, signal: 'signal-R'};
     }
   }
+  // A machine in the rear corner can deliver straight down into its own chest in the same east column.
+  for (const {rec, dx} of directChests) {
+    const item = rec.recipe, x = rec.x0 + dx; assert(x === chestX, 'a direct chest sits in the east chest column');
+    const e = arm(x, rearArmY, 0, {...filters([item]), control_behavior: capGate(item)}), chest = add('passive-provider-chest', x, rearY);
+    wire(e, chest, 2, 2); wire(previousChest, chest, 2, 2); previousChest = chest; chestArms.push(e.entity_number); chests.push(chest.entity_number);
+    finalOutputs[item] = e.entity_number;
+    outputPort(item, chest, e);
+  }
   assert.deepEqual([...outputs.map(p => p.item)].sort(), [...PRODUCTS].sort());
 
   // ---- Green chain: relay arms (no condition, no red wire) carry the cap network to
@@ -284,11 +314,11 @@ export function build(raw, v) {
   }
 
   // ---- Clock: T counts ticks, U = T / 600, P = U % 4 on the ring's red network.
-  const [[tx, ty], [dx2, dy2], [px, py]] = v.clockTiles;
-  const arith = (x, y, first, op, k, out) => combinator('arithmetic-combinator', x, y, {arithmetic_conditions: {first_signal: virtual(first), second_constant: k, operation: op, output_signal: virtual(out)}}, !!v.clockVertical);
-  const timer = arith(tx, ty, 'signal-T', '+', 1, 'signal-T');
-  const divide = arith(dx2, dy2, 'signal-T', '/', v.windowTicks, 'signal-U');
-  const phase = arith(px, py, 'signal-U', '%', N, 'signal-P');
+  const [[tx, ty, tUp], [dx2, dy2, dUp], [px, py, pUp]] = v.clockTiles; // a third entry 'upright' or 'flat' sets one combinator's orientation
+  const arith = (x, y, first, op, k, out, upright) => combinator('arithmetic-combinator', x, y, {arithmetic_conditions: {first_signal: virtual(first), second_constant: k, operation: op, output_signal: virtual(out)}}, upright === undefined ? !!v.clockVertical : upright === 'upright');
+  const timer = arith(tx, ty, 'signal-T', '+', 1, 'signal-T', tUp);
+  const divide = arith(dx2, dy2, 'signal-T', '/', v.windowTicks, 'signal-U', dUp);
+  const phase = arith(px, py, 'signal-U', '%', N, 'signal-P', pUp);
   wires.push([timer.entity_number, 3, timer.entity_number, 1], [timer.entity_number, 3, divide.entity_number, 1], [divide.entity_number, 3, phase.entity_number, 1]);
   wire(phase, ringAt(...v.clockRingTile), 3, 1);
 
@@ -317,6 +347,10 @@ export function build(raw, v) {
   const footprint = starterBounds(entities, shapeRaw);
   assert.deepEqual(footprint, before, 'power grew the footprint');
 
+  // Every circuit wire must be within reach (9 tiles for every entity used here).
+  { const byNumber = new Map(entities.map(e => [e.entity_number, e]));
+    for (const [a, ac, b, bc] of wires) if (ac <= 4 && bc <= 4) { const p = byNumber.get(a).position, q = byNumber.get(b).position; assert(Math.hypot(p.x - q.x, p.y - q.y) <= 9, `circuit wire ${a}-${b} is longer than 9 tiles`); } }
+
   // ---- Demand, labels and text.
   const audit = recipeAudit(raw);
   for (const p of ports.filter(p => p.kind === 'input')) {
@@ -329,7 +363,9 @@ export function build(raw, v) {
   const capacity = 8 * loop.length, maximumStock = Object.values(limits).reduce((a, b) => a + b, 0);
   assert(maximumStock <= .6 * capacity, `ring limits ${maximumStock} exceed 60% of ${capacity}`);
   const machineTotal = Object.values(machineCounts).reduce((a, b) => a + b, 0);
-  const preserve = ['the red ring wires', 'the green cap wires', 'all arm filters', ...(v.gatedEntrances ? ['the entrance belt conditions'] : []), 'the gear clock', 'the fast-inserter reserve decider', ...(feedGate ? ['the fast-inserter feed decider'] : [])];
+  const numberWord = n => ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'][n] || String(n);
+  const clockedFinals = [...new Set(Object.values(clockArms).flat().map(id => machineOf(id)))];
+  const preserve = ['the red ring wires', 'the green cap wires', 'all arm filters', ...(v.gatedEntrances ? ['the entrance belt conditions'] : []), 'the gear clock', ...(rearOutputs.length ? ['the two-tile gear belt behind the drill'] : []), 'the fast-inserter reserve decider', ...(feedGate ? ['the fast-inserter feed decider'] : [])];
   const description = `Factorio 2.1.24 Space Age. ${machineTotal} assembling machine 2 (no modules), red belts, fast/long-handed/bulk arms. WEST inputs, one labelled entrance each: iron plates, electronic circuits, copper plates, steel plates, stone bricks, plastic bars. EAST: eight passive provider chests in one column, one product each; each stops at its own cap, set in the constant combinator beside the fast-belt chest (edit one number). Gears, cable, red circuits, yellow belts, undergrounds, splitters, inserters and AM1 are made inside. Preserve ${preserve.slice(0, -1).join(', ')} and ${preserve.at(-1)}. Supply electricity at the marked substation.`;
   const bp = {item: 'blueprint', version: 562954249961472, label: LABEL, description, entities, wires,
     icons: ['assembling-machine-2', 'fast-transport-belt', 'bulk-inserter', 'electric-mining-drill'].map((name, i) => ({index: i + 1, signal: {type: 'item', name}}))};
@@ -339,7 +375,7 @@ export function build(raw, v) {
   const loopControl = [{name: ID + '-ring', reader: loop[0].entity_number, readerMode: 'per-tile-hold', loop: loop.map(e => e.entity_number), controlled, limits, capacity, maximumStock, uncountedTiles: []}];
   const inputs = ports.filter(p => p.kind === 'input');
   // Which machines take iron from the rear belt, and which from the ring (for the setup notes).
-  const rearArmXs = entities.filter(e => e.name.endsWith('inserter') && e.position.y === 11.5 && e.filters?.[0]?.name === 'iron-plate' && !(v.ironLift && e.position.x === .5)).map(e => e.position.x);
+  const rearArmXs = entities.filter(e => e.name.endsWith('inserter') && e.position.y === rearArmY + .5 && e.filters?.[0]?.name === 'iron-plate' && !(v.ironLift && e.position.x === .5)).map(e => e.position.x);
   const rearUsers = [...new Set(machines.filter(m => m.row === 'bottom' && rearArmXs.some(x => x > m.x0 && x < m.x0 + 3)).map(m => m.recipe))];
   const ringIronUsers = [...new Set(machines.filter(m => (plans[`${m.recipe}@${m.row}${m.slot}`] || plans[`${m.recipe}@${m.row}`] || plans[m.recipe]).some(([, kind, items]) => kind === 'in' && items.includes('iron-plate'))).map(m => m.recipe))];
   const count = r => machines.filter(m => m.recipe === r).length;
@@ -360,7 +396,7 @@ export function build(raw, v) {
     loopControl, ringLimitFor,
     stockControl: {mode: 'chest-condition', combinator: capComb.entity_number, chests, arms: chestArms, caps: CAPS, network: 'green', chestReserve, feedGate, capGatedArms, greenRelays: greenSide.filter(e => !capGatedArms.some(c => c.entity === e.entity_number)).map(e => e.entity_number)},
     productionClock: {timer: timer.entity_number, divide: divide.entity_number, phase: phase.entity_number, windowTicks: v.windowTicks, phases: N, cycleTicks: N * v.windowTicks,
-      phaseAssignment: Object.fromEntries(Object.entries(clockArms).map(([k, ids]) => [k, ids.map(id => ({arm: id, recipe: machineOf(id)}))])), reserveArms},
+      phaseAssignment: Object.fromEntries(Object.entries(clockArms).map(([k, ids]) => [k, ids.map(id => ({arm: id, recipe: machineOf(id)}))])), reserveArms, ...(rearOutputs.length ? {rearOutputs} : {})},
     admissions,
     protocol: {warmupMinutes: 10, measureMinutes: 20, blockedMinutes: 5, settleMinutes: 5, recoveryMinutes: 10, capPhases: true, holdMinutes: 10, resumeSettleMinutes: 2,
       fillLimitMinutes: Object.fromEntries(PRODUCTS.map(p => [p, Math.max(10, Math.ceil(2 * CAPS[p] / TARGETS[p]))])),
@@ -375,8 +411,10 @@ export function build(raw, v) {
       feedGate
         ? `Fast inserters are also a bulk-inserter ingredient. The fast-inserter machine's inserter-feed arm runs while the fast-inserter chest is below its cap or the ring holds fewer than ${feedGate.ringBelow} fast inserters (one decider), so the bulk-inserter machine keeps getting fast inserters while that chest is full. A second decider lets the fast-inserter chest arm take only fast inserters above a ring reserve of ${chestReserve.reserve}.`
         : 'Fast inserters are also a bulk-inserter ingredient: their feed arm stops while the fast-inserter chest is full, and a decider keeps a reserve of fast inserters on the ring for the bulk-inserter machine.',
-      'Gear arms of the six gear-hungry finals take turns in an eight-window clock (7.5 s each); yellow belts, inserters and AM1 take gears freely because their own ring limits bound them.',
-      "Plan supply above the entrance panels if all eight products should hold their floors at once: the panels are recipe totals at the floors, and products early on the ring run above them and take material first. Exploration measurements (full-length runs with a throttled-feed copy of the harness, not part of the qualification): with every entrance fed at exactly its panel figure and all eight products drawn, assembling machine 2 made 0/min (floor 2) and bulk inserters 0.25/min (floor 1); the other six held their floors. The floors need about the measured draw: 195 electronic circuits, 722 iron, 38 steel, 27 stone brick, 30 plastic and 30 copper per minute, two to three times the panels. Circuits alone limited to 360/min (one green-circuits copy) with every other entrance unlimited kept all eight above their floors. With less supply the mall still fills every chest in turn; only the all-eight-at-once floors are lost."]
+      rearOutputs.length
+        ? `Gear arms of the ${numberWord(clockedFinals.length)} gear-hungry top-row finals take turns in a ${numberWord(N)}-window clock (${fmt(v.windowTicks / 60)} s each, every window owned); the drill gets its gears straight from the gear machine beside it over a two-tile belt; yellow belts, inserters and AM1 take gears freely because their own ring limits bound them.`
+        : 'Gear arms of the six gear-hungry finals take turns in an eight-window clock (7.5 s each); yellow belts, inserters and AM1 take gears freely because their own ring limits bound them.',
+      v.supplyNote || "Plan supply above the entrance panels if all eight products should hold their floors at once: the panels are recipe totals at the floors, and products early on the ring run above them and take material first. Exploration measurements (full-length runs with a throttled-feed copy of the harness, not part of the qualification): with every entrance fed at exactly its panel figure and all eight products drawn, assembling machine 2 made 0/min (floor 2) and bulk inserters 0.25/min (floor 1); the other six held their floors. The floors need about the measured draw: 195 electronic circuits, 722 iron, 38 steel, 27 stone brick, 30 plastic and 30 copper per minute, two to three times the panels. Circuits alone limited to 360/min (one green-circuits copy) with every other entrance unlimited kept all eight above their floors. With less supply the mall still fills every chest in turn; only the all-eight-at-once floors are lost."]
   };
   function machineOf(id) { const arm = entities.find(e => e.entity_number === id); const m = machines.find(m => Math.abs(m.m.position.x - arm.position.x) <= 1.5 && Math.abs(m.m.position.y - arm.position.y) <= 2.5); return m?.recipe; }
   return {code, manifest, bp};
@@ -395,6 +433,15 @@ async function main() {
   // Keep any recorded status/history fields the validator wrote for this same string.
   let old; try { old = JSON.parse(await fs.readFile(out + '/manifest.json'))[0]; } catch {}
   if (old?.blueprintSha256 === manifest.blueprintSha256 && old.status) { manifest.status = old.status; if (old.nativeReport) manifest.nativeReport = old.nativeReport; if (old.measured) manifest.measured = old.measured; }
+  // The published variant lists every tested version (current first) with its own size, machines and measured
+  // rates; older versions are read from blueprint-sources/essentials-mall/history/ wherever the output goes.
+  if (name === PUBLISHED_VARIANT && !process.env.ESSENTIALS_TWEAK) {
+    const versions = await familyVersions(out, [{label: VERSIONS[0].label, summary: VERSIONS[0].summary, file: ID + '.txt', report: 'native-report.json', width: manifest.footprint.width, height: manifest.footprint.height}]);
+    const home = 'blueprint-sources/' + ID;
+    for (const v of VERSIONS.slice(1)) versions.push(...(await familyVersions(home, [{label: v.label, summary: v.summary, file: v.folder + '/' + ID + '.txt', manifest: v.folder + '/manifest.json', report: v.folder + '/native-report.json'}])));
+    assert.equal(VERSIONS[0].variant, name);
+    manifest.versions = versions;
+  }
   await fs.writeFile(out + '/manifest.json', JSON.stringify([manifest], null, 2) + '\n');
   console.log(JSON.stringify({variant: name, out, footprint: manifest.footprint, area: manifest.areaGoal.achievedTiles, machines: Object.values(manifest.machineCounts).reduce((a, b) => a + b, 0), power: manifest.power, ringStock: manifest.loopControl[0].maximumStock + '/' + manifest.loopControl[0].capacity, blueprintSha256: manifest.blueprintSha256}));
 }

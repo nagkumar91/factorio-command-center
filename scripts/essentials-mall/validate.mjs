@@ -2,6 +2,7 @@
 // Full protocol:   node scripts/essentials-mall/validate.mjs
 // Exploration:     ESSENTIALS_EXPLORE=1 ESSENTIALS_PHASES=5,10,0,0,0 ESSENTIALS_CAP=none node scripts/essentials-mall/validate.mjs
 //   ESSENTIALS_SOURCE=<dir> validates a candidate folder; ESSENTIALS_HOLD=<minutes> changes the cap-phase hold;
+//   ESSENTIALS_SUPPLY='{"iron-plate":379}' caps entrances at so many items per minute (exploration only);
 //   exploration never writes native-report.json.
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -48,7 +49,9 @@ await fs.writeFile(root + '/mods/mod-list.json', JSON.stringify({mods: ['base', 
 await fs.writeFile(mod + '/info.json', JSON.stringify({name: 'essentials_mall_test', version: '1.0.0', title: 'Private essentials mall qualification', author: 'local', factorio_version: '2.1', dependencies: ['base = 2.1.24', 'space-age']}));
 await fs.copyFile('scripts/' + id + '/control.lua', mod + '/control.lua');
 await fs.writeFile(mod + '/data.lua', '-- No prototypes added.\n');
-const payload = {build: b, phases: {warmup, measure, blocked, settle, recovery}, capProducts, fillLimitTicks, refillLimitTicks, holdTicks, resumeSettleTicks, debugTopology: process.env.ESSENTIALS_DEBUG === '1'};
+// Exploration only: ESSENTIALS_SUPPLY='{"iron-plate":379,...}' caps entrances at so many items per minute.
+const supply = explore && process.env.ESSENTIALS_SUPPLY ? JSON.parse(process.env.ESSENTIALS_SUPPLY) : undefined;
+const payload = {build: b, phases: {warmup, measure, blocked, settle, recovery}, capProducts, fillLimitTicks, refillLimitTicks, holdTicks, resumeSettleTicks, debugTopology: process.env.ESSENTIALS_DEBUG === '1', ...(supply ? {supply} : {})};
 await fs.writeFile(mod + '/payload.lua', 'return [====[' + JSON.stringify(payload) + ']====]');
 await fs.writeFile(root + '/config.ini', `[path]\nread-data=${app}/data\nwrite-data=${root}\n[general]\nlocale=en\n[other]\nupdate-runner-threads-count=1\n`);
 await fs.writeFile(root + '/map.json', JSON.stringify({seed: 12345, width: 32, height: 32, default_enable_all_autoplace_controls: false}));
@@ -111,7 +114,7 @@ const report = {
   validatorSha256: sha(await fs.readFile('scripts/' + id + '/validate.mjs')), configurationSha256: sha(await fs.readFile(mod + '/payload.lua')),
   protocol: {warmupMinutes: minutes[0], measureMinutes: minutes[1], blockedMinutes: minutes[2], settleMinutes: minutes[3], recoveryMinutes: minutes[4], capProducts, holdMinutes, resumeSettleMinutes: proto.resumeSettleMinutes, fillLimitMinutes: proto.fillLimitMinutes, refillLimitMinutes: proto.refillLimitMinutes},
   warmupMinutes: minutes[0], measurementMinutes: minutes[1], createdAt: new Date().toISOString(), wallSeconds: Math.round((Date.now() - started) / 1000),
-  short: explore || undefined, variant: b.variant, builds: [r], passed: r.passed,
+  short: explore || undefined, ...(supply ? {supplyPerMinute: supply} : {}), variant: b.variant, builds: [r], passed: r.passed,
 };
 const target = explore ? `.cache/${id}/explore-report.json` : source + '/native-report.json';
 await fs.writeFile(target, JSON.stringify(report, null, 2) + '\n');

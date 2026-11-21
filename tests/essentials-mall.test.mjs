@@ -189,6 +189,73 @@ test('footprint equals the bounds of the decoded string', () => {
   assert.deepEqual(m.footprint, {left, top, right, bottom, width: right - left, height: bottom - top});
   assert.equal(m.areaGoal.achievedTiles, m.footprint.width * m.footprint.height);
   assert.equal(m.areaGoal.goalTiles, 442); assert.equal(m.areaGoal.stretchTiles, 400);
+  // The published layout: sixteen rows (the inside row keeps one arm row).
+  assert.equal(m.variant, 'sixteen-rows');
+  assert.deepEqual([m.footprint.width, m.footprint.height, m.areaGoal.achievedTiles], [23, 16, 368]);
+});
+
+test('sixteen rows: a six-row ring, one arm row inside it, six ring-fed chests and the drill chest at the foot of the column', () => {
+  const ring = m.loopControl[0], ringTiles = ring.loop.map(id => byId.get(id));
+  const ys = ringTiles.map(e => e.position.y), xs = ringTiles.map(e => e.position.x);
+  assert.equal(ring.loop.length, 48); assert.equal(ring.capacity, 384);
+  assert.equal(Math.max(...ys) - Math.min(...ys) + 1, 6, 'ring is six rows tall');
+  assert.equal(Math.max(...xs) - Math.min(...xs) + 1, 20, 'ring is twenty columns wide');
+  const top = Math.min(...ys), bottom = Math.max(...ys);
+  // Inside-row machines touch the ring's bottom belt; every arm between the two belts sits in the row under the top belt.
+  const inside = m.machines.filter(r => r.row === 'inside').map(r => byId.get(r.entity));
+  assert.equal(inside.length, 6);
+  for (const e of inside) assert.equal(e.position.y + 2, bottom, 'inside machine sits against the bottom belt');
+  const between = entities.filter(e => e.name.endsWith('inserter') && e.position.y > top && e.position.y < bottom && e.position.x > Math.min(...xs) && e.position.x < Math.max(...xs));
+  assert(between.length >= 15 && between.every(e => e.position.y === top + 1), 'one arm row inside the ring');
+  // Six chests are fed from the six ring tiles of the east column, in the published order.
+  const order = ['fast-transport-belt', 'assembling-machine-2', 'fast-underground-belt', 'fast-splitter', 'fast-inserter', 'bulk-inserter', 'electric-furnace', 'electric-mining-drill'];
+  assert.deepEqual([...m.outputs].sort((a, b) => a.y - b.y).map(p => p.item), order, 'chest order north to south');
+  const ringFed = m.outputs.filter(p => { const a = byId.get(p.arm); return ring.loop.some(id => byId.get(id).position.x === a.position.x - 1 && byId.get(id).position.y === a.position.y); });
+  assert.deepEqual(ringFed.map(p => p.item).sort(), order.slice(1, 7).sort());
+  // Fast belts and drills go straight from their machine to their chest and never ride the ring.
+  for (const item of ['fast-transport-belt', 'electric-mining-drill']) {
+    assert.equal(ring.limits[item], undefined, item + ' has no ring limit'); assert.equal(m.ringLimitFor[item], null);
+    assert(!ringFed.some(p => p.item === item));
+  }
+  const drill = m.outputs.find(p => p.item === 'electric-mining-drill'), drillArm = byId.get(drill.arm), drillMachine = byId.get(m.finalMachines['electric-mining-drill'][0]);
+  assert.equal(drillArm.position.x, drill.x); assert.equal(drillArm.position.y, drill.y - 1); assert.equal(drillMachine.position.y, drill.y - 3);
+  assert.equal(drill.y, Math.max(...entities.map(e => e.position.y)), 'drill chest in the last row');
+});
+
+test('drill gear hand-off: the gear machine beside the drill feeds it over a two-tile belt, and the drill stops on its chest signal', () => {
+  const hand = m.productionClock.rearOutputs;
+  assert.equal(hand.length, 1);
+  const [h] = hand, arm = byId.get(h.entity), from = byId.get(h.from), drill = byId.get(m.finalMachines['electric-mining-drill'][0]);
+  assert.equal(h.item, 'iron-gear-wheel'); assert.equal(from.recipe, 'iron-gear-wheel');
+  assert.deepEqual(arm.filters.map(f => f.name), ['iron-gear-wheel']);
+  assert.equal(arm.control_behavior, undefined, 'the hand-off arm is bounded by its belt, not by a condition');
+  assert.equal(drill.position.x - from.position.x, 3, 'gear machine and drill are neighbours');
+  assert.equal(h.belt.length, 2);
+  const belt = h.belt.map(id => byId.get(id));
+  for (const e of belt) { assert.equal(e.name, 'fast-transport-belt'); assert.equal(e.direction, 4); assert(!m.loopControl[0].loop.includes(e.entity_number)); }
+  assert.equal(belt[1].position.x, belt[0].position.x + 1); assert.equal(belt[0].position.y, belt[1].position.y);
+  assert.deepEqual([arm.position.x, arm.position.y + 1], [belt[0].position.x, belt[0].position.y]);
+  // Nothing feeds the hand-off belt from behind and nothing continues it: the iron belt ends two tiles earlier.
+  const at = (x, y) => entities.find(e => e.position.x === x && e.position.y === y);
+  assert.equal(at(belt[0].position.x - 1, belt[0].position.y), undefined); assert.equal(at(belt[1].position.x + 1, belt[1].position.y), undefined);
+  // The drill's rear arm takes those gears and is the cap-gated arm of the drill.
+  const gate = m.stockControl.capGatedArms.find(a => a.product === 'electric-mining-drill'); assert(gate, 'drill gear arm is not cap-gated');
+  const rear = byId.get(gate.entity);
+  assert.deepEqual(rear.filters.map(f => f.name), ['iron-gear-wheel']);
+  assert.deepEqual([rear.position.x, rear.position.y + 1], [belt[1].position.x, belt[1].position.y]);
+  assert.deepEqual(rear.control_behavior.circuit_condition, {first_signal: {type: 'item', name: 'electric-mining-drill', quality: 'normal'}, comparator: '<', constant: 0});
+});
+
+test('circuit reserve: the two inserter machines take circuits only while the ring holds more than the reserve', () => {
+  const reserves = m.productionClock.reserveArms.filter(r => r.item === 'electronic-circuit');
+  assert.equal(reserves.length, 2);
+  const recipes = reserves.map(r => { const a = byId.get(r.entity); return entities.find(e => e.recipe && Math.abs(e.position.x - a.position.x) <= 1 && Math.abs(e.position.y - a.position.y) === 2).recipe; });
+  assert.deepEqual(recipes.sort(), ['fast-inserter', 'inserter']);
+  for (const r of reserves) {
+    assert.equal(r.reserve, 10);
+    assert.deepEqual(byId.get(r.entity).filters.map(f => f.name), ['electronic-circuit', 'iron-plate']);
+  }
+  assert(m.setupNotes.some(n => /passed with every entrance capped at 1\.7, 1\.75, 1\.8, 1\.9 and 2 times its panel figure/.test(n)), 'supply note states the measured range');
 });
 
 test('ring: per-tile hold readers on one red network, limits under 60% of capacity, controlled arms on the ring', () => {
@@ -249,9 +316,16 @@ test('gear clock: timer, divider and phase, each windowed arm matches its record
     assert.deepEqual(phases, expect);
     assert.equal(byId.get(id).filters[0].name, 'iron-gear-wheel');
   }
-  // Every final product that uses gears has at least one gear window.
-  for (const p of ['assembling-machine-2', 'fast-transport-belt', 'fast-underground-belt', 'fast-splitter', 'bulk-inserter', 'electric-mining-drill'])
+  // Every final product that takes gears from the ring has at least one gear window; the drill takes
+  // its gears from the gear machine beside it instead (see the hand-off test).
+  for (const p of ['assembling-machine-2', 'fast-transport-belt', 'fast-underground-belt', 'fast-splitter', 'bulk-inserter'])
     assert([...arms.values()].length && Object.values(c.phaseAssignment).flat().some(a => a.recipe === p), 'no gear window for ' + p);
+  assert(!Object.values(c.phaseAssignment).flat().some(a => a.recipe === 'electric-mining-drill'));
+  assert.equal(c.rearOutputs.length, 1);
+  // Seven windows of 7.5 s, each owned by exactly one product.
+  assert.equal(N, 7); assert.equal(c.windowTicks, 450); assert.equal(c.cycleTicks, 3150);
+  const owners = Object.fromEntries(Object.entries(c.phaseAssignment).map(([k, list]) => [k, [...new Set(list.map(a => a.recipe))]]));
+  assert.deepEqual(owners, {0: ['fast-transport-belt'], 1: ['fast-transport-belt'], 2: ['bulk-inserter'], 3: ['assembling-machine-2'], 4: ['fast-splitter'], 5: ['fast-underground-belt'], 6: ['fast-underground-belt']});
 });
 
 test('native qualification: the report passes and the pass formula holds on its numbers', () => {

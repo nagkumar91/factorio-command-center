@@ -260,9 +260,14 @@ script.on_event(defines.events.on_tick,function()
  local tick=game.tick
  if tick==1 then t.force.inserter_stack_size_bonus=0;t.force.bulk_inserter_capacity_bonus=1 end
  for id,e in pairs(t.bulk)do if e.held_stack.valid_for_read then local n=e.held_stack.count;if n>(t.bulkMaxHand[id]or 0)then t.bulkMaxHand[id]=n end end end
+ -- Exploration only: payload.supply caps an entrance at so many items per minute (a credit that
+ -- fills every tick, alternating the first lane). The qualification never sets it: full belts.
+ if payload.supply then for i,p in ipairs(B.inputs)do local lim=payload.supply[p.item];if lim then t.credit=t.credit or {};t.credit[i]=math.min((t.credit[i]or 0)+lim/3600,8) end end end
  if tick%4==0 then for i,p in ipairs(B.inputs)do
   local belt=t.entities[p.entity]
-  for lane=1,2 do if belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
+  local lim=payload.supply and payload.supply[p.item];local flip=lim and (math.floor(tick/4)%2==1)
+  for k=1,2 do local lane=flip and (3-k) or k;if (not lim or t.credit[i]>=1) and belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
+   if lim then t.credit[i]=t.credit[i]-1 end
    t.fed[i]=(t.fed[i]or 0)+1
    if tick>W and tick<=M then t.steadyFed[i]=(t.steadyFed[i]or 0)+1 end
   end end

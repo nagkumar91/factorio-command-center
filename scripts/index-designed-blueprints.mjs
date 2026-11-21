@@ -11,6 +11,7 @@ import {blueprintCoverage} from './blueprint-coverage.mjs';
 import {writeData} from './write-data.mjs';
 import '../site/lib/production.js';
 import {kitBillProblems} from './space-launch-pages.mjs';
+import {checkVersions,countMachines,passingBuild} from './blueprint-versions.mjs';
 const hash=s=>createHash('sha256').update(s.trim()).digest('hex');
 const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
 const [catalog,production,library,community,atlas]=await Promise.all(['catalog','production','library','community','atlas'].map(n=>read(`site/data/${n}.json`)));
@@ -47,15 +48,16 @@ async function tiledPreview(b,id){
 await fs.mkdir('site/'+destination,{recursive:true});
 const unique=a=>[...new Set(a.filter(Boolean))];
 async function copySource(file){const to=destination+'/'+file.replace(/^blueprint-sources\//,'');await fs.mkdir(path.dirname('site/'+to),{recursive:true});await fs.copyFile(file,'site/'+to);return to;}
-async function register({file,info={},category,purpose,page,proof,report,version='2.1.24',inputs,outputs,setup=[],archive=false,preview,sourceCollection=collection,sourceAuthor='Factorio Command Center',sourceURL,profile,operatingBoundary,coverageExcluded=false,consumedProducts=[]}){
+async function register(options){
+ const {file,info={},category,purpose,page,proof,report,version='2.1.24',inputs,outputs,setup=[],archive=false,preview,sourceCollection=collection,sourceAuthor='Factorio Command Center',sourceURL,profile,operatingBoundary,coverageExcluded=false,consumedProducts=[],versionOf}=options;
  const code=(await fs.readFile(file,'utf8')).trim(),sha=hash(code),object=decodeBlueprint(code);if(!object.blueprint)return;
  if(info.blueprintSha256&&info.blueprintSha256!==sha)throw Error('Manifest SHA mismatch: '+file);
- if(seen.has(sha)&&sourceCollection!=='Autosaved · optimized v2'){seen.get(sha).alternateSources.push(file.replace(/^blueprint-sources\//,''));return;}
+ if(!versionOf&&seen.has(sha)&&sourceCollection!=='Autosaved · optimized v2'){seen.get(sha).alternateSources.push(file.replace(/^blueprint-sources\//,''));return;}
  const b=object.blueprint,analysis=FactorioProduction.analyzeBlueprint(object,production);
  const productIds=unique(outputs??info.products??info.outputs?.map(p=>p.item)??analysis.outputs);
  const inputIds=unique(inputs??[...(info.inputs||[]),...(info.fluids||[])].map(p=>p.item));
  const verified=proof?.blueprintSha256===sha&&(proof.passed===true||proof.boundaryAudit?.passed===true||((proof.perMinute||proof.outputsPerMinute)&&proof.unpowered===0&&proof.allRecipeMachinesCrafted===true));
- const recordId=info.catalogueId||'designed-'+sha.slice(0,16),localSource=file.startsWith('site/')?file.slice(5):await copySource(file);
+ const recordId=versionOf?.id||info.catalogueId||'designed-'+sha.slice(0,16),localSource=file.startsWith('site/')?file.slice(5):await copySource(file);
  let reportURL=report?(report.startsWith('site/')?report.slice(5):await copySource(report)):null;
  const measured=verified?(proof.outputsPerMinute&&typeof proof.outputsPerMinute==='object'?proof.outputsPerMinute:proof.perMinute):null;
  const title=info.name||info.label||b.label||path.basename(file,'.txt');
@@ -66,8 +68,36 @@ async function register({file,info={},category,purpose,page,proof,report,version
  const consumedIds=unique(consumedProducts);
  if(consumedIds.length)notes.push(`Makes ${consumedIds.join(', ')} inside; the connected labs use every pack, so nothing is exported.`);
  const releaseFolder=file.replace(/^blueprint-sources\//,'').split('/')[0];
- const entry={...(todayFolders.has(releaseFolder)?{releaseGroup}:essentialsFolders.has(releaseFolder)?{releaseGroup:essentialsGroup}:spaceLaunchFolders.has(releaseFolder)?{releaseGroup:spaceLaunchGroup}:{}),id:recordId,name:title,collection:sourceCollection,category,section:category,purpose,designedCollection:true,lifecycle:archive?'archive':'current',gameVersion:version,profile:profile||'Space Age',...(operatingBoundary?{operatingBoundary}:{}),coverageExcluded:coverageExcluded||archive,author:sourceAuthor,sourceURL:sourceURL||page||localSource,file:localSource,isBook:false,icons:unique([...(b.icons||[]).map(i=>i.signal?.name),...productIds]).slice(0,4),...blueprintMaterials(object,catalog),code,products:productIds,...(consumedIds.length?{consumedProducts:consumedIds}:{}),analysis:{...analysis,kind:purpose,inputs:inputIds,outputs:productIds,netOutputs:productIds,internal:analysis.internal.filter(id=>!productIds.includes(id)&&!inputIds.includes(id)),serviceInputs:unique([...(analysis.serviceInputs||[]),...(info.initialSeeds?['Initial tree seeds']:[])]),serviceOutputs:category==='Forestry'&&info.id!=='forest-kit'?['Tree planting and pollution absorption']:analysis.serviceOutputs,notes:unique([...(analysis.notes||[]),...notes])},setupNotes:notes,operatingPorts:{inputs:info.inputs||[],fluids:info.fluids||[],outputs:info.outputs||[],optional:info.optionalInputs||[]},blueprintSha256:sha,validation:{status:verified?'game-tested':'untested',note:verified?`Exact blueprint SHA-256 matched native Factorio ${version} evidence. ${measured?'Measured delivery: '+Object.entries(measured).map(([id,n])=>id+' '+Number(n).toFixed(2)+'/min').join('; ')+'.':'Operational behavior tested; no manufacturing throughput claim.'}`:'Preserved design; no matching native production qualification is published for this exact version. Recipe/layout analysis does not establish connected routing or sustained output.',blueprintSha256:sha,...(reportURL?{report:reportURL}:{})},...(measured?{measuredOutputsPerMinute:measured}:{}),sources:unique([localSource,page,reportURL,sourceURL]),alternateSources:[],preview:preview||await blueprintPreview(b,recordId,production),...(info.footprint&&!Array.isArray(info.footprint)?{footprint:info.footprint}:{})};
- entries.push(entry);seen.set(sha,entry);audit.push({id:recordId,name:title,blueprintSha256:sha,file:localSource,collection:sourceCollection,section:category,purpose,inputs:inputIds,outputs:productIds,...(consumedIds.length?{consumedProducts:consumedIds}:{}),validation:entry.validation.status,report:reportURL,gameVersion:version,lifecycle:entry.lifecycle});
+ const entry={...(todayFolders.has(releaseFolder)?{releaseGroup}:essentialsFolders.has(releaseFolder)?{releaseGroup:essentialsGroup}:spaceLaunchFolders.has(releaseFolder)?{releaseGroup:spaceLaunchGroup}:{}),id:recordId,name:title,collection:sourceCollection,category,section:category,purpose,designedCollection:true,lifecycle:archive?'archive':'current',gameVersion:version,profile:profile||'Space Age',...(operatingBoundary?{operatingBoundary}:{}),coverageExcluded:coverageExcluded||archive,author:sourceAuthor,sourceURL:sourceURL||page||localSource,file:localSource,isBook:false,icons:unique([...(b.icons||[]).map(i=>i.signal?.name),...productIds]).slice(0,4),...blueprintMaterials(object,catalog),code,products:productIds,...(consumedIds.length?{consumedProducts:consumedIds}:{}),analysis:{...analysis,kind:purpose,inputs:inputIds,outputs:productIds,netOutputs:productIds,internal:analysis.internal.filter(id=>!productIds.includes(id)&&!inputIds.includes(id)),serviceInputs:unique([...(analysis.serviceInputs||[]),...(info.initialSeeds?['Initial tree seeds']:[])]),serviceOutputs:category==='Forestry'&&info.id!=='forest-kit'?['Tree planting and pollution absorption']:analysis.serviceOutputs,notes:unique([...(analysis.notes||[]),...notes])},setupNotes:notes,operatingPorts:{inputs:info.inputs||[],fluids:info.fluids||[],outputs:info.outputs||[],optional:info.optionalInputs||[]},blueprintSha256:sha,validation:{status:verified?'game-tested':'untested',note:verified?`Exact blueprint SHA-256 matched native Factorio ${version} evidence. ${measured?'Measured delivery: '+Object.entries(measured).map(([id,n])=>id+' '+Number(n).toFixed(2)+'/min').join('; ')+'.':'Operational behavior tested; no manufacturing throughput claim.'}`:'Preserved design; no matching native production qualification is published for this exact version. Recipe/layout analysis does not establish connected routing or sustained output.',blueprintSha256:sha,...(reportURL?{report:reportURL}:{})},...(measured?{measuredOutputsPerMinute:measured}:{}),sources:unique([localSource,page,reportURL,sourceURL]),alternateSources:[],preview:preview||await blueprintPreview(b,versionOf?'designed-'+sha.slice(0,16):recordId,production),...(info.footprint&&!Array.isArray(info.footprint)?{footprint:info.footprint}:{})};
+ // An earlier tested version is a full record under the current id, reached only through the version picker.
+ if(versionOf)return entry;
+ if(info.versions?.length>1)entry.publication=await versionPublication(entry,options);
+ entries.push(entry);seen.set(sha,entry);audit.push({id:recordId,name:title,blueprintSha256:sha,file:localSource,collection:sourceCollection,section:category,purpose,inputs:inputIds,outputs:productIds,...(consumedIds.length?{consumedProducts:consumedIds}:{}),validation:entry.validation.status,report:reportURL,gameVersion:version,lifecycle:entry.lifecycle,...(entry.publication?{versions:[entry.publication.label,...entry.publication.history.map(h=>h.label).reverse()]}:{})});
+}
+// Tested versions from the family manifest's "versions" field (scripts/blueprint-versions.mjs), newest first.
+// The current record carries publication.version/label/history, the shape site/explorer.js already reads for
+// its version picker; each older version is written as its own full record (same id) next to its string.
+async function versionPublication(entry,options){
+ const {file,info}=options,dir=path.dirname(file),versions=await checkVersions(info,dir);
+ const keep=rates=>rates&&entry.products.length?Object.fromEntries(Object.entries(rates).filter(([id])=>entry.products.includes(id))):rates;
+ const [current,...older]=versions,history=[];
+ for(const [index,v] of older.entries()){
+  const number=versions.length-1-index,report=await read(path.join(dir,v.report)),build=passingBuild(report,v.blueprintSha256);
+  const own=v.manifest?(await read(path.join(dir,v.manifest))).find(e=>e.blueprintSha256===v.blueprintSha256):null;
+  const record=await register({...options,file:path.join(dir,v.file),info:{...(own||info),versions:undefined,catalogueId:undefined,blueprintSha256:v.blueprintSha256,footprint:{...(own?.footprint||{}),width:v.width,height:v.height}},proof:build?{...build,outputsPerMinute:keep(v.outputsPerMinute.steady)}:undefined,report:path.join(dir,v.report),preview:undefined,versionOf:entry});
+  if(record.validation.status!=='game-tested')throw Error(`${info.id}: version "${v.label}" has no passing native report for its exact string`);
+  const url=destination+'/'+dir.replace(/^blueprint-sources\//,'')+'/versions/'+v.blueprintSha256.slice(0,16)+'.json';
+  await fs.mkdir(path.dirname('site/'+url),{recursive:true});await fs.writeFile('site/'+url,JSON.stringify({...record,publication:{version:number,label:v.label}},null,1)+'\n');
+  history.push({version:number,label:v.label,...(v.summary?{summary:v.summary}:{}),blueprintSha256:v.blueprintSha256,url,code:record.file,native:record.validation.report,footprint:{width:v.width,height:v.height},tiles:v.tiles,machines:v.machines,entityCount:record.entityCount,perMinute:keep(v.outputsPerMinute.steady),recoveryPerMinute:keep(v.outputsPerMinute.recovery)});
+ }
+ return {version:versions.length,label:current.label,...(current.summary?{summary:current.summary}:{}),snapshots:{code:entry.file},machines:current.machines,perMinute:keep(current.outputsPerMinute.steady),recoveryPerMinute:keep(current.outputsPerMinute.recovery),history:history.reverse()};
+}
+// Records versioned by the immutable publication (transport, early game, science, power) gain machine counts
+// for their version comparison: the current string and each archived string, counted the same way.
+async function versionMachines(record){
+ if(!record.publication?.version||record.designedCollection)return;
+ record.publication.machines=await countMachines(decodeBlueprint(record.code).blueprint);
+ for(const h of record.publication.history||[])h.machines=await countMachines(decodeBlueprint((await fs.readFile('site/'+h.code,'utf8')).trim()).blueprint);
 }
 const specs=[
  ['compact-expansion-workshop','Malls · building expansion','Production','compact-expansion-workshop/index.html'],
@@ -208,6 +238,7 @@ for(const f of flight.factories.filter(f=>f.blueprint?.path)){
 // Generated pages contain useful books, including raw-feeder + loop and solid-fuel variants.
 const books=[];for(const folder of ['early-controlled-loops','early-flight-seven'])for(const file of(await fs.readdir('blueprint-sources/'+folder)).filter(f=>f.endsWith('book.txt'))){books.push({name:file.replace('.txt',''),url:await copySource('blueprint-sources/'+folder+'/'+file)});}
 atlas.blueprints=[...atlas.blueprints.filter(b=>!b.designedCollection),...entries];
+for(const record of atlas.blueprints)await versionMachines(record);
 const all=[...library.blueprints.map(b=>({...b,analysis:community.local[b.id]})),...community.blueprints,...atlas.blueprints];atlas.coverage=blueprintCoverage(catalog,production,all);atlas.designedCollections={collection,count:entries.length,books,audit:destination+'/catalogue-audit.json'};
 await fs.writeFile('site/'+destination+'/catalogue-audit.json',JSON.stringify({schemaVersion:1,entries:audit,books},null,2)+'\n');await writeData('atlas',atlas);
 console.log(JSON.stringify({indexed:entries.length,collections:Object.fromEntries(unique(entries.map(x=>x.collection)).map(c=>[c,entries.filter(b=>b.collection===c).length])),native:entries.filter(b=>b.validation.status==='game-tested').length,archive:entries.filter(b=>b.lifecycle==='archive').length},null,2));

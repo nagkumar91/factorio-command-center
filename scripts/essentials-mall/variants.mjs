@@ -250,5 +250,71 @@ const noRearAm1Inside = {...noRearDrillInside, name: 'no-rear-am1-inside',
 const noRearAm1Bulk = {...noRearDrillInside, name: 'no-rear-am1-bulk',
   arms: {...noRearDrillInside.arms, 'assembling-machine-1@bottom': [[0, 'in', [G]], [1, 'in', [C, I], {name: B}], [2, 'out']]},
 };
-export const VARIANTS = {'no-rear': noRear, 'no-rear-late-iron': noRearLate, 'no-rear-drill-inside': noRearDrillInside, 'no-rear-am1-inside': noRearAm1Inside, 'no-rear-am1-bulk': noRearAm1Bulk, reference, unclocked, 'three-gears': threeGears, 'three-gears-long': threeGearsLong, 'top-drill': topDrill, 'corner-gear': cornerGear, 'narrow-west': narrowWest, 'narrow-west-splitter': narrowWestSplitter, 'narrow-west-outer': narrowWestOuter, 'narrow-west-feed': narrowWestFeed, 'one-column-west': oneColumnWest};
-export const PUBLISHED_VARIANT = 'one-column-west';
+// Sixteen rows (23 x 16). The inside row keeps one arm row: its machines sit against the ring's
+// bottom belt and both take from and deliver to the top belt, so the ring is six rows tall. The six
+// ring tiles of the east column feed six chests; the drill moves to the rear corner slot and delivers
+// straight down into its own chest at the foot of the chest column. The third gear machine takes the
+// last bottom slot and the second advanced-circuit machine the drill's old top slot. Clock, deciders
+// and poles move to free tiles in the bottom arm row and the north-east corner.
+const sixteenRowsArms = {
+  // Top row (arm row -1). Seven gear windows, each owned: fast belts 0-1, bulk inserters 2,
+  // AM2 3, fast splitters 4, fast undergrounds 5-6; each follows one further downstream.
+  'fast-splitter': [[0, 'in', [G], {phase: 4, name: B}], [1, 'in', ['splitter', C]], [2, 'out']],
+  'fast-underground-belt': [[0, 'in', [G], {phase: {cmp: '>', n: 4}, name: B}], [1, 'in', ['underground-belt']], [2, 'out']],
+  'assembling-machine-2': [[0, 'in', [G], {phase: 3, name: B}], [1, 'in', ['steel-plate', C, 'assembling-machine-1']], [2, 'out']],
+  'advanced-circuit@top': [[0, 'in', [C, P, CB]], [1, 'in', [C, P, CB]], [2, 'out']],
+  'bulk-inserter': [[0, 'in', [G], {phase: 2, name: B}], [1, 'in', [C, AC, 'fast-inserter']], [2, 'out']],
+  'fast-transport-belt': [[0, 'in', [G], {phase: {cmp: '<', n: 2}, name: B}], [1, 'in', ['transport-belt']], [2, 'in', [G], {reserve: 16, name: B}]],
+  // Inside row (one arm row, row 1): take from and deliver to the top belt.
+  'splitter@inside': [[0, 'out'], [1, 'in', [C, I, 'transport-belt']]],
+  'copper-cable': [[0, 'in', ['copper-plate']], [1, 'out']],
+  'advanced-circuit@inside': [[0, 'in', [C, P, CB]], [1, 'out']],
+  // The two inserter machines take circuits (and iron) only while the ring holds more than 10
+  // circuits. With full supply the ring always does; with short supply they give way to the drill and
+  // the AM1 machine at the end of the circuit route (fast inserters run at three times their floor).
+  // Screened 8, 10, 12, 14, 16 and 24: 10 passed the whole protocol from 1.7 times the panel supply.
+  'fast-inserter@inside': [[0, 'in', [C, I], {reserve: 10}], [1, 'in', ['inserter'], {capGate: 'fast-inserter'}], [2, 'out']],
+  inserter: [[0, 'in', [G]], [1, 'in', [C, I], {reserve: 10}], [2, 'out']],
+  // The furnace's steel and brick arm only relays the green cap wire to the fast-inserter feed arm.
+  'electric-furnace': [[0, 'in', ['steel-plate', 'stone-brick'], {relay: true}], [1, 'in', [AC], {reserve: 1}], [2, 'out']],
+  // Bottom row: front arms on the bottom belt (row 6), rear arms on the iron belt (row 10).
+  'underground-belt@bottom': [[0, 'in', ['transport-belt']], [1, 'out'], [1, 'rear']],
+  'assembling-machine-1': [[0, 'in', [G]], [1, 'in', [C]], [2, 'out'], [1, 'rear']],
+  'transport-belt@bottom': [[0, 'in', [G]], [1, 'out'], [0, 'rear']],
+  [G]: [[1, 'out'], [0, 'rear'], [1, 'rear']],
+  'iron-gear-wheel@bottom5': [[1, 'out'], [1, 'rear'], [2, 'rear']],
+  // The last gear machine also hands gears to the drill beside it over a two-tile belt behind them
+  // (hardly any gear reaches the ring's south-east corner: every top-row final takes them first).
+  'iron-gear-wheel@bottom6': [[1, 'out'], [0, 'rear', {name: B}], [2, 'rearOut', {}]],
+  // Rear corner: one front arm on the ring's south-east corner takes circuits and iron; the gear arm
+  // behind the machine stops while the drill chest is full.
+  'electric-mining-drill@bottom': [[0, 'in', [C, I]], [0, 'rear', {capGate: 'electric-mining-drill', items: [G]}], [2, 'chest']],
+};
+// Drills never ride the ring; the drill is the last iron user on the ring, so the ring holds more iron.
+const sixteenRowsLimits = {...oneColumnWest.limits, [I]: 20}; delete sixteenRowsLimits['electric-mining-drill'];
+const sixteenRows = {...oneColumnWest, name: 'sixteen-rows', ringBottom: 5, insideOutTop: true,
+  arms: sixteenRowsArms, limits: sixteenRowsLimits, phases: 7,
+  top: ['fast-splitter', 'fast-underground-belt', 'assembling-machine-2', AC, 'bulk-inserter', 'fast-transport-belt'],
+  // Inserters come out downstream of the fast-inserter machine and travel one lap to reach it, as before.
+  inside: ['splitter', CB, AC, 'fast-inserter', 'inserter', 'electric-furnace'],
+  bottom: ['underground-belt', 'assembling-machine-1', G, 'transport-belt', G, G, 'electric-mining-drill'],
+  eastOrder: ['assembling-machine-2', 'fast-underground-belt', 'fast-splitter', 'fast-inserter', 'bulk-inserter', 'electric-furnace'],
+  westFeeds: [{item: C, rows: [1]}, {item: 'copper-plate', rows: [2]}, {item: 'steel-plate', rows: [3]}, {item: 'stone-brick', rows: [4]}],
+  chestReserve: {item: 'fast-inserter', reserve: 14, at: [20, 6], ringTile: [19, 5]},
+  feedGate: {item: 'fast-inserter', at: [12, 6], ringTile: [13, 5], ringBelow: 4},
+  clockTiles: [[19, -4, 'flat'], [19, -2, 'upright'], [15, 6, 'flat']], clockRingTile: [15, 5],
+  rearGap: [12, 13],
+  powerSpots: {substation: [[21, -1], [13, 11]], medium: [[3, 1], [9, 1], [7, 6], [-1, 8]]},
+  panelSpots: {'plastic-bar': [[-1, -1]], [C]: [[-1, 0]], 'copper-plate': [[-1, 5]], 'steel-plate': [[-1, 6]], 'stone-brick': [[-1, 7]], [I]: [[-1, 10]]},
+  // Measured for this exact layout (exploration runs with the harness's supply cap, not the qualification).
+  supplyNote: "Plan supply above the entrance panels if all eight products should hold their floors at once: the panels are recipe totals at the floors, and with everything drawn every product runs above its floor. Exploration measurements with the harness's supply cap (the whole protocol with all eight cap phases, not part of the qualification): the protocol passed with every entrance capped at 1.7, 1.75, 1.8, 1.9 and 2 times its panel figure, and failed at 1.6 times (fast inserters 5.9 per minute in recovery against 6). At exactly the panel figures with all eight drawn, the drill made 0 per minute, fast inserters 2.3, furnaces 0.8, bulk inserters 0.95 and fast belts 7.95; assembling machine 2, fast undergrounds and fast splitters held their floors. With full belts the entrances took about 201 electronic circuits, 732 iron, 38 steel, 26 stone brick, 30 plastic and 30 copper per minute. With less supply the mall still fills every chest in turn: fed exactly the panel figures with nothing collected, all eight chests reached their caps; only the all-eight-at-once floors are lost.",
+};
+export const VARIANTS = {'sixteen-rows': sixteenRows, 'no-rear': noRear, 'no-rear-late-iron': noRearLate, 'no-rear-drill-inside': noRearDrillInside, 'no-rear-am1-inside': noRearAm1Inside, 'no-rear-am1-bulk': noRearAm1Bulk, reference, unclocked, 'three-gears': threeGears, 'three-gears-long': threeGearsLong, 'top-drill': topDrill, 'corner-gear': cornerGear, 'narrow-west': narrowWest, 'narrow-west-splitter': narrowWestSplitter, 'narrow-west-outer': narrowWestOuter, 'narrow-west-feed': narrowWestFeed, 'one-column-west': oneColumnWest};
+export const PUBLISHED_VARIANT = 'sixteen-rows';
+// Tested versions kept selectable on the website, newest first (the manifest's "versions" field; see
+// scripts/blueprint-versions.mjs). The first is the published variant; each older one keeps its own string,
+// manifest and passing native report under history/.
+export const VERSIONS = [
+  {variant: 'sixteen-rows', label: 'Sixteen rows', summary: 'Recommended: 23 × 16 = 368 tiles, 6% smaller; more assembling machines, fast undergrounds, bulk inserters and drills, and it holds the whole protocol from 1.7 times the panel supply.'},
+  {variant: 'one-column-west', label: 'One column west', folder: 'history/one-column-west-d894c04a', summary: 'Earlier version: 23 × 17 = 391 tiles; faster for fast transport belts, fast inserters and electric furnaces, and needs 2 times the panel supply to hold the whole protocol.'},
+];
