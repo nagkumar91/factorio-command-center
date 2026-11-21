@@ -1,0 +1,1 @@
+Qualified first version (12 x 15 tiles of entities, 28 entities, 8 solar panels, five-tile entrance belts, 100 foundation tiles under entities); replaced on 2026-11-21 by the two-panel, one-belt-tile cell (7 x 6 tiles, 10 entities, 34 foundation tiles) that delivers the same 15 packs/min from the same south entrances under a stronger native protocol.
