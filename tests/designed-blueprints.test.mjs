@@ -14,7 +14,7 @@ test('all 125 qualified Autosaved revisions are searchable alongside their origi
 });
 test('solid-fuel feeder and complete science publish actual raw-only native boundary',()=>{
  const complete=entries.find(b=>b.file.endsWith('/solid-science-complete.txt'));assert.deepEqual([...complete.analysis.inputs].sort(),['copper-ore','iron-ore','solid-fuel']);assert.equal(complete.measuredOutputsPerMinute['logistic-science-pack'],30);assert.equal(complete.measuredOutputsPerMinute['automation-science-pack'],36);assert.ok(!complete.analysis.inputs.includes('coal'));assert.ok(complete.setupNotes.some(s=>s.includes('gear tap unused')));
- const feeder=entries.find(b=>b.file.endsWith('/science-solid-feeder.txt'));assert.equal(feeder.footprint.width,29);assert.equal(feeder.footprint.height,16);assert.deepEqual(feeder.products,['iron-plate','copper-plate','electronic-circuit']);
+ const feeder=entries.find(b=>b.file.endsWith('/science-solid-feeder.txt'));assert.equal(feeder.footprint.width,27);assert.equal(feeder.footprint.height,16);assert.deepEqual(feeder.products,['iron-plate','copper-plate','electronic-circuit']);
 });
 test('forestry is a service and archived/mod-profile builds cannot inflate vanilla coverage',()=>{
  for(const b of entries.filter(b=>b.category==='Forestry'&&!b.file.endsWith('/forest-kit.txt'))){assert.deepEqual(b.products,[]);assert.ok(b.analysis.serviceOutputs.includes('Tree planting and pollution absorption'));}

@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {makeTransportLoop} from '../transport-loop-layout.mjs';
 import {starterBounds,powerStarterLayout} from '../compact-starter-layout.mjs';
 import {encodeBlueprint,decodeBlueprint} from '../blueprints.mjs';
+import {qualification} from './qualification.mjs';
 const out='blueprint-sources/early-controlled-loops';
 const raw=JSON.parse(await fs.readFile(process.env.FACTORIO_RAW||'.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json'));
 for(const r of Object.values(raw.recipe))r.category=r.category||r.categories?.[0]||'crafting';
@@ -47,7 +48,7 @@ const code=encodeBlueprint({blueprint:bp}),id='science-ore-feeder';await fs.writ
 const construction=Object.fromEntries([...new Set(bp.entities.map(e=>e.name))].map(n=>[n,bp.entities.filter(e=>e.name===n).length]));
 const machineCounts={};for(const r of recipes)machineCounts[r]=(machineCounts[r]||0)+1;
 const loop={name:id,...layout.loopControl,capacity:layout.loopControl.loop.length*8,maximumStock:Object.values(layout.loopControl.limits).reduce((a,b)=>a+b,0)};
-const m={id,name:'30/min science · Dedicated ore feeder',file:id+'.txt',blueprintSha256:createHash('sha256').update(code).digest('hex'),products,inputs:layout.ports.filter(p=>p.kind==='input').map(p=>({...p,item:p.items[0],position:{x:p.x,y:p.y}})),optionalInputs:[],outputs:layout.ports.filter(p=>p.kind==='output').map(p=>({...p,item:p.items[0]})),ports:layout.ports,machineCounts,footprint:starterBounds(bp.entities,raw),supplier:true,minimumPerMinute:{'iron-plate':209,'copper-plate':36,'electronic-circuit':30},construction,loopControl:[loop],status:'candidate-native-validation-pending'};
+const m={id,name:'30/min science · Dedicated ore feeder',file:id+'.txt',blueprintSha256:createHash('sha256').update(code).digest('hex'),products,inputs:layout.ports.filter(p=>p.kind==='input').map(p=>({...p,item:p.items[0],position:{x:p.x,y:p.y}})),optionalInputs:[],outputs:layout.ports.filter(p=>p.kind==='output').map(p=>({...p,item:p.items[0]})),ports:layout.ports,machineCounts,footprint:starterBounds(bp.entities,raw),supplier:true,minimumPerMinute:{'iron-plate':209,'copper-plate':36,'electronic-circuit':30},construction,loopControl:[loop],status:'candidate-native-validation-pending'};Object.assign(m,await qualification(out,m));
 const manifest=JSON.parse(await fs.readFile(out+'/manifest.json'));const updated=[m,...manifest.filter(m=>m.id==='science-fast-loop'),...manifest.filter(m=>![id,'science-fast-loop'].includes(m.id))];await fs.writeFile(out+'/manifest.json',JSON.stringify(updated,null,2)+'\n');
 const book={blueprint_book:{item:'blueprint-book',version:bp.version,label:'Early Flight · Raw feeder and three controlled loops',active_index:0,blueprints:[]}};for(const m of updated)book.blueprint_book.blueprints.push({index:book.blueprint_book.blueprints.length,blueprint:decodeBlueprint(await fs.readFile(out+'/'+m.file,'utf8')).blueprint});await fs.writeFile(out+'/controlled-loops-book.txt',encodeBlueprint(book)+'\n');
 console.log(JSON.stringify({id,footprint:m.footprint,construction},null,2));

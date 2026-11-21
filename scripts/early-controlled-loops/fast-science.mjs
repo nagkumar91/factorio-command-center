@@ -3,6 +3,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {encodeBlueprint,decodeBlueprint} from '../blueprints.mjs';
+import {qualification} from './qualification.mjs';
 import {powerStarterLayout,starterBounds} from '../science-factory/local-ports/compact-shared-layout.mjs';
 const rawPath=process.env.FACTORIO_RAW||'.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
 const raw=JSON.parse(await fs.readFile(rawPath));
@@ -33,7 +34,8 @@ for(const spec of specs){
   const e=arm(cx+1,ay,(d+8)%16,{control_behavior:cond(recipe)});wire(e,loopAt(cx+1,top?0:height));controlled.push(e.entity_number);
  }
  function inlet(item,i,optional){const right=optional,x=right?width:-0,y=right?1:([1,4,6][i]),armX=right?width+1:-1,dir=right?4:12;
-  const last=right?width+5:-5,first=right?width+2:-2;
+  // Two-belt entrance stubs (entrance tile plus one): the earlier four-belt stubs only widened the footprint.
+  const last=right?width+3:-3,first=right?width+2:-2;
   for(let a=Math.min(first,last);a<=Math.max(first,last);a++)belt(a,y,right?12:4);
   const e=arm(armX,y,dir,{...filter(item),control_behavior:cond(item)});wire(e,loopAt(x,y));controlled.push(e.entity_number);
   if(!right&&item==='iron-plate'){
@@ -61,7 +63,7 @@ for(const spec of specs){
  const bp={item:'blueprint',version,label:`Early controlled loop · ${spec.name} · AM2`,description:'Single red-belt loop with entire-belt stock reading. Red wires gate each external feed and assembler output by its own stock cap. Fast filtered inserters, AM2, no modules. Circuit network required. Supply plates/intermediates at the labeled inlets. Optional taps can supplement internal production. Output chests limited to one stack. Preserve the red wires and belt reader.',icons:spec.products.map((name,i)=>({index:i+1,signal:{type:'item',name}})),entities};
  powerStarterLayout(bp,ports,raw);bp.wires.push(...wires);for(const e of bp.entities)e.tags={...e.tags,flight_science_entity:e.entity_number};
  const code=encodeBlueprint({blueprint:bp});await fs.writeFile(`${out}/${spec.id}.txt`,code+'\n');
- const m={id:spec.id,name:spec.name,file:spec.id+'.txt',blueprintSha256:createHash('sha256').update(code).digest('hex'),products:spec.products,inputs:ports.filter(p=>p.kind==='input'&&!p.optional).map(p=>({...p,position:{x:p.x,y:p.y}})),optionalInputs:ports.filter(p=>p.optional),outputs:ports.filter(p=>p.kind==='output'),ports,minimumPerMinute:{'automation-science-pack':29.5,'logistic-science-pack':29.5},targetPerMinute:30,recommendedInputPerMinute:{'iron-plate':210,'copper-plate':36,'electronic-circuit':30},machineCounts:spec.recipes.reduce((o,r)=>(o[r]=(o[r]||0)+1,o),{}),machines,footprint:starterBounds(bp.entities,raw),construction:Object.fromEntries([...new Set(bp.entities.map(e=>e.name))].map(n=>[n,bp.entities.filter(e=>e.name===n).length])),loopControl:[{name:spec.id,reader:reader.entity_number,controlled,loop:loop.map(e=>e.entity_number),capacity:loop.length*8,maximumStock:Object.values(spec.limits).reduce((a,b)=>a+b,0),limits:spec.limits}],status:'candidate-native-validation-pending'};
+ const m={id:spec.id,name:spec.name,file:spec.id+'.txt',blueprintSha256:createHash('sha256').update(code).digest('hex'),products:spec.products,inputs:ports.filter(p=>p.kind==='input'&&!p.optional).map(p=>({...p,position:{x:p.x,y:p.y}})),optionalInputs:ports.filter(p=>p.optional),outputs:ports.filter(p=>p.kind==='output'),ports,minimumPerMinute:{'automation-science-pack':29.5,'logistic-science-pack':29.5},targetPerMinute:30,recommendedInputPerMinute:{'iron-plate':210,'copper-plate':36,'electronic-circuit':30},machineCounts:spec.recipes.reduce((o,r)=>(o[r]=(o[r]||0)+1,o),{}),machines,footprint:starterBounds(bp.entities,raw),construction:Object.fromEntries([...new Set(bp.entities.map(e=>e.name))].map(n=>[n,bp.entities.filter(e=>e.name===n).length])),loopControl:[{name:spec.id,reader:reader.entity_number,controlled,loop:loop.map(e=>e.entity_number),capacity:loop.length*8,maximumStock:Object.values(spec.limits).reduce((a,b)=>a+b,0),limits:spec.limits}],status:'candidate-native-validation-pending'};Object.assign(m,await qualification(out,m));
  manifests.push(m);books.push({index:books.length,blueprint:bp});console.log(spec.id,m.footprint.width,m.footprint.height,m.construction);
 }
 const previous=JSON.parse(await fs.readFile(`${out}/manifest.json`));const updated=[...previous.filter(m=>m.id==='ore-feeder'),...manifests,...previous.filter(m=>!['ore-feeder','science-fast-loop'].includes(m.id))];

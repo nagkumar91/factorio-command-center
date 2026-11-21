@@ -3,6 +3,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {encodeBlueprint,decodeBlueprint} from '../blueprints.mjs';
+import {qualification} from './qualification.mjs';
 import {powerStarterLayout,starterBounds} from '../science-factory/local-ports/compact-shared-layout.mjs';
 const rawPath=process.env.FACTORIO_RAW||'.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
 const raw=JSON.parse(await fs.readFile(rawPath));
@@ -37,7 +38,9 @@ for(const spec of specs){
   const e=arm(cx+1,ay,(d+8)%16,{control_behavior:cond(recipe)});wire(e,loopAt(cx+1,top?0:height));controlled.push(e.entity_number);
  }
  function inlet(item,i,optional){const right=optional,x=right?width:-0,y=1+2*i,armX=right?width+1:-1,dir=right?4:12;
-  const last=right?width+5:-5,first=right?width+2:-2;
+  // Two-belt entrance stubs (entrance tile plus one): the earlier four-belt stubs only widened the footprint.
+  // The transport loop keeps four-belt stubs: with two, its phase clock sent 2.7% fewer fast splitters over 120 native minutes.
+  const stub=spec.id==='transport-loop'?5:3,last=right?width+stub:-stub,first=right?width+2:-2;
   for(let a=Math.min(first,last);a<=Math.max(first,last);a++)belt(a,y,right?12:4);
   const e=arm(armX,y,dir,{...filter(item),control_behavior:cond(item)});wire(e,loopAt(x,y));controlled.push(e.entity_number);
   const external=entities.find(e=>e.name==='transport-belt'&&e.position.x===last+.5&&e.position.y===y+.5);
@@ -61,7 +64,7 @@ for(const spec of specs){
  const bp={item:'blueprint',version,label:`Early controlled loop · ${spec.name} · AM1`,description:'Single yellow-belt loop with entire-belt stock reading. Red wires gate each external feed and assembler output by its own stock cap. Basic filtered inserters, AM1, no modules. Circuit network required. Supply plates/intermediates at the labeled inlets. Optional taps can supplement internal production. Output chests limited to one stack. Preserve the red wires and belt reader.',icons:spec.products.map((name,i)=>({index:i+1,signal:{type:'item',name}})),entities};
  powerStarterLayout(bp,ports,raw);bp.wires.push(...wires);for(const e of bp.entities)e.tags={...e.tags,flight_science_entity:e.entity_number};
  const code=encodeBlueprint({blueprint:bp});await fs.writeFile(`${out}/${spec.id}.txt`,code+'\n');
- const m={id:spec.id,name:spec.name,file:spec.id+'.txt',blueprintSha256:createHash('sha256').update(code).digest('hex'),products:spec.products,inputs:ports.filter(p=>p.kind==='input'&&!p.optional).map(p=>({...p,position:{x:p.x,y:p.y}})),optionalInputs:ports.filter(p=>p.optional),outputs:ports.filter(p=>p.kind==='output'),ports,machineCounts:Object.fromEntries(spec.recipes.map(r=>[r,1])),machines,footprint:starterBounds(bp.entities,raw),construction:Object.fromEntries([...new Set(bp.entities.map(e=>e.name))].map(n=>[n,bp.entities.filter(e=>e.name===n).length])),loopControl:[{name:spec.id,reader:reader.entity_number,controlled,loop:loop.map(e=>e.entity_number),capacity:loop.length*8,maximumStock:Object.values(spec.limits).reduce((a,b)=>a+b,0),limits:spec.limits}],status:'candidate-native-validation-pending'};
+ const m={id:spec.id,name:spec.name,file:spec.id+'.txt',blueprintSha256:createHash('sha256').update(code).digest('hex'),products:spec.products,inputs:ports.filter(p=>p.kind==='input'&&!p.optional).map(p=>({...p,position:{x:p.x,y:p.y}})),optionalInputs:ports.filter(p=>p.optional),outputs:ports.filter(p=>p.kind==='output'),ports,machineCounts:Object.fromEntries(spec.recipes.map(r=>[r,1])),machines,footprint:starterBounds(bp.entities,raw),construction:Object.fromEntries([...new Set(bp.entities.map(e=>e.name))].map(n=>[n,bp.entities.filter(e=>e.name===n).length])),loopControl:[{name:spec.id,reader:reader.entity_number,controlled,loop:loop.map(e=>e.entity_number),capacity:loop.length*8,maximumStock:Object.values(spec.limits).reduce((a,b)=>a+b,0),limits:spec.limits}],status:'candidate-native-validation-pending'};Object.assign(m,await qualification(out,m));
  manifests.push(m);books.push({index:books.length,blueprint:bp});console.log(spec.id,m.footprint.width,m.footprint.height,m.construction);
 }
 await fs.writeFile(`${out}/manifest.json`,JSON.stringify(manifests,null,2)+'\n');await fs.writeFile(`${out}/controlled-loops-book.txt`,encodeBlueprint({blueprint_book:{item:'blueprint-book',version,label:'Early Flight · Three controlled production loops',active_index:0,blueprints:books}})+'\n');

@@ -1,0 +1,521 @@
+{
+  "builds": [
+    {
+      "id": "science-loop",
+      "outputsPerMinute": {
+        "automation-science-pack": 6,
+        "logistic-science-pack": 4.9
+      },
+      "consumptionPerMinute": {
+        "iron-plate": 34.8,
+        "copper-plate": 6,
+        "electronic-circuit": 5
+      },
+      "inputs": [
+        {
+          "item": "iron-plate",
+          "entity": 61,
+          "acceptedDuringMeasurement": 347,
+          "productiveRoute": [
+            61,
+            62,
+            63,
+            64,
+            40,
+            1,
+            2,
+            3,
+            41
+          ]
+        },
+        {
+          "item": "copper-plate",
+          "entity": 67,
+          "acceptedDuringMeasurement": 59,
+          "productiveRoute": [
+            67,
+            68,
+            69,
+            70,
+            38,
+            39,
+            40,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            53
+          ]
+        },
+        {
+          "item": "electronic-circuit",
+          "entity": 73,
+          "acceptedDuringMeasurement": 51,
+          "productiveRoute": [
+            73,
+            74,
+            75,
+            76,
+            36,
+            37,
+            38,
+            39,
+            40,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            49
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "item": "automation-science-pack",
+          "entity": 86,
+          "collectedDuringMeasurement": 60
+        },
+        {
+          "item": "logistic-science-pack",
+          "entity": 89,
+          "collectedDuringMeasurement": 49
+        }
+      ],
+      "machines": [
+        {
+          "entity": 41,
+          "recipe": "iron-gear-wheel",
+          "measuredCrafts": 137,
+          "status": "full_output",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 307,
+            "working": 452,
+            "full_output": 1341
+          },
+          "inventory": {}
+        },
+        {
+          "entity": 45,
+          "recipe": "transport-belt",
+          "measuredCrafts": 26,
+          "status": "full_output",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 213,
+            "working": 83,
+            "full_output": 1804
+          },
+          "inventory": [
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "entity": 49,
+          "recipe": "inserter",
+          "measuredCrafts": 50,
+          "status": "full_output",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 431,
+            "working": 158,
+            "full_output": 1511
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "entity": 53,
+          "recipe": "automation-science-pack",
+          "measuredCrafts": 60,
+          "status": "working",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 35,
+            "working": 1858,
+            "full_output": 207
+          },
+          "inventory": [
+            {
+              "name": "copper-plate",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "entity": 57,
+          "recipe": "logistic-science-pack",
+          "measuredCrafts": 50,
+          "status": "working",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 157,
+            "working": 1750,
+            "full_output": 193
+          },
+          "inventory": [
+            {
+              "name": "transport-belt",
+              "quality": "normal",
+              "count": 1
+            },
+            {
+              "name": "inserter",
+              "quality": "normal",
+              "count": 1
+            }
+          ]
+        }
+      ],
+      "powered": true,
+      "importedEntities": 95,
+      "loopSamples": {
+        "science-loop": {
+          "maxStock": 128,
+          "capacity": 320
+        }
+      },
+      "recovery": {
+        "blockedMinutes": 5,
+        "settlingMinutes": 5,
+        "measurementMinutes": 5,
+        "outputsPerMinute": {
+          "automation-science-pack": 6,
+          "logistic-science-pack": 5
+        }
+      },
+      "fullOutputFixture": {
+        "automation-science-pack": 200,
+        "logistic-science-pack": 200
+      },
+      "blueprintSha256": "484a2082a114d81815b00b476c36ce0e2a9733a672efd58d3837a11c44867f31",
+      "supplemented": false,
+      "passed": true
+    },
+    {
+      "id": "science-loop-supplemented",
+      "outputsPerMinute": {
+        "automation-science-pack": 6,
+        "logistic-science-pack": 5
+      },
+      "consumptionPerMinute": {
+        "iron-plate": 21.2,
+        "copper-plate": 6,
+        "electronic-circuit": 4.9,
+        "iron-gear-wheel": 13.2
+      },
+      "inputs": [
+        {
+          "item": "iron-plate",
+          "entity": 61,
+          "acceptedDuringMeasurement": 211,
+          "productiveRoute": [
+            61,
+            62,
+            63,
+            64,
+            40,
+            1,
+            2,
+            3,
+            41
+          ]
+        },
+        {
+          "item": "copper-plate",
+          "entity": 67,
+          "acceptedDuringMeasurement": 60,
+          "productiveRoute": [
+            67,
+            68,
+            69,
+            70,
+            38,
+            39,
+            40,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            53
+          ]
+        },
+        {
+          "item": "electronic-circuit",
+          "entity": 73,
+          "acceptedDuringMeasurement": 49,
+          "productiveRoute": [
+            73,
+            74,
+            75,
+            76,
+            36,
+            37,
+            38,
+            39,
+            40,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            49
+          ]
+        },
+        {
+          "item": "iron-gear-wheel",
+          "entity": 82,
+          "acceptedDuringMeasurement": 62,
+          "productiveRoute": [
+            82,
+            81,
+            80,
+            79,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            53
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "item": "automation-science-pack",
+          "entity": 86,
+          "collectedDuringMeasurement": 60
+        },
+        {
+          "item": "logistic-science-pack",
+          "entity": 89,
+          "collectedDuringMeasurement": 50
+        }
+      ],
+      "machines": [
+        {
+          "entity": 41,
+          "recipe": "iron-gear-wheel",
+          "measuredCrafts": 70,
+          "status": "full_output",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 179,
+            "working": 232,
+            "full_output": 1689
+          },
+          "inventory": {}
+        },
+        {
+          "entity": 45,
+          "recipe": "transport-belt",
+          "measuredCrafts": 23,
+          "status": "full_output",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 123,
+            "working": 86,
+            "full_output": 1891
+          },
+          "inventory": {}
+        },
+        {
+          "entity": 49,
+          "recipe": "inserter",
+          "measuredCrafts": 49,
+          "status": "full_output",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 250,
+            "working": 166,
+            "full_output": 1684
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "entity": 53,
+          "recipe": "automation-science-pack",
+          "measuredCrafts": 60,
+          "status": "working",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 20,
+            "working": 1871,
+            "full_output": 209
+          },
+          "inventory": [
+            {
+              "name": "copper-plate",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "entity": 57,
+          "recipe": "logistic-science-pack",
+          "measuredCrafts": 50,
+          "status": "working",
+          "statusSamples": {
+            "no_power": 1,
+            "item_ingredient_shortage": 74,
+            "working": 1844,
+            "full_output": 182
+          },
+          "inventory": [
+            {
+              "name": "transport-belt",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "inserter",
+              "quality": "normal",
+              "count": 2
+            }
+          ]
+        }
+      ],
+      "powered": true,
+      "importedEntities": 95,
+      "loopSamples": {
+        "science-loop": {
+          "maxStock": 129,
+          "capacity": 320
+        }
+      },
+      "recovery": {
+        "blockedMinutes": 5,
+        "settlingMinutes": 5,
+        "measurementMinutes": 5,
+        "outputsPerMinute": {
+          "automation-science-pack": 6,
+          "logistic-science-pack": 5
+        }
+      },
+      "fullOutputFixture": {
+        "automation-science-pack": 200,
+        "logistic-science-pack": 200
+      },
+      "blueprintSha256": "484a2082a114d81815b00b476c36ce0e2a9733a672efd58d3837a11c44867f31",
+      "supplemented": true,
+      "passed": true
+    }
+  ],
+  "feedPolicy": "Declared exterior belt lanes only, no internal injection; collect every output chest every second",
+  "researchPolicy": "All recipes enabled, no technologies researched, inserter stack bonus zero",
+  "passed": true,
+  "gameVersion": "2.1.24",
+  "warmupMinutes": 10,
+  "measurementMinutes": 10,
+  "createdAt": "2026-11-14T08:33:38.033Z"
+}
