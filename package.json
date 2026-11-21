@@ -11,6 +11,7 @@
     "build": "node scripts/build.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "node tests/browser.mjs",
+    "test:e2e": "npm run build && node tests/run-browser-suites.mjs",
     "test:game": "node tests/game.mjs",
     "generate:mall": "node scripts/generate-roboport-mall.mjs",
     "test:mall": "node tests/roboport-mall.mjs",
@@ -54,7 +55,7 @@
     "benchmark:power": "STARTER_BENCHMARK=1 STARTER_SOURCE_ROOT=blueprint-sources/power-workshops STARTER_TEST_ROOT=.cache/power-workshops/throughput SIMULATED_MINUTES=45 node tests/power-workshops.mjs"
   },
   "devDependencies": {
-    "playwright": "^1.55.0",
+    "playwright": "^1.64.1",
     "sharp": "^0.35.4"
   }
 }

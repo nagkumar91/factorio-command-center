@@ -15,7 +15,9 @@ try{
  for(const id of ['tesla-ammo','foundation','holmium-ore','metallic-asteroid-chunk']){
   await coverage();await page.locator('#coverage-search').fill(id);
   const row=page.locator(`[data-product="${id}"]`);await row.locator('[data-action="blueprint-details"]').click();
-  await page.getByText('Production tested in Factorio',{exact:true}).waitFor();
+  // The badge reads "Tested in Factorio" since the designed-collections round (it was "Production tested in Factorio"); it must match the atlas evidence.
+  const build=atlas.blueprints.find(b=>b.id===atlas.coverage.items.find(i=>i.id===id).builds[0]);assert.equal(build.validation?.status,'game-tested',id);assert.ok(!build.rawOnly,id);
+  await page.getByText('Tested in Factorio',{exact:true}).waitFor();
   await page.locator('[data-action="copy-blueprint"]').click();assert.match(await page.evaluate(()=>navigator.clipboard.readText()),/^0e/);
   await page.locator('[data-action="crate-blueprint"]').click();assert.match(await page.locator('#command-output').inputValue(),/bulk-inserter/);await page.locator('[data-action="close-modal"]').click();
  }

@@ -52,7 +52,14 @@ try {
    }else if(route!=='index.html'){
     assert.ok(await page.locator('textarea').count());
     if(width===390){const b=page.locator('[data-flight-menu]');await b.click();assert.equal(await b.getAttribute('aria-expanded'),'true');await page.keyboard.press('Escape');assert.equal(await b.getAttribute('aria-expanded'),'false');}
-   }else assert.equal(await page.locator('.flight-plan-card').count(),5);
+   }else{
+    // One card per registered flight plan (the registry has grown past the original five), each with a unique, resolvable target.
+    const plans=await page.evaluate(()=>FlightPlans.plans.map(p=>p.href));assert.ok(plans.length>=16);assert.equal(new Set(plans).size,plans.length);
+    assert.equal(await page.locator('.flight-plan-card').count(),plans.length);
+    assert.deepEqual(await page.locator('.flight-plan-card').evaluateAll(a=>a.map(e=>e.getAttribute('href'))),plans);
+    const fs=await import('node:fs/promises');
+    for(const href of plans){const u=new URL(href,page.url());u.hash='';u.search='';await fs.access(u);}
+   }
    if(route.endsWith('#compact')){
     if(width===390)await page.locator('[data-flight-menu]').click();
     await page.locator('aside a[href="#compact"]').click();
