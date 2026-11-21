@@ -1,5 +1,7 @@
 # Verified Luna pilot results — 2026-11-11
 
+This is the record of the original trials. Their strings were replaced on 2026-11-21 and are kept under `history/`; see [README.md](README.md) for the current designs.
+
 Both full targets passed native Factorio 2.1.24 testing with the installed mod snapshot: 360 green circuits/min in 364 tiles and 90 red science/min in 299 tiles. Input display panels and all saved power/logistics infrastructure are included in the bounding rectangles.
 
 Luna (`gpt-6-luna`, high reasoning) generated and revised the layouts. The supervisor supplied the constraints, deterministic checks, game evaluator, bottleneck diagnoses, topology guidance, and the final red iron-feed coordinates. This was supervised optimization, not an autonomous model benchmark or fine-tuning run. Model cost/token usage was not measured.

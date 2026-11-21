@@ -8,7 +8,7 @@ It replaces the 19 x 10 version of 2026-11-20 (`history/twin-belt-21af4618/`). T
 
 ## Size and machines
 
-- Footprint **19 x 9 = 171 tiles**: 0.475 tiles per circuit per minute. That is 10% under the previous 190-tile version, and under the 364-tile baseline (Luna compact circuits 360), the 286-tile goal and the 273-tile stretch goal.
+- Footprint **19 x 9 = 171 tiles**: 0.475 tiles per circuit per minute. That is 10% under the previous 190-tile version, and under the 364-tile baseline (the original Luna compact circuits 360; its 21 November replacement is 18 x 11 = 198 tiles, still larger), the 286-tile goal and the 273-tile stretch goal.
 - 10 assembling machine 2: 6 copper cable and 4 electronic circuit. No modules, no beacons.
 - Arms: 4 bulk (hand 2) and 18 fast (hand 1). No long-handed arms. Belts: 18 red belts and 8 red underground belts. One substation, 2 display panels. 61 entities (the previous version had 76).
 

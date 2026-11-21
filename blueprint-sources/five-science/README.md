@@ -25,7 +25,7 @@ npm run build
 
 `FIVE_IMPORT_ONLY=1 node scripts/five-science/validate.mjs` checks native blueprint geometry, stock-control wiring, approach clearance and power without claiming production throughput. Full qualification launches one isolated native process per layout in parallel (five-minute factory priming and fifteen-minute lab priming), then measures sustained simultaneous delivery plus recovery after filling final science chests. Connected variants instead measure research progress from actual factory production. Every published native record must match the exact import SHA-256.
 
-Green circuit geometry derives from the preserved supervised Luna compact circuit trial at `../recovered-workshops/luna-circuits-r7-360.txt`. The core's provenance is retained in its original four-pack sources. Separate purple/circuit component evidence lives in `components/`; component proofs do not qualify the assembled factory.
+Green circuit geometry derives from the preserved supervised Luna compact circuit trial at `../recovered-workshops/history/return-belt-pair-bf4d6a63/luna-circuits-r7-360.txt` (the 26 x 14 return-belt pair, since replaced in the library by a smaller version; this copy is unchanged). The core's provenance is retained in its original four-pack sources. Separate purple/circuit component evidence lives in `components/`; component proofs do not qualify the assembled factory.
 
 ## Versions
 

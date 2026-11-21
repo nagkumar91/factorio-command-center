@@ -1,0 +1,1 @@
+Replaced 2026-11-21 by the direct hand-off pair (18 x 11 = 198 tiles instead of 26 x 14 = 364, same 10 machines, same 360/min). scripts/rgby-science/greens.mjs reads this copy as the geometry for the rgby-science and five-science greens blocks.

@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';import {decodeBlueprint}from'../blueprints.mjs
 /** Reuse the delivered Luna360 recipe geometry, join its two raw-material lines,
  * and aggregate four circuit outputs under the iron inserters with undergrounds. */
 export async function makeGreens(raw,id='greens'){
- const original=decodeBlueprint(await fs.readFile('blueprint-sources/recovered-workshops/luna-circuits-r7-360.txt','utf8')).blueprint;
+ const original=decodeBlueprint(await fs.readFile('blueprint-sources/recovered-workshops/history/return-belt-pair-bf4d6a63/luna-circuits-r7-360.txt','utf8')).blueprint;
  const entities=original.entities.filter(e=>!e.name.endsWith('electric-pole')&&e.name!=='display-panel').map(e=>({...structuredClone(e),...(e.name==='transport-belt'?{name:'fast-transport-belt'}:{})}));
  let next=Math.max(...entities.map(e=>e.entity_number))+1;const add=(name,x,y,extra={})=>{if(entities.some(e=>e.position.x===x+.5&&e.position.y===y+.5))throw Error('Green bridge overlap '+x+','+y);const e={entity_number:next++,name,position:{x:x+.5,y:y+.5},...extra};entities.push(e);return e;};
  for(const y of[0,13])for(const x of[11,12])add('fast-transport-belt',x,y,{direction:4});
