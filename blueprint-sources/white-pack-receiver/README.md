@@ -41,7 +41,7 @@ When nobody takes packs from the chest, it fills to exactly 2,000 and stops. The
 | Import (ghosts revived): geometry, arm hand 1, chest bar (game value 11 = first blocked slot), three clear tiles east, one power network with the arm powered | passed |
 | Pad request read back from the built pad | one active section: space science pack, minimum 1,000 |
 | Cargo landing pads | limit 1 per planet; this is the only one on Nauvis |
-| First pod after the platform finished building | 64 s (limit 5 min) |
+| First pod after the platform finished building | 67 s (limit 5 min) |
 | Packs collected from the chest, 120-minute measurement | 60.00 per minute (floor 57) |
 | Packs collected, last 45 minutes of recovery | 96.3 per minute (includes the backlog draining from pad and hub) |
 | Blocked phase (chest not emptied for 105 min) | chest ends at exactly 2,000 and never above; pad ends at 1,000 |

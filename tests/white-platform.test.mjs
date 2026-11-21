@@ -135,6 +135,18 @@ test('footprint, tiles and geometry: everything on foundation, collector fronts 
  assert.equal(m.newFoundationTiles,tiles.length-100);
  for(let x=-5;x<=4;x++)for(let y=-5;y<=4;y++)assert(tileSet.has(key(x,y)),'starter square tile '+x+','+y);
  assert.equal(m.areaGoal.achievedTiles,tiles.length);assert(tiles.length<=m.areaGoal.goalTiles);
+ // the 17 x 16 layout: 247 tiles, and every entity cell (the collectors' overhanging rows too) inside the rectangle
+ assert.deepEqual(f,{left:-8,top:-8,right:9,bottom:8,width:17,height:16});assert.equal(m.areaGoal.achievedRectangle,'17 x 16');
+ assert.equal(tiles.length,247);assert.equal(m.variant,'seventeen-wide');
+ for(const e of entities)for(const [x,y] of cells(e))assert(x>=f.left&&x<f.right&&y>=f.top&&y<f.bottom,e.name+' outside the rectangle at '+x+','+y);
+ // who stands on which side of the hub: north two science machines, east one and the crusher, south the furnace and one
+ const sideOf=e=>e.position.y<-5?'n':e.position.y>5?'s':e.position.x>5?'e':'w';
+ const stands=Object.fromEntries(['n','e','s','w'].map(k=>[k,entities.filter(e=>['assembling-machine-2','electric-furnace','crusher','asteroid-collector'].includes(e.name)&&sideOf(e)===k).map(e=>e.name).sort()]));
+ assert.deepEqual(stands,{n:['assembling-machine-2','assembling-machine-2','asteroid-collector'],e:['assembling-machine-2','asteroid-collector','crusher'],s:['assembling-machine-2','asteroid-collector','electric-furnace'],w:['asteroid-collector']});
+ for(const x of m.machines)assert.equal(x.side,sideOf(byId.get(x.entity)),'manifest side of machine '+x.entity);
+ // only the clock decider stands off the starter ring; the other combinators are on it
+ const ring=([x,y])=>x>=-5&&x<=4&&y>=-5&&y<=4;
+ for(const e of entities.filter(e=>/combinator/.test(e.name)))assert.equal(cells(e).every(ring),e.entity_number!==m.productionClock.timer,e.name+' '+e.entity_number);
  const used=new Map();
  for(const e of entities)for(const [x,y] of cells(e)){assert(!used.has(key(x,y)),'overlap at '+x+','+y);used.set(key(x,y),e);if(e.name!=='asteroid-collector')assert(tileSet.has(key(x,y)),e.name+' off foundation at '+x+','+y);}
  // a collector: foundation under its two rear rows, nothing (not even foundation) in its outer row and four rows beyond

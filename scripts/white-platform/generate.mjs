@@ -4,9 +4,10 @@
 // spawns only chunks; CONTRACT section 2 fact 2). Collection is circuit-limited (collectors pick a chunk type only
 // while the hub holds fewer than chunkCap of it), every crushed and smelted intermediate has a hub stock cap,
 // the science machines stop at the pack cap, and a crusher clock decides when crushing happens. The published
-// variant (single-crusher-six-panels) has one crusher whose recipe the clock sets (oxide, metallic, carbonic in
-// turn), six solar panels and four accumulators, and asks rockets for exactly 4,000 kg (four cargo rockets); the
-// earlier variants with three fixed-recipe crushers ask for 5,000 kg.
+// variant (seventeen-wide) has one crusher whose recipe the clock sets (oxide, metallic, carbonic in turn), six
+// solar panels and four accumulators in a 17 x 16 rectangle, and asks rockets for exactly 4,000 kg (four cargo
+// rockets). single-crusher-six-panels is the same bill in 19 x 16 (published before it); the earlier variants
+// with three fixed-recipe crushers ask for 5,000 kg.
 //
 // The blueprint includes the hub entity (it anchors the paste to the real hub and keeps the hub's
 // request_missing_construction_materials on) and every foundation tile, starter square included.
@@ -22,7 +23,7 @@ import {encodeBlueprint} from '../blueprints.mjs';
 export const RAW=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
 const args=process.argv.slice(2),flag=(name,fallback)=>{const i=args.indexOf('--'+name);return i>=0?args[i+1]:fallback;};
 const id='white-platform';
-const variantName=flag('variant',process.env.WP_VARIANT||'single-crusher-six-panels');
+const variantName=flag('variant',process.env.WP_VARIANT||'seventeen-wide');
 const out=flag('out',process.env.WP_OUT||'blueprint-sources/'+id);
 await fs.mkdir('.cache/'+id,{recursive:true});
 const bytes=await fs.readFile(RAW),raw=JSON.parse(bytes),sha=s=>createHash('sha256').update(s).digest('hex');
@@ -36,6 +37,9 @@ const stock={chunkCap:6,oreCap:60,carbonCap:60,iceCap:60,plateCap:100,packCap:20
 // Corner blocks of the 16 x 16 core (x and y from -8 to 7), one per turn.
 const corners=[[6.5,-6.5],[6.5,6.5],[-6.5,6.5],[-6.5,-6.5]];
 // South band (rows 8..9) accumulators, clear of the south collector's front (x -1..1): tiles x-1..x, y 8..9.
+// Power of the 17 x 16 layout: four corner panels (the two east ones one column further east), two panels in the
+// west side's machine slots; accumulators behind the crusher (the first one reads its charge) and in the two gaps.
+const compactPower={panels:[[-6.5,-6.5],[7.5,-6.5],[7.5,6.5],[-6.5,6.5],[-6.5,-3.5],[-6.5,3.5]],accumulators:[[8,2],[8,4],[5,-6],[5,6]]};
 const VARIANTS={
  'hub-ring':{...stock,panels:10,accumulators:1,power:'corners-outward'},
  // Same items, chunk value 4 instead of 6 (white-platform.md section 2: the fallback if free slots run low).
@@ -60,6 +64,15 @@ const VARIANTS={
  // The same without the charge gate (the comparison run for the gate).
  'single-crusher-six-panels-no-gate':{...stock,singleCrusher:true,goalKg:4000,panels:6,accumulators:4,power:{panels:[...corners,[9.5,-6.5],[9.5,-3.5]],accumulators:[[-7,-4],[9,2],[9,4],[9,6]]}},
  'single-crusher-six-panels':{...stock,singleCrusher:true,goalKg:4000,chargeFloor:30,panels:6,accumulators:4,power:{panels:[...corners,[9.5,-6.5],[9.5,-3.5]],accumulators:[[-7,-4],[9,2],[9,4],[9,6]]}},
+ // The same machines, arms, combinators, panels, accumulators and 247 tiles packed into 17 x 16 instead of 19 x 16:
+ // the two panels of the east band stand in the west side's two free machine slots, the crusher stands on the east
+ // side turned 2 wide, two accumulators stand behind it and the other two in the two-column gaps that open when the
+ // north-east and south-east corner panels move one column east. The same request, tile for tile and item for item.
+ 'seventeen-wide':{...stock,layout:'compact',singleCrusher:true,goalKg:4000,chargeFloor:30,panels:6,accumulators:4,power:compactPower},
+ // Exploration only (never published): the same layout with collectors on fewer sides, to measure the chunk supply.
+ 'seventeen-wide-north-south':{...stock,layout:'compact',probe:true,collectorSides:'ns',singleCrusher:true,chargeFloor:30,panels:6,accumulators:4,power:compactPower},
+ 'seventeen-wide-three-collectors':{...stock,layout:'compact',probe:true,collectorSides:'nes',singleCrusher:true,chargeFloor:30,panels:6,accumulators:4,power:compactPower},
+ 'seventeen-wide-south':{...stock,layout:'compact',probe:true,collectorSides:'s',singleCrusher:true,chargeFloor:30,panels:6,accumulators:4,power:compactPower},
 };
 const variant=VARIANTS[variantName];assert(variant,'unknown variant '+variantName);
 
@@ -130,87 +143,151 @@ const furnace={name:'electric-furnace',cond:['iron-plate',caps['iron-plate']],fi
 // machineCounts key for the one crusher whose recipe the circuit sets (single-crusher variant).
 const CIRCUIT_CRUSHING='asteroid-crushing-set-by-circuit';
 const crushingStock={'oxide-asteroid-crushing':'ice','metallic-asteroid-crushing':'iron-ore','carbonic-asteroid-crushing':'carbon'};
-let feedArm=null;
-const sides=variant.singleCrusher
- ?[[science,science],[science,science],[{circuitCrusher:true},furnace],[null,null]]
- :[[science,science],[science,science],[crusher('oxide-asteroid-crushing','ice'),crusher('metallic-asteroid-crushing','iron-ore')],[crusher('carbonic-asteroid-crushing','carbon'),furnace]];
-// Collection network (green): constant combinator (chunk values, clock tick) and an arithmetic combinator
-// that writes minus the hub contents. Collectors see chunkCap - count per chunk type.
 const chunkTypes=['metallic-asteroid-chunk','carbonic-asteroid-chunk','oxide-asteroid-chunk'];
-const constant=add({name:'constant-combinator',position:{x:-1.5,y:-4.5},control_behavior:{sections:{sections:[{index:1,filters:[...chunkTypes.map((n,i)=>({index:i+1,name:n,quality:'normal',comparator:'=',count:caps.chunk})),{index:4,type:'virtual',name:'signal-T',quality:'normal',comparator:'=',count:1}]}]}}});
-const negate=add({name:'arithmetic-combinator',position:{x:1,y:-4.5},direction:4,control_behavior:{arithmetic_conditions:{first_signal:virtual('signal-each'),second_constant:-1,operation:'*',output_signal:virtual('signal-each')}}});
-wires.push([hub,1,negate,1],[negate,4,constant,2]);
-let last=constant;const greenChain=new Set([constant]);
-sides.forEach(([west,east],k)=>{
- const mw=machineSlot('W',west,k);
- const [x,y]=rot([-0.5,-6.5],k);
- // A collector needs foundation under its two rear rows only; its outer row and four rows in front stay open.
- const col=add({name:'asteroid-collector',position:{x,y},direction:(4*k)%16,control_behavior:{circuit_set_filters:true}});rect(-2,-7,0,-6,k);
- collectors.push({entity:col,side:'nesw'[k]});
- roles.collector.push(arm([-0.5,-4.5],0,k));
- const me=machineSlot('E',east,k);
- // The circuit-set crusher stays off the green network (its item signals could select a recipe).
- for(const n of [mw,col,me]){if(n==null||(west?.circuitCrusher&&n===mw))continue;wires.push([last,2,n,2]);last=n;greenChain.add(n);}
-});
-// Crusher clock: T counts 1..period on the green network; one gate decider per crusher sends G = 1 to its
-// ingredient arm during its windows while its product is below the cap. At most one crusher runs at a time.
+let feedArm=null,sides=null,constant=null,negate=null,timer=null,recipeClock=null;
+const greenChain=new Set(),gates={};
 const period=900;
-const windows={'oxide-asteroid-crushing':[[1,20],[451,470]],'metallic-asteroid-crushing':[[226,245]],'carbonic-asteroid-crushing':[[676,695]]};
-const stockOf={'oxide-asteroid-crushing':'ice','metallic-asteroid-crushing':'iron-ore','carbonic-asteroid-crushing':'carbon'};
-const sideOf={'oxide-asteroid-crushing':2,'metallic-asteroid-crushing':1,'carbonic-asteroid-crushing':3};
 const T=virtual('signal-T'),G={red:false,green:true},R={red:true,green:false};
-const timer=add({name:'decider-combinator',position:{x:1.5,y:-6},direction:0,control_behavior:{decider_conditions:{conditions:[{first_signal:T,constant:period}],outputs:[{signal:T}],else_outputs:[]}}});
-tile(1,-7);tile(1,-6);wires.push([timer,2,constant,2],[timer,4,timer,2]);
-const gates={};
 const nearestGreen=(x,y)=>entities.filter(e=>greenChain.has(e.entity_number)).sort((p,q)=>Math.hypot(p.position.x-x,p.position.y-y)-Math.hypot(q.position.x-x,q.position.y-y)||p.entity_number-q.entity_number)[0].entity_number;
-let recipeClock=null;
-if(variant.singleCrusher){
- // One recipe decider per crushing recipe sends that recipe's signal (value 1) on the red "recipe network" for its
- // whole window while its product is below the cap; the crusher sets its recipe from it. The windows tile the
- // 900-tick period (oxide twice), so the recipe changes four times per period and leftovers go to the crusher's dump
- // inventory, which its product arm empties into the hub. A feed decider sends signal-G for the first 19 ticks of
- // each window to the crusher's ingredient arm: at most one chunk per window, crushed in 2 s, long before the window ends.
+// The 17 x 16 layout, placed explicitly (absolute tile centres; an arm's direction is the side it picks from).
+function placeCompact(){
+ const sides=variant.collectorSides||'nesw';
+ const scienceMachine=(x,y,inArm,outArm,side)=>{const n=add({name:science.name,position:{x,y},recipe:science.recipe,recipe_quality:'normal'});for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)tile(Math.floor(x)+dx,Math.floor(y)+dy);
+  roles.ingredient.push(arm(inArm.slice(0,2),inArm[2],0,{cond:science.cond}));roles.product.push(arm(outArm.slice(0,2),outArm[2],0));machines.push({entity:n,recipe:product,side});return n;};
+ // Collection network first, as in the earlier layouts: chunk values and the clock tick, and minus the hub contents.
+ constant=add({name:'constant-combinator',position:{x:-1.5,y:-4.5},control_behavior:{sections:{sections:[{index:1,filters:[...chunkTypes.map((n,i)=>({index:i+1,name:n,quality:'normal',comparator:'=',count:caps.chunk})),{index:4,type:'virtual',name:'signal-T',quality:'normal',comparator:'=',count:1}]}]}}});
+ negate=add({name:'arithmetic-combinator',position:{x:1,y:-4.5},direction:4,control_behavior:{arithmetic_conditions:{first_signal:virtual('signal-each'),second_constant:-1,operation:'*',output_signal:virtual('signal-each')}}});
+ wires.push([hub,1,negate,1],[negate,4,constant,2]);greenChain.add(constant);
+ // A collector: foundation under its two rear rows only; its arm stands on the ring between it and the hub.
+ const collector=(side,x,y,direction,rear,armAt)=>{if(!sides.includes(side))return null;const n=add({name:'asteroid-collector',position:{x,y},direction,control_behavior:{circuit_set_filters:true}});for(const [tx,ty] of rear)tile(tx,ty);
+  collectors.push({entity:n,side});roles.collector.push(arm(armAt,direction,0));greenChain.add(n);return n;};
+ const span=(a,b)=>{const out=[];for(let i=a;i<=b;i++)out.push(i);return out;};
+ // North: science, collector, science.
+ scienceMachine(-3.5,-6.5,[-3.5,-4.5,8],[-2.5,-4.5,0],'n');
+ const north=collector('n',-0.5,-6.5,0,span(-2,0).flatMap(x=>[[x,-7],[x,-6]]),[-0.5,-4.5]);
+ scienceMachine(2.5,-6.5,[2.5,-4.5,8],[3.5,-4.5,0],'n');
+ // East: science, collector, and the crusher turned 2 wide (tiles x 5..6, y 1..3).
+ scienceMachine(6.5,-3.5,[4.5,-3.5,12],[4.5,-2.5,4],'e');
+ const east=collector('e',6.5,-0.5,4,span(-2,0).flatMap(y=>[[5,y],[6,y]]),[4.5,-1.5]);
+ const crusherEntity=add({name:'crusher',position:{x:6,y:2.5},direction:8,control_behavior:{set_recipe:true}});for(const x of [5,6])for(const y of [1,2,3])tile(x,y);
+ roles.ingredient.push(feedArm=arm([4.5,1.5],12,0,{gate:'feed'}));roles.product.push(arm([4.5,2.5],4,0));
+ machines.push({entity:crusherEntity,recipe:CIRCUIT_CRUSHING,recipes:Object.keys(crushingStock),side:'e'});
+ // South: furnace, collector, science.
+ const furnaceEntity=add({name:furnace.name,position:{x:-3.5,y:6.5}});for(const x of [-5,-4,-3])for(const y of [5,6,7])tile(x,y);
+ roles.ingredient.push(arm([-3.5,4.5],0,0,{cond:furnace.cond,filter:furnace.filter}));roles.product.push(arm([-2.5,4.5],8,0));
+ machines.push({entity:furnaceEntity,recipe:'iron-plate',side:'s'});
+ const south=collector('s',-0.5,6.5,8,span(-2,0).flatMap(x=>[[x,5],[x,6]]),[-0.5,4.5]);
+ scienceMachine(2.5,6.5,[2.5,4.5,0],[3.5,4.5,8],'s');
+ // West: only its collector (the two slots beside it hold solar panels).
+ const west=collector('w',-6.5,-0.5,12,span(-2,0).flatMap(y=>[[-7,y],[-6,y]]),[-4.5,-0.5]);
+ // Clock (two tiles south of the crusher, the only combinator off the ring) and the four clock deciders on the ring.
+ timer=add({name:'decider-combinator',position:{x:6,y:4.5},direction:4,control_behavior:{decider_conditions:{conditions:[{first_signal:T,constant:period}],outputs:[{signal:T}],else_outputs:[]}}});
+ tile(5,4);tile(6,4);
  const recipeWindows={'oxide-asteroid-crushing':[[1,226],[451,676]],'metallic-asteroid-crushing':[[226,451]],'carbonic-asteroid-crushing':[[676,901]]};
  const feedWindows=[[1,20],[226,245],[451,470],[676,695]];
- const crusherEntity=machines.find(m=>m.recipe===CIRCUIT_CRUSHING).entity;
+ const where={'oxide-asteroid-crushing':[4.5,0,0],'metallic-asteroid-crushing':[4.5,4,0],'carbonic-asteroid-crushing':[1,4.5,4]};
  const recipeDeciders={};
  for(const [recipe,stock] of Object.entries(crushingStock)){
-  const side=sideOf[recipe],[x,y]=rot([1.0,-4.5],side);
-  const conditions=[];
+  const [x,y,direction]=where[recipe],conditions=[];
   recipeWindows[recipe].forEach(([from,to],i)=>{
    const c={first_signal:T,constant:from,comparator:'≥',first_signal_networks:G};if(i>0)c.compare_type='or';
    conditions.push(c,{first_signal:T,constant:to,first_signal_networks:G,compare_type:'and'},{first_signal:{name:stock},constant:caps[stock],first_signal_networks:R,compare_type:'and'});
   });
-  const d=add({name:'decider-combinator',position:{x,y},direction:(4+4*side)%16,control_behavior:{decider_conditions:{conditions,outputs:[{signal:{type:'recipe',name:recipe},copy_count_from_input:false}],else_outputs:[]}}});
-  wires.push([hub,1,d,1],[d,2,nearestGreen(x,y),2]);
+  const d=add({name:'decider-combinator',position:{x,y},direction,control_behavior:{decider_conditions:{conditions,outputs:[{signal:{type:'recipe',name:recipe},copy_count_from_input:false}],else_outputs:[]}}});
+  wires.push([hub,1,d,1]);greenChain.add(d);
   recipeDeciders[recipe]={decider:d,windows:recipeWindows[recipe],stock,cap:caps[stock]};
  }
- const [fx,fy]=rot([-3,-4.5],3);
  const feedConditions=[];
  feedWindows.forEach(([from,to],i)=>{const c={first_signal:T,constant:from,comparator:'≥',first_signal_networks:G};if(i>0)c.compare_type='or';feedConditions.push(c,{first_signal:T,constant:to,first_signal_networks:G,compare_type:'and'});
   if(variant.chargeFloor)feedConditions.push({first_signal:virtual('signal-A'),constant:variant.chargeFloor,comparator:'≥',first_signal_networks:G,compare_type:'and'});});
- const feed=add({name:'decider-combinator',position:{x:fx,y:fy},direction:(4+4*3)%16,control_behavior:{decider_conditions:{conditions:feedConditions,outputs:[{signal:virtual('signal-G'),copy_count_from_input:false}],else_outputs:[]}}});
- wires.push([feed,2,nearestGreen(fx,fy),2]);
- // The recipe network (red, decider outputs): west recipe decider, feed decider, south recipe decider, the feed arm,
- // the east recipe decider and the crusher. Neither the hub nor the green network is on it.
- const rd=r=>recipeDeciders[r].decider;
- wires.push([rd('carbonic-asteroid-crushing'),3,feed,3],[feed,3,rd('oxide-asteroid-crushing'),3],[rd('oxide-asteroid-crushing'),3,feedArm,1],[rd('metallic-asteroid-crushing'),3,feedArm,1],[feedArm,1,crusherEntity,1]);
+ const feed=add({name:'decider-combinator',position:{x:-4.5,y:3},direction:0,control_behavior:{decider_conditions:{conditions:feedConditions,outputs:[{signal:virtual('signal-G'),copy_count_from_input:false}],else_outputs:[]}}});
+ greenChain.add(feed);
+ const rd=r=>recipeDeciders[r].decider,oxide=rd('oxide-asteroid-crushing'),metallic=rd('metallic-asteroid-crushing'),carbonic=rd('carbonic-asteroid-crushing');
+ // Collection network (green): the constant combinator, the negating combinator's output, the four collectors, the
+ // clock and the green inputs of the four clock deciders, joined as a tree. No machine is on it.
+ wires.push([negate,4,oxide,2],[oxide,2,metallic,2],[metallic,2,timer,2],[timer,4,timer,2],[metallic,2,carbonic,2],[carbonic,2,feed,2]);
+ if(north)wires.push([constant,2,north,2]);if(west)wires.push([constant,2,west,2]);if(east)wires.push([oxide,2,east,2]);if(south)wires.push([carbonic,2,south,2]);
+ // The recipe network (red, decider outputs): the four clock deciders, the feed arm and the crusher, nothing else.
+ wires.push([feed,3,carbonic,3],[carbonic,3,metallic,3],[metallic,3,feedArm,1],[oxide,3,feedArm,1],[feedArm,1,crusherEntity,1]);
  gates.feed={decider:feed,arm:feedArm,windows:feedWindows};
  recipeClock={crusher:crusherEntity,recipeDeciders,feed:{decider:feed,arm:feedArm,windows:feedWindows,...(variant.chargeFloor?{chargeFloorPercent:variant.chargeFloor}:{})}};
 }
-for(const {arm:a,recipe} of gateArms){
- if(variant.singleCrusher)break;
- const [x,y]=rot([1.0,-4.5],sideOf[recipe]);const stock=stockOf[recipe];
- const conditions=[];
- windows[recipe].forEach(([from,to],i)=>{
-  const c={first_signal:T,constant:from,comparator:'≥',first_signal_networks:G};if(i>0)c.compare_type='or';
-  conditions.push(c,{first_signal:T,constant:to,first_signal_networks:G,compare_type:'and'},{first_signal:{name:stock},constant:caps[stock],first_signal_networks:R,compare_type:'and'});
+if(variant.layout==='compact')placeCompact();else{
+ sides=variant.singleCrusher
+  ?[[science,science],[science,science],[{circuitCrusher:true},furnace],[null,null]]
+  :[[science,science],[science,science],[crusher('oxide-asteroid-crushing','ice'),crusher('metallic-asteroid-crushing','iron-ore')],[crusher('carbonic-asteroid-crushing','carbon'),furnace]];
+ // Collection network (green): constant combinator (chunk values, clock tick) and an arithmetic combinator
+ // that writes minus the hub contents. Collectors see chunkCap - count per chunk type.
+ constant=add({name:'constant-combinator',position:{x:-1.5,y:-4.5},control_behavior:{sections:{sections:[{index:1,filters:[...chunkTypes.map((n,i)=>({index:i+1,name:n,quality:'normal',comparator:'=',count:caps.chunk})),{index:4,type:'virtual',name:'signal-T',quality:'normal',comparator:'=',count:1}]}]}}});
+ negate=add({name:'arithmetic-combinator',position:{x:1,y:-4.5},direction:4,control_behavior:{arithmetic_conditions:{first_signal:virtual('signal-each'),second_constant:-1,operation:'*',output_signal:virtual('signal-each')}}});
+ wires.push([hub,1,negate,1],[negate,4,constant,2]);
+ let last=constant;greenChain.add(constant);
+ sides.forEach(([west,east],k)=>{
+  const mw=machineSlot('W',west,k);
+  const [x,y]=rot([-0.5,-6.5],k);
+  // A collector needs foundation under its two rear rows only; its outer row and four rows in front stay open.
+  const col=add({name:'asteroid-collector',position:{x,y},direction:(4*k)%16,control_behavior:{circuit_set_filters:true}});rect(-2,-7,0,-6,k);
+  collectors.push({entity:col,side:'nesw'[k]});
+  roles.collector.push(arm([-0.5,-4.5],0,k));
+  const me=machineSlot('E',east,k);
+  // The circuit-set crusher stays off the green network (its item signals could select a recipe).
+  for(const n of [mw,col,me]){if(n==null||(west?.circuitCrusher&&n===mw))continue;wires.push([last,2,n,2]);last=n;greenChain.add(n);}
  });
- const d=add({name:'decider-combinator',position:{x,y},direction:(4+4*sideOf[recipe])%16,control_behavior:{decider_conditions:{conditions,outputs:[{signal:virtual('signal-G'),copy_count_from_input:false}],else_outputs:[]}}});
- wires.push([hub,1,d,1],[d,3,a,1]);
- const near=entities.filter(e=>greenChain.has(e.entity_number)).sort((p,q)=>Math.hypot(p.position.x-x,p.position.y-y)-Math.hypot(q.position.x-x,q.position.y-y)||p.entity_number-q.entity_number)[0];
- wires.push([d,2,near.entity_number,2]);
- gates[recipe]={decider:d,arm:a,windows:windows[recipe],stock,cap:caps[stock]};
+ // Crusher clock: T counts 1..period on the green network; one gate decider per crusher sends G = 1 to its
+ // ingredient arm during its windows while its product is below the cap. At most one crusher runs at a time.
+ const windows={'oxide-asteroid-crushing':[[1,20],[451,470]],'metallic-asteroid-crushing':[[226,245]],'carbonic-asteroid-crushing':[[676,695]]};
+ const stockOf={'oxide-asteroid-crushing':'ice','metallic-asteroid-crushing':'iron-ore','carbonic-asteroid-crushing':'carbon'};
+ const sideOf={'oxide-asteroid-crushing':2,'metallic-asteroid-crushing':1,'carbonic-asteroid-crushing':3};
+ timer=add({name:'decider-combinator',position:{x:1.5,y:-6},direction:0,control_behavior:{decider_conditions:{conditions:[{first_signal:T,constant:period}],outputs:[{signal:T}],else_outputs:[]}}});
+ tile(1,-7);tile(1,-6);wires.push([timer,2,constant,2],[timer,4,timer,2]);
+ if(variant.singleCrusher){
+  // One recipe decider per crushing recipe sends that recipe's signal (value 1) on the red "recipe network" for its
+  // whole window while its product is below the cap; the crusher sets its recipe from it. The windows tile the
+  // 900-tick period (oxide twice), so the recipe changes four times per period and leftovers go to the crusher's dump
+  // inventory, which its product arm empties into the hub. A feed decider sends signal-G for the first 19 ticks of
+  // each window to the crusher's ingredient arm: at most one chunk per window, crushed in 2 s, long before the window ends.
+  const recipeWindows={'oxide-asteroid-crushing':[[1,226],[451,676]],'metallic-asteroid-crushing':[[226,451]],'carbonic-asteroid-crushing':[[676,901]]};
+  const feedWindows=[[1,20],[226,245],[451,470],[676,695]];
+  const crusherEntity=machines.find(m=>m.recipe===CIRCUIT_CRUSHING).entity;
+  const recipeDeciders={};
+  for(const [recipe,stock] of Object.entries(crushingStock)){
+   const side=sideOf[recipe],[x,y]=rot([1.0,-4.5],side);
+   const conditions=[];
+   recipeWindows[recipe].forEach(([from,to],i)=>{
+    const c={first_signal:T,constant:from,comparator:'≥',first_signal_networks:G};if(i>0)c.compare_type='or';
+    conditions.push(c,{first_signal:T,constant:to,first_signal_networks:G,compare_type:'and'},{first_signal:{name:stock},constant:caps[stock],first_signal_networks:R,compare_type:'and'});
+   });
+   const d=add({name:'decider-combinator',position:{x,y},direction:(4+4*side)%16,control_behavior:{decider_conditions:{conditions,outputs:[{signal:{type:'recipe',name:recipe},copy_count_from_input:false}],else_outputs:[]}}});
+   wires.push([hub,1,d,1],[d,2,nearestGreen(x,y),2]);
+   recipeDeciders[recipe]={decider:d,windows:recipeWindows[recipe],stock,cap:caps[stock]};
+  }
+  const [fx,fy]=rot([-3,-4.5],3);
+  const feedConditions=[];
+  feedWindows.forEach(([from,to],i)=>{const c={first_signal:T,constant:from,comparator:'≥',first_signal_networks:G};if(i>0)c.compare_type='or';feedConditions.push(c,{first_signal:T,constant:to,first_signal_networks:G,compare_type:'and'});
+   if(variant.chargeFloor)feedConditions.push({first_signal:virtual('signal-A'),constant:variant.chargeFloor,comparator:'≥',first_signal_networks:G,compare_type:'and'});});
+  const feed=add({name:'decider-combinator',position:{x:fx,y:fy},direction:(4+4*3)%16,control_behavior:{decider_conditions:{conditions:feedConditions,outputs:[{signal:virtual('signal-G'),copy_count_from_input:false}],else_outputs:[]}}});
+  wires.push([feed,2,nearestGreen(fx,fy),2]);
+  // The recipe network (red, decider outputs): west recipe decider, feed decider, south recipe decider, the feed arm,
+  // the east recipe decider and the crusher. Neither the hub nor the green network is on it.
+  const rd=r=>recipeDeciders[r].decider;
+  wires.push([rd('carbonic-asteroid-crushing'),3,feed,3],[feed,3,rd('oxide-asteroid-crushing'),3],[rd('oxide-asteroid-crushing'),3,feedArm,1],[rd('metallic-asteroid-crushing'),3,feedArm,1],[feedArm,1,crusherEntity,1]);
+  gates.feed={decider:feed,arm:feedArm,windows:feedWindows};
+  recipeClock={crusher:crusherEntity,recipeDeciders,feed:{decider:feed,arm:feedArm,windows:feedWindows,...(variant.chargeFloor?{chargeFloorPercent:variant.chargeFloor}:{})}};
+ }
+ for(const {arm:a,recipe} of gateArms){
+  if(variant.singleCrusher)break;
+  const [x,y]=rot([1.0,-4.5],sideOf[recipe]);const stock=stockOf[recipe];
+  const conditions=[];
+  windows[recipe].forEach(([from,to],i)=>{
+   const c={first_signal:T,constant:from,comparator:'≥',first_signal_networks:G};if(i>0)c.compare_type='or';
+   conditions.push(c,{first_signal:T,constant:to,first_signal_networks:G,compare_type:'and'},{first_signal:{name:stock},constant:caps[stock],first_signal_networks:R,compare_type:'and'});
+  });
+  const d=add({name:'decider-combinator',position:{x,y},direction:(4+4*sideOf[recipe])%16,control_behavior:{decider_conditions:{conditions,outputs:[{signal:virtual('signal-G'),copy_count_from_input:false}],else_outputs:[]}}});
+  wires.push([hub,1,d,1],[d,3,a,1]);
+  const near=entities.filter(e=>greenChain.has(e.entity_number)).sort((p,q)=>Math.hypot(p.position.x-x,p.position.y-y)-Math.hypot(q.position.x-x,q.position.y-y)||p.entity_number-q.entity_number)[0];
+  wires.push([d,2,near.entity_number,2]);
+  gates[recipe]={decider:d,arm:a,windows:windows[recipe],stock,cap:caps[stock]};
+ }
 }
 // Solar panels and accumulators.
 const panel=([x,y])=>{add({name:'solar-panel',position:{x,y}});for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)tile(Math.floor(x)+dx,Math.floor(y)+dy);};
@@ -235,7 +312,10 @@ assert.equal(entities.filter(e=>e.name==='solar-panel').length,variant.panels);a
 // Every entity stands on foundation (collectors: their two rear rows).
 for(const e of entities){if(e.name==='asteroid-collector')continue;for(const [x,y] of footprintCells(e))assert(tiles.has(key(x,y)),`${e.name} #${e.entity_number} off foundation at ${x},${y}`);}
 // Nothing on the four rows in front of a collector (its outer row included).
-for(const c of collectors){const e=entities[c.entity-1],k='nesw'.indexOf(c.side);for(let f=-12;f<=-8;f++)for(let x=-2;x<=0;x++){const [cx,cy]=rot([x+.5,f+.5],k);const o=occupied.get(key(Math.floor(cx),Math.floor(cy)));assert(!o||o===e,`entity ${o?.name} in front of collector ${c.entity}`);assert(!tiles.has(key(Math.floor(cx),Math.floor(cy)))||f>-8,'foundation in front of collector');}}
+// Checked from each collector's own position and direction (the outward step), so it holds for every layout.
+for(const c of collectors){const e=entities[c.entity-1],[dx,dy]={0:[0,-1],4:[1,0],8:[0,1],12:[-1,0]}[e.direction??0],cx=Math.floor(e.position.x),cy=Math.floor(e.position.y);
+ for(let d=1;d<=5;d++)for(let s=-1;s<=1;s++){const x=cx+dx*d+(dy?s:0),y=cy+dy*d+(dx?s:0),o=occupied.get(key(x,y));assert(!o||o===e,`entity ${o?.name} in front of collector ${c.entity}`);assert(!tiles.has(key(x,y)),'foundation in front of collector');}
+ for(let back=0;back<=1;back++)for(let s=-1;s<=1;s++)assert(tiles.has(key(cx-dx*back+(dy?s:0),cy-dy*back+(dx?s:0))),'collector rear rows need foundation');}
 // Circuit wires at most 8 tiles centre to centre.
 const byNumber=n=>entities[n-1];
 for(const [a,,b] of wires){const p=byNumber(a).position,q=byNumber(b).position;assert(Math.hypot(p.x-q.x,p.y-q.y)<=8,`wire ${a}-${b} too long`);}
@@ -279,8 +359,8 @@ const starterPackProvides={[tileItem]:STARTER.placedTiles+STARTER.hubFoundation}
 const platformRequest=sortObj(Object.fromEntries(Object.entries(items).map(([n,c])=>[n,c-(starterPackProvides[n]||0)]).filter(([,c])=>c>0)));
 for(const n of Object.keys(items))assert(WEIGHT_KG[n]>0,'no inline weight for '+n);
 const requestedWeightKg=Object.entries(platformRequest).reduce((a,[n,c])=>a+WEIGHT_KG[n]*c,0);
-assert.equal(requestedWeightKg%ROCKET_LIFT_KG,0,`requested weight ${requestedWeightKg} kg is not a whole number of rockets`);
-assert.equal(requestedWeightKg,variant.goalKg??5000,'goal: exactly '+((variant.goalKg??5000)/ROCKET_LIFT_KG)+' cargo rockets');
+if(!variant.probe)assert.equal(requestedWeightKg%ROCKET_LIFT_KG,0,`requested weight ${requestedWeightKg} kg is not a whole number of rockets`);
+if(!variant.probe)assert.equal(requestedWeightKg,variant.goalKg??5000,'goal: exactly '+((variant.goalKg??5000)/ROCKET_LIFT_KG)+' cargo rockets');
 // Kit count ranges (launch-kit.md section 2) and the closed item list (CONTRACT section 3).
 const ranges={'space-platform-foundation':300,'asteroid-collector':8,crusher:6,'assembling-machine-2':10,'electric-furnace':4,'fast-inserter':44,'solar-panel':30,accumulator:10,'constant-combinator':10,'arithmetic-combinator':10,'decider-combinator':10};
 assert.deepEqual(Object.keys(platformRequest).sort(),Object.keys(ranges).sort(),'every kit item type used, nothing else');

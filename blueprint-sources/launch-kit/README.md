@@ -12,7 +12,7 @@ Footprint 32 x 27 = **864 tiles** (goal 900, stretch 780, fallback 1250). The go
 
 ## Kit contents (outputs, east side)
 
-Counts live only in `scripts/launch-kit/bill.json` (`cap = count + spare`, spare: 10% rounded up on fast inserters and foundation). Bill sources: white-platform `f4cc0325a68ecf1add4e58c71483098c77f48cee7a2f6553783165d5ac1b37d0`, white-pack-receiver `00456afec81e22b0e1201e6780fe04c27634a2f77dbbd723d2448e86a17e87ae`.
+Counts live only in `scripts/launch-kit/bill.json` (`cap = count + spare`, spare: 10% rounded up on fast inserters and foundation). Bill sources: white-platform `0bed64aac34ad341799b26411c021e46b11f071656196ddeb1c53ae070713604`, white-pack-receiver `00456afec81e22b0e1201e6780fe04c27634a2f77dbbd723d2448e86a17e87ae`.
 
 | Item | count | to the platform | to the receiver | spare | cap (chest) | max cap | control | completed at (min) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: |
