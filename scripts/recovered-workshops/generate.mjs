@@ -3,6 +3,8 @@
 // Needs no prototype dump. Re-running leaves blueprint-sources/recovered-workshops/ byte-identical.
 // The robot-ready forest rows in the manifest are kept exactly as they are.
 import fs from 'node:fs/promises';
+import {readFileSync} from 'node:fs';
+import {inflateSync} from 'node:zlib';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
@@ -34,10 +36,19 @@ const ROWS = [
     history: 'history/edge-columns-1231f0ae'},
 ];
 
+// zlib's compressed bytes differ between builds (the Linux deploy runner on Node 24 and this Mac give different strings for the same JSON).
+// Keep the committed string when it decodes to exactly this blueprint, so its SHA-256 and native report stay valid on any machine.
+function encodeKeeping(blueprint, file) {
+  let committed;
+  try { committed = readFileSync(file, 'utf8').trim(); } catch { committed = undefined; }
+  try { if (committed && inflateSync(Buffer.from(committed.slice(1), 'base64')).toString('utf8') === JSON.stringify(blueprint)) return committed; } catch {}
+  return encodeBlueprint(blueprint);
+}
+
 export function designs() {
   return ROWS.map(row => {
     const c = row.make();
-    const code = encodeBlueprint(c.blueprint);
+    const code = encodeKeeping(c.blueprint, path.join(folder, c.id + '.txt'));
     return {...row, id: c.id, blueprint: c.blueprint, spec: c.spec, code, blueprintSha256: sha(code), footprint: footprint(c.blueprint)};
   });
 }

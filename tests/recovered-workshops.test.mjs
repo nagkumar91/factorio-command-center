@@ -19,6 +19,7 @@ test('the generator reproduces every Luna string, manifest row and native spec',
   for (const row of luna) {
     const d = built[row.id];
     assert.deepEqual(row, manifestRow(d));
+    assert.deepEqual(decodeBlueprint(await read(row.file)), d.blueprint, row.id + ' decodes to the generated blueprint');
     assert.equal(sha(await read(row.file)), d.blueprintSha256);
     assert.equal(row.blueprintSha256, d.blueprintSha256);
   }
