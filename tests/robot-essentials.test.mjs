@@ -175,7 +175,7 @@ test('footprint and area goal',()=>{
  assert.deepEqual(m.footprint,f);
  assert.equal(m.areaGoal.achievedTiles,f.width*f.height);
  assert.equal(m.areaGoal.goalTiles,760);assert.equal(m.areaGoal.stretchTiles,703);
- assert(f.width*f.height<1272,'not smaller than half of the 2,544-tile workshop');
+ assert(f.width*f.height<1071/2,'not smaller than half of the 1,071-tile workshop');
 });
 
 test('ring conventions: per-tile hold readers, limits under 60%, controlled arms on the ring network',()=>{

@@ -10,7 +10,7 @@ This string replaces the one published on 20 November (`history/one-speed-timer-
 
 | | |
 | --- | --- |
-| Footprint | 33 x 16 = **528 tiles**, 21% of the current robot workshop (106 x 24 = 2,544) |
+| Footprint | 33 x 16 = **528 tiles**, 49% of the current robot workshop (51 x 21 = 1,071) |
 | Area goal | goal 760, stretch 703, achieved 528 |
 | Machines | 28: 26 assembling-machine-2, 2 chemical plants |
 | Combinators | 27: 16 deciders, 11 arithmetic (one decider more than the replaced string) |

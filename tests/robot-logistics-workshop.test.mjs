@@ -140,3 +140,28 @@ test('each of five independent stock tests reaches its cap without starving the 
  assert.deepEqual(sorted(phases.map(p=>p.blockedProduct)),sorted(products));
  for(const phase of phases){assert.equal(phase.finalBlockedStock,m.outputCaps[phase.blockedProduct],`blocked cap: ${phase.blockedProduct}`);assert(phase.measurementMinutes>0);const others=products.filter(p=>p!==phase.blockedProduct);assert.deepEqual(sorted(Object.keys(phase.outputsPerMinute)),sorted(others));for(const item of others)rate(phase.outputsPerMinute[item],item,`${phase.blockedProduct} held at cap`);}
 });
+
+test('compact four-row ring: 51 x 21 footprint, 55 machines, west entrances in the original order',async()=>{
+ assert.deepEqual(m.footprint,{left:-2,top:-4,right:49,bottom:17,width:51,height:21});
+ assert.equal(m.areaTiles??m.footprint.width*m.footprint.height,1071);
+ assert.equal(entities.filter(e=>e.name==='assembling-machine-2').length,52);
+ assert.equal(entities.filter(e=>e.name==='chemical-plant').length,3);
+ assert.equal(m.machineCounts['iron-gear-wheel'],1);
+ assert.equal(Object.values(m.machineCounts).reduce((a,b)=>a+b,0),55);
+ assert.equal(entities.filter(e=>e.name==='long-handed-inserter').length,0,'compact layout uses fast and bulk arms only');
+ assert.equal(entities.filter(e=>e.name==='substation').length,3);
+ const west=[...m.inputs,...m.fluids].sort((a,b)=>a.y-b.y).map(p=>p.item);
+ assert.deepEqual(west,['sulfuric-acid','plastic-bar','copper-plate','iron-plate','steel-plate','lubricant'],'entrance order north to south');
+ const loop=m.loopControl[0];assert.equal(loop.capacity,960);assert.equal(Object.values(loop.limits).reduce((a,b)=>a+b,0),loop.maximumStock);assert(loop.maximumStock<loop.capacity*.6,'ring limits well under capacity');
+});
+
+test('superseded 106 x 24 version is kept with its own qualified report',async()=>{
+ const h=dir+'history/two-row-rail-c1c984d3/';
+ const [old]=JSON.parse(await read(h+'manifest.json'));const oldCode=(await read(h+old.file)).toString().trim();
+ assert.equal(hash(oldCode),old.blueprintSha256);assert(old.blueprintSha256.startsWith('c1c984d3'));
+ assert.equal(old.footprint.width*old.footprint.height,2544);
+ const oldReport=JSON.parse(await read(h+'native-report.json'));assert.equal(oldReport.passed,true);
+ assert.equal(oldReport.builds[0].blueprintSha256,old.blueprintSha256);
+ assert.match((await read(h+'NOTE.md')).toString(),/superseded/);
+ assert(m.footprint.width*m.footprint.height<old.footprint.width*old.footprint.height*.95,'replacement must be at least 5% smaller');
+});
