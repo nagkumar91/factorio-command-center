@@ -1,4 +1,6 @@
 local payload=helpers.json_to_table(require('payload'))
+-- Ticks from the end of the steady measurement to the end of the recovery measurement (54000 in the standard protocol).
+local recoveryTicks=payload.recovery.pauseTicks+payload.recovery.settleTicks+payload.recovery.measureTicks
 local function check(ok,msg) if not ok then error('FLIGHT_SCIENCE: '..msg) end end
 local function status(e) for n,v in pairs(defines.entity_status) do if v==e.status then return n end end return tostring(e.status) end
 local function crafting(e) return e.type=='assembling-machine' or e.type=='furnace' end
@@ -40,7 +42,7 @@ script.on_init(function()
   s.request_to_generate_chunks({0,0},math.ceil(math.max(sw,sh)/64)+1);s.force_generate_chunk_requests()
   for _,e in pairs(s.find_entities())do e.destroy()end
   local tiles={};for x=-sw/2,sw/2-1 do for y=-sh/2,sh/2-1 do tiles[#tiles+1]={name='grass-1',position={x,y}}end end;s.set_tiles(tiles)
-  local t={id=b.id,surface=s,force=force,entities={},fed={},measuredFed={},output={},baseline={},machineBaseline={},powered=false,portSamples={},portOutputs={},samples={},loopSamples={},recoveryOutput={},fluidFed={},actualRecipeChecks=0,labSamples={},bulkMaxHand={}}
+  local t={id=b.id,surface=s,force=force,entities={},fed={},measuredFed={},output={},baseline={},machineBaseline={},powered=false,portSamples={},portOutputs={},samples={},loopSamples={},recoveryOutput={},fluidFed={},actualRecipeChecks=0,labSamples={},bulkMaxHand={},missing={},credit={},lane={}}
   t.spec={};t.ingredients=b.recipeIngredients;for _,saved in ipairs(b.entities)do t.spec[saved.entity_number]=saved end
   storage.tests[index]=t
   if b.researchProbe then
@@ -78,13 +80,13 @@ script.on_init(function()
   end end
   check(t.fixture~=nil,'no power fixture')
  end
- if game.tick==payload.warmup+payload.measure+54000+72000 then
+ if game.tick==payload.warmup+payload.measure+recoveryTicks+72000 then
   for i,t in ipairs(storage.tests)do storage.report.builds[i].stockReplenishment=t.stockReplenishment end
   helpers.write_file('result.json',helpers.table_to_json(storage.report),false)
  end
 end)
 script.on_event(defines.events.on_tick,function()
- if game.tick%3600==0 then helpers.write_file('progress.json',helpers.table_to_json{tick=game.tick,target=payload.warmup+payload.measure+54000},false) end
+ if game.tick%3600==0 then helpers.write_file('progress.json',helpers.table_to_json{tick=game.tick,target=payload.warmup+payload.measure+recoveryTicks},false) end
  for index,t in ipairs(storage.tests or {})do
   local b=payload.builds[index]
   if game.tick==1 then t.force.enable_all_recipes();t.force.inserter_stack_size_bonus=0;t.force.bulk_inserter_capacity_bonus=1;check(t.force.inserter_stack_size_bonus==0 and t.force.bulk_inserter_capacity_bonus==1,'incorrect inserter unlock baseline') end
@@ -93,7 +95,21 @@ script.on_event(defines.events.on_tick,function()
   end end
   -- The only ingredient writes are to the two lanes of the declared input belt.
   for i,p in ipairs(b.fluids or {})do local n=t.entities[p.entity].insert_fluid{name=p.item,amount=1000};if game.tick>payload.warmup and game.tick<=payload.warmup+payload.measure then t.fluidFed[i]=(t.fluidFed[i]or 0)+n end end
-  if game.tick%4==0 then for i,p in ipairs(b.inputs)do
+  if payload.supplyPerMinute then
+   -- Probe only: each entrance is offered exactly its stated rate, alternating lanes. Items the belt
+   -- cannot take yet wait (up to two minutes of supply), as they would on a supply belt.
+   for i,p in ipairs(b.inputs)do
+    local belt=t.entities[p.entity];local rate=payload.supplyPerMinute[p.item]
+    t.credit[i]=math.min((t.credit[i]or 0)+rate/3600,rate*2)
+    for _=1,2 do if t.credit[i]>=1 then
+     local lane=(t.lane[i]or 1)%2+1;t.lane[i]=lane
+     if belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
+      t.credit[i]=t.credit[i]-1;t.fed[i]=(t.fed[i]or 0)+1
+      if game.tick>payload.warmup and game.tick<=payload.warmup+payload.measure then t.measuredFed[i]=(t.measuredFed[i]or 0)+1 end
+     end
+    end end
+   end
+  elseif game.tick%4==0 then for i,p in ipairs(b.inputs)do
    local belt=t.entities[p.entity]
    for lane=1,2 do if belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
     t.fed[i]=(t.fed[i]or 0)+1
@@ -136,7 +152,7 @@ script.on_event(defines.events.on_tick,function()
    end
    for outputIndex,p in ipairs(b.researchProbe and {} or b.outputs or {})do
     local e=t.entities[p.entity];local endMeasurement=payload.warmup+payload.measure
-    local paused=(payload.recovery and game.tick>endMeasurement and game.tick<=endMeasurement+payload.recovery.pauseTicks) or game.tick>payload.warmup+payload.measure+54000
+    local paused=(payload.recovery and game.tick>endMeasurement and game.tick<=endMeasurement+payload.recovery.pauseTicks) or game.tick>payload.warmup+payload.measure+recoveryTicks
     local n=0
     if not paused and e.type~='transport-belt' and e.type~='underground-belt' then n=e.remove_item{name=p.item,count=1000000} end
     if payload.recovery and game.tick>endMeasurement+payload.recovery.pauseTicks+payload.recovery.settleTicks then t.recoveryOutput[p.item]=(t.recoveryOutput[p.item]or 0)+n end
@@ -155,10 +171,28 @@ script.on_event(defines.events.on_tick,function()
     local count=0;for _,signal in ipairs(t.entities[loop.reader].get_signals(defines.wire_connector_id.circuit_red)or {})do count=count+signal.count end
     local sample=t.loopSamples[loop.name]or {maxStock=0,capacity=loop.capacity};sample.maxStock=math.max(sample.maxStock,count);sample.lastSignals=t.entities[loop.reader].get_signals(defines.wire_connector_id.circuit_red);t.loopSamples[loop.name]=sample
     check(count<loop.capacity*.9,'loop overfilled '..loop.name)
+    -- Mean ring stock per signal over the steady measurement window.
+    if game.tick>payload.warmup and game.tick<=payload.warmup+payload.measure then
+     sample.measuredSeconds=(sample.measuredSeconds or 0)+1;sample.sumBySignal=sample.sumBySignal or {}
+     local phase=0
+     for _,signal in ipairs(sample.lastSignals or {})do sample.sumBySignal[signal.signal.name]=(sample.sumBySignal[signal.signal.name]or 0)+signal.count;if signal.signal.name=='signal-P' then phase=signal.count end end
+     -- Seconds seen in each clock phase: every phase of the cycle must come round.
+     sample.phaseSeconds=sample.phaseSeconds or {};sample.phaseSeconds[tostring(phase)]=(sample.phaseSeconds[tostring(phase)]or 0)+1
+    end
+    if game.tick==payload.warmup+payload.measure then
+     sample.meanStock={};for name,sum in pairs(sample.sumBySignal or {})do sample.meanStock[name]=math.floor(sum/sample.measuredSeconds*10+.5)/10 end
+     sample.sumBySignal=nil
+    end
    end
    for id,e in pairs(t.entities)do if crafting(e) or e.type=='inserter' then
     if crafting(e) then local active=e.get_recipe();if active then check(active.name==recipe(t,id),'wrong active recipe '..id..' '..active.name);t.actualRecipeChecks=t.actualRecipeChecks+1 end end
     t.samples[id]=t.samples[id]or {};local name=status(e);t.samples[id][name]=(t.samples[id][name]or 0)+1
+    -- Which ingredient a waiting machine lacks, sampled once a second for the whole run.
+    if crafting(e) and e.status==defines.entity_status.item_ingredient_shortage then
+     local held={};for _,stack in pairs(e.get_inventory(defines.inventory.crafter_input).get_contents())do held[stack.name]=(held[stack.name]or 0)+stack.count end
+     t.missing[id]=t.missing[id]or {}
+     for _,i in pairs(t.ingredients[recipe(t,id)]or {})do if (held[i.name]or 0)<i.amount then t.missing[id][i.name]=(t.missing[id][i.name]or 0)+1 end end
+    end
    end end
   end
   if not b.researchProbe and payload.recovery and game.tick==payload.warmup+payload.measure+payload.recovery.pauseTicks then
@@ -179,7 +213,7 @@ script.on_event(defines.events.on_tick,function()
     end
    end
   end
-  local demandStart=payload.warmup+payload.measure+54000
+  local demandStart=payload.warmup+payload.measure+recoveryTicks
   if game.tick>demandStart then
    local phase=math.floor((game.tick-demandStart-1)/18000)+1
    if phase<=4 then
@@ -208,14 +242,14 @@ script.on_event(defines.events.on_tick,function()
   end
  end
  if game.tick==payload.warmup+payload.measure then
-  local report={builds={},feedPolicy='Declared exterior belt lanes and declared fluid pipes only; collect products only from declared east passive-provider chests every second',researchPolicy='All recipes enabled; optional explicit five-pack research probe only, no science injection, fast inserter stack bonus zero; bulk unlock-equivalent capacity bonus +1 only'}
+  local report={builds={},supplyPerMinute=payload.supplyPerMinute,feedPolicy=(payload.supplyPerMinute and 'Probe: each declared exterior belt is offered exactly its stated rate' or 'Declared exterior belt lanes and declared fluid pipes only')..'; collect products only from declared east passive-provider chests every second',researchPolicy='All recipes enabled; optional explicit five-pack research probe only, no science injection, fast inserter stack bonus zero; bulk unlock-equivalent capacity bonus +1 only'}
   for index,t in ipairs(storage.tests)do
    local b=payload.builds[index];local r={id=t.id,outputsPerMinute={},consumptionPerMinute={},inputs={},outputPorts={},machines={},powered=t.powered,importedEntities=#b.entities,loopSamples=t.loopSamples,exactRecipeChecks=t.actualRecipeChecks,externalApproachesClear=true,stockGateChecks=t.stockGateChecks}
    check(t.force.inserter_stack_size_bonus==0 and t.force.bulk_inserter_capacity_bonus==1,'inserter capacity baseline drifted')
    r.inserterCapacityResearch={fast=t.force.inserter_stack_size_bonus,bulkUnlockBonus=t.force.bulk_inserter_capacity_bonus,
     technology='bulk-inserter unlock-equivalent baseline only; no later capacity upgrades',appliedBy='explicit force capacity properties'}
    r.bulkInserters={}
-   for id,e in pairs(t.entities)do if e.name=='bulk-inserter' then r.bulkInserters[#r.bulkInserters+1]={entity=id,observedMaxHand=t.bulkMaxHand[id]or 0} end end
+   for id,e in pairs(t.entities)do if e.name=='bulk-inserter' then r.bulkInserters[#r.bulkInserters+1]={entity=id,observedMaxHand=t.bulkMaxHand[id]or 0,statusSamples=t.samples[id]} end end
    if b.researchProbe then
     check(t.force.current_research and t.force.current_research.name==b.researchProbeTechnology,'probe research changed')
     local units=t.force.research_progress*t.force.current_research.research_unit_count-(t.researchBaseline or 0)
@@ -249,7 +283,7 @@ script.on_event(defines.events.on_tick,function()
    for i,p in ipairs(b.outputs or {})do r.outputPorts[#r.outputPorts+1]={item=p.item,entity=p.entity,collectedDuringMeasurement=t.portOutputs[i]or 0}end
    for id,e in pairs(t.entities)do if crafting(e)then
     local actualRecipe=e.get_recipe() and e.get_recipe().name or 'none'
-    r.machines[#r.machines+1]={entity=id,recipe=recipe(t,id),actualRecipe=actualRecipe,measuredCrafts=e.products_finished-(t.machineBaseline[id]or 0),status=status(e),statusSamples=t.samples[id],inventory=e.get_inventory(e.type=='furnace' and defines.inventory.furnace_source or defines.inventory.crafter_input).get_contents()}
+    r.machines[#r.machines+1]={entity=id,recipe=recipe(t,id),actualRecipe=actualRecipe,measuredCrafts=e.products_finished-(t.machineBaseline[id]or 0),status=status(e),statusSamples=t.samples[id],missingIngredientSamples=t.missing[id]or {},inventory=e.get_inventory(e.type=='furnace' and defines.inventory.furnace_source or defines.inventory.crafter_input).get_contents()}
    end end
    r.arms={}
    for id,e in pairs(t.entities)do if e.type=='inserter' and t.spec[id].tags and (t.spec[id].tags.role=='controlled-feed' or t.spec[id].tags.stock_item=='iron-stick' or t.spec[id].tags.stock_item=='rail') then
@@ -286,7 +320,7 @@ script.on_event(defines.events.on_tick,function()
   helpers.write_file('result.json',helpers.table_to_json(storage.report),false)
  end
 
- if game.tick==payload.warmup+payload.measure+54000+72000 then
+ if game.tick==payload.warmup+payload.measure+recoveryTicks+72000 then
   for i,t in ipairs(storage.tests)do storage.report.builds[i].stockReplenishment=t.stockReplenishment end
   helpers.write_file('result.json',helpers.table_to_json(storage.report),false)
  end
