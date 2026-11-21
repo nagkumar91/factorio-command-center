@@ -67,12 +67,18 @@ test('footprint and foundation follow from the entities; smaller than the replac
 });
 
 test('generator reproduces the committed folder byte for byte',async()=>{
- const work=path.resolve('.cache/flight-space-science-unit',String(process.pid));
+ const work=path.resolve('.cache/flight-space-science-unit',String(process.pid)),out=path.join(work,dir);
+ const generate=()=>promisify(execFile)(process.execPath,[path.resolve('scripts/flight-space-science/generate.mjs')],{cwd:work});
  await fs.rm(work,{recursive:true,force:true});
- await fs.mkdir(path.join(work,dir,'validation'),{recursive:true});
- await fs.copyFile(path.join(dir,'validation/native-report.json'),path.join(work,dir,'validation/native-report.json'));
- await promisify(execFile)(process.execPath,[path.resolve('scripts/flight-space-science/generate.mjs')],{cwd:work});
- for(const file of [manifest.file,'manifest.json','README.md'])assert.equal(await fs.readFile(path.join(work,dir,file),'utf8'),await fs.readFile(path.join(dir,file),'utf8'),file);
+ await fs.mkdir(path.join(out,'validation'),{recursive:true});
+ await fs.copyFile(path.join(dir,'validation/native-report.json'),path.join(out,'validation/native-report.json'));
+ // From nothing: the fresh string encodes exactly the committed blueprint. Its compressed bytes depend on the zlib build, so compare decoded content.
+ await generate();
+ assert.deepEqual(decodeBlueprint((await fs.readFile(path.join(out,manifest.file),'utf8')).trim()),decodeBlueprint(code));
+ // Beside the committed string (as in a checkout): every file is byte-identical, so the SHA-256 and the qualified status hold on any machine.
+ await fs.copyFile(path.join(dir,manifest.file),path.join(out,manifest.file));
+ await generate();
+ for(const file of [manifest.file,'manifest.json','README.md'])assert.equal(await fs.readFile(path.join(out,file),'utf8'),await fs.readFile(path.join(dir,file),'utf8'),file);
  assert.match(await fs.readFile(path.join(dir,'README.md'),'utf8'),/Passed for this exact string/);
  await fs.rm(work,{recursive:true,force:true});
 });

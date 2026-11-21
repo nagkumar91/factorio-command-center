@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {deflateSync} from 'node:zlib';
+import {deflateSync,inflateSync} from 'node:zlib';
 
 const root=path.resolve('blueprint-sources/flight-space-science');
 const entities=[];
@@ -45,7 +45,12 @@ const blueprint={
   tiles:[],
   version:562949955911680,
 };
-const code='0'+deflateSync(Buffer.from(JSON.stringify({blueprint}))).toString('base64');
+const json=JSON.stringify({blueprint});
+// zlib's compressed bytes differ between builds (the Linux CI runner and this Mac give different strings for the same JSON).
+// Keep the committed string when it decodes to exactly this blueprint, so its SHA-256 and native report stay valid everywhere.
+const committed=await fs.readFile(path.join(root,'orbital-space-science-cell.txt'),'utf8').then(s=>s.trim(),()=>null);
+const decodes=text=>{try{return inflateSync(Buffer.from(text.slice(1),'base64')).toString('utf8')===json;}catch{return false;}};
+const code=committed&&decodes(committed)?committed:'0'+deflateSync(Buffer.from(json)).toString('base64');
 await fs.mkdir(root,{recursive:true});
 await fs.writeFile(path.join(root,'orbital-space-science-cell.txt'),code+'\n');
 const sha256=createHash('sha256').update(code).digest('hex');
