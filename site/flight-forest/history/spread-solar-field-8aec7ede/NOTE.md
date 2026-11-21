@@ -1,0 +1,1 @@
+Replaced 2026-11-21: machinery and poles blocked 10 of 48 planting cells (38 trees) and the solar field was spaced out; the compact version blocks 2 cells (46 trees, more surplus wood) in 24x19 instead of 30x25 tiles.

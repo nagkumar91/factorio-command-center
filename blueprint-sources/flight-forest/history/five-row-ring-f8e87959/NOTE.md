@@ -1,0 +1,2 @@
+Replaced 2026-11-21: the ring was five rows high with three empty interior rows; the two-row ring keeps the same machines, inputs, caps and stocked counts in 71x10 instead of 71x13 tiles.
+Fill time, measured by the 2026-11-21 verifier in a 400-minute exploration run (not a protocol target, no fill time was ever claimed): every chest stocked at 37.00 min with this ring and 37.98 min with the two-row ring; 7 of 11 products fill sooner and 4 later (accumulators last). Stocked counts are identical.
