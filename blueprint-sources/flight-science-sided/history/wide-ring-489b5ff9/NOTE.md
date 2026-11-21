@@ -1,0 +1,1 @@
+Replaced 2026-11-21: 32 x 5 ring (43 x 14, 17 machines) with three empty columns and a spare row; the new 40 x 13 version holds the same 17 assemblers and measures 63.00/min against this one's 62.93/min. The native-report.json here is the root report that qualified this string (exact SHA-256 489b5ff9...).

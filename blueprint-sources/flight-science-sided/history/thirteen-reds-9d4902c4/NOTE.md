@@ -1,0 +1,1 @@
+Replaced 2026-11-21: 13 red-circuit assemblers on a 44 x 4 ring (55 x 17, 21 machines); the new 49 x 16 version with 12 red-circuit assemblers measures 90.17/min against this one's 89.83/min. The native-report.json here is the root report that qualified this string (exact SHA-256 9d4902c4...).

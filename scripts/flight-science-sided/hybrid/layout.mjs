@@ -9,8 +9,13 @@ const belts = new Set(['fast-transport-belt', 'fast-underground-belt']);
 // Geometry and wires are copied verbatim, apart from translation and identity.
 // Every upstream component is frozen beside the final blueprint with its hash.
 export class Layout {
-  constructor(raw) {
+  // `originalRouter: true` restores the router exactly as it was when the hybrid
+  // six-pack baseline was natively reviewed (before the two later safety rules
+  // below were added for newer designs). The hybrid generator needs it to
+  // reproduce its frozen baseline; every other caller keeps the current router.
+  constructor(raw, {originalRouter = false} = {}) {
     this.raw = raw;
+    this.originalRouter = originalRouter;
     this.entities = [];
     this.wires = [];
     this.ports = [];
@@ -99,10 +104,11 @@ export class Layout {
       if (heap.length) { let i = 0; while (i * 2 + 1 < heap.length) { let c = i * 2 + 1; if (c + 1 < heap.length && heap[c + 1].f < heap[c].f) c++; if (heap[c].f >= last.f) break; heap[i] = heap[c]; i = c; } heap[i] = last; }
       return out;
     }
+    const originalRouter = this.originalRouter;
     const tunnelSafe = (x, y, ex, ey, d) => {
       const [vx, vy] = dirs[d / 4];
       for (const e of this.entities) {
-        if (e.name !== 'fast-underground-belt' || (e.direction ?? 0) % 8 !== d % 8) continue;
+        if (e.name !== 'fast-underground-belt' || (originalRouter ? e.direction !== d : (e.direction ?? 0) % 8 !== d % 8)) continue;
         const px = Math.floor(e.position.x), py = Math.floor(e.position.y);
         if (vx ? py !== y : px !== x) continue;
         // Opposed undergrounds can reorient one another during native revival.
@@ -133,7 +139,7 @@ export class Layout {
           if (!free(x, y)) return;
           // A saved belt occupies one surface tile. Revisiting a coordinate with
           // another heading would overwrite that earlier segment in the plan.
-          for (let ancestor = node; ancestor; ancestor = prev.get(ancestor.key)?.node)
+          if (!originalRouter) for (let ancestor = node; ancestor; ancestor = prev.get(ancestor.key)?.node)
             if (ancestor.x === x && ancestor.y === y) return;
           if (x === tx && y === ty && (d === (endDirection + 8) % 16 || tunnel || options.endDirection !== undefined && d !== options.endDirection)) return;
           if (tunnel && (node.d !== d || !tunnelSafe(node.x, node.y, x, y, d) || node.key === initial.key && startId || node.x === tx && node.y === ty)) return;

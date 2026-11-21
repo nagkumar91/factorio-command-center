@@ -10,7 +10,7 @@ const root=path.resolve(new URL('../../..',import.meta.url).pathname);
 const out=path.join(root,'blueprint-sources/flight-science-sided/hybrid');
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const bytes=await fs.readFile(path.join(root,'.cache/flight-21/script-output/data-raw-dump.json'));
-const raw=JSON.parse(bytes),layout=new Layout(raw);
+const raw=JSON.parse(bytes),layout=new Layout(raw,{originalRouter:true});
 await fs.mkdir(path.join(out,'components'),{recursive:true});
 // The reviewed hybrid always uses its checked-in component snapshots.
 const frozen=true;
