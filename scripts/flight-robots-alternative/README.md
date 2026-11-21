@@ -8,7 +8,7 @@ Owned sidecar only. Adapted from `scripts/flight-science/compact.mjs`; no parent
 - Single exterior inlet each for iron, copper, steel, plastic; raw iron/copper feeders continue internally into the second loop. One acid and one lubricant pipe.
 - AM2, fast inserters, red belts, no modules. One shared chest capped at 200 construction robots, 200 logistic robots, 20 roboports.
 - Continuous output with stock controls; a fast splitter distributes frames to the two robot assemblers through rear inserters. Front robot arms accept circuits only. Roboport red input preserves a 64-circuit reserve.
-- Current footprint: 79×34, 2,686 tiles, versus parent 107×18, 1,926 tiles. Production evidence determines suitability; size alone favors the parent.
+- Footprint: 79×34, 2,686 tiles, versus the published parent's 106×18, 1,908 tiles (the parent was 107×18, 1,926 tiles when this sidecar was tested). Production evidence determines suitability; size alone favors the parent.
 
 Run from the project root:
 
@@ -29,10 +29,10 @@ Use the exact native `report.json` result, including recovery where present, bef
 
 Final encoded SHA-256: `2889f5e13e45822bacfeda1fbd4ce3379c7572673cfce07f5e91d9721762a2e8`.
 
-Full native report: `.cache/flight-robots-alternative/native/1794461998914/report.json`.
+Full native report (run `1794461998914`): committed as `blueprint-sources/flight-robots/history/two-loop-alternative/native-report.json`. New local runs write under `.cache/flight-robots-alternative/native/`.
 
-After 15 minutes warmup, 30 minutes measurement produced 11.2 construction robots, 11.2 logistic robots, and 1.0667 roboports per minute. All machines productive, all four single exterior input routes verified, all fluid consumers connected, and shared chest caps verified during 45 minutes blocked output. See the exact report and `.cache/flight-robots-alternative/RESULT.json` for post-blockage recovery rates.
+After 15 minutes warmup, 30 minutes measurement produced 11.2 construction robots, 11.2 logistic robots, and 1.0667 roboports per minute. All machines productive, all four single exterior input routes verified, all fluid consumers connected, and shared chest caps verified during 45 minutes blocked output. Post-blockage recovery in the same report (3 minutes, after 45 minutes blocked and 2 minutes settling): 12.67 construction robots, 13 logistic robots and 1.33 roboports per minute.
 
-The 79×34 sidecar occupies 2,686 tiles, 760 more than the 107×18 parent (39.5% larger). Keep this as the verified fallback; choose the smaller parent only after its exact blueprint hash passes sustained production and recovery. No parent/public files were changed and no Git operations were performed.
+The 79×34 sidecar occupies 2,686 tiles, 778 more than the published 106×18 parent (40.8% larger; 760 more than the 107×18 parent it was first compared with). The parent's exact blueprint has since passed sustained production and recovery, so the parent is the published design and this sidecar stays an unpublished, verified fallback. Its exact string, manifest and report are kept under `blueprint-sources/flight-robots/history/two-loop-alternative/`.
 
 Final limiting fixes: opposite-lane circuit iron; direct cable insertion with iron-only green belt arms; plastic stock 128; dedicated red-only roboport input with reserve 64; independent steel/gear roboport input; mechanical frame splitter with rear robot inputs; stock-controlled continuous final output without production clocks.
