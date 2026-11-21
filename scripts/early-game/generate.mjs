@@ -23,6 +23,8 @@
 // It needs neither the game nor the prototype dump. A re-run leaves the folder byte-identical: the manifest's
 // measured fields come from the native report only when the report's SHA-256 equals the generated string's.
 import fs from 'node:fs/promises';
+import {readFileSync} from 'node:fs';
+import {inflateSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {decodeBlueprint, encodeBlueprint} from '../blueprints.mjs';
 import {derivePorts, tilesOf, footprint} from './ports.mjs';
@@ -223,7 +225,17 @@ export function rebuild(oldCode) {
   const description = bp.description.replace('Power: connect one external grid at P; the internal big-pole trunk links all cells.', 'Power: connect one external grid at the big pole beside P; the pole wires in this string link all cells.');
   if (description === bp.description) throw Error('Power sentence not found in the old description');
   const blueprint = {...bp, description, entities, wires};
-  return {blueprint, code: encodeBlueprint({blueprint})};
+  return {blueprint, code: encodeKeeping({blueprint}, `${source}/${file}`)};
+}
+
+// zlib's compressed bytes differ between builds (the Linux deploy runner on Node 24 and this Mac give different strings for the
+// same JSON). Keep the committed string when it decodes to exactly this blueprint, so its SHA-256 and native report stay valid
+// on any machine (the same pattern as scripts/recovered-workshops/generate.mjs).
+function encodeKeeping(object, committedFile) {
+  let committed;
+  try { committed = readFileSync(committedFile, 'utf8').trim(); } catch { committed = undefined; }
+  try { if (committed && inflateSync(Buffer.from(committed.slice(1), 'base64')).toString('utf8') === JSON.stringify(object)) return committed; } catch {}
+  return encodeBlueprint(object);
 }
 
 async function readJson(p) { try { return JSON.parse(await fs.readFile(p, 'utf8')); } catch { return null; } }

@@ -11,7 +11,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {decodeBlueprint} from '../scripts/blueprints.mjs';
 import {derivePorts, footprint, tilesOf} from '../scripts/early-game/ports.mjs';
-import {floors, wireReach, supplyDistance, tunnelReach, poleWires, unsupplied, crossings, history, layout} from '../scripts/early-game/generate.mjs';
+import {floors, wireReach, supplyDistance, tunnelReach, poleWires, unsupplied, crossings, history, layout, rebuild} from '../scripts/early-game/generate.mjs';
 import {protocol} from '../scripts/early-game/protocol.mjs';
 
 const root = new URL('../', import.meta.url), rootPath = fileURLToPath(root);
@@ -232,6 +232,9 @@ test('generator re-run reproduces the files byte for byte, without the game or t
   await promisify(execFile)(process.execPath, ['scripts/early-game/generate.mjs', '--out', out], {cwd: rootPath});
   for (const f of ['early-flight-science-mall.txt', 'early-flight-science-mall.json', 'early-flight-science-mall.md'])
     assert.equal(await read(`${out}/${f}`), await read(dir + f), f);
+  // The generator keeps the committed string only when it decodes to exactly the rebuilt blueprint; prove that directly.
+  const {blueprint} = rebuild((await read(`${dir}${history}/early-flight-science-mall.txt`)).trim());
+  assert.deepEqual(decodeBlueprint(await read(dir + 'early-flight-science-mall.txt')), {blueprint}, 'committed string decodes to the generated blueprint');
   await fs.rm(new URL(out, root), {recursive: true, force: true});
 });
 
