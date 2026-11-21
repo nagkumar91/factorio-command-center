@@ -19,6 +19,8 @@
 // It needs neither the game nor the prototype dump. A re-run leaves the folder byte-identical: the manifest's
 // measured fields come from native-report.json only when the report's SHA-256 equals the generated string's.
 import fs from 'node:fs/promises';
+import {readFileSync} from 'node:fs';
+import {inflateSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {decodeBlueprint, encodeBlueprint} from '../blueprints.mjs';
 import {derivePorts, tilesOf, footprint} from './ports.mjs';
@@ -27,6 +29,16 @@ const sha = s => createHash('sha256').update(s).digest('hex');
 const args = process.argv.slice(2);
 const source = 'blueprint-sources/early-flight-seven';
 const out = args.includes('--out') ? args[args.indexOf('--out') + 1] : source;
+
+// zlib's compressed bytes differ between builds (the Linux deploy runner on Node 24 gave a different string for 01 than
+// this Mac on Node 20 and 26, for the same JSON). Keep the committed string when it decodes to exactly this object, so its
+// SHA-256 and native report stay valid on any machine (the same pattern as scripts/early-game/generate.mjs).
+function encodeKeeping(object, committedFile) {
+  let committed;
+  try { committed = readFileSync(committedFile, 'utf8').trim(); } catch { committed = undefined; }
+  try { if (committed && inflateSync(Buffer.from(committed.slice(1), 'base64')).toString('utf8') === JSON.stringify(object)) return committed; } catch {}
+  return encodeBlueprint(object);
+}
 
 // Copper wire reach (max_wire_distance in the 2.1.24 prototypes; the unit test checks these against the dump when it
 // is present). Two poles can be wired when their centres are at most the smaller reach apart.
@@ -147,7 +159,7 @@ export async function rebuild(design) {
   if (description === bp.description) throw Error('Evidence sentence not found in ' + design.file);
   const {wires, ...head} = bp;
   const blueprint = {...head, description, entities, wires: poleWires(entities)};
-  return {blueprint: {blueprint}, code: encodeBlueprint({blueprint}), oldCode};
+  return {blueprint: {blueprint}, code: encodeKeeping({blueprint}, `${source}/${design.file}`), oldCode};
 }
 
 async function readReport() {
@@ -186,7 +198,7 @@ async function main() {
     });
   }
   const book = {blueprint_book: {...oldBook, blueprints: books}};
-  await fs.writeFile(`${out}/seven-workshops-book.txt`, encodeBlueprint(book) + '\n');
+  await fs.writeFile(`${out}/seven-workshops-book.txt`, encodeKeeping(book, `${source}/seven-workshops-book.txt`) + '\n');
   await fs.writeFile(`${out}/manifest.json`, JSON.stringify(manifest, null, 2) + '\n');
   await fs.writeFile(`${out}/README.txt`, readme(manifest));
   await fs.writeFile(`${out}/index.html`, page(manifest));
