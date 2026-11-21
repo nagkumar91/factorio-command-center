@@ -1,0 +1,1 @@
+Replaced on 2026-11-21 by the block that admits iron plates from inside the ring and gives the west rail assembler a third pickup arm: in the same 30 + 30 minute protocol the revised block made 32.23 and 33.0 purple/min against 31.2 and 30.2 here.

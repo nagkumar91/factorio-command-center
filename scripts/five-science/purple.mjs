@@ -40,7 +40,17 @@ export function makePurple(raw) {
   };
   const iron = add('fast-transport-belt', -2.5, 8.5, {direction: 4});
   for (const x of [-1.5, -.5, .5]) add('fast-transport-belt', x, 8.5, {direction: 4});
-  const arm = add('fast-inserter', .5, 7.5, {
+  // Iron plates are admitted from inside the ring, onto the top belt's
+  // north lane. Every other admission (stone, bricks, both circuits) drops on
+  // the opposite lane of the west column, where the gaps ran out: with iron on
+  // that lane too the stick assembler starved for about an eighth of the time
+  // and the rail pair could not keep five science assemblers supplied. The
+  // feed tunnels under the bottom belt and ends below its admission arm.
+  add('fast-transport-belt', 1.5, 8.5, {direction: 0});
+  add('fast-underground-belt', 1.5, 7.5, {direction: 0, type: 'input'});
+  add('fast-underground-belt', 1.5, 5.5, {direction: 0, type: 'output'});
+  for (const y of [4.5, 3.5, 2.5]) add('fast-transport-belt', 1.5, y, {direction: 0});
+  const arm = add('fast-inserter', 1.5, 1.5, {
     direction: 8, use_filters: true,
     filters: [{index: 1, name: 'iron-plate', quality: 'normal', comparator: '='}],
     control_behavior: {circuit_enabled: true, circuit_condition: {
@@ -162,6 +172,14 @@ export function makePurple(raw) {
   c.wires = c.wires.filter(w => !removed.has(w[0]) && !removed.has(w[2]));
   c.loopControl[0].controlled = c.loopControl[0].controlled.filter(id => !removed.has(id));
   const railFilter = [{index: 1, name: 'rail', quality: 'normal', comparator: '='}];
+  // The west rail assembler is second in line on the bottom belt and was
+  // short of stone for a quarter of the time. A third pickup arm uses the tile
+  // its removed loop output arm left free.
+  const westRail = rails.reduce((a, b) => a.position.x < b.position.x ? a : b);
+  add('bulk-inserter', westRail.position.x + 1, 7.5,
+    {direction: 0, override_stack_size: 4, use_filters: true, filters: [
+      {index: 1, name: 'stone', quality: 'normal', comparator: '='},
+      {index: 2, name: 'iron-stick', quality: 'normal', comparator: '='}]});
   for (const m of rails) add('bulk-inserter', m.position.x + 1, 11.5,
     {direction: 0, override_stack_size: 4, use_filters: true, filters: structuredClone(railFilter)});
   for (let x = 10.5; x <= 21.5; x++) add('fast-transport-belt', x, 12.5,

@@ -23,6 +23,12 @@ snapshot made by the existing RGBY snapshot helper.
   This belt buffers and backs up naturally; rails do not circulate and have
   no stock gate. Its northbound tunnels are separate from the southbound
   loop-balancer tunnel on x=25.5.
+- Iron plates are admitted from inside the ring: the iron port's belt turns
+  north at x=1.5, tunnels under the bottom loop belt and ends below an
+  admission arm that drops on the top belt's north lane. Stone, bricks and
+  both circuits keep the west column's other lane to themselves.
+- The west rail assembler has a third pickup arm (stone and iron sticks) on
+  the bottom loop belt, on the tile its removed loop output arm left free.
 - Two stone admissions share one west port. Steel does not circulate.
   The mixed loop has 536 item slots and stock limits summing to 290:
   stone 64, bricks 64, advanced circuits 40, green circuits 24, iron plates
@@ -35,8 +41,8 @@ Age**, using the exact installed raw dump requested for this task. This is
 not a claim of native qualification on the public catalogue's 2.0.77.
 
 After 30 minutes of warmup, the 30-minute measurement delivered
-**31.2 production science/min**. The shared five-minute blocked,
-five-minute settling, five-minute recovery test delivered **30.2/min** in its
+**32.23 production science/min**. The shared five-minute blocked,
+five-minute settling, five-minute recovery test delivered **33.0/min** in its
 recovery measurement window. Both rates strictly exceed 30/min, independently
 of the shared validator's 0.5/min tolerance. The harness filled only the final
 science chest for the blocked test. No machine or intermediate inventory was
@@ -45,7 +51,7 @@ accepted items and had productive routes. Power, exact recipes and exterior
 approaches passed. The blueprint SHA-256 is:
 
 ```
-06605236725a268452319da6a0a314864d4b7ddd4fc8df54e81c8db578d354c6
+8da75f7d4b4f88bd59961ef0b8dfb1071cbee3c520c341c2f6b2f3a53bc8db20
 ```
 
 `provenance.json` binds the report, raw prototypes, generator and reusable
@@ -53,6 +59,13 @@ helpers. The blueprint hash covers the trimmed encoded blueprint string,
 matching the shared validator. Private runs, saves, configs, mods and logs
 remain under ignored `.cache/five-science/purple/` only. Earlier cached runs
 are superseded; only the source-folder final report qualifies this layout.
+
+The block was revised on 2026-11-21 (iron admitted inside the ring, third
+west rail pickup arm). The first frozen version (SHA-256 06605236..., 31.2 and
+30.2/min) and its report are kept in `history/iron-on-outer-lane-06605236/`.
+In the same 30 + 30 minute run the old block's west rail assembler was short
+of an ingredient for 984 of 4,501 samples and the stick assembler for 527;
+the revised block's are 231 and 76.
 
 ## Reproduce
 
@@ -69,7 +82,8 @@ blueprint helper import. It rejects express/turbo entities, installed modules,
 and any steady or recovery rate below a strict 30/min. Add `--generate-only`
 to regenerate the powered snapshot and manifest without running Factorio.
 
-Verification: `npm test` (271 passed, 7 skipped), `npm run build` (passed in an
-isolated temporary checkout to avoid modifying other agents' paths), plus
-repeatable generation, exact blueprint hash, red belt restrictions, wire
-identities and no installed module checks. No Git operations were performed.
+Verification of the revised block (2026-11-21): `reproduce.mjs --generate-only`
+regenerates exactly the SHA-256 above; `npm test` 428 tests, 0 failed, with and
+without the prototype dump (after re-indexing the site); the family test
+`tests/five-science-compact.test.mjs` checks this report against the snapshot.
+The first version's verification notes are in its history folder.

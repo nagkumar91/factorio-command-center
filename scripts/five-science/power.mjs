@@ -2,8 +2,11 @@
  * Requires a pole-free layout with place(entity), entities, wires and next.
  * place must register integer-centred 2x2 substations in the routing grid.
  * Only new poles/copper wires and the single power port are written.
+ * options.within, a rectangle {left,top,right,bottom} in tile edges, limits the
+ * candidates to poles that lie wholly inside it, so the greedy choice cannot
+ * enlarge a footprint. Without options the result is exactly as before.
  */
-export function powerFiveLayout(layout, ports, raw) {
+export function powerFiveLayout(layout, ports, raw, options = {}) {
   const prototypes = new Map();
   for (const group of Object.values(raw)) for (const p of Object.values(group || {}))
     if (p && typeof p === 'object' && p.name && p.selection_box) prototypes.set(p.name, p);
@@ -44,7 +47,11 @@ export function powerFiveLayout(layout, ports, raw) {
     const v = {west:[-1,0],east:[1,0],north:[0,-1],south:[0,1]}[side];
     if (v) for (let n = 0; n <= 3; n++) reserved.add(key(Math.floor(x)+v[0]*n, Math.floor(y)+v[1]*n));
   }
-  const free = e => cells(e).every(k => !occupied.has(k) && !reserved.has(k));
+  const inside = e => {
+    const w = options.within; if (!w) return true;
+    const b = box(e); return b.left >= w.left - 1e-6 && b.right <= w.right + 1e-6 && b.top >= w.top - 1e-6 && b.bottom <= w.bottom + 1e-6;
+  };
+  const free = e => inside(e) && cells(e).every(k => !occupied.has(k) && !reserved.has(k));
   const consumers = layout.entities.filter(e => proto(e.name).energy_source?.type === 'electric');
   const covers = (p, e) => {
     const b = proto(e.name).collision_box;
