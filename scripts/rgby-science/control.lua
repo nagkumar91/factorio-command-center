@@ -85,6 +85,31 @@ script.on_event(defines.events.on_tick,function()
    t.bulkMaxHand[id]=math.max(t.bulkMaxHand[id]or 0,e.held_stack.count)
   end end
   -- The only ingredient writes are to the two lanes of the declared input belt.
+  if payload.feedPerMinute then
+   -- Stated-supply probe only (never the qualification protocol): every entrance
+   -- is metered at a stated rate per minute instead of being kept full. Entrances
+   -- of one item share its rate lane by lane; what a full lane refuses is not kept.
+   t.credit=t.credit or {};t.turn=t.turn or {}
+   for i,p in ipairs(b.fluids or {})do local n=t.entities[p.entity].insert_fluid{name=p.item,amount=(payload.feedPerMinute[p.item]or 0)/3600};if game.tick>payload.warmup and game.tick<=payload.warmup+payload.measure then t.fluidFed[i]=(t.fluidFed[i]or 0)+n end end
+   local ports={};for i,p in ipairs(b.inputs)do ports[p.item]=ports[p.item]or {};table.insert(ports[p.item],i)end
+   for item,list in pairs(ports)do
+    t.credit[item]=math.min((t.credit[item]or 0)+(payload.feedPerMinute[item]or 0)/3600,4)
+    local slots=#list*2
+    while t.credit[item]>=1 do
+     local placed=false
+     for _=1,slots do
+      t.turn[item]=(t.turn[item]or 0)%slots+1
+      local i=list[math.ceil(t.turn[item]/2)];local lane=(t.turn[item]-1)%2+1
+      if t.entities[b.inputs[i].entity].get_transport_line(lane).insert_at_back{name=item,count=1} then
+       t.fed[i]=(t.fed[i]or 0)+1;if game.tick>payload.warmup then t.measuredFed[i]=(t.measuredFed[i]or 0)+1 end
+       placed=true;break
+      end
+     end
+     if not placed then break end
+     t.credit[item]=t.credit[item]-1
+    end
+   end
+  else
   for i,p in ipairs(b.fluids or {})do local n=t.entities[p.entity].insert_fluid{name=p.item,amount=1000};if game.tick>payload.warmup and game.tick<=payload.warmup+payload.measure then t.fluidFed[i]=(t.fluidFed[i]or 0)+n end end
   if game.tick%4==0 then for i,p in ipairs(b.inputs)do
    local belt=t.entities[p.entity]
@@ -93,6 +118,7 @@ script.on_event(defines.events.on_tick,function()
     if game.tick>payload.warmup then t.measuredFed[i]=(t.measuredFed[i]or 0)+1 end
    end end
   end end
+  end
   -- Output belt fixtures must drain continuously; a one-second sampler would
   -- artificially cap a terminal belt at its short end-segment capacity.
   if not b.researchProbe and game.tick%4==0 then for outputIndex,p in ipairs(b.outputs or {})do

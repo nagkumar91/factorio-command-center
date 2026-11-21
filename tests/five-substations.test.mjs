@@ -95,7 +95,8 @@ test('rejects old power rather than deleting it',()=>{
 const nativePath=process.env.FACTOIO_RAW || process.env.FACTORIO_RAW;
 test('frozen four-pack geometry: fewer poles than its original 80, same consumers and wires',{skip:!nativePath},async t=>{
  const native=JSON.parse(await fs.readFile(nativePath,'utf8'));
- const root=new URL('../blueprint-sources/rgby-science/',import.meta.url);
+ // Five-science is built on the four-pack factory as qualified on 16 November 2026, pinned in rgby-science history.
+ const root=new URL('../blueprint-sources/rgby-science/history/routed-before-compaction-b8568d00/',import.meta.url);
  const manifest=JSON.parse(await fs.readFile(new URL('manifest.json',root),'utf8')).find(m=>m.id==='rgby-science-30');
  const code=(await fs.readFile(new URL(manifest.file,root),'utf8')).trim();
  assert.equal(createHash('sha256').update(code).digest('hex'),manifest.blueprintSha256);

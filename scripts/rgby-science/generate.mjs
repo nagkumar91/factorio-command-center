@@ -1,48 +1,16 @@
-import fs from'node:fs/promises';import{writeFileSync}from'node:fs';import assert from'node:assert/strict';import{createHash}from'node:crypto';import{encodeBlueprint}from'../blueprints.mjs';import{powerStarterLayout,starterBounds}from'../science-factory/local-ports/compact-shared-layout.mjs';import{makeRedGreen,makeBlue,makeAdvanced,makeUtility}from'./components.mjs';import{makeGreens}from'./greens.mjs';import{makeFrames}from'./frames.mjs';import{makeLDS}from'./lds.mjs';import{makeProcessors}from'./processors.mjs';import{calculateRequirements}from'./requirements.mjs';import{FactoryLayout}from'./layout.mjs';import{labelFluids,routeFluid}from'./fluids.mjs';import{optimizeUnderground}from'./underground.mjs';
-const bytes=await fs.readFile(process.env.FACTORIO_RAW||'.cache/rgby-science/data-raw-dump.json'),raw=JSON.parse(bytes),sha=v=>createHash('sha256').update(v).digest('hex');raw.container={...raw.container,...raw['logistic-container']};const root='blueprint-sources/rgby-science';await fs.mkdir(root,{recursive:true});const requirement=calculateRequirements(raw);
-const l=new FactoryLayout(raw),components=[];
-for(const[c,x,y]of[[await makeGreens(raw,'greens-a'),0,0],[await makeGreens(raw,'greens-b'),0,17],[makeAdvanced(raw),35,0],[{id:'processors',...makeProcessors(raw)},35,18],[{id:'frames',...makeFrames(raw)},40,36],[{id:'lds',...makeLDS(raw)},0,36],[makeBlue(raw),70,2],[makeUtility(raw),62,18],[makeRedGreen(raw),78,36]])components.push(l.importComponent(c,x,y));
-const allPorts=[...l.ports],inputs=allPorts.filter(p=>p.kind==='input'),wet=allPorts.filter(p=>p.kind==='fluid'),outputs=allPorts.filter(p=>p.kind==='output'),external=new Set(['iron-plate','copper-plate','steel-plate','plastic-bar','sulfur']);
-const outputSources=new Map();for(const p of outputs){const e=l.outputBelt(p),copy={...p,entity:e.entity_number,x:e.position.x,y:e.position.y,position:e.position};if(!outputSources.has(p.item))outputSources.set(p.item,[]);outputSources.get(p.item).push(copy);}
-const adv=outputSources.get('advanced-circuit')[0],advTargets=inputs.filter(p=>p.item==='advanced-circuit'),ax=Math.floor(adv.x)+1,ay=Math.floor(adv.y);l.add('fast-splitter',ax,ay,{position:{x:ax+.5,y:ay+1},direction:4,tags:{rgby_material:'advanced-circuit'}});
-const advBranches=advTargets.map((p,i)=>{const e=l.belt(ax+1,ay+i,4);return {component:'advanced split',entity:e.entity_number,x:e.position.x,y:e.position.y,item:'advanced-circuit'};});
-const sourcePorts=[...outputSources.values()].flat().concat(advBranches);const reserved=(p,start)=>{const s=new Set();for(const q of inputs.filter(q=>q!==p))for(let k=1;k<=2;k++)s.add((Math.floor(q.x)-k)+','+Math.floor(q.y));for(const q of sourcePorts.filter(q=>q.entity!==start?.entity))for(let k=1;k<=2;k++)s.add((Math.floor(q.x)+k)+','+Math.floor(q.y));return s;};
-const routeOptions={minX:-27,maxX:113,minY:-15,maxY:62,startDirection:4,endDirection:4};
-const connect=(s,p)=>{console.log('route',s.component||s.item,Math.floor(s.x),Math.floor(s.y),'→',p.component,Math.floor(p.x),Math.floor(p.y));try{return l.route(s,p,{...routeOptions,blocked:reserved(p,s)});}catch(e){writeFileSync("/tmp/rgby-route-failure.json",JSON.stringify({entities:l.entities,start:s,target:p,blocked:[...reserved(p,s)]}));throw e;}};
-function allocateTaps(ports,spineX){const used=[];return [...ports].sort((a,b)=>a.y-b.y).map(p=>{const want=Math.floor(p.y);let row;for(let d=0;d<14&&row===undefined;d++)for(const y of d?[want+d,want-d]:[want])if(y>=-5&&used.every(v=>Math.abs(v-y)>=2)&&(!Number.isFinite(spineX)||!inputs.some(q=>{const near=spineX+1>=Math.floor(q.x)-3&&spineX+1<Math.floor(q.x);return near&&(Math.floor(q.y)===y-1||q!==p&&Math.floor(q.y)===y);}))){row=y;break;}assert(row!==undefined,'tap rows '+p.item);used.push(row);return{p,row};});}
-function spine(item,x,taps,top){const max=Math.max(...taps.map(t=>t.row)),split=new Set(taps.map(t=>t.row-1));for(let y=top;y<=max;y++){if(split.has(y))l.add('fast-splitter',x,y,{position:{x:x+1,y:y+.5},direction:8,tags:{rgby_material:item}});else l.belt(x,y,8);}for(const t of taps){const e=l.belt(x+1,t.row,4);t.source={item,entity:e.entity_number,x:e.position.x,y:e.position.y,component:'manifold '+item};}return taps;}
-// Two copper belts provide headroom over the 1,795/min nominal copper demand.
-const channels=[{item:'iron-plate',ports:inputs.filter(p=>p.item==='iron-plate')},{item:'copper-plate',ports:inputs.filter(p=>p.item==='copper-plate'&&p.component.startsWith('greens'))},{item:'copper-plate',ports:inputs.filter(p=>p.item==='copper-plate'&&!p.component.startsWith('greens'))},{item:'steel-plate',ports:inputs.filter(p=>p.item==='steel-plate')},{item:'plastic-bar',ports:inputs.filter(p=>p.item==='plastic-bar')},{item:'sulfur',ports:inputs.filter(p=>p.item==='sulfur')}];
-const globalPorts=[],left=-25;
-for(const[i,c]of channels.entries()){
- c.x=-4-i*3;c.header=-12+i;c.taps=spine(c.item,c.x,allocateTaps(c.ports,c.x),c.header+1);
- const first=l.belt(left,c.header,4);l.add('fast-underground-belt',left+1,c.header,{direction:4,type:'input'});l.add('fast-underground-belt',left+5,c.header,{direction:4,type:'output'});for(let x=left+6;x<=c.x;x++)l.belt(x,c.header,x===c.x?8:4);
- const sign=l.add('display-panel',left+3,c.header,{icon:{type:'item',name:c.item},text:`IN ${c.item}${c.item==='copper-plate'?' · copper belt '+(i===1?1:2):''}\nSupply both lanes. Recipe demand is listed on the workshop page.`,always_show:true});globalPorts.push({kind:'input',label:c.item,item:c.item,items:[c.item],entity:first.entity_number,x:first.position.x,y:first.position.y,position:first.position,direction:4,externalSide:'west',displayEntity:sign.entity_number});
+// Writes the three four-pack imports and their manifest. A build keeps its
+// native-qualified status only when the saved native report passed for the
+// exact SHA-256 generated here. RGBY_OUT and RGBY_LAYOUT are for trials only.
+import fs from 'node:fs/promises';
+import {buildAll, LAYOUT} from './factory.mjs';
+const bytes = await fs.readFile(process.env.FACTORIO_RAW || '.cache/rgby-science/data-raw-dump.json'), raw = JSON.parse(bytes);
+const root = process.env.RGBY_OUT || 'blueprint-sources/rgby-science', layout = {...LAYOUT, ...JSON.parse(process.env.RGBY_LAYOUT || '{}')};
+await fs.mkdir(root, {recursive: true});
+const report = await fs.readFile(root + '/native-report.json', 'utf8').then(JSON.parse).catch(() => null);
+const builds = await buildAll(raw, bytes, {layout});
+for (const {manifest, code} of builds) {
+  if (report?.builds?.some(b => b.id === manifest.id && b.blueprintSha256 === manifest.blueprintSha256 && b.passed === true)) manifest.status = 'native-qualified';
+  await fs.writeFile(root + '/' + manifest.file, code + '\n');
+  console.log(manifest.id, manifest.blueprintSha256, manifest.footprint.width + ' x ' + manifest.footprint.height, manifest.status);
 }
-// Circuit sources merge on a short up/down manifold between the left and middle columns.
-const greenSources=outputSources.get('electronic-circuit'),greenTargets=inputs.filter(p=>p.item==='electronic-circuit'),greenTaps=allocateTaps(greenTargets,32);spine('electronic-circuit',32,greenTaps,-3);
-const maxGreen=Math.max(...greenSources.map(p=>Math.floor(p.y)));for(let y=maxGreen;y>=-2;y--)l.belt(29,y,0);for(let x=29;x<=31;x++)l.belt(x,-3,4);
-const products=['automation-science-pack','logistic-science-pack','chemical-science-pack','utility-science-pack'];
-const exportTargets=[];for(const[i,item]of products.entries()){
- const row=41+i*2,end=l.belt(104,row,4),p={component:'science export '+item,x:end.position.x,y:end.position.y};exportTargets.push({item,p});l.add('fast-inserter',105,row,{direction:12,override_stack_size:1,use_filters:true,filters:[{index:1,name:item,quality:'normal',comparator:'='}]});const chest=l.add('passive-provider-chest',106,row,{bar:1});globalPorts.push({kind:'output',item,items:[item],entity:chest.entity_number,x:chest.position.x,y:chest.position.y,position:chest.position,externalSide:'east'});
-}
-
-sourcePorts.push(...channels.flatMap(c=>c.taps.map(t=>t.source)));labelFluids(l,wet);
-const fluidSources=['sulfuric-acid','lubricant'].map((item,i)=>{const y=-4+i*2,e=l.add('pipe',left,y,{tags:{rgby_fluid:item}});l.add('display-panel',left+1,y+1,{icon:{type:'fluid',name:item},text:`IN ${item}`,always_show:true});return{item,e};});
-for(const{item,e}of fluidSources){for(const p of wet.filter(p=>p.item===item))routeFluid(l,item,e.position,p,{...routeOptions,blocked:reserved(null,null)});globalPorts.push({kind:'fluid',item,items:[item],entity:e.entity_number,x:e.position.x,y:e.position.y,position:e.position,externalSide:'west',perMinute:requirement.externalPerMinute[item]});}
-
-const plannedPower={entities:l.entities,wires:[]},powerPort={kind:'power',label:'External electricity',items:[],entity:0,x:left,y:-13};powerStarterLayout(plannedPower,[...globalPorts,powerPort],raw);for(const e of plannedPower.entities.filter(e=>e.name.endsWith('electric-pole')))l.place(e);l.next=Math.max(...l.entities.map(e=>e.entity_number))+1;
-for(const p of greenSources){const target={component:'green merge',x:29.5,y:p.y};connect(p,target);}
-// All routing is constrained to saved transport geometry; no requester delivery is used.
-for(const t of channels.flatMap(c=>c.taps).sort((a,b)=>a.p.x-b.p.x||b.p.y-a.p.y))connect(t.source,t.p);for(const t of greenTaps)connect(t.source,t.p);
-// Branch red circuits into blue science and processing units.
-for(const[i,p]of advTargets.entries())connect(advBranches[i],p);
-for(const item of['low-density-structure','processing-unit','flying-robot-frame'])connect(outputSources.get(item)[0],inputs.find(p=>p.item===item));
-// Export four packs together, on the east side; internal buffers stay behind their manufacturing blocks.
-for(const{item,p}of exportTargets)connect(outputSources.get(item)[0],p);
-// Keep local stock-control red networks isolated; one fresh copper grid powers everything.
-const ports=[...globalPorts,powerPort],bp={item:'blueprint',version:562954249961472,label:'Compact RGB + utility science · 30/min · plate inputs',description:'Red, green, blue and utility science from smelted plates, plastic, sulfur, sulfuric acid and lubricant. Every circuit, engine, battery, frame, processing unit and low-density structure is made inside. No modules or logistics delivery. Supply west entrances; collect four packs at the east providers. Keep isolated red stock-control networks. Supply both adjacent copper belts.',icons:products.map((name,i)=>({index:i+1,signal:{type:'item',name}})),entities:l.entities,wires:[]};
-bp.wires.push(...plannedPower.wires,...l.wires);for(const e of bp.entities)e.tags={...e.tags,flight_science_entity:e.entity_number};
-const underground=optimizeUnderground(bp,ports);const id='rgby-science-30',code=encodeBlueprint({blueprint:bp}),machineCounts={};for(const e of bp.entities)if(e.recipe)machineCounts[e.recipe]=(machineCounts[e.recipe]||0)+1;
-const manifest={id,name:bp.label,file:id+'.txt',blueprintSha256:sha(code),prototypeSha256:sha(bytes),products,targetPerMinute:30,targets:Object.fromEntries(products.map(n=>[n,30])),inputs:ports.filter(p=>p.kind==='input'),fluids:ports.filter(p=>p.kind==='fluid'),outputs:ports.filter(p=>p.kind==='output'),ports,machineCounts,footprint:starterBounds(bp.entities,raw),loopControl:l.loops,underground,requirements:requirement,components:components.map(c=>({id:c.id,footprint:c.footprint,machineCounts:c.machineCounts,translation:c.translation})),construction:Object.fromEntries([...new Set(bp.entities.map(e=>e.name))].map(n=>[n,bp.entities.filter(e=>e.name===n).length])),setupNotes:[bp.description],status:'candidate-native-validation-pending'};
-await fs.writeFile(root+'/'+manifest.file,code+'\n');await fs.writeFile(root+'/manifest.json',JSON.stringify([manifest],null,2)+'\n');console.log(JSON.stringify({footprint:manifest.footprint,machineCounts,construction:manifest.construction},null,2));
+await fs.writeFile(root + '/manifest.json', JSON.stringify(builds.map(b => b.manifest), null, 2) + '\n');
