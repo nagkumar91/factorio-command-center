@@ -6,6 +6,9 @@
 --  * collection removes only the declared item from each declared east chest once per second,
 --    except during the blocked phase;
 --  * per-second sampling only (machine status, ring stock, chest stock); no per-tick entity scans.
+--  * pacing (manifest.pacing): wiring and settings of the clock, the logic and the paced machines are
+--    read back at import; the clock is read tick by tick for two periods; afterwards the logic's
+--    inputs are read on the second and its output one and two ticks later.
 -- Phases: warm-up W, steady measurement M, blocked B, settle S, recovery R.
 local payload=helpers.json_to_table(require('payload'))
 local P=payload.protocol
@@ -140,7 +143,8 @@ local function import_checks(t,b)
   -- Every entity with a saved circuit condition (entrance gates, product arms, product-gated
   -- ingredient arms) reads the ring network and keeps its condition.
   local conditioned=0
-  for id,saved in pairs(t.spec)do local cb=saved.control_behavior;if cb and cb.circuit_condition then
+  local paced={};for _,id in ipairs(b.pacing and b.pacing.machines or {})do paced[id]=true end
+  for id,saved in pairs(t.spec)do local cb=saved.control_behavior;if cb and cb.circuit_condition and not paced[id] then
    local e=t.entities[id];local n=e.get_circuit_network(defines.wire_connector_id.circuit_red);check(n and n.network_id==network.network_id,'conditioned entity off the ring network '..id)
    local c=e.get_control_behavior()
    check(c.circuit_enable_disable and c.circuit_condition.first_signal.name==cb.circuit_condition.first_signal.name and c.circuit_condition.comparator==cb.circuit_condition.comparator and c.circuit_condition.constant==cb.circuit_condition.constant,'ring condition changed '..id)
@@ -148,6 +152,56 @@ local function import_checks(t,b)
   end end
   local listed=#loop.controlled+#(loop.productGated or {})
   check(conditioned==listed,'conditioned entities '..conditioned..' listed '..listed)
+ end
+ -- Pacing of the processing-unit line: a clock decider wired output to input on green, a logic
+ -- decider that reads the clock (green) and the ring (red), and the paced machines, which read
+ -- only the logic output (green, possibly relayed through other machines).
+ if b.pacing then
+  local pc,cid=b.pacing,defines.wire_connector_id
+  local clock,logic=t.entities[pc.clock],t.entities[pc.logic]
+  check(clock.name=='decider-combinator' and logic.name=='decider-combinator' and #pc.machines>0,'pacing entities changed')
+  local function net(e,c) local n=e.get_circuit_network(c);return n and n.network_id end
+  local clockNet=net(clock,cid.combinator_output_green)
+  check(clockNet~=nil and net(clock,cid.combinator_input_green)==clockNet,'clock is not wired output to input')
+  check(net(clock,cid.combinator_input_red)==nil and net(clock,cid.combinator_output_red)==nil,'red wire on the clock')
+  check(net(logic,cid.combinator_input_green)==clockNet,'logic does not read the clock')
+  local ringNet=net(logic,cid.combinator_input_red);check(ringNet~=nil and t.ringNetworks[ringNet],'logic does not read the ring')
+  local enableNet=net(logic,cid.combinator_output_green)
+  check(enableNet~=nil and enableNet~=clockNet,'logic output is missing or joined the clock')
+  check(net(logic,cid.combinator_output_red)==nil,'red wire on the logic output')
+  local member={[pc.clock]=true,[pc.logic]=true}
+  local machines={}
+  for _,id in ipairs(pc.machines)do local machine=t.entities[id];member[id]=true;machines[#machines+1]=machine
+   check(crafting(machine) and net(machine,cid.circuit_green)==enableNet and net(machine,cid.circuit_red)==nil,'paced machine does not read only the logic output '..id)
+   local mc=machine.get_control_behavior()
+   check(mc~=nil and mc.circuit_enable_disable and mc.circuit_condition.first_signal.name==pc.enableSignal and mc.circuit_condition.comparator=='>' and mc.circuit_condition.constant==0,'paced machine condition changed '..id)
+   check(machine.get_recipe().name==pc.recipe,'paced machine recipe '..id)
+  end
+  -- Every machine of the paced recipe is paced.
+  for id,e in pairs(t.entities)do if crafting(e) and recipe(t,id)==pc.recipe then check(member[id],'unpaced machine of the paced recipe '..id) end end
+  for _,id in ipairs(pc.relays or {})do local e=t.entities[id];member[id]=true;check(crafting(e) and net(e,cid.circuit_green)==enableNet and net(e,cid.circuit_red)==nil,'pacing relay '..id) end
+  -- Nothing else touches the clock or the enable network.
+  for id,e in pairs(t.entities)do if not member[id] then
+   check(e.type~='decider-combinator' and e.type~='arithmetic-combinator' and e.type~='constant-combinator','unexpected combinator '..id)
+   check(net(e,cid.circuit_green)==nil,'green wire on '..e.name..' '..id)
+  end end
+  local cp=clock.get_control_behavior().parameters
+  check(#cp.conditions==1 and cp.conditions[1].first_signal.name==pc.clockSignal and cp.conditions[1].comparator=='<' and cp.conditions[1].constant==pc.periodTicks-1,'clock condition changed')
+  check(#cp.outputs==2 and cp.outputs[1].signal.name==pc.clockSignal and cp.outputs[2].signal.name==pc.clockSignal,'clock outputs changed')
+  local copies,ones=0,0
+  for _,o in ipairs(cp.outputs)do if o.copy_count_from_input then copies=copies+1 elseif (o.constant or 1)==1 then ones=ones+1 end end
+  check(copies==1 and ones==1,'clock must output its count plus one')
+  local lp=logic.get_control_behavior().parameters
+  local reserves=0;for _ in pairs(pc.reserves)do reserves=reserves+1 end
+  check(#lp.conditions==1+reserves,'logic condition count changed')
+  local first=lp.conditions[1]
+  check(first.first_signal.name==pc.clockSignal and first.comparator=='<' and first.constant==pc.windowTicks and first.first_signal_networks.green and not first.first_signal_networks.red,'logic window condition changed')
+  for i=2,#lp.conditions do local c=lp.conditions[i]
+   check(pc.reserves[c.first_signal.name]==c.constant and (c.comparator=='≥' or c.comparator=='>=') and c.first_signal_networks.red and not c.first_signal_networks.green,'logic reserve condition changed '..i)
+   check(c.compare_type==(i==2 and 'or' or 'and'),'logic reserve join changed '..i)
+  end
+  check(#lp.outputs==1 and lp.outputs[1].signal.name==pc.enableSignal and not lp.outputs[1].copy_count_from_input and (lp.outputs[1].constant or 1)==1,'logic output changed')
+  t.pacing={clock=clock,logic=logic,machines=machines,steps=0,wraps=0,bad=0,samples=0,window=0,free=0,mismatch1=0,mismatch2=0,foreign=0,measure={samples=0,window=0,free=0,enabled=0}}
  end
  -- Chests carry no circuit network at all (caps are chest bars).
  for _,p in ipairs(b.outputs)do local e=t.entities[p.entity];check(e.get_circuit_network(defines.wire_connector_id.circuit_red)==nil and e.get_circuit_network(defines.wire_connector_id.circuit_green)==nil,'wired output chest '..p.entity)end
@@ -188,6 +242,36 @@ script.on_event(defines.events.on_tick,function()
     if belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
      t.credit[i]=t.credit[i]-1;tries=0
      t.fed[i]=t.fed[i]or {};count_phase(t.fed[i],tick,1)
+    end
+   end
+  end
+  if t.pacing then
+   local pc,q,cid=b.pacing,t.pacing,defines.wire_connector_id
+   local T={type='virtual',name=pc.clockSignal}
+   -- Clock: two full periods read tick by tick right after the import checks.
+   if tick>60 and tick<=62+2*pc.periodTicks then
+    local v=q.clock.get_signal(T,cid.combinator_output_green) or 0
+    if q.last~=nil then
+     if v==q.last+1 and v<=pc.periodTicks-1 then q.steps=q.steps+1
+     elseif v==0 and q.last==pc.periodTicks-1 then q.wraps=q.wraps+1;if q.wrapTick then q.measuredPeriod=tick-q.wrapTick end;q.wrapTick=tick
+     else q.bad=q.bad+1 end
+    end
+    q.last=v
+   end
+   -- Logic: inputs read on the second, the output one and two ticks later.
+   if tick>120 then
+    local m=tick%60
+    if m==0 then
+     local v=q.clock.get_signal(T,cid.combinator_output_green) or 0
+     local free=true;for name,reserve in pairs(pc.reserves)do if (q.logic.get_signal({type='item',name=name},cid.combinator_input_red) or 0)<reserve then free=false end end
+     q.expectWindow=v<pc.windowTicks;q.expectFree=free;q.expect=(q.expectWindow or free)
+     q.samples=q.samples+1;if q.expectWindow then q.window=q.window+1 end;if free then q.free=q.free+1 end
+     if phase(tick)=='measure' then local s=q.measure;s.samples=s.samples+1;if q.expectWindow then s.window=s.window+1 end;if free then s.free=s.free+1 end;if q.machines[1].status~=defines.entity_status.disabled_by_control_behavior then s.enabled=s.enabled+1 end end
+     local signals=q.logic.get_signals(cid.combinator_output_green)or {}
+     for _,sg in ipairs(signals)do if sg.signal.name~=pc.enableSignal or sg.count~=1 then q.foreign=q.foreign+1 end end
+    elseif (m==1 or m==2) and q.expect~=nil then
+     local on=(q.logic.get_signal({type='virtual',name=pc.enableSignal},cid.combinator_output_green) or 0)>0
+     if on~=q.expect then if m==1 then q.mismatch1=q.mismatch1+1 else q.mismatch2=q.mismatch2+1 end end
     end
    end
   end
@@ -276,6 +360,10 @@ script.on_event(defines.events.on_tick,function()
    for i,inp in ipairs(r.inputs)do local fed=t.fed[i]or {};inp.acceptedDuringRecovery=fed.recovery or 0;inp.acceptedTotal=(fed.warmup or 0)+(fed.measure or 0)+(fed.blocked or 0)+(fed.settle or 0)+(fed.recovery or 0) end
    for i,f in ipairs(r.fluids)do local fed=t.fed['fluid'..i]or {};f.acceptedDuringRecovery=fed.recovery or 0 end
    r.loopSamples=t.loopSamples;r.ringItemMax=t.ringItemMax;r.ringSeries=t.ringSeries
+   if t.pacing then local q=t.pacing
+    r.pacing={clockPeriodTicks=q.measuredPeriod,clockSteps=q.steps,clockWraps=q.wraps,clockBadSteps=q.bad,logicSamples=q.samples,logicWindowSamples=q.window,logicFreeSamples=q.free,
+     logicMismatchOneTickLater=q.mismatch1,logicMismatchTwoTicksLater=q.mismatch2,foreignSignalsOnEnableNetwork=q.foreign,measurement=q.measure,wiringVerified=true}
+   end
    r.bulkInserters={}
    for id,_ in pairs(t.bulkEntities)do r.bulkInserters[#r.bulkInserters+1]={entity=id,observedMaxHand=t.bulkMaxHand[id]or 0} end
    r.complete=true

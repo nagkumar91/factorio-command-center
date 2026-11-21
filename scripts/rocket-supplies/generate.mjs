@@ -15,6 +15,10 @@
 //              onto ONE lane of the ring's west column; column 13: the three chests, rows 5-7.
 // The four entrance limits share that one lane (4 slots per ring tile): they are kept at or below 75%
 // of it so copper can still merge when circuits and plastic are in surplus (review of 2026-11-21).
+//   column 12, rows 1-4: two decider combinators (a clock and its logic) that pace the two
+//              processing-unit machines while copper or plastic is short on the ring, so the
+//              low-density machines keep their share when circuits and acid arrive above their
+//              panels (design review of 2026-11-21; see "pacing" below).
 //
 //   node scripts/rocket-supplies/generate.mjs                     writes blueprint-sources/rocket-supplies
 //   RS_OUT=.cache/rocket-supplies/candidate RS_OPTIONS='{...}' node scripts/rocket-supplies/generate.mjs
@@ -110,7 +114,8 @@ const N=0,E=4,S=8,W=12;
 const AC='advanced-circuit',CABLE='copper-cable';
 // Variants. Consumers of shared plates sit downstream (east) of the advanced-circuit line on the
 // eastbound ring top: cable and advanced circuits take their copper and plastic first, the
-// low-density machines take the rest, so no reserve gate is needed.
+// low-density machines take the rest. At the panel figures that needs no gate; above them the
+// published variant paces the processing-unit machines (see "pacing" below).
 //  inner-row (30x8): one inner row PU AC C AC PU LDS LDS with direct hand-offs (cable and advanced
 //             circuits never touch a belt); each processing-unit machine takes its acid from a pipe
 //             in the neighbouring gap, fed by pipe-to-ground under the ring top.
@@ -131,7 +136,10 @@ const variants={
 };
 // two-rows-tight (14x12): the ring's east column moves next to the inner row (x=11) and the
 // rocket-fuel belt comes down the chest column, its arm dropping into the chest from above.
-variants['two-rows-tight']={...variants['two-rows'],EAST:11,bays:[[9,1]],rfFeed:'above'};
+variants['two-rows-tight']={...variants['two-rows'],EAST:11,bays:[[9,1]],rfFeed:'above',
+ // Pacing of the processing-unit machines (design review of 2026-11-21): two decider combinators on
+ // the free tiles of the arm column north of the chests. See "pacing" below.
+ pacing:{periodTicks:103,windowTicks:58,reserves:{[COPPER]:20,[PLASTIC]:6},clockAt:[12,1],logicAt:[12,3]}};
 // two-rows-cable-last (14x12): the inner row runs low density structure, advanced circuit, cable from
 // the west, and the cable machine picks its copper at its east column. Both low-density copper arms
 // (x=2 and x=9) then come before the cable arm (x=10) on the ring top, so when copper is short the
@@ -336,6 +344,75 @@ for(const item of [RF,PU,LDS]){
  ports.push({kind:'output',label:item,items:[item],item,entity:chests[item].entity_number,x:chests[item].position.x,y:chests[item].position.y,position:{...chests[item].position},externalSide:'east',cap:outputCaps[item],bar:bars[item],arm:a.entity_number});
 }
 
+// ---------------------------------------------------------------- pacing of the processing-unit line
+// Copper and plastic are shared: the cable and advanced-circuit machines pick them from the ring
+// before the low-density machines do. With circuits (and acid) above their panels the two
+// processing-unit machines would run at up to 7.5 per minute between them and their line would take
+// 30 plastic and 30 copper per minute, leaving the low-density line 15 of the 45 plastic (3 per
+// minute instead of 5). So the processing-unit machines are paced:
+//   clock  one decider wired output-to-input on green: signal T counts 0..period-1, one step a tick;
+//   logic  one decider: E = 1 while T < window (green, from the clock)
+//                              OR (copper on the ring >= reserve AND plastic on the ring >= reserve) (red);
+//   each processing-unit machine is enabled only while E > 0 (green). A disabled machine keeps its
+//   craft progress, so in the window alone the two make exactly 9 x window / period per minute.
+// The window covers the target plus a small margin. Outside it the machines run only while the
+// ring holds both reserves, which it does only when copper and plastic arrive faster than both
+// lines use them. The cable and advanced-circuit machines are not paced: they fill their small
+// buffers at full speed after a start and then make only what the processing-unit machines take.
+// Pass "pacing":null for the earlier, unpaced string.
+const pacing=options.pacing===undefined?V.pacing:options.pacing;
+let pacingManifest;
+if(pacing){
+ const virtual=name=>({type:'virtual',name}),T=virtual('signal-T'),ENABLE=virtual('signal-E');
+ const combinator=(x,y,control_behavior)=>place({entity_number:next++,name:'decider-combinator',position:{x:x+.5,y:y+1},direction:0,control_behavior});
+ const recipe=pacing.recipe||PU;
+ const paced=machines.filter(s=>s.recipe===recipe).map(s=>s.entity);
+ assert(Number.isInteger(pacing.periodTicks)&&Number.isInteger(pacing.windowTicks)&&pacing.windowTicks<pacing.periodTicks);
+ // The native harness reads the clock once a second: a period that shares no factor with 60 lets
+ // those readings fall on every step of the clock in turn.
+ const gcd=(a,b)=>b?gcd(b,a%b):a;assert.equal(gcd(pacing.periodTicks,60),1,'pacing period must share no factor with 60');
+ const amount=(r,name)=>raw.recipe[r].ingredients.find(i=>i.name===name).amount;
+ // Crafts per minute in the window alone, the processing units they allow, and what that leaves the
+ // low-density line of plastic and copper supplied at exactly their panels.
+ const windowCrafts=round3(paced.length*perMachine[recipe]*pacing.windowTicks/pacing.periodTicks);
+ const windowProducts=recipe===PU?windowCrafts:round3(windowCrafts*raw.recipe[CABLE].results[0].amount/amount(AC,CABLE)/amount(PU,AC));
+ assert(windowCrafts>=crafts[recipe]*1.01,'pacing window below the demand at the targets: '+windowCrafts);
+ const share=windowProducts/targets[PU];
+ const left={[PLASTIC]:nominal[PLASTIC]-share*amount(AC,PLASTIC)*crafts[AC],[COPPER]:nominal[COPPER]-share*crafts[CABLE]};
+ const ldsNeed=name=>amount(LDS,name)*targets[LDS];
+ for(const name of [PLASTIC,COPPER])assert(left[name]>=.98*ldsNeed(name),`pacing window leaves the low-density line ${left[name]} ${name}, below 98% of ${ldsNeed(name)}`);
+ for(const[name,reserve]of Object.entries(pacing.reserves))assert(reserve>=limits[name]*.4&&reserve<=limits[name]*.6,'reserve of '+name+' is not near half its ring limit');
+ const clock=combinator(...pacing.clockAt,{decider_conditions:{conditions:[{first_signal:T,comparator:'<',constant:pacing.periodTicks-1}],
+  outputs:[{signal:T,copy_count_from_input:true},{signal:T,copy_count_from_input:false,constant:1}]}});
+ const logic=combinator(...pacing.logicAt,{decider_conditions:{conditions:[
+  {first_signal:T,comparator:'<',constant:pacing.windowTicks,first_signal_networks:{red:false,green:true}},
+  ...Object.entries(pacing.reserves).map(([name,reserve],i)=>({first_signal:sig(name),comparator:'≥',constant:reserve,first_signal_networks:{red:true,green:false},compare_type:i?'and':'or'}))],
+  outputs:[{signal:ENABLE,copy_count_from_input:false,constant:1}]}});
+ for(const e of paced)e.control_behavior={circuit_enabled:true,circuit_condition:{first_signal:ENABLE,comparator:'>',constant:0}};
+ const d=(a,b)=>Math.hypot(a.position.x-b.position.x,a.position.y-b.position.y),reach=8;
+ // Green wires: clock output to its own input and to the logic input; logic output to the nearest
+ // paced machine and on from machine to machine (other machines relay only when a wire would be too long).
+ assert(d(clock,logic)<=reach);
+ wires.push([clock.entity_number,2,clock.entity_number,4],[clock.entity_number,4,logic.entity_number,2]);
+ const relays=[],joined=[{entity:logic,connector:4}],todo=new Set(paced);
+ while(todo.size){
+  let best;
+  for(const from of joined)for(const to of todo){const dist=d(from.entity,to);if(dist<=reach&&(!best||dist<best.dist))best={from,to,dist};}
+  if(!best){
+   const relay=machines.map(s=>s.entity).filter(e=>!todo.has(e)&&!joined.some(j=>j.entity===e)).map(e=>({e,near:Math.min(...joined.map(j=>d(j.entity,e))),far:Math.min(...[...todo].map(t=>d(e,t)))})).filter(r=>r.near<=reach&&r.far<=reach).sort((a,b)=>Math.max(a.near,a.far)-Math.max(b.near,b.far)||a.e.entity_number-b.e.entity_number)[0];
+   assert(relay,'no machine can relay the pacing wire');relays.push(relay.e.entity_number);todo.add(relay.e);continue;
+  }
+  wires.push([best.from.entity.entity_number,best.from.connector,best.to.entity_number,2]);
+  joined.push({entity:best.to,connector:2});todo.delete(best.to);
+ }
+ ringNodes.push({entity:logic,connector:1}); // the logic input reads the ring on red
+ pacingManifest={clock:clock.entity_number,logic:logic.entity_number,machines:paced.map(e=>e.entity_number),relays,recipe,
+  clockSignal:T.name,enableSignal:ENABLE.name,periodTicks:pacing.periodTicks,windowTicks:pacing.windowTicks,reserves:pacing.reserves,
+  craftsPerMinuteInWindow:windowCrafts,craftsPerMinuteAtTargets:crafts[recipe],craftsPerMinuteFree:round3(paced.length*perMachine[recipe]),
+  processingUnitsPerMinuteInWindow:windowProducts,
+  leftForLowDensityAtPanels:Object.fromEntries(Object.entries(left).map(([k,v])=>[k,round3(v)]))};
+}
+
 // ---------------------------------------------------------------- circuit wiring: one red ring network
 const wireLength=8;
 {
@@ -351,7 +428,9 @@ const wireLength=8;
 }
 
 // ---------------------------------------------------------------- power
-const preBounds=starterBounds(entities,{...raw,container:{...raw.container,...raw['logistic-container']}});
+// The shared bounds helper knows chests and combinators only under these two groups.
+const boundsRaw={...raw,container:{...raw.container,...raw['logistic-container']},'arithmetic-combinator':{...raw['arithmetic-combinator'],...raw['decider-combinator']}};
+const preBounds=starterBounds(entities,boundsRaw);
 ports.push({kind:'power',label:'External electricity',items:[],entity:0,x:0,y:0});
 const layout={entities,wires,next,place,allowPole:e=>e.name==='substation'&&bays.some(([x,y])=>e.position.x===x&&e.position.y===y)};
 powerFiveLayout(layout,ports,raw);next=layout.next;
@@ -359,10 +438,9 @@ for(const e of entities)e.tags={...e.tags,flight_science_entity:e.entity_number}
 
 // ---------------------------------------------------------------- blueprint
 const label='Rocket supplies · 6 rockets per hour';
-const description='Factorio 2.1.24 Space Age, normal quality: assembling machine 2 only, no modules, red belts, fast inserters. Makes processing units and low density structures at 5 per minute each and passes rocket fuel through, so the three rocket ingredients (50 of each per rocket) wait side by side in three passive provider chests on the EAST edge: rocket fuel, processing units, low density structures from the north, 400 each (chest bars). WEST entrances: rocket fuel (northernmost, from one rocket-fuel supplier), copper plate, plastic bar, steel plate, electronic circuits (southernmost, from a green-circuit supplier) on belts and sulfuric acid by pipe; each panel gives the supply to plan for. Supply electricity at '+(entities.filter(e=>e.name==='substation').length>1?'either substation':'the substation')+'. Preserve the red wires on the ring tiles, entrance belts and arms (per-tile hold readers and stock limits), the arm filters and the chest bars.';
+const description='Factorio 2.1.24 Space Age, normal quality: assembling machine 2 only, no modules, red belts, fast inserters. Makes processing units and low density structures at 5 per minute each and passes rocket fuel through, so the three rocket ingredients (50 of each per rocket) wait side by side in three passive provider chests on the EAST edge: rocket fuel, processing units, low density structures from the north, 400 each (chest bars). WEST entrances: rocket fuel (northernmost, from one rocket-fuel supplier), copper plate, plastic bar, steel plate, electronic circuits (southernmost, from a green-circuit supplier) on belts and sulfuric acid by pipe; each panel gives the supply to plan for. Supply electricity at '+(entities.filter(e=>e.name==='substation').length>1?'either substation':'the substation')+'. Preserve the red wires on the ring tiles, entrance belts and arms (per-tile hold readers and stock limits), the arm filters and the chest bars.'+(pacingManifest?' Keep the two decider combinators north of the chests and their green wires to the two processing-unit machines: they pace those machines while copper or plastic is short on the ring, so the low-density machines keep their share at any supply at or above the panels.':'');
 const bp={item:'blueprint',version:562954249961473,label,description,entities,wires,icons:[RF,PU,LDS].map((name,i)=>({index:i+1,signal:{type:'item',name}}))};
 const code=encodeBlueprint({blueprint:bp});
-const boundsRaw={...raw,container:{...raw.container,...raw['logistic-container']}};
 const footprint=starterBounds(entities,boundsRaw);
 assert.deepEqual(footprint,preBounds,'power grew the rectangle');
 const capacity=loop.length*8,maximumStock=Object.values(limits).reduce((a,b)=>a+b,0);
@@ -414,6 +492,7 @@ const manifest={
   controlled:[...roles.entranceGates,...roles.productArms,...roles.intermediateArms],productGated:roles.productGated,uncountedTiles:0,
   limits,capacity,maximumStock,entranceLane:{share:entranceLaneShare,slots:entranceLaneSlots,maximumFraction:0.75},lapSeconds:Math.round(lapSeconds*100)/100}],
  armRoles:roles,
+ ...(pacingManifest?{pacing:pacingManifest}:{}),
  stockControl:{mode:'bar',chests:Object.fromEntries(Object.entries(chests).map(([k,e])=>[k,e.entity_number])),bars,caps:outputCaps},
  protocol,
  construction,
@@ -428,8 +507,10 @@ const manifest={
   description,
   `Supply per minute (the entrance panels): ${ports.filter(p=>p.kind==='input'||p.kind==='fluid').map(p=>p.item+' '+fmt(p.perMinute)).join(', ')}. One rocket-fuel supplier (6 per minute) covers the rocket fuel; one green-circuit supplier (360 per minute) covers these ${fmt(supply[GREEN])} circuits and the launch kit's together, split its exit belt between them.`,
   'Feed the silo from the three east chests: 50 rocket fuel, 50 processing units and 50 low density structures make one rocket. The chests stop at 400 each (8 rockets: the five launches of the space-launch campaign, 250 of each ingredient, plus three spare) and the factory stops by itself; it restarts as soon as items are taken.',
-  'If circuits (a split green-circuit belt) and acid (an open pipe) arrive above their panels, supply copper at 150 per minute: the processing-unit line then runs at up to 7.5 per minute and its cable takes 30 copper per minute, so with copper at exactly 120 low density structures run at 4.5 per minute until the processing-unit chest is full (blueprint-sources/rocket-supplies/above-panels.json).',
-  'Do not remove the chest bars or the red wires: the bars are the caps, and the ring stock limits keep the ring from clogging.',
+  pacingManifest
+   ?`Any supply at or above the panels works, in any combination. Two decider combinators pace the two processing-unit machines to ${Math.round(pacingManifest.processingUnitsPerMinuteInWindow*100)/100} per minute while the ring holds fewer than ${pacingManifest.reserves[COPPER]} copper plates or fewer than ${pacingManifest.reserves[PLASTIC]} plastic bars, so a surplus of circuits and acid cannot take the copper and plastic of the low-density machines. With copper at 150 and plastic at 60 per minute or more as well, the ring holds both reserves and both lines run faster, up to 7.5 processing units and 6 low density structures per minute (blueprint-sources/rocket-supplies/above-panels.json).`
+   :'If circuits (a split green-circuit belt) and acid (an open pipe) arrive above their panels, supply copper at 150 per minute: the processing-unit line then runs at up to 7.5 per minute and its cable takes 30 copper per minute, so with copper at exactly 120 low density structures run at 4.5 per minute until the processing-unit chest is full (blueprint-sources/rocket-supplies/above-panels.json).',
+  pacingManifest?'Do not remove the chest bars, the red wires or the two decider combinators with their green wires: the bars are the caps, the ring stock limits keep the ring from clogging, and the combinators keep the two product lines in step.':'Do not remove the chest bars or the red wires: the bars are the caps, and the ring stock limits keep the ring from clogging.',
  ],
 };
 await fs.mkdir(OUT,{recursive:true});

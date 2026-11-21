@@ -26,5 +26,6 @@ const loop=Object.values(r.loopSamples||{})[0];
 console.log('ring max',loop?.maxStock,'of',loop?.capacity,'item max',JSON.stringify(r.ringItemMax));
 console.log('ring last',JSON.stringify(Object.fromEntries((loop?.lastSignals||[]).map(s=>[s.signal.name,s.count]))));
 console.log('inputs',JSON.stringify(r.inputs.map(p=>[p.item,fmt(p.measuredPerMinute),p.perMinute,!!p.productiveRoute?.length])),'fluids',JSON.stringify(r.fluids.map(p=>[p.item,fmt(p.measuredPerMinute),p.perMinute,p.productiveConsumers?.length])));
+if(r.pacing)console.log('pacing',JSON.stringify(r.pacing));
 const armStatus={};for(const a of r.arms||[]){const s=a.statusSamples||{};const n=Object.values(s).reduce((x,y)=>x+y,0)||1;armStatus[a.entity]=Object.entries(s).filter(([,v])=>v/n>=.2).map(([k,v])=>k+':'+Math.round(100*v/n)).join(',');}
 if(process.env.ARMS)console.log('arms',JSON.stringify(armStatus));

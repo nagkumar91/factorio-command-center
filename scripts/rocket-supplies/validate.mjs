@@ -97,6 +97,14 @@ for(const r of report.builds){
   ringBelow90:!!sample&&sample.maxStock<0.9*loop.capacity,
   wiringAndPower:r.powered===true&&r.externalApproachesClear===true&&r.stockNetworksIsolated===true&&r.exactRecipeChecks>0,
   bulkHandAtMostTwo:r.bulkInserters.every(x=>x.observedMaxHand<=2),
+  // Pacing (when the manifest declares it): wiring and settings read back natively; the clock steps
+  // one per tick with the declared period; the logic output, read one tick after its inputs, equals
+  // its conditions on every sample; nothing else writes to the enable network; and the run saw the
+  // window open and closed and the reserves both present and missing.
+  ...(b.pacing?{pacing:!!r.pacing&&r.pacing.wiringVerified===true&&r.pacing.clockPeriodTicks===b.pacing.periodTicks&&r.pacing.clockBadSteps===0&&r.pacing.clockWraps>=2
+   &&r.pacing.logicSamples>0&&r.pacing.logicMismatchOneTickLater===0&&r.pacing.foreignSignalsOnEnableNetwork===0
+   &&r.pacing.logicWindowSamples>0&&r.pacing.logicWindowSamples<r.pacing.logicSamples
+   &&(protocol.blocked===0||(r.pacing.logicFreeSamples>0&&r.pacing.logicFreeSamples<r.pacing.logicSamples))}:{}),
  };
  r.checks=checks;r.passed=Object.values(checks).every(Boolean);
 }

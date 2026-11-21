@@ -3,7 +3,7 @@
     "id": "rocket-supplies",
     "name": "Rocket supplies · 6 rockets per hour",
     "file": "rocket-supplies.txt",
-    "blueprintSha256": "b10cbc287a0104307b394c9d2dbb11d82f2fedf12251126fa42aa3585b4fd106",
+    "blueprintSha256": "021655202958e957f7f56646a38f19a92953cd1a59e39a670131f41e15255491",
     "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
     "class": "rate",
     "status": "qualified",
@@ -25,14 +25,14 @@
       },
       "entranceDrawPerMinute": {
         "rocket-fuel": 5,
-        "copper-plate": 119.96666666666667,
+        "copper-plate": 119.56666666666666,
         "plastic-bar": 45,
-        "steel-plate": 10,
+        "steel-plate": 9.966666666666667,
         "electronic-circuit": 120,
         "sulfuric-acid": 25
       },
-      "ringMaximumStock": 116,
-      "reportCreatedAt": "2026-11-21T03:59:23.263Z"
+      "ringMaximumStock": 115,
+      "reportCreatedAt": "2026-11-21T05:12:01.246Z"
     },
     "variant": "two-rows-tight",
     "products": [
@@ -538,7 +538,7 @@
         "kind": "power",
         "label": "External electricity",
         "items": [],
-        "entity": 89,
+        "entity": 91,
         "x": 9,
         "y": 1,
         "position": {
@@ -687,6 +687,32 @@
         87
       ]
     },
+    "pacing": {
+      "clock": 89,
+      "logic": 90,
+      "machines": [
+        34,
+        37
+      ],
+      "relays": [],
+      "recipe": "processing-unit",
+      "clockSignal": "signal-T",
+      "enableSignal": "signal-E",
+      "periodTicks": 103,
+      "windowTicks": 58,
+      "reserves": {
+        "copper-plate": 20,
+        "plastic-bar": 6
+      },
+      "craftsPerMinuteInWindow": 5.068,
+      "craftsPerMinuteAtTargets": 5,
+      "craftsPerMinuteFree": 9,
+      "processingUnitsPerMinuteInWindow": 5.068,
+      "leftForLowDensityAtPanels": {
+        "plastic-bar": 24.728,
+        "copper-plate": 99.728
+      }
+    },
     "stockControl": {
       "mode": "bar",
       "chests": {
@@ -715,6 +741,7 @@
     },
     "construction": {
       "assembling-machine-2": 7,
+      "decider-combinator": 2,
       "display-panel": 6,
       "fast-inserter": 20,
       "fast-transport-belt": 41,
@@ -727,6 +754,7 @@
     "billOfMaterials": {
       "items": {
         "assembling-machine-2": 7,
+        "decider-combinator": 2,
         "display-panel": 6,
         "fast-inserter": 20,
         "fast-transport-belt": 41,
@@ -756,11 +784,11 @@
       }
     ],
     "setupNotes": [
-      "Factorio 2.1.24 Space Age, normal quality: assembling machine 2 only, no modules, red belts, fast inserters. Makes processing units and low density structures at 5 per minute each and passes rocket fuel through, so the three rocket ingredients (50 of each per rocket) wait side by side in three passive provider chests on the EAST edge: rocket fuel, processing units, low density structures from the north, 400 each (chest bars). WEST entrances: rocket fuel (northernmost, from one rocket-fuel supplier), copper plate, plastic bar, steel plate, electronic circuits (southernmost, from a green-circuit supplier) on belts and sulfuric acid by pipe; each panel gives the supply to plan for. Supply electricity at the substation. Preserve the red wires on the ring tiles, entrance belts and arms (per-tile hold readers and stock limits), the arm filters and the chest bars.",
+      "Factorio 2.1.24 Space Age, normal quality: assembling machine 2 only, no modules, red belts, fast inserters. Makes processing units and low density structures at 5 per minute each and passes rocket fuel through, so the three rocket ingredients (50 of each per rocket) wait side by side in three passive provider chests on the EAST edge: rocket fuel, processing units, low density structures from the north, 400 each (chest bars). WEST entrances: rocket fuel (northernmost, from one rocket-fuel supplier), copper plate, plastic bar, steel plate, electronic circuits (southernmost, from a green-circuit supplier) on belts and sulfuric acid by pipe; each panel gives the supply to plan for. Supply electricity at the substation. Preserve the red wires on the ring tiles, entrance belts and arms (per-tile hold readers and stock limits), the arm filters and the chest bars. Keep the two decider combinators north of the chests and their green wires to the two processing-unit machines: they pace those machines while copper or plastic is short on the ring, so the low-density machines keep their share at any supply at or above the panels.",
       "Supply per minute (the entrance panels): rocket-fuel 5, copper-plate 120, plastic-bar 45, steel-plate 10, electronic-circuit 120, sulfuric-acid 25. One rocket-fuel supplier (6 per minute) covers the rocket fuel; one green-circuit supplier (360 per minute) covers these 120 circuits and the launch kit's together, split its exit belt between them.",
       "Feed the silo from the three east chests: 50 rocket fuel, 50 processing units and 50 low density structures make one rocket. The chests stop at 400 each (8 rockets: the five launches of the space-launch campaign, 250 of each ingredient, plus three spare) and the factory stops by itself; it restarts as soon as items are taken.",
-      "If circuits (a split green-circuit belt) and acid (an open pipe) arrive above their panels, supply copper at 150 per minute: the processing-unit line then runs at up to 7.5 per minute and its cable takes 30 copper per minute, so with copper at exactly 120 low density structures run at 4.5 per minute until the processing-unit chest is full (blueprint-sources/rocket-supplies/above-panels.json).",
-      "Do not remove the chest bars or the red wires: the bars are the caps, and the ring stock limits keep the ring from clogging."
+      "Any supply at or above the panels works, in any combination. Two decider combinators pace the two processing-unit machines to 5.07 per minute while the ring holds fewer than 20 copper plates or fewer than 6 plastic bars, so a surplus of circuits and acid cannot take the copper and plastic of the low-density machines. With copper at 150 and plastic at 60 per minute or more as well, the ring holds both reserves and both lines run faster, up to 7.5 processing units and 6 low density structures per minute (blueprint-sources/rocket-supplies/above-panels.json).",
+      "Do not remove the chest bars, the red wires or the two decider combinators with their green wires: the bars are the caps, the ring stock limits keep the ring from clogging, and the combinators keep the two product lines in step."
     ]
   }
 ]

@@ -4,7 +4,7 @@ import {decodeBlueprint} from '../blueprints.mjs';
 const dir=process.argv[2]||'blueprint-sources/rocket-supplies';
 const code=(await fs.readFile(dir+'/rocket-supplies.txt','utf8')).trim();
 const es=decodeBlueprint(code).blueprint.entities;
-const size={'assembling-machine-2':[3,3],substation:[2,2]};
+const size={'assembling-machine-2':[3,3],substation:[2,2],'decider-combinator':[1,2]};
 const arrow={0:'^',4:'>',8:'v',12:'<'};
 const grid=new Map();
 for(const e of es){
@@ -21,6 +21,7 @@ for(const e of es){
   else if(e.name==='pipe-to-ground')c='o';
   else if(e.name==='passive-provider-chest')c='B';
   else if(e.name==='display-panel')c='d';
+  else if(e.name==='decider-combinator')c=e.control_behavior?.decider_conditions?.conditions?.length>1?'E':'T';
   grid.set(x+','+y,c);
  }
 }

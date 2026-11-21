@@ -1,0 +1,947 @@
+{
+  "id": "rocket-supplies",
+  "blueprintSha256": "b10cbc287a0104307b394c9d2dbb11d82f2fedf12251126fa42aa3585b4fd106",
+  "createdAt": "2026-11-21T05:04:04.143Z",
+  "protocolMinutes": {
+    "warmupMinutes": 15,
+    "measureMinutes": 30,
+    "blockedMinutes": 140,
+    "settleMinutes": 5,
+    "recoveryMinutes": 10,
+    "stopAcceptingWindowMinutes": 5
+  },
+  "floorPerMinute": 4.75,
+  "scenarios": [
+    {
+      "name": "saturated",
+      "note": "every entrance saturated",
+      "feed": "saturated",
+      "steadyPerMinute": {
+        "rocket-fuel": 156.53,
+        "processing-unit": 7.5,
+        "low-density-structure": 6
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 156.5,
+        "processing-unit": 7.5,
+        "low-density-structure": 6
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 156.53,
+        "copper-plate": 150.03,
+        "plastic-bar": 60.07,
+        "steel-plate": 12.03,
+        "electronic-circuit": 180.03,
+        "sulfuric-acid": 37.67
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 114,
+      "failedChecks": [
+        "drawWithinPanels"
+      ],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "all-150-percent",
+      "note": "every entrance at 150% of its panel",
+      "feed": {
+        "rocket-fuel": 7.5,
+        "electronic-circuit": 180,
+        "copper-plate": 180,
+        "plastic-bar": 68,
+        "steel-plate": 15,
+        "sulfuric-acid": 38
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 7.5,
+        "processing-unit": 7.53,
+        "low-density-structure": 6
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 7.5,
+        "processing-unit": 7.5,
+        "low-density-structure": 6
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 7.5,
+        "copper-plate": 150.33,
+        "plastic-bar": 59.9,
+        "steel-plate": 12.07,
+        "electronic-circuit": 180,
+        "sulfuric-acid": 38
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 111,
+      "failedChecks": [],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "all-105-percent",
+      "note": "every entrance at 105% of its panel (the contract's starting figures)",
+      "feed": {
+        "rocket-fuel": 5.3,
+        "electronic-circuit": 126,
+        "copper-plate": 126,
+        "plastic-bar": 48,
+        "steel-plate": 11,
+        "sulfuric-acid": 27
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5.3,
+        "processing-unit": 5.23,
+        "low-density-structure": 5.3
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5.3,
+        "processing-unit": 5.2,
+        "low-density-structure": 5.2
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5.3,
+        "copper-plate": 126,
+        "plastic-bar": 48,
+        "steel-plate": 10.67,
+        "electronic-circuit": 126,
+        "sulfuric-acid": 27
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 114,
+      "failedChecks": [],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "circuits",
+      "note": "circuits 220, everything else at its panel",
+      "feed": {
+        "electronic-circuit": 220
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.4,
+        "low-density-structure": 3.1
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 120,
+        "plastic-bar": 45,
+        "steel-plate": 9.97,
+        "electronic-circuit": 120,
+        "sulfuric-acid": 25
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 115,
+      "failedChecks": [
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "circuits-acid",
+      "note": "circuits 220 and acid 50, everything else at its panel",
+      "feed": {
+        "electronic-circuit": 220,
+        "sulfuric-acid": 50
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.53,
+        "low-density-structure": 3
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 3
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 89.93,
+        "plastic-bar": 45,
+        "steel-plate": 6.03,
+        "electronic-circuit": 180.33,
+        "sulfuric-acid": 50
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 113,
+      "failedChecks": [
+        "steady",
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "circuits-130-acid",
+      "note": "circuits 130 and acid 50, everything else at its panel",
+      "feed": {
+        "electronic-circuit": 130,
+        "sulfuric-acid": 50
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5.43,
+        "low-density-structure": 4.7
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5.4,
+        "low-density-structure": 4.8
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 115.13,
+        "plastic-bar": 45,
+        "steel-plate": 9.33,
+        "electronic-circuit": 130,
+        "sulfuric-acid": 39.67
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 114,
+      "failedChecks": [
+        "steady"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "circuits-acid-steel",
+      "note": "circuits 220, acid 50 and steel 40; copper and plastic at their panels",
+      "feed": {
+        "electronic-circuit": 220,
+        "sulfuric-acid": 50,
+        "steel-plate": 40
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 3
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 3
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 90.23,
+        "plastic-bar": 45,
+        "steel-plate": 6,
+        "electronic-circuit": 179.53,
+        "sulfuric-acid": 50
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 114,
+      "failedChecks": [
+        "steady",
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "circuits-acid-copper-150",
+      "note": "circuits 220, acid 50 and copper 150; plastic at its panel (45)",
+      "feed": {
+        "electronic-circuit": 220,
+        "sulfuric-acid": 50,
+        "copper-plate": 150
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 3.03
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.6,
+        "low-density-structure": 3.1
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 90.07,
+        "plastic-bar": 45,
+        "steel-plate": 6,
+        "electronic-circuit": 179.9,
+        "sulfuric-acid": 50
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 112,
+      "failedChecks": [
+        "steady",
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "all-but-plastic",
+      "note": "circuits 220, acid 50, steel 40 and copper 240; plastic at its panel (45)",
+      "feed": {
+        "electronic-circuit": 220,
+        "sulfuric-acid": 50,
+        "steel-plate": 40,
+        "copper-plate": 240
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 2.97
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.4,
+        "low-density-structure": 3
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 89.57,
+        "plastic-bar": 45,
+        "steel-plate": 5.93,
+        "electronic-circuit": 179.87,
+        "sulfuric-acid": 50
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 112,
+      "failedChecks": [
+        "steady",
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "all-but-copper",
+      "note": "circuits 220, acid 50, steel 40 and plastic 90; copper at its panel (120)",
+      "feed": {
+        "electronic-circuit": 220,
+        "sulfuric-acid": 50,
+        "steel-plate": 40,
+        "plastic-bar": 90
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 4.53
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 4.5
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 120,
+        "plastic-bar": 52.5,
+        "steel-plate": 9,
+        "electronic-circuit": 180,
+        "sulfuric-acid": 50
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 114,
+      "failedChecks": [
+        "steady",
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "circuits-plastic",
+      "note": "circuits 220 and plastic 90, everything else at its panel",
+      "feed": {
+        "electronic-circuit": 220,
+        "plastic-bar": 90
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.6,
+        "low-density-structure": 4.5
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 120,
+        "plastic-bar": 44.87,
+        "steel-plate": 10,
+        "electronic-circuit": 119.97,
+        "sulfuric-acid": 25
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 114,
+      "failedChecks": [
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "circuits-360-plastic",
+      "note": "circuits 360 and plastic 90, everything else at its panel",
+      "feed": {
+        "electronic-circuit": 360,
+        "plastic-bar": 90
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.3,
+        "low-density-structure": 4.5
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 120,
+        "plastic-bar": 45,
+        "steel-plate": 10,
+        "electronic-circuit": 119.9,
+        "sulfuric-acid": 25
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 115,
+      "failedChecks": [
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "circuits-plastic-acid",
+      "note": "circuits 220, plastic 90 and acid 50; copper at its panel (120)",
+      "feed": {
+        "electronic-circuit": 220,
+        "plastic-bar": 90,
+        "sulfuric-acid": 50
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 4.5
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 4.5
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 120,
+        "plastic-bar": 52.5,
+        "steel-plate": 9,
+        "electronic-circuit": 180.17,
+        "sulfuric-acid": 50
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 113,
+      "failedChecks": [
+        "steady",
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "circuits-plastic-copper-150",
+      "note": "circuits 220, plastic 90, copper 150",
+      "feed": {
+        "electronic-circuit": 220,
+        "plastic-bar": 90,
+        "copper-plate": 150
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.6,
+        "low-density-structure": 5.1
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 119.97,
+        "plastic-bar": 45.13,
+        "steel-plate": 10,
+        "electronic-circuit": 120.03,
+        "sulfuric-acid": 25
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 115,
+      "failedChecks": [],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "circuits-plastic-acid-copper-150",
+      "note": "circuits 220, plastic 90, acid 50, copper 150",
+      "feed": {
+        "electronic-circuit": 220,
+        "plastic-bar": 90,
+        "sulfuric-acid": 50,
+        "copper-plate": 150
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 5
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.4,
+        "low-density-structure": 5.2
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 130.03,
+        "plastic-bar": 55,
+        "steel-plate": 10,
+        "electronic-circuit": 179.83,
+        "sulfuric-acid": 50
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 113,
+      "failedChecks": [],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "circuits-plastic-copper-steel",
+      "note": "circuits 220, plastic 100, copper 240, steel 40",
+      "feed": {
+        "electronic-circuit": 220,
+        "plastic-bar": 100,
+        "copper-plate": 240,
+        "steel-plate": 40
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 6
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.6,
+        "low-density-structure": 6
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 140,
+        "plastic-bar": 50.2,
+        "steel-plate": 12,
+        "electronic-circuit": 119.8,
+        "sulfuric-acid": 25
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 115,
+      "failedChecks": [],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "plastic-50-rest-high",
+      "note": "plastic 50; circuits 220, acid 50, steel 40, copper 240",
+      "feed": {
+        "electronic-circuit": 220,
+        "sulfuric-acid": 50,
+        "steel-plate": 40,
+        "copper-plate": 240,
+        "plastic-bar": 50
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 4.03
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.4,
+        "low-density-structure": 4
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 109.93,
+        "plastic-bar": 50,
+        "steel-plate": 8,
+        "electronic-circuit": 180.03,
+        "sulfuric-acid": 50
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 113,
+      "failedChecks": [
+        "steady",
+        "recovery"
+      ],
+      "passedExceptDraw": false
+    },
+    {
+      "name": "copper-130-rest-high",
+      "note": "copper 130; circuits 220, acid 50, steel 40, plastic 90",
+      "feed": {
+        "electronic-circuit": 220,
+        "sulfuric-acid": 50,
+        "steel-plate": 40,
+        "copper-plate": 130,
+        "plastic-bar": 90
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.5,
+        "low-density-structure": 5
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 7.4,
+        "low-density-structure": 4.9
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 130,
+        "plastic-bar": 54.93,
+        "steel-plate": 10,
+        "electronic-circuit": 179.37,
+        "sulfuric-acid": 50
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 111,
+      "failedChecks": [],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "acid",
+      "note": "acid 50, everything else at its panel",
+      "feed": {
+        "sulfuric-acid": 50
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 4.97
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 120,
+        "plastic-bar": 45,
+        "steel-plate": 10.03,
+        "electronic-circuit": 120,
+        "sulfuric-acid": 36.5
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 115,
+      "failedChecks": [
+        "drawWithinPanels"
+      ],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "steel",
+      "note": "steel 40, everything else at its panel",
+      "feed": {
+        "steel-plate": 40
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 120,
+        "plastic-bar": 45,
+        "steel-plate": 10.03,
+        "electronic-circuit": 120,
+        "sulfuric-acid": 25
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 116,
+      "failedChecks": [],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "plastic",
+      "note": "plastic 90, everything else at its panel",
+      "feed": {
+        "plastic-bar": 90
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 120,
+        "plastic-bar": 44.93,
+        "steel-plate": 10,
+        "electronic-circuit": 120,
+        "sulfuric-acid": 25
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 115,
+      "failedChecks": [],
+      "passedExceptDraw": true
+    },
+    {
+      "name": "copper",
+      "note": "copper 240, everything else at its panel",
+      "feed": {
+        "copper-plate": 240
+      },
+      "steadyPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5.03
+      },
+      "recoveryPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5,
+        "low-density-structure": 5
+      },
+      "entranceDrawPerMinute": {
+        "rocket-fuel": 5,
+        "copper-plate": 120.2,
+        "plastic-bar": 45,
+        "steel-plate": 10,
+        "electronic-circuit": 120,
+        "sulfuric-acid": 25
+      },
+      "blockedChestStock": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "blockedChestMaximum": {
+        "rocket-fuel": 400,
+        "processing-unit": 400,
+        "low-density-structure": 400
+      },
+      "machinesStoppedInLastBlockedMinute": true,
+      "ringMaximumStock": 114,
+      "failedChecks": [],
+      "passedExceptDraw": true
+    }
+  ]
+}

@@ -115,6 +115,24 @@ test('native report passes the rate-class formula, recomputed from its numbers',
  assert.equal(r.inserterCapacityResearch.fast,0);assert.equal(r.inserterCapacityResearch.bulkUnlockBonus,1);
  for(const[k,v]of Object.entries(r.checks))assert.equal(v,true,'check '+k);
  assert.deepEqual(m.measured.steadyPerMinute,r.outputsPerMinute);
+ // Pacing, read back and sampled natively: the clock period, every step, and the logic output on every sample.
+ assert.equal(r.checks.pacing,true,'pacing check present');
+ const pace=r.pacing;
+ assert.equal(pace.wiringVerified,true);assert.equal(pace.clockPeriodTicks,m.pacing.periodTicks);
+ assert.equal(pace.clockBadSteps,0);assert(pace.clockWraps>=2&&pace.clockSteps>=2*m.pacing.periodTicks-2,'two full clock periods read tick by tick');
+ assert(pace.logicSamples>10000,'logic sampled once a second through the run');
+ assert.equal(pace.logicMismatchOneTickLater,0,'logic output equals its conditions one tick later');
+ assert.equal(pace.foreignSignalsOnEnableNetwork,0);
+ // Both branches were seen: the window open and closed, the reserves present (blocked phase) and missing.
+ assert(pace.logicWindowSamples>0&&pace.logicWindowSamples<pace.logicSamples);
+ assert(pace.logicFreeSamples>0&&pace.logicFreeSamples<pace.logicSamples);
+ // At the panel figures the ring never held both reserves while measured: the machines ran in the window only.
+ assert.equal(pace.measurement.samples,m.protocol.measureMinutes*60);
+ assert.equal(pace.measurement.free,0,'no measured second with both reserves on the ring');
+ // The machines follow the clock two ticks late, so a second read at an edge of the window can differ.
+ assert(Math.abs(pace.measurement.enabled-pace.measurement.window)<=.01*pace.measurement.samples,'paced machines enabled in the window only');
+ const share=pace.measurement.window/pace.measurement.samples;
+ assert(Math.abs(share-m.pacing.windowTicks/m.pacing.periodTicks)<.01,'window share of the measured seconds');
 });
 
 test('west entrances: exact materials, one belt or pipe and one labelled panel each; rocket fuel north, circuits south',()=>{
@@ -178,6 +196,7 @@ test('only allowed entities, arm settings, recipes and machine counts',()=>{
   assert.equal(e.tags?.flight_science_entity,e.entity_number);
  }
  assert(!entities.some(e=>['electronic-circuit','rocket-fuel','concrete'].includes(e.recipe)),'no circuit, rocket-fuel or concrete recipe');
+ assert.deepEqual(sorted(entities.filter(e=>/combinator/.test(e.name)).map(e=>e.entity_number)),sorted([m.pacing.clock,m.pacing.logic]),'the only combinators are the pacing clock and logic');
  const counts={};for(const e of entities)if(e.recipe)counts[e.recipe]=(counts[e.recipe]||0)+1;
  assert.deepEqual(counts,m.machineCounts);
  assert.deepEqual(counts,{[PU]:2,'advanced-circuit':2,'copper-cable':1,[LDS]:2});
@@ -222,16 +241,23 @@ test('single loop: closed ring, per-tile hold readers on one red network, gated 
  for(const e of tiles){assert.equal(e.name,'fast-transport-belt');assert.deepEqual(e.control_behavior,{circuit_read_hand_contents:true,circuit_contents_read_mode:1});}
  // Closed: each tile points at the next one.
  tiles.forEach((e,i)=>{const n=tiles[(i+1)%tiles.length],[x,y]=tile(e),[dx,dy]=vec(e.direction);assert.deepEqual(tile(n),[x+dx,y+dy],'ring breaks at '+e.entity_number);});
- // One red network holds every ring tile and every conditioned entity; no green wires.
+ // One red network holds every ring tile, every conditioned belt and arm, and the input of the
+ // pacing logic. The only green wires belong to the pacing (next test).
+ const pacingEntities=new Set([m.pacing.clock,m.pacing.logic,...m.pacing.machines,...m.pacing.relays]);
  const parent=new Map();const find=a=>{while(parent.get(a)!==a&&parent.has(a))a=parent.get(a);return a;};
  const node=(id,c)=>{const k=id+':'+c;if(!parent.has(k))parent.set(k,k);return k;};
- for(const w of bp.wires||[]){if(w[1]===5)continue;assert.equal(w[1],1,'red only');assert.equal(w[3],1,'red only');const a=find(node(w[0],w[1])),b=find(node(w[2],w[3]));parent.set(a,b);
-  const A=byId.get(w[0]),B=byId.get(w[2]);assert(Math.hypot(A.position.x-B.position.x,A.position.y-B.position.y)<=8,'wire at most 8 tiles');}
+ for(const w of bp.wires||[]){if(w[1]===5)continue;
+  const A=byId.get(w[0]),B=byId.get(w[2]);assert(Math.hypot(A.position.x-B.position.x,A.position.y-B.position.y)<=8,'wire at most 8 tiles');
+  if(w[1]!==1||w[3]!==1){assert(pacingEntities.has(w[0])&&pacingEntities.has(w[2]),'a wire that is not ring red joins pacing entities only');continue;}
+  const a=find(node(w[0],w[1])),b=find(node(w[2],w[3]));parent.set(a,b);}
  const ring=find(node(loop.reader,1));
  for(const e of tiles)assert.equal(find(node(e.entity_number,1)),ring);
+ // Red wires touch ring tiles, conditioned belts and arms, and the logic input: nothing else.
+ const redAllowed=new Set([...loop.loop,...loop.controlled,...loop.productGated,m.pacing.logic]);
+ for(const w of bp.wires||[])if(w[1]===1&&w[3]===1){assert(redAllowed.has(w[0])&&redAllowed.has(w[2]),'red wire outside the ring network');assert.equal(find(node(w[0],1)),ring);}
  const conditioned=entities.filter(e=>e.control_behavior?.circuit_condition);
- assert.deepEqual(sorted(conditioned.map(e=>e.entity_number)),sorted([...loop.controlled,...loop.productGated]));
- for(const e of conditioned){assert.equal(find(node(e.entity_number,1)),ring);assert.equal(e.control_behavior.circuit_enabled,true);}
+ assert.deepEqual(sorted(conditioned.map(e=>e.entity_number)),sorted([...loop.controlled,...loop.productGated,...m.pacing.machines]));
+ for(const e of conditioned){assert.equal(e.control_behavior.circuit_enabled,true);if(!m.pacing.machines.includes(e.entity_number))assert.equal(find(node(e.entity_number,1)),ring);}
  // Admission gates and every arm that puts an item on the ring: item < its limit.
  for(const n of loop.controlled){
   const e=byId.get(n),c=e.control_behavior.circuit_condition;
@@ -252,21 +278,114 @@ test('single loop: closed ring, per-tile hold readers on one red network, gated 
  }
 });
 
-test('supply above the panels: evidence for this string; saturated and copper-rich feeds keep every floor',async()=>{
+test('pacing: a clock and a logic decider enable both processing-unit machines in a window, or freely while the ring holds both reserves',()=>{
+ const pc=m.pacing,loop=m.loopControl[0];
+ assert.deepEqual(Object.keys(pc).sort(),['clock','clockSignal','craftsPerMinuteAtTargets','craftsPerMinuteFree','craftsPerMinuteInWindow','enableSignal','leftForLowDensityAtPanels','logic','machines','periodTicks','processingUnitsPerMinuteInWindow','recipe','relays','reserves','windowTicks'].sort());
+ const clock=byId.get(pc.clock),logic=byId.get(pc.logic);
+ assert.equal(clock.name,'decider-combinator');assert.equal(logic.name,'decider-combinator');
+ // Both stand on tiles that were empty before (the arm column north of the chests): the rectangle is unchanged.
+ assert.deepEqual([m.footprint.width,m.footprint.height],[14,12]);assert.equal(m.areaGoal.achievedTiles,168);
+ for(const e of [clock,logic])for(const[x,y]of cellsOf(e))assert(x>=m.footprint.left&&x<m.footprint.right&&y>=m.footprint.top&&y<m.footprint.bottom,'pacing decider inside the rectangle');
+ // The paced machines are exactly the processing-unit machines; nothing relays.
+ assert.equal(pc.recipe,PU);assert.deepEqual(pc.relays,[]);
+ assert.deepEqual(sorted(pc.machines),sorted(entities.filter(e=>e.recipe===PU).map(e=>e.entity_number)));
+ const T={type:'virtual',name:'signal-T'},E={type:'virtual',name:'signal-E'};
+ assert.equal(pc.clockSignal,T.name);assert.equal(pc.enableSignal,E.name);
+ // Clock: counts 0..period-1 by adding one to its own output each tick.
+ assert.deepEqual(clock.control_behavior,{decider_conditions:{conditions:[{first_signal:T,comparator:'<',constant:pc.periodTicks-1}],
+  outputs:[{signal:T,copy_count_from_input:true},{signal:T,copy_count_from_input:false,constant:1}]}});
+ // Logic: window (green) OR copper reserve AND plastic reserve (red, the ring).
+ const item=name=>({type:'item',name,quality:'normal'});
+ assert.deepEqual(pc.reserves,{'copper-plate':20,'plastic-bar':6});
+ assert.deepEqual(logic.control_behavior,{decider_conditions:{conditions:[
+  {first_signal:T,comparator:'<',constant:pc.windowTicks,first_signal_networks:{red:false,green:true}},
+  {first_signal:item('copper-plate'),comparator:'≥',constant:20,first_signal_networks:{red:true,green:false},compare_type:'or'},
+  {first_signal:item('plastic-bar'),comparator:'≥',constant:6,first_signal_networks:{red:true,green:false},compare_type:'and'}],
+  outputs:[{signal:E,copy_count_from_input:false,constant:1}]}});
+ // A reserve is about half of the item's ring limit: reached only when the item arrives faster than it is used.
+ for(const[name,reserve]of Object.entries(pc.reserves))assert(reserve>=.4*loop.limits[name]&&reserve<=.6*loop.limits[name],'reserve of '+name);
+ for(const n of pc.machines)assert.deepEqual(byId.get(n).control_behavior,{circuit_enabled:true,circuit_condition:{first_signal:E,comparator:'>',constant:0}});
+ // Wires (combinator connectors: 1 input red, 2 input green, 3 output red, 4 output green).
+ const wires=(bp.wires||[]).filter(w=>w[1]!==5);
+ const has=(a,ca,b,cb)=>wires.some(w=>(w[0]===a&&w[1]===ca&&w[2]===b&&w[3]===cb)||(w[0]===b&&w[1]===cb&&w[2]===a&&w[3]===ca));
+ assert(has(pc.clock,4,pc.clock,2),'clock output wired to its own input (green)');
+ assert(has(pc.clock,4,pc.logic,2),'clock output to the logic input (green)');
+ const green=wires.filter(w=>w[1]!==1||w[3]!==1);
+ assert.equal(green.length,2+pc.machines.length,'two clock wires and one green wire per paced machine');
+ // The enable network: logic output and both machines, nothing else.
+ const group=new Set([pc.logic+':4']);
+ for(let grew=true;grew;){grew=false;for(const w of green){const a=w[0]+':'+w[1],b=w[2]+':'+w[3];if(group.has(a)!==group.has(b)){group.add(a);group.add(b);grew=true;}}}
+ assert.deepEqual(sorted([...group]),sorted([pc.logic+':4',...pc.machines.map(n=>n+':2')]));
+ // The logic input reads the ring on red; the clock and the paced machines carry no red wire.
+ const red=wires.filter(w=>w[1]===1&&w[3]===1);
+ const logicRed=red.filter(w=>w[0]===pc.logic||w[2]===pc.logic);
+ assert.equal(logicRed.length,1);
+ const other=logicRed[0][0]===pc.logic?logicRed[0][2]:logicRed[0][0];
+ assert([...loop.loop,...loop.controlled,...loop.productGated].includes(other),'logic input wired into the ring network');
+ for(const n of [pc.clock,...pc.machines])assert(!red.some(w=>w[0]===n||w[2]===n),'no red wire on '+n);
+ // Arithmetic: two machines at 4.5 per minute, enabled window/period of the time.
+ assert.equal(pc.craftsPerMinuteFree,9);assert.equal(pc.craftsPerMinuteAtTargets,5);
+ const inWindow=Math.round(9*pc.windowTicks/pc.periodTicks*1000)/1000;
+ assert.equal(pc.craftsPerMinuteInWindow,inWindow);assert.equal(pc.processingUnitsPerMinuteInWindow,inWindow);
+ assert(inWindow>=5.05&&inWindow<=5.125,'the window allows the target plus 1% to 2.5%: '+inWindow);
+ // What the window leaves the low-density line when plastic and copper arrive at exactly their panels:
+ // a processing unit takes 4 plastic (2 advanced circuits) and 4 copper (8 cable).
+ assert.deepEqual(pc.leftForLowDensityAtPanels,{'plastic-bar':Math.round((45-4*inWindow)*1000)/1000,'copper-plate':Math.round((120-4*inWindow)*1000)/1000});
+ assert(pc.leftForLowDensityAtPanels['plastic-bar']>=.98*25&&pc.leftForLowDensityAtPanels['copper-plate']>=.98*100);
+ // The harness reads the clock once a second: the period shares no factor with 60.
+ const gcd=(a,b)=>b?gcd(b,a%b):a;assert.equal(gcd(pc.periodTicks,60),1);
+});
+
+test('supply above the panels: evidence for this string; every feed at or above the panels keeps every floor',async()=>{
  const above=JSON.parse(await read(dir+'above-panels.json'));
  assert.equal(above.blueprintSha256,m.blueprintSha256,'above-panels.json is stale for this string');
  for(const k of ['warmupMinutes','measureMinutes','blockedMinutes','settleMinutes','recoveryMinutes'])assert.equal(above.protocolMinutes[k],m.protocol[k],'full-length run: '+k);
  const by=Object.fromEntries(above.scenarios.map(s=>[s.name,s]));
- for(const name of ['saturated','circuits-plastic-copper-150','circuits-plastic-acid-copper-150','circuits-plastic-copper-steel','all-150-percent']){
-  const s=by[name];assert(s,'scenario '+name);
+ const names=['saturated','all-150-percent','all-105-percent','circuits','circuits-acid','circuits-130-acid','circuits-acid-steel','circuits-acid-copper-150','all-but-plastic','all-but-copper',
+  'circuits-plastic','circuits-360-plastic','circuits-plastic-acid','circuits-plastic-copper-150','circuits-plastic-acid-copper-150','circuits-plastic-copper-steel','plastic-50-rest-high','copper-130-rest-high','acid','steel','plastic','copper'];
+ assert.deepEqual(sorted(Object.keys(by)),sorted(names));
+ for(const name of names){
+  const s=by[name];
   assert(s.passedExceptDraw,name+' failed '+s.failedChecks.join(','));
   for(const item of Object.keys(targets)){assert(s.steadyPerMinute[item]>=.95*targets[item],name+' steady '+item);assert(s.recoveryPerMinute[item]>=.95*targets[item],name+' recovery '+item);}
   for(const v of Object.values(s.blockedChestStock))assert.equal(v,400);
+  for(const v of Object.values(s.blockedChestMaximum))assert.equal(v,400,name+' chest never above its cap');
   assert(s.machinesStoppedInLastBlockedMinute);assert(s.ringMaximumStock<.9*m.loopControl[0].capacity);
+  // No entrance is fed below its panel.
+  if(s.feed!=='saturated')for(const[item,v]of Object.entries(s.feed))assert(v>=nominal[item],name+' feeds '+item+' below its panel');
  }
- // Circuits in surplus with copper at exactly its panel: the ring is not the limit (copper draw 120),
- // the copper is (README "Supply above the panels").
- for(const name of ['circuits-plastic','circuits-plastic-acid'])assert(by[name].entranceDrawPerMinute['copper-plate']>=119.9,name+' copper draw');
+ // Circuits and acid in surplus with plastic or copper at exactly its panel: the processing-unit
+ // machines are held to the window, so the low-density line keeps its share (the earlier string
+ // made 3.0 per minute here).
+ for(const name of ['circuits-acid','circuits-acid-steel','circuits-acid-copper-150','all-but-plastic','all-but-copper','circuits-plastic-acid']){
+  const s=by[name];
+  assert(s.steadyPerMinute[PU]<=m.pacing.processingUnitsPerMinuteInWindow+.07,name+' processing units held to the window');
+  assert(s.steadyPerMinute[LDS]>=4.9&&s.recoveryPerMinute[LDS]>=4.9,name+' low density structures');
+  assert.equal(s.pacingFreeShare<.02,true,name+' ring below the reserves');
+ }
+ // Copper and plastic both well above their panels: the reserves stay on the ring and both lines run faster.
+ for(const name of ['saturated','all-150-percent']){
+  const s=by[name];assert(s.steadyPerMinute[PU]>=7.4&&s.steadyPerMinute[LDS]>=5.9,name+' runs free');assert(s.pacingFreeShare>=.5,name+' reserves on the ring most of the time');
+ }
+});
+
+test('the replaced string is kept with its evidence',async()=>{
+ const old='blueprint-sources/'+id+'/history/unpaced-b10cbc28/';
+ const oldCode=(await read(old+id+'.txt')).toString().trim();
+ assert.equal(hash(oldCode),'b10cbc287a0104307b394c9d2dbb11d82f2fedf12251126fa42aa3585b4fd106');
+ const oldManifest=JSON.parse(await read(old+'manifest.json'))[0],oldReport=JSON.parse(await read(old+'native-report.json'));
+ assert.equal(oldManifest.blueprintSha256,hash(oldCode));assert.equal(oldReport.builds[0].blueprintSha256,hash(oldCode));assert.equal(oldReport.passed,true);
+ assert.match((await read(old+'NOTE.md')).toString(),/replaced/i);
+ // Same rectangle and machines as the current string; the current one adds only the two deciders.
+ assert.deepEqual(oldManifest.footprint,m.footprint);assert.deepEqual(oldManifest.machineCounts,m.machineCounts);
+ assert.deepEqual({...oldManifest.construction,'decider-combinator':2},m.construction);
+ for(const k of ['inputs','fluids','outputs'])assert.deepEqual(oldManifest[k].map(p=>[p.item,p.x,p.y,p.externalSide,p.perMinute??p.cap]),m[k].map(p=>[p.item,p.x,p.y,p.externalSide,p.perMinute??p.cap]),'same '+k+' in the same places');
+ // The defect it was replaced for, measured on it with the same feeds as the current string.
+ const wider=JSON.parse(await read(old+'above-panels-wider.json'));
+ assert.equal(wider.blueprintSha256,hash(oldCode));
+ const by=Object.fromEntries(wider.scenarios.map(s=>[s.name,s]));
+ assert(by['circuits-acid'].steadyPerMinute[LDS]<=3.1&&by['circuits'].recoveryPerMinute[LDS]<=3.2,'low density structures starved with circuits above the panel');
+ assert(wider.scenarios.filter(s=>!s.passedExceptDraw).length>=10);
 });
 
 test('supplier links follow the contract placement rules',()=>{
