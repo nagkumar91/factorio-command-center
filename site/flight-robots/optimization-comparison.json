@@ -1,8 +1,73 @@
 {
-  "selection": "Selected underground-belt variant preserves measured production and recovery at the original 106×18 bounding rectangle, removes 20 placed entities and 28 red surface belts, and costs 68 more iron plates for red transport. The prior selection and its proof remain under history/luna-underground-baseline-1b76c532. No global optimality claim.",
+  "selection": "Current (2026-11-21, user decision): the pair-swapped layout, 96 × 18 (1,728 tiles, 9.4% fewer than 106 × 18) with 45 AM2 + 3 chemical plants, one assembling machine fewer. It meets every target in the full native protocol and measured 303 / 304 / 30 crafts in 30 minutes against the earlier version's 304 / 304 / 32; it recovered faster after blocked output. The earlier 106 × 18 version stays available under history/luna-underground-30edbea3. No global optimality claim.",
   "candidates": [
     {
-      "name": "Selected: smaller footprint",
+      "name": "Current: smaller, one machine fewer",
+      "blueprintSha256": "120a56b5bf85f2f8b50414f0575e28cc7e036fbb13f83cbd7209539d298ca5d6",
+      "width": 96,
+      "height": 18,
+      "machines": 48,
+      "outputsPerMinute": {
+        "construction-robot": 10.1,
+        "logistic-robot": 10.133333333333333,
+        "roboport": 1
+      },
+      "recovery": {
+        "blockedMinutes": 45,
+        "settlingMinutes": 2,
+        "measurementMinutes": 3,
+        "outputsPerMinute": {
+          "construction-robot": 13.666666666666666,
+          "logistic-robot": 17.333333333333332,
+          "roboport": 1
+        },
+        "blockedStock": {
+          "construction-robot": 200,
+          "logistic-robot": 200,
+          "roboport": 20
+        }
+      },
+      "passed": true,
+      "file": "robots-10-roboport-1.txt"
+    },
+    {
+      "name": "Earlier: 106 × 18, slightly faster",
+      "blueprintSha256": "30edbea366140a650cf0aedaaef9ef6e35f8d52c9d72161b3c935173b2374386",
+      "width": 106,
+      "height": 18,
+      "machines": 49,
+      "placedEntities": 637,
+      "redBelts": 313,
+      "redUndergroundEndpoints": 14,
+      "redTransportIron": 4282,
+      "redTransportIronDelta": 68,
+      "undergroundPairs": 4,
+      "outputsPerMinute": {
+        "construction-robot": 10.133333333333333,
+        "logistic-robot": 10.133333333333333,
+        "roboport": 1.0666666666666667
+      },
+      "recovery": {
+        "blockedMinutes": 45,
+        "settlingMinutes": 2,
+        "measurementMinutes": 3,
+        "outputsPerMinute": {
+          "construction-robot": 11.333333333333334,
+          "logistic-robot": 15,
+          "roboport": 1
+        },
+        "blockedStock": {
+          "construction-robot": 200,
+          "logistic-robot": 200,
+          "roboport": 20
+        }
+      },
+      "passed": true,
+      "file": "history/luna-underground-30edbea3/robots-10-roboport-1.txt",
+      "testedBuildId": "robots-underground-candidate"
+    },
+    {
+      "name": "Earlier 106 × 18 baseline before the underground step",
       "blueprintSha256": "1b76c53283330f3660e258e08e74b2a0c42a762f92ee37b4e9e439214c1d77b2",
       "width": 106,
       "height": 18,
@@ -28,7 +93,7 @@
         }
       },
       "passed": true,
-      "file": "robots-10-roboport-1.txt"
+      "file": "history/luna-underground-baseline-1b76c532/robots-10-roboport-1.txt"
     },
     {
       "name": "Previous compact version",
@@ -116,42 +181,6 @@
       },
       "passed": true,
       "file": "history/two-loop-alternative/robots-two-loop.txt"
-    },
-    {
-      "name": "Selected: underground red-belt spans",
-      "blueprintSha256": "30edbea366140a650cf0aedaaef9ef6e35f8d52c9d72161b3c935173b2374386",
-      "width": 106,
-      "height": 18,
-      "machines": 49,
-      "placedEntities": 637,
-      "redBelts": 313,
-      "redUndergroundEndpoints": 14,
-      "redTransportIron": 4282,
-      "redTransportIronDelta": 68,
-      "undergroundPairs": 4,
-      "outputsPerMinute": {
-        "construction-robot": 10.133333333333333,
-        "logistic-robot": 10.133333333333333,
-        "roboport": 1.0666666666666667
-      },
-      "recovery": {
-        "blockedMinutes": 45,
-        "settlingMinutes": 2,
-        "measurementMinutes": 3,
-        "outputsPerMinute": {
-          "construction-robot": 11.333333333333334,
-          "logistic-robot": 15,
-          "roboport": 1
-        },
-        "blockedStock": {
-          "construction-robot": 200,
-          "logistic-robot": 200,
-          "roboport": 20
-        }
-      },
-      "passed": true,
-      "file": "robots-10-roboport-1.txt",
-      "testedBuildId": "robots-underground-candidate"
     }
   ]
 }

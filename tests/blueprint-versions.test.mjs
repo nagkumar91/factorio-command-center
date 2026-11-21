@@ -132,6 +132,43 @@ test('guide page: both import strings with copy and download, a comparison and w
   assert.deepEqual(data.published.find(p => p.id === 'essentials-mall').versions.map(v => v.blueprintSha256), [NEW, OLD]);
 });
 
+test('flight robots: pair swapped (96 x 18) recommended, the 106 x 18 version kept complete, one library card, shared guide section', async () => {
+  const ROBOTS = 'blueprint-sources/flight-robots', CUR = '120a56b5bf85f2f8b50414f0575e28cc7e036fbb13f83cbd7209539d298ca5d6', PREV = '30edbea366140a650cf0aedaaef9ef6e35f8d52c9d72161b3c935173b2374386';
+  const [m] = await json(ROBOTS + '/manifest.json');
+  assert.deepEqual(m.versions.map(v => [v.label, v.blueprintSha256, v.width, v.height, v.tiles, v.machines]), [
+    ['Smaller, pair swapped', CUR, 96, 18, 1728, 48],
+    ['Earlier, one more assembler', PREV, 106, 18, 1908, 49],
+  ]);
+  const [now, before] = m.versions;
+  assert.deepEqual(now.outputsPerMinute.steady, {'construction-robot': 10.1, 'logistic-robot': 10.133333333333333, roboport: 1});
+  assert.deepEqual(before.outputsPerMinute.steady, {'construction-robot': 10.133333333333333, 'logistic-robot': 10.133333333333333, roboport: 1.0666666666666667});
+  assert.deepEqual([now.outputsPerMinute.recovery['construction-robot'], before.outputsPerMinute.recovery['construction-robot']], [13.666666666666666, 11.333333333333334]);
+  // Library: one card under the new id, found by each product, with the earlier version in its history.
+  const record = atlas.blueprints.find(b => b.blueprintSha256 === CUR);
+  assert.equal(record?.id, 'designed-120a56b5bf85f2f8');
+  assert.equal(atlas.blueprints.filter(b => b.blueprintSha256 === PREV).length, 0, 'the earlier version is not a second library card');
+  assert.deepEqual([...record.products].sort(), ['construction-robot', 'logistic-robot', 'roboport']);
+  assert.ok(record.analysis.inputs.length && record.section === 'Robots and logistics' && record.purpose === 'Robot production');
+  for (const id of record.products) assert.ok(atlas.coverage.items.find(i => i.id === id)?.builds.includes(record.id), id + ' covered by flight robots');
+  const p = record.publication;
+  assert.deepEqual([p.version, p.label, p.machines], [2, 'Smaller, pair swapped', 48]);
+  assert.deepEqual(p.recoveryPerMinute, now.outputsPerMinute.recovery);
+  const [h] = p.history;
+  assert.deepEqual([p.history.length, h.version, h.label, h.blueprintSha256, h.footprint, h.tiles, h.machines], [1, 1, 'Earlier, one more assembler', PREV, {width: 106, height: 18}, 1908, 49]);
+  assert.equal(hash(await read('site/' + h.code)), PREV);
+  const oldRecord = await json('site/' + h.url);
+  assert.equal(oldRecord.id, record.id); assert.equal(oldRecord.validation.status, 'game-tested');
+  // Guide page: the shared versions section replaces the family's own table.
+  const html = await read('site/flight-robots/index.html');
+  assert.match(html, /<section id="versions"><h2>Two tested versions: which to choose<\/h2>/);
+  assert.ok(!html.includes('<section class="versions">'), 'one versions presentation');
+  for (const [i, v] of m.versions.entries()) {
+    assert.ok(html.includes(`data-version-copy="${i}"`) && html.includes(`href="${v.file}" download`) && html.includes(`href="${v.report}"`), v.label + ' copy, download and report');
+    assert.equal(hash(await read(path.join('site/flight-robots', v.file))), v.blueprintSha256, v.label + ' download file');
+    assert.ok(html.includes((await read(path.join(ROBOTS, v.file))).trim().slice(0, 200)), v.label + ' string on the page');
+  }
+});
+
 test('helpers: missing reports read as not measured, labels must be words, a stale entry is refused', async () => {
   assert.deepEqual(measuredRates(null, NEW), {steady: null, recovery: null});
   assert.deepEqual(measuredRates({builds: [{blueprintSha256: NEW, passed: false, outputsPerMinute: {a: 1}}]}, NEW), {steady: null, recovery: null});

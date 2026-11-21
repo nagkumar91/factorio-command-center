@@ -102,6 +102,41 @@ try{
  await page.locator('[data-action="close-modal"]').click();
  await page.setViewportSize({width:1440,height:1050});
 
+ // Flight robots: two tested versions on one card, found by each of its three products.
+ const robots=atlas.blueprints.find(b=>b.file==='sources/designed-blueprints/flight-robots/robots-10-roboport-1.txt');
+ assert.equal(robots.id,'designed-120a56b5bf85f2f8');assert.equal(robots.publication.version,2);
+ const robotsOld=JSON.parse(await fs.readFile(path.join(site,robots.publication.history[0].url)));
+ await page.goto(url+'#blueprints');
+ await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ await page.locator('#blueprint-direction').selectOption('outputs');
+ for(const id of ['construction-robot','logistic-robot','roboport']){
+  await page.locator('#blueprint-search').fill(id.replaceAll('-',' '));
+  await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${robots.id}"]`).waitFor({timeout:5000});
+  assert.equal(await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${robots.id}"]`).count(),1,id+': one card, not two');
+ }
+ await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${robots.id}"]`).click();
+ const robotOptions=await page.locator('#blueprint-version option').allInnerTexts();
+ assert.equal(robotOptions.length,2,'flight robots offers both versions');
+ assert.match(robotOptions[0],/Version 2 · Smaller, pair swapped · Recommended · 96 × 18 tiles · Roboport 1\/min$/,'headline: the product whose rate differs most');
+ assert.match(robotOptions[1],/Version 1 · Earlier, one more assembler · 106 × 18 tiles · Roboport 1\.07\/min$/);
+ const robotCompare=page.locator('#modal .version-compare');
+ assert.match(await robotCompare.locator('tbody tr[data-version="2"]').innerText(),/96 × 18 tiles[\s\S]*48[\s\S]*10\.1[\s\S]*recovery 13\.67[\s\S]*10\.13[\s\S]*recovery 17\.33[\s\S]*1[\s\S]*recovery 1/);
+ assert.match(await robotCompare.locator('tbody tr[data-version="1"]').innerText(),/106 × 18 tiles[\s\S]*49[\s\S]*10\.13[\s\S]*recovery 11\.33[\s\S]*10\.13[\s\S]*recovery 15[\s\S]*1\.07[\s\S]*recovery 1/);
+ assert.equal(await robotCompare.locator('tr.selected-version').getAttribute('data-version'),'2','recommended opens by default');
+ await page.locator('#blueprint-version').selectOption('1');
+ await page.waitForFunction(()=>document.querySelector('#blueprint-version')?.value==='1'&&!document.querySelector('#blueprint-version')?.disabled&&document.querySelector('.explainer-intro')?.textContent.includes('106 × 18'));
+ assert.match(await page.locator('#modal .validation-note').innerText(),/roboport 1\.07\/min/);
+ await page.locator('#modal [data-action="copy-blueprint"]').click();
+ assert.equal(await page.evaluate(()=>window.__copiedBlueprint),robotsOld.code,'copy gives the earlier 106 x 18 string');
+ await page.locator('#blueprint-version').selectOption('2');
+ await page.waitForFunction(()=>document.querySelector('#blueprint-version')?.value==='2'&&document.querySelector('.explainer-intro')?.textContent.includes('96 × 18'));
+ await page.locator('#modal [data-action="copy-blueprint"]').click();
+ assert.equal(await page.evaluate(()=>window.__copiedBlueprint),robots.code,'copy gives the current 96 x 18 string');
+ await page.locator('.blueprint-version-picker').scrollIntoViewIfNeeded();
+ await page.screenshot({path:'test-results/blueprint-versions-flight-robots-1440.png'});
+ await page.locator('[data-action="close-modal"]').click();
+ await page.goto(url+'index.html'); // the next library visit loads a fresh page, not a same-URL hash change
+
  // Every versioned design shows each version's size, machines and output per minute, or "Not measured".
  const versioned=atlas.blueprints.filter(b=>b.publication?.history?.length);
  assert.ok(versioned.length>=11,"ten earlier versioned designs plus the mall");
@@ -137,6 +172,29 @@ try{
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'guide page fits a phone');
  await section.scrollIntoViewIfNeeded();
  await page.screenshot({path:'test-results/essentials-mall-versions-390.png'});
+ // Flight robots guide page: the shared which-to-choose section, both strings with copy, download and report.
+ const [robotManifest]=JSON.parse(await fs.readFile('blueprint-sources/flight-robots/manifest.json'));
+ await page.setViewportSize({width:1440,height:1050});
+ await page.goto(url+'flight-robots/index.html');
+ const robotSection=page.locator('#versions');
+ await robotSection.getByRole('heading',{name:'Two tested versions: which to choose'}).waitFor();
+ assert.match(await robotSection.innerText(),/Smaller, pair swapped \(recommended\): smallest: 96 × 18 = 1728 tiles[\s\S]*Earlier, one more assembler: 106 × 18 = 1908 tiles; faster for Construction robot \(10\.13\/min\), Roboport \(1\.07\/min\)/);
+ for(const v of robotManifest.versions){
+  const code=(await fs.readFile(path.join('blueprint-sources/flight-robots',v.file),'utf8')).trim();
+  await robotSection.getByRole('button',{name:`Copy ${v.label} import`}).click();
+  assert.equal(await page.evaluate(()=>window.__copiedBlueprint),code,v.label+' copy');
+  const href=await robotSection.getByRole('link',{name:`Download ${v.label} import`}).getAttribute('href');
+  assert.equal(href,v.file);
+  const response=await page.request.get(new URL(href,page.url()).href);assert.equal(response.status(),200);
+  assert.equal((await response.text()).trim(),code);
+  const card=robotSection.locator('.version-card').filter({hasText:v.blueprintSha256});
+  const report=await page.request.get(new URL(await card.getByRole('link',{name:'Native report'}).getAttribute('href'),page.url()).href);
+  assert.ok((await report.json()).builds.some(b=>b.blueprintSha256===v.blueprintSha256&&b.passed===true),v.label+' report link');
+ }
+ await page.setViewportSize({width:390,height:844});
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'flight robots guide page fits a phone');
+ await robotSection.scrollIntoViewIfNeeded();
+ await page.screenshot({path:'test-results/flight-robots-versions-390.png'});
  assert.deepEqual(errors,[]);
- console.log('Versions and filters passed: recommended default, historical/current exact copies, preserved version choices, sidebar input filters, mobile width; essentials mall two versions with rates; rates for every versioned design; guide page copies and downloads.');
+ console.log('Versions and filters passed: recommended default, historical/current exact copies, preserved version choices, sidebar input filters, mobile width; essentials mall two versions with rates; rates for every versioned design; guide page copies and downloads; flight robots two versions in the library and on its guide page.');
 }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

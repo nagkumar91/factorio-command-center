@@ -1,15 +1,32 @@
 // Local, separately controlled circulating belts. No global intermediate bus.
+// Default run (no ROBOT_OUTPUT): builds the published layout's pre-underground
+// baseline, writes it to its history folder, applies the frozen underground step
+// with the committed native snapshot and writes the published string, optimizer
+// report and manifest (with the version list) to blueprint-sources/flight-robots.
+// Layout switches (screening only, require ROBOT_OUTPUT, which receives the
+// baseline string and manifest and nothing else):
+//   ROBOT_LAST_GROUP=pair|triple   last cable/green group: cable + green (default) or cable + green + cable
+//   ROBOT_PARTS_SIDE=bottom-swapped|top|bottom|split   where the gear and pipe assemblers sit (default: bottom row east end, pipe then gear)
+//   ROBOT_GREEN_GROUPS, ROBOT_REDS, ROBOT_FRAMES, ROBOT_MOTORS, ROBOT_ENGINES   machine counts
+// ROBOT_LAST_GROUP=triple ROBOT_PARTS_SIDE=top reproduces the earlier 106 x 18 baseline 1b76c532.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {encodeBlueprint} from '../blueprints.mjs';
+import {decodeBlueprint,encodeBlueprint} from '../blueprints.mjs';
 import {powerStarterLayout,starterBounds} from '../science-factory/local-ports/compact-shared-layout.mjs';
-const root=path.resolve(new URL('../..',import.meta.url).pathname),out=path.resolve(process.env.ROBOT_OUTPUT||path.join(root,'blueprint-sources/flight-robots'));
-const rawBytes=await fs.readFile(process.env.FACTORIO_RAW||path.join(root,'.cache/flight-21/script-output/data-raw-dump.json')),raw=JSON.parse(rawBytes);
+import {optimizeRobotBaseline} from './underground-optimize.mjs';
+import {versionList} from './versions.mjs';
+const root=path.resolve(new URL('../..',import.meta.url).pathname),family=path.join(root,'blueprint-sources/flight-robots'),screening=!!process.env.ROBOT_OUTPUT,out=path.resolve(process.env.ROBOT_OUTPUT||family);
+const lastGroup=process.env.ROBOT_LAST_GROUP||'pair',partsSide=process.env.ROBOT_PARTS_SIDE||'bottom-swapped';
+// Pre-underground baseline of the published layout and its preserved folder.
+const BASELINE_SHA256='0512b42657485fad93bd0ee47e5999eba11e9f80c58ddc83a29a3035c4677add',baselineFolder='history/pair-swapped-baseline-0512b426';
+// The family's evidence is pinned to the private flight-21 profile dump (33912441...), not the vanilla dump in FACTORIO_RAW.
+const rawBytes=await fs.readFile(process.env.ROBOT_RAW||path.join(root,'.cache/flight-21/script-output/data-raw-dump.json')),raw=JSON.parse(rawBytes);
 const sha=s=>createHash('sha256').update(s).digest('hex');
 await fs.mkdir(out,{recursive:true});
 
+assert(['pair','triple'].includes(lastGroup),'ROBOT_LAST_GROUP must be pair or triple');assert(['bottom-swapped','top','bottom','split'].includes(partsSide),'unknown ROBOT_PARTS_SIDE');
 const entries=[];
 {
  let next=1;const entities=[],wires=[],ports=[],blocks=[],occupied=new Map(),counts={};
@@ -102,8 +119,8 @@ const entries=[];
   const result={name,x,y,width,inlets,limits,controlled,reader:loop[0].entity_number,loop:loop.map(e=>e.entity_number),capacity,maximumStock:stock};blocks.push(result);return result;
  }
  const workshop=block({name:'Robots',x:0,y:0,
-  top:[...repeat('battery',3),...Array.from({length:4},()=>['copper-cable','electronic-circuit','copper-cable']).flat(),...repeat('advanced-circuit',Number(process.env.ROBOT_REDS||10)),'iron-gear-wheel','pipe'],
-  bottom:['construction-robot','logistic-robot','roboport',...repeat('flying-robot-frame',Number(process.env.ROBOT_FRAMES||9)),...repeat('electric-engine-unit',Number(process.env.ROBOT_MOTORS||5)),...repeat('engine-unit',Number(process.env.ROBOT_ENGINES||5))],
+  top:[...repeat('battery',3),...Array.from({length:Number(process.env.ROBOT_GREEN_GROUPS||4)},(_,i)=>lastGroup==='pair'&&i===Number(process.env.ROBOT_GREEN_GROUPS||4)-1?['copper-cable','electronic-circuit']:['copper-cable','electronic-circuit','copper-cable']).flat(),...repeat('advanced-circuit',Number(process.env.ROBOT_REDS||10)),...(partsSide.startsWith('bottom')?[]:partsSide==='split'?['pipe']:['iron-gear-wheel','pipe'])],
+  bottom:['construction-robot','logistic-robot','roboport',...repeat('flying-robot-frame',Number(process.env.ROBOT_FRAMES||9)),...repeat('electric-engine-unit',Number(process.env.ROBOT_MOTORS||5)),...repeat('engine-unit',Number(process.env.ROBOT_ENGINES||5)),...(partsSide==='bottom'?['iron-gear-wheel','pipe']:partsSide==='bottom-swapped'?['pipe','iron-gear-wheel']:partsSide==='split'?['iron-gear-wheel']:[])],
   feeds:[{item:'iron-plate',side:'top',column:2,arms:4,rate:460},{item:'steel-plate',side:'bottom',column:77,arms:1,rate:85}],
   limits:{'iron-plate':160,'plastic-bar':64,'steel-plate':64,battery:48,'copper-cable':80,'electronic-circuit':224,'advanced-circuit':80,'iron-gear-wheel':32,pipe:24,'engine-unit':24,'electric-engine-unit':24,'flying-robot-frame':16,'construction-robot':8,'logistic-robot':8,roboport:2}});
  // Independent acid header north of batteries and lubricant south of motors.
@@ -182,7 +199,38 @@ const entries=[];
  for(const p of ports.filter(p=>['input','fluid'].includes(p.kind)))assert(Math.abs(required[p.items[0]]-p.perMinute)<1e-6,'incorrect input rate '+p.items[0]);
  const code=encodeBlueprint({blueprint:bp}),footprint=starterBounds(bp.entities,raw);
  const manifest={id,name:bp.label,file:id+'.txt',blueprintSha256:sha(code),prototypeSha256:sha(rawBytes),products,targets:{'construction-robot':10,'logistic-robot':10,roboport:1},inputs:ports.filter(p=>p.kind==='input').map(p=>({item:p.items[0],entity:p.entity,position:{x:p.x,y:p.y},direction:p.direction,perMinute:p.perMinute,block:p.block})),fluids:ports.filter(p=>p.kind==='fluid').map(p=>({item:p.items[0],entity:p.entity,perMinute:p.perMinute})),outputs:ports.filter(p=>p.kind==='output').flatMap(p=>p.items.map((item,i)=>({item,entity:p.entity,position:{x:p.x,y:p.y},cap:p.caps[i]}))),ports,footprint,machineCounts:counts,construction:Object.fromEntries([...new Set(bp.entities.map(e=>e.name))].map(n=>[n,bp.entities.filter(e=>e.name===n).length])),loopControl:blocks.map(({inlets,...b})=>b),setupNotes:[bp.description],status:'see-exact-hash-native-report'};
- await fs.writeFile(path.join(out,id+'.txt'),code+'\n');await fs.writeFile(path.join(out,id+'.json'),JSON.stringify({blueprint:bp},null,2)+'\n');entries.push(manifest);
+ if(screening){await fs.writeFile(path.join(out,id+'.txt'),code+'\n');await fs.writeFile(path.join(out,id+'.json'),JSON.stringify({blueprint:bp},null,2)+'\n');}
+ entries.push({...manifest,code});
  console.log(JSON.stringify({id,footprint,machines:Object.values(counts).reduce((a,b)=>a+b,0),blocks:blocks.map(b=>({name:b.name,width:b.width,stock:b.maximumStock,capacity:b.capacity}))}));
 }
-await fs.writeFile(path.join(out,'manifest.json'),JSON.stringify(entries,null,2)+'\n');
+const strip=({code,...entry})=>entry;
+if(screening){await fs.writeFile(path.join(out,'manifest.json'),JSON.stringify(entries.map(strip),null,2)+'\n');process.exit(0);}
+
+// Published pipeline. The baseline is pinned: a layout change needs new native evidence.
+const [baseline]=entries;
+assert.equal(baseline.blueprintSha256,BASELINE_SHA256,'Layout switches changed the published baseline; set ROBOT_OUTPUT to screen a variant');
+const baselineDir=path.join(family,baselineFolder);await fs.mkdir(baselineDir,{recursive:true});
+await fs.writeFile(path.join(baselineDir,baseline.file),baseline.code+'\n');
+await fs.writeFile(path.join(baselineDir,'manifest.json'),JSON.stringify([strip(baseline)],null,2)+'\n');
+const readJson=async file=>JSON.parse(await fs.readFile(path.join(family,file),'utf8').catch(()=>'null'));
+const snapshot=await readJson('native-read-all-snapshot.json');
+if(snapshot?.blueprintSha256!==baseline.blueprintSha256){console.warn('No native read-all snapshot for baseline '+baseline.blueprintSha256+'. Run: node scripts/flight-robots/native-pairing.mjs '+path.join(baselineDir,baseline.file)+' '+path.join(baselineDir,'manifest.json')+' '+path.join(family,'native-read-all-snapshot.json'));process.exit(1);}
+const optimized=await optimizeRobotBaseline({code:baseline.code,entry:strip(baseline),snapshot,rawBytes});
+const finalEntities=optimized.wrapper.blueprint.entities;
+await fs.writeFile(path.join(family,baseline.file),optimized.code+'\n');
+await fs.writeFile(path.join(family,'optimizer-report.json'),JSON.stringify(optimized.report,null,2)+'\n');
+const {undergroundOptimization:_u,nativeEvidence:_n,versions:_v,...base}=strip(baseline);
+const published={...base,blueprintSha256:optimized.report.candidateBlueprintSha256,footprint:starterBounds(finalEntities,raw),construction:Object.fromEntries([...new Set(finalEntities.map(e=>e.name))].map(n=>[n,finalEntities.filter(e=>e.name===n).length])),
+ undergroundOptimization:{baselineBlueprintSha256:baseline.blueprintSha256,baselineFolder,before:optimized.before,after:optimized.after,pairs:optimized.report.pairs,optimizerSha256:optimized.report.optimizerSha256}};
+// Evidence links are written only when the committed files are for this exact string.
+const fileSha=async file=>sha(await fs.readFile(path.join(family,file)));
+const report=await readJson('native-report.json'),pairing=await readJson('native-pairing-report.json'),proof=await readJson('underground-proof.json');
+const build=report&&!report.short&&report.builds.find(b=>b.blueprintSha256===published.blueprintSha256&&b.passed);
+if(build){
+ published.nativeEvidence={buildId:build.id,reportCreatedAt:report.createdAt,pairedReportFile:'native-report.json',prototypeSha256:report.prototypeSha256,pairedReportSha256:await fileSha('native-report.json'),
+  ...(pairing?.blueprintSha256===published.blueprintSha256&&pairing.passed?{pairingReportFile:'native-pairing-report.json',pairingReportSha256:await fileSha('native-pairing-report.json')}:{}),
+  ...(proof?.candidateBlueprintSha256===published.blueprintSha256&&proof.status==='passed'?{qualificationSummaryFile:'underground-proof.json',qualificationSummarySha256:await fileSha('underground-proof.json')}:{})};
+ published.versions=await versionList(family,published);
+}else console.warn('No passing full native report for '+published.blueprintSha256+' yet: manifest written without nativeEvidence and versions. Run RECOVERY=1 node tests/flight-robots-native.mjs, then this generator again.');
+await fs.writeFile(path.join(family,'manifest.json'),JSON.stringify([published],null,2)+'\n');
+console.log(JSON.stringify({baseline:baseline.blueprintSha256,published:published.blueprintSha256,footprint:published.footprint,nativeEvidence:!!published.nativeEvidence,versions:published.versions?.length||0}));
