@@ -6,12 +6,20 @@ Two original layouts targeting 60 packs/minute of every included colour, collect
 
 ## Space and measured production
 
-| Blueprint | Previous footprint | Compact footprint | Area saved | Red/min | Green/min | Blue/min | Military/min |
+| Blueprint | Bus footprint | Compact footprint | Area saved | Red/min | Green/min | Blue/min | Military/min |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| RGB | 140 × 85 | **92 × 30** | **76.8%** | 62.90 | 65.13 | 63.80 | — |
-| RGB + military | 181 × 91 | **108 × 30** | **80.3%** | 62.90 | 65.13 | 63.80 | 62.97 |
+| RGB | 140 × 85 | **86 × 30** | **78.3%** | 63.00 | 66.80 | 63.50 | — |
+| RGB + military | 181 × 91 | **101 × 30** | **81.6%** | 63.00 | 66.80 | 63.50 | 62.97 |
 
-The tradeoff is more assemblers (82 versus 74 for RGB; 99 versus 90 with military), and distributed local entrances. Iron and copper feed more than one block. These are tested improvements, not a claim of global optimality.
+The tradeoff is more assemblers than the bus (80 versus 74 for RGB; 97 versus 90 with military), and distributed local entrances. Iron and copper feed more than one block. These are tested improvements, not a claim of global optimality.
+
+Blue science is limited by its 14 engine assemblers, which make 63.0 engines/min (one engine per pack); figures above 63/min in a 30-minute window come from the engine stock built up during warmup.
+
+### Revision of 2026-11-21
+
+The first compact version (92 × 30 and 108 × 30, 82 and 99 assemblers) had 10 cable and 5 green-circuit assemblers working at 65% and 58%. Every inserter here moves one item per swing, so a cable assembler is held near 70 crafts/min by its single output arm and a green-circuit assembler by its two input arms. This revision has 9 cable and 4 green-circuit assemblers, with each green assembler just downstream of a cable assembler. Inlet columns now sit on machine-slot boundaries, and one green-science assembler has moved to the Science bottom row. The Military block is 4 tiles closer. Together these changes save 6 columns for RGB and 7 with military. Products, input materials, per-entrance rates, entrance sides and their order along each side are unchanged; entrance positions moved with the narrower blocks, so follow the in-game signs.
+
+Measured in the same native tests: 3 green-circuit assemblers starve green science (26–28/min), and 8 cable assemblers lower blue science to 62.1/min. Over a 60-minute measurement both versions make exactly 63.0 engines/min and 63.2–63.4 blue/min. Fed exactly the panel figures at every entrance, both versions give 59.8–60.2/min of every colour. In that test the old RGB layout leaves a surplus cable assembler idle, and the new one has no idle assembler.
 
 ## Connections
 
@@ -43,7 +51,7 @@ The preview lists each local inlet's share. Supply extra during startup and when
 
 The acceptance floor is 59.5/min per colour to allow discrete crafting cycles. The current compact layouts exceed 60/min in both the steady-state and recovery measurements. Private tests never change the user's active game, saves or settings.
 
-The previous bus layouts, import book and matching native evidence are retained in [`history/v1-bus/`](history/v1-bus/README.md). `comparison.json` compares the exact old and new tested hashes.
+The previous bus layouts, import book and matching native evidence are retained in [`history/v1-bus/`](history/v1-bus/README.md). The first compact version is retained the same way, with its own native report, in [`history/compact-loops-8c30528a-d9842cff/`](history/compact-loops-8c30528a-d9842cff/NOTE.md). `comparison.json` compares all three tested generations by exact hash.
 
 ## Reproduce
 

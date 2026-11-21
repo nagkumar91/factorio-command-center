@@ -13,6 +13,7 @@ const images=new Map();async function image(n){if(!images.has(n)){const f=icons.
 const reports=JSON.parse(await fs.readFile(path.join(source,'native-report.json')).catch(()=>Buffer.from('null')));
 let history='';
 try{await fs.mkdir(path.join(out,'history'),{recursive:true});await fs.copyFile(path.join(source,'history/v1-bus/flight-science-book.txt'),path.join(out,'history/v1-bus-book.txt'));history='<p>Previous version: <a href="history/v1-bus-book.txt" download>download the original bus-layout book</a> (140 × 85 and 181 × 91 tiles).</p>';}catch(error){if(error.code!=='ENOENT')throw error;}
+try{await fs.copyFile(path.join(source,'history/compact-loops-8c30528a-d9842cff/flight-science-book.txt'),path.join(out,'history/compact-loops-book.txt'));history+='<p>Previous compact version: <a href="history/compact-loops-book.txt" download>download the first compact-loop book</a> (92 × 30 and 108 × 30 tiles, 82 and 99 assemblers), replaced by the same loops with fewer circuit assemblers and tighter inlet columns.</p>';}catch(error){if(error.code!=='ENOENT')throw error;}
 const cards=[];
 try{await fs.copyFile(path.join(source,'flight-science-book.txt'),path.join(out,'flight-science-book.txt'));}catch(error){if(error.code!=='ENOENT')throw error;}
 for(const m of manifests){

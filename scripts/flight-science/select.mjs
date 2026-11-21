@@ -4,7 +4,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {decodeBlueprint,encodeBlueprint} from '../blueprints.mjs';
 const root=path.resolve(new URL('../..',import.meta.url).pathname),dest=path.join(root,'blueprint-sources/flight-science');
-const dirs=process.argv.slice(2).length?process.argv.slice(2).map(d=>path.resolve(d)):[path.join(dest,'history/v1-bus'),path.join(root,'.cache/flight-science/compact')];
+const dirs=process.argv.slice(2).length?process.argv.slice(2).map(d=>path.resolve(d)):[path.join(dest,'history/v1-bus'),path.join(dest,'history/compact-loops-8c30528a-d9842cff'),path.join(root,'.cache/flight-science/compact')];
 const candidates=[];
 for(const dir of dirs){
  const manifest=JSON.parse(await fs.readFile(path.join(dir,'manifest.json'))),report=JSON.parse(await fs.readFile(path.join(dir,'native-report.json')));

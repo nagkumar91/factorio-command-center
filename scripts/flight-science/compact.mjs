@@ -73,7 +73,8 @@ for(const military of [false,true]){
    const b=belt(ex+(right?2:-2),ey,8);outlets[spec.item]={x:Math.floor(b.position.x),y:Math.floor(b.position.y)};
   }
   for(const [i,item]of products.entries()){
-   const columns=name==='Science'?[28,width-3,8]:[11];
+   // Science chests: red between the copper inlet and the green circuits, green at the east end, blue on the bottom row.
+   const columns=name==='Science'?[31,width-3,8]:[11];
    const a=x+columns[i],bottomOutput=name==='Science'&&item==='chemical-science-pack';
    add('fast-inserter',a,y+(bottomOutput?2:1),{direction:bottomOutput?8:0,override_stack_size:1,...filter(item)});
    const chest=add('wooden-chest',a,y+(bottomOutput?1:2),{bar:1});
@@ -84,27 +85,32 @@ for(const military of [false,true]){
   const controlled=entities.filter(e=>e.name==='fast-inserter'&&e.control_behavior&&e.position.x>=x-1&&e.position.x<=x+width+2&&e.position.y>=y-1&&e.position.y<=y+4).map(e=>e.entity_number);
   const result={name,x,y,width,inlets,outlets,limits,controlled,reader:loop[0].entity_number,loop:loop.map(e=>e.entity_number),capacity,maximumStock:stock};blocks.push(result);return result;
  }
+ // 9 cable and 4 green-circuit makers (was 10 and 5). Every arm moves one item per swing, so a cable maker is held near
+ // 70 crafts/min by its single output arm and a green maker by its two input arms. In the native test 3 greens starve
+ // green science and 8 cables lower blue science to 62.1/min (review 11-21). Each green maker sits just downstream of a cable maker on the ring.
  const circuits=block({name:'Circuits',x:0,y:0,
-  top:['copper-cable','electronic-circuit','copper-cable','advanced-circuit','copper-cable','advanced-circuit','electronic-circuit','copper-cable','advanced-circuit','advanced-circuit','copper-cable','advanced-circuit','advanced-circuit','electronic-circuit'],
-  bottom:['copper-cable','advanced-circuit','electronic-circuit','copper-cable','advanced-circuit','copper-cable','advanced-circuit','advanced-circuit','electronic-circuit','copper-cable','advanced-circuit','advanced-circuit','copper-cable','advanced-circuit'],
-  feeds:[{item:'copper-plate',side:'top',column:2,arms:5,rate:540},{item:'iron-plate',side:'top',column:22,arms:3,rate:240},{item:'plastic-bar',side:'bottom',column:32,arms:2,rate:180}],
+  top:['copper-cable','electronic-circuit','copper-cable','advanced-circuit','advanced-circuit','copper-cable','electronic-circuit','advanced-circuit','advanced-circuit','copper-cable','electronic-circuit','advanced-circuit','advanced-circuit'],
+  bottom:['advanced-circuit','copper-cable','advanced-circuit','copper-cable','advanced-circuit','advanced-circuit','electronic-circuit','copper-cable','advanced-circuit','advanced-circuit','copper-cable','advanced-circuit','copper-cable'],
+  feeds:[{item:'copper-plate',side:'top',column:1,arms:5,rate:540},{item:'iron-plate',side:'top',column:20,arms:3,rate:240},{item:'plastic-bar',side:'bottom',column:32,arms:2,rate:180}],
   limits:{'copper-plate':120,'iron-plate':64,'plastic-bar':48,'copper-cable':140,'electronic-circuit':80,'advanced-circuit':48},
   exports:[{item:'electronic-circuit',side:'right',row:1,reserve:30},{item:'advanced-circuit',side:'left',row:2,reserve:8}]});
  const engines=block({name:'Engines',x:circuits.width+8,y:0,top:['iron-gear-wheel',...repeat('engine-unit',7),'pipe'],bottom:['pipe',...repeat('engine-unit',7)],
-  feeds:[{item:'iron-plate',side:'top',column:2,arms:3,rate:240},{item:'steel-plate',side:'bottom',column:16,arms:1,rate:60}],
+  feeds:[{item:'iron-plate',side:'top',column:1,arms:3,rate:240},{item:'steel-plate',side:'bottom',column:16,arms:1,rate:60}],
   limits:{'iron-plate':64,'steel-plate':30,'iron-gear-wheel':24,pipe:40,'engine-unit':30},exports:[{item:'engine-unit',side:'left',row:2,reserve:4}]});
  const scienceX=-4,scienceY=16;
  const science=block({name:'Science',x:scienceX,y:scienceY,
-  top:[...repeat('automation-science-pack',7),'iron-gear-wheel','transport-belt','inserter',...repeat('logistic-science-pack',9)],
-  bottom:['iron-gear-wheel',...repeat('chemical-science-pack',17)],
-  feeds:[{item:'advanced-circuit',side:'top',column:2,arms:1,rate:90,internal:true},{item:'iron-plate',side:'top',column:15,arms:4,rate:390},{item:'copper-plate',side:'top',column:30,arms:1,rate:60},{item:'electronic-circuit',side:'top',column:circuits.width+6,arms:1,rate:60,internal:true},{item:'engine-unit',side:'top',column:engines.x+2,arms:1,rate:60,internal:true},{item:'sulfur',side:'bottom',column:40,arms:1,rate:30}],
+  // One green-science maker sits on the bottom row; inlet columns sit on slot boundaries. Copper must enter
+  // downstream of every red-science maker: an inlet among them starves the upstream ones (review 11-21).
+  top:[...repeat('automation-science-pack',7),'iron-gear-wheel','transport-belt','inserter',...repeat('logistic-science-pack',8)],
+  bottom:['iron-gear-wheel',...repeat('chemical-science-pack',17),'logistic-science-pack'],
+  feeds:[{item:'advanced-circuit',side:'top',column:2,arms:1,rate:90,internal:true},{item:'iron-plate',side:'top',column:15,arms:4,rate:390},{item:'copper-plate',side:'top',column:28,arms:1,rate:60},{item:'electronic-circuit',side:'top',column:circuits.width+6,arms:1,rate:60,internal:true},{item:'engine-unit',side:'top',column:engines.x+2,arms:1,rate:60,internal:true},{item:'sulfur',side:'bottom',column:5,arms:1,rate:30}],
   limits:{'iron-plate':200,'copper-plate':64,sulfur:24,'iron-gear-wheel':80,'transport-belt':24,inserter:24,'electronic-circuit':64,'advanced-circuit':60,'engine-unit':40,'automation-science-pack':32,'logistic-science-pack':32,'chemical-science-pack':32},
   products:['automation-science-pack','logistic-science-pack','chemical-science-pack']});
  for(const [source,item]of [[circuits,'electronic-circuit'],[circuits,'advanced-circuit'],[engines,'engine-unit']]){
   const a=source.outlets[item],b=science.inlets[item];assert(a.x===Math.floor(b.x),'unaligned bridge '+item);
   for(let y=a.y+1;y<Math.floor(b.y);y++)belt(a.x,y,8);
  }
- if(military)block({name:'Military',x:science.x+science.width+6,y:scienceY,
+ if(military)block({name:'Military',x:science.x+science.width+4,y:scienceY,
   top:['firearm-magazine',...repeat('piercing-rounds-magazine',3),...repeat('grenade',5)],bottom:['grenade',...repeat('military-science-pack',7)],
   feeds:[{item:'iron-plate',side:'top',column:2,arms:3,rate:270},{item:'coal',side:'top',column:15,arms:3,rate:300},{item:'copper-plate',side:'bottom',column:8,arms:1,rate:30},{item:'steel-plate',side:'bottom',column:22,arms:1,rate:15},{item:'stone-wall',side:'bottom',column:27,arms:1,rate:60}],
   limits:{'iron-plate':48,'copper-plate':20,'steel-plate':16,'stone-wall':24,coal:64,'firearm-magazine':24,'piercing-rounds-magazine':24,grenade:24,'military-science-pack':16},products:['military-science-pack']});

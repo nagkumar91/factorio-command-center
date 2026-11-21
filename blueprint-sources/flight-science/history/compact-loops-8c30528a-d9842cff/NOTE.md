@@ -1,0 +1,1 @@
+Replaced 2026-11-21: the successor uses 9 cable and 4 green-circuit makers instead of 10 and 5 and tighter inlet columns, so it is 86 x 30 instead of 92 x 30 (RGB, 80 instead of 82 assemblers) and 101 x 30 instead of 108 x 30 (with military, 97 instead of 99), with full native evidence for its exact strings.
