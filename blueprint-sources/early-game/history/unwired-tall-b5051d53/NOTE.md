@@ -1,0 +1,1 @@
+Replaced 2026-11-21: imported unpowered (no 2.0 pole wires; its 23 trunk big poles and P panel were half a tile off the grid, the top pole landed on an inlet belt), and its cells stood six or seven empty rows apart.
