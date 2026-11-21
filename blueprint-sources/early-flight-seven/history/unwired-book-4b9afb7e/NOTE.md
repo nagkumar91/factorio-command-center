@@ -1,0 +1,1 @@
+Book and manifest published 2026-11-16 (e313389bc); replaced 2026-11-21 because the seven strings in it imported with no working pole wires, so nothing in them was powered; the manifest footprints of 02, 03, 05, 06 and 07 were one row too tall.

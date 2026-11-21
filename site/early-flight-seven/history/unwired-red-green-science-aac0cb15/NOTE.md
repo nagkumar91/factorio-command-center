@@ -1,0 +1,1 @@
+Published 2026-11-16 (e313389bc); replaced 2026-11-21 because it imported with no pole wires (only 1.1-style neighbours keys) and its five trunk big poles and P panel sat half a tile off the grid, one on the iron-ore inlet belt, so nothing was powered.
