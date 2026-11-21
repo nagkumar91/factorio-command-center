@@ -2,6 +2,8 @@
 // Full protocol (phase lengths from manifest.protocol) writes <source>/native-report.json.
 // ESSENTIALS_EXPLORE=1 runs shorter phases (GC_WARMUP, GC_MEASURE, GC_BLOCKED, GC_SETTLE, GC_RECOVERY minutes)
 // and writes .cache/green-circuits/explore-report.json with short: true; it never touches native-report.json.
+// Exploration only: GC_FEED="copper-plate=540,iron-plate=360" feeds each entrance at that exact rate instead of
+// saturating it (a qualification run always saturates both lanes of every entrance).
 import fs from 'node:fs/promises';import path from 'node:path';import os from 'node:os';import {execFile}from'node:child_process';import{promisify}from'node:util';import{createHash}from'node:crypto';import{decodeBlueprint}from'../blueprints.mjs';
 const run=promisify(execFile),sha=s=>createHash('sha256').update(s).digest('hex');
 const id='green-circuits',source=process.env.GC_SOURCE||'blueprint-sources/'+id,explore=process.env.ESSENTIALS_EXPLORE==='1';
@@ -16,6 +18,8 @@ for(const b of builds){
  b.recipeIngredients=Object.fromEntries(Object.keys(b.machineCounts||{}).map(n=>[n,raw.recipe[n].ingredients]));
  if(!explore)for(const[k,v]of Object.entries(minimum))if(!(b.protocol?.[k]>=v))throw Error(`protocol ${k} below the rate-class minimum`);
 }
+const feedPerMinute=process.env.GC_FEED?Object.fromEntries(process.env.GC_FEED.split(',').map(s=>{const[item,rate]=s.split('=');return[item,Number(rate)];})):undefined;
+if(feedPerMinute){if(!explore)throw Error('GC_FEED is for exploration runs only (set ESSENTIALS_EXPLORE=1)');for(const b of builds)for(const p of b.inputs)if(!(feedPerMinute[p.item]>0))throw Error('GC_FEED needs a rate for '+p.item);}
 const protocol=builds[0].protocol;
 const minutes=explore?{warmupMinutes:Number(process.env.GC_WARMUP??3),measureMinutes:Number(process.env.GC_MEASURE??5),blockedMinutes:Number(process.env.GC_BLOCKED??2),settleMinutes:Number(process.env.GC_SETTLE??1),recoveryMinutes:Number(process.env.GC_RECOVERY??2)}:{...protocol};
 const ticks=Object.fromEntries(Object.entries(minutes).map(([k,v])=>[k.replace('Minutes',''),Math.round(v*3600)]));
@@ -28,7 +32,7 @@ await fs.copyFile('scripts/green-circuits/control.lua',mod+'/control.lua');
 // The payload (and so configurationSha256) leaves out the manifest fields the generator rewrites from this
 // report (status, measured), so the hash can be reproduced from the committed manifest.
 const payloadBuilds=builds.map(({status,measured,...b})=>b);
-await fs.writeFile(mod+'/payload.lua','return [====['+JSON.stringify({builds:payloadBuilds,warmup:ticks.warmup,measure:ticks.measure,blocked:ticks.blocked,settle:ticks.settle,recovery:ticks.recovery,debugTopology:process.env.GC_DEBUG==='1'})+']====]');
+await fs.writeFile(mod+'/payload.lua','return [====['+JSON.stringify({builds:payloadBuilds,warmup:ticks.warmup,measure:ticks.measure,blocked:ticks.blocked,settle:ticks.settle,recovery:ticks.recovery,feedPerMinute,debugTopology:process.env.GC_DEBUG==='1'})+']====]');
 await fs.writeFile(mod+'/data.lua','-- No prototypes added.\n');
 await fs.writeFile(root+'/config.ini',`[path]\nread-data=${app}/data\nwrite-data=${root}\n[general]\nlocale=en\n[other]\nupdate-runner-threads-count=1\n`);
 await fs.writeFile(root+'/map.json',JSON.stringify({seed:12345,width:32,height:32,default_enable_all_autoplace_controls:false}));
@@ -63,8 +67,8 @@ export function passChecks(r,b){
  };
 }
 const target=explore?'.cache/'+id+'/explore-report.json':source+'/native-report.json';
-if(explore){report.short=true;report.source=source;}
+if(explore){report.short=true;report.source=source;if(feedPerMinute)report.feedPerMinute=feedPerMinute;}
 await fs.mkdir(path.dirname(target),{recursive:true});await fs.writeFile(target,JSON.stringify(report,null,2)+'\n');
-console.log(JSON.stringify(report.builds.map(r=>({id:r.id,passed:r.passed,steady:r.outputsPerMinute,made:r.madePerMinute,recovery:r.recovery?.outputsPerMinute,blocked:r.blocked?.collectionPauseStock,stopped:r.blocked?.machinesStoppedInLastMinute,failed:Object.entries(r.checks).filter(([,v])=>!v).map(([k])=>k),crafts:r.machines.map(m=>m.recipe[0]+'@'+m.x+','+m.y+'='+m.measuredCrafts).sort()})),null,1));
+console.log(JSON.stringify(report.builds.map(r=>({id:r.id,passed:r.passed,steady:r.outputsPerMinute,made:r.madePerMinute,recovery:r.recovery?.outputsPerMinute,lanes:r.outputPorts?.map(p=>p.collectedByLane),blocked:r.blocked?.collectionPauseStock,stopped:r.blocked?.machinesStoppedInLastMinute,failed:Object.entries(r.checks).filter(([,v])=>!v).map(([k])=>k),crafts:r.machines.map(m=>m.recipe[0]+'@'+m.x+','+m.y+'='+m.measuredCrafts).sort()})),null,1));
 console.log('report: '+target);
 process.exitCode=report.passed?0:1;

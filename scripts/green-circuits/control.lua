@@ -3,6 +3,10 @@
 -- fluid entrances, powers the build through one energy interface on the power port's network, seeds no
 -- inventory, and collects only declared products from declared outputs (belt exits every 4 ticks, chests
 -- every second). Phases: warm-up, measure, blocked (collection stopped), settle, recovery measure.
+-- A belt exit's collection is also counted per lane (collectedByLane: transport line 1, then 2; on an
+-- east-facing exit line 1 is the north lane). Exploration runs only: payload.feedPerMinute feeds each
+-- entrance at an exact rate, alternating lanes, instead of saturating it (validate.mjs refuses it for a
+-- qualification run).
 local payload=helpers.json_to_table(require('payload'))
 local W=payload.warmup
 local M=W+payload.measure
@@ -58,7 +62,7 @@ script.on_init(function()
   s.request_to_generate_chunks({0,0},math.ceil(math.max(sw,sh)/64)+1);s.force_generate_chunk_requests()
   for _,e in pairs(s.find_entities())do e.destroy()end
   local tiles={};for x=-sw/2,sw/2-1 do for y=-sh/2,sh/2-1 do tiles[#tiles+1]={name='grass-1',position={x,y}}end end;s.set_tiles(tiles)
-  local t={id=b.id,surface=s,force=force,entities={},measuredFed={},fed={},output={},recoveryOutput={},portOutputs={},baseline={},machineBaseline={},samples={},blockedSamples={},loopSamples={},fluidFed={},blockedMax={},bulkMaxHand={},powered=false,actualRecipeChecks=0}
+  local t={id=b.id,surface=s,force=force,entities={},measuredFed={},fed={},output={},recoveryOutput={},portOutputs={},baseline={},machineBaseline={},samples={},blockedSamples={},loopSamples={},fluidFed={},blockedMax={},bulkMaxHand={},laneOutputs={},feedCredit={},feedLane={},powered=false,actualRecipeChecks=0}
   t.spec={};t.ingredients=b.recipeIngredients;for _,saved in ipairs(b.entities)do t.spec[saved.entity_number]=saved end
   storage.tests[index]=t
   local inv=game.create_inventory(1);inv[1].set_stack{name='blueprint'};check(inv[1].import_stack(b.code)==0,'import failed')
@@ -112,7 +116,17 @@ script.on_event(defines.events.on_tick,function()
   for id,e in pairs(t.bulkEntities)do if e.held_stack.valid_for_read then t.bulkMaxHand[id]=math.max(t.bulkMaxHand[id]or 0,e.held_stack.count) end end
   -- The only ingredient writes: the two lanes of each declared entrance belt and the declared fluid entrances.
   for i,p in ipairs(b.fluids or {})do local n=t.entities[p.entity].insert_fluid{name=p.item,amount=1000};if tick>W and tick<=M then t.fluidFed[i]=(t.fluidFed[i]or 0)+n end end
-  if tick%4==0 then for i,p in ipairs(b.inputs)do
+  if payload.feedPerMinute then for i,p in ipairs(b.inputs)do
+   -- Exploration only: a credit of rate/3600 items per tick, spent on alternating lanes (capped at 3 so a
+   -- backed-up entrance cannot bank a burst).
+   local belt=t.entities[p.entity];local lane=t.feedLane[i]or 1
+   t.feedCredit[i]=math.min((t.feedCredit[i]or 0)+payload.feedPerMinute[p.item]/3600,3)
+   for _,line in ipairs{lane,3-lane}do if t.feedCredit[i]>=1 and belt.get_transport_line(line).insert_at_back{name=p.item,count=1} then
+    t.feedCredit[i]=t.feedCredit[i]-1;t.feedLane[i]=3-line;t.fed[i]=(t.fed[i]or 0)+1
+    if tick>W and tick<=M then t.measuredFed[i]=(t.measuredFed[i]or 0)+1 end
+   end end
+  end
+  elseif tick%4==0 then for i,p in ipairs(b.inputs)do
    local belt=t.entities[p.entity]
    for lane=1,2 do if belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
     t.fed[i]=(t.fed[i]or 0)+1
@@ -126,7 +140,10 @@ script.on_event(defines.events.on_tick,function()
    if (belt and tick%4==0) or (not belt and tick%60==0) then
     local n=0
     if not blocked then
-     if belt then for line=1,2 do n=n+e.get_transport_line(line).remove_item{name=p.item,count=1000000} end
+     if belt then for line=1,2 do
+      local k=e.get_transport_line(line).remove_item{name=p.item,count=1000000};n=n+k
+      if tick>W and tick<=M then local lanes=t.laneOutputs[outputIndex]or {0,0};lanes[line]=lanes[line]+k;t.laneOutputs[outputIndex]=lanes end
+     end
      else n=e.remove_item{name=p.item,count=1000000} end
     end
     if tick>W and tick<=M then t.output[p.item]=(t.output[p.item]or 0)+n;t.portOutputs[outputIndex]=(t.portOutputs[outputIndex]or 0)+n end
@@ -174,7 +191,7 @@ script.on_event(defines.events.on_tick,function()
    for i,p in ipairs(b.inputs)do r.consumptionPerMinute[p.item]=(stats(t).get_output_count(p.item)-(t.baseline[p.item]or 0))/minutes;r.inputs[#r.inputs+1]={item=p.item,entity=p.entity,acceptedDuringMeasurement=t.measuredFed[i]or 0,acceptedPerMinute=(t.measuredFed[i]or 0)/minutes,productiveRoute=input_route(t,p)}end
    r.fluids={}
    for i,p in ipairs(b.fluids or {})do r.fluids[#r.fluids+1]={item=p.item,entity=p.entity,acceptedDuringMeasurement=t.fluidFed[i]or 0} end
-   for i,p in ipairs(b.outputs or {})do r.outputPorts[#r.outputPorts+1]={item=p.item,entity=p.entity,collectedDuringMeasurement=t.portOutputs[i]or 0}end
+   for i,p in ipairs(b.outputs or {})do r.outputPorts[#r.outputPorts+1]={item=p.item,entity=p.entity,collectedDuringMeasurement=t.portOutputs[i]or 0,collectedByLane=t.laneOutputs[i]}end
    for id,e in pairs(t.entities)do if crafting(e)then
     r.machines[#r.machines+1]={entity=id,recipe=recipe(t,id),actualRecipe=e.get_recipe() and e.get_recipe().name or 'none',x=e.position.x-t.offset.x,y=e.position.y-t.offset.y,nativeCraftingSpeed=e.crafting_speed,nativeRecipeEnergy=e.get_recipe().energy,measuredCrafts=e.products_finished-(t.machineBaseline[id]or 0),status=status(e),statusSamples=t.samples[id],input=e.get_inventory(defines.inventory.crafter_input).get_contents(),output=e.get_inventory(defines.inventory.crafter_output).get_contents()}
    end end

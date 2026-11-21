@@ -2,13 +2,16 @@
 // Two mirrored rows of `C E C E C` (copper cable, electronic circuit). Cable never touches a belt: the
 // outer cable machines hand all their cable to one circuit machine through a bulk arm (hand 2),
 // the middle cable machine splits between both neighbours through one fast arm (hand 1) each.
-// Published variant `twin-belt` (19 x 10): both rows face a middle aisle of two belts, plates on A
-// (copper north lane, iron south lane) and circuits on B, which is the east belt exit; long-handed
-// arms reach across the nearer belt. Older variants (history/) share one plate belt between the rows
-// and send circuits out on two outer belts that merge onto the exit.
+// Published variant `single-aisle` (19 x 9): both rows face one aisle of three rows. The plate belt runs
+// along the middle row (copper north lane, iron south lane); every machine takes its plate from it with
+// one fast arm. Circuits are dropped on two short tiles of the same row; the plate belt dives under them,
+// and the circuit belt leaves for the south arm row, dives under the arms there and ends at the east exit.
+// `single-aisle-even-lanes` (20 x 9, history/) is the same aisle with both lanes of the exit equal.
+// `twin-belt` (19 x 10, history/) has two full belts in a four-row aisle and long-handed arms. Older
+// variants (history/) share one plate belt between the rows and send circuits out on two outer belts.
 //
 // Pure Node and reproducible: the same variant and raw dump give the same blueprint string.
-// Usage: node scripts/green-circuits/generate.mjs [--variant twin-belt|compact|reference] [--out dir]
+// Usage: node scripts/green-circuits/generate.mjs [--variant single-aisle|single-aisle-even-lanes|twin-belt|compact|reference] [--out dir]
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -18,11 +21,11 @@ import {starterBounds} from '../science-factory/local-ports/compact-shared-layou
 
 export const RAW=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
 const args=process.argv.slice(2),flag=(name,fallback)=>{const i=args.indexOf('--'+name);return i>=0?args[i+1]:fallback;};
-const variantName=flag('variant',process.env.GC_VARIANT||'twin-belt');
+const variantName=flag('variant',process.env.GC_VARIANT||'single-aisle');
 const id='green-circuits',out=flag('out',process.env.GC_OUT||'blueprint-sources/'+id);
 const bytes=await fs.readFile(RAW),raw=JSON.parse(bytes),sha=s=>createHash('sha256').update(s).digest('hex');
 
-// Layout variants. Every variant keeps the same machines and arms; they differ only in how the
+// Layout variants. Every variant keeps the same machines and gap arms. The four oldest differ only in how the
 // two entrances merge onto the shared input belt (west) and how the two output belts reach the exit (east).
 //  west 'column': entrances one column west of the first machine, the merge tile in that machine's column.
 //  west 'inline': entrances under the first machine's west column, a curve turns each into a side-load.
@@ -47,6 +50,14 @@ const VARIANTS={
  // twin-belt: no outer belts. Both machine rows face a middle aisle of two belts: A (plates, y=4) and B
  // (circuits, y=5). Long-handed arms reach across the belt nearer to them. Two substations in holes on row 5..6.
  'twin-belt':{twin:true,substations:2},
+ // single-aisle: one aisle of three rows (arm row, belt row, arm row). Plates (P) and circuits (Q) share the
+ // aisle: P stays on the middle row and dives under each circuit drop tile; Q leaves the middle row for the
+ // south arm row and dives under the arms there. One substation in the only 2x2 hole that reaches every arm.
+ // The entrances and the exit are on the same tiles as in twin-belt. Exit lanes: 270/min north, 90/min south.
+ 'single-aisle':{aisle:'single',merge:'side-load',substations:1},
+ // single-aisle-even-lanes: the same aisle, one column wider (20 x 9). The two circuit pairs reach the east end on
+ // different rows and side-load one merge tile from opposite sides, so each lane of the exit carries 180/min.
+ 'single-aisle-even-lanes':{aisle:'single',merge:'opposite-sides',substations:1},
 };
 const variant=VARIANTS[variantName];assert(variant,'unknown variant '+variantName);const east=EAST[variant.east]||{};
 
@@ -68,7 +79,53 @@ const long=(x,y,d,extra={})=>add('long-handed-inserter',x,y,{direction:d,overrid
 const columns=[{x:1,recipe:'copper-cable'},{x:5,recipe:product},{x:9,recipe:'copper-cable'},{x:13,recipe:product},{x:17,recipe:'copper-cable'}];
 const plateFor=recipe=>recipe==='copper-cable'?'copper-plate':'iron-plate';
 let gapArms=[],inputArms=[],outputArms=[],exitBelt,labelSpots;const entrance={};
-if(variant.twin){
+if(variant.aisle==='single'){
+// ---------- single-aisle: machine rows y=0..2 and y=6..8; aisle rows y=3 (arms), y=4 (plate belt P, circuit drop tiles), y=5 (arms, circuit belt Q) ----------
+for(const cy of [1,7])for(const c of columns){
+ add('assembling-machine-2',c.x,cy,{position:{x:c.x+.5,y:cy+.5},recipe:c.recipe});machineCounts[c.recipe]=(machineCounts[c.recipe]||0)+1;
+}
+for(const cy of [1,7])gapArms.push(bulk(3,cy,12),fast(7,cy,4),fast(11,cy,12),bulk(15,cy,4));
+const even=variant.merge==='opposite-sides';
+// Every machine takes its plate through one filtered fast arm from the plate belt on row 4: the top row's arms
+// on row 3, the bottom row's on row 5, both in the same column, so one belt tile serves two machines.
+const plateX=even?[2,4,9,12,16]:[2,4,9,14,16];
+plateX.forEach((x,c)=>{const item=plateFor(columns[c].recipe);inputArms.push(fast(x,3,8,filter(item)),fast(x,5,0,filter(item)));}); // direction = the side picked from
+// Every circuit machine drops through one fast arm onto a circuit tile on row 4, one column from its plate tile.
+for(const x of [5,13])outputArms.push(fast(x,3,0),fast(x,5,8));
+const belt=(x,y,d)=>add('fast-transport-belt',x,y,{direction:d}),dive=(x,y,d,type)=>add('fast-underground-belt',x,y,{direction:d,type});
+// Entrances as in twin-belt, on the same tiles: copper (0,3) and iron (0,5) turn onto (1,4) from opposite sides,
+// one lane each.
+entrance['copper-plate']=belt(0,3,4);belt(1,3,8);entrance['iron-plate']=belt(0,5,4);belt(1,5,0);
+// Plate belt P on row 4: surface (1..3), then under the west circuit tiles and the substation (4 -> 9).
+for(const x of [1,2,3])belt(x,4,4);
+dive(4,4,4,'input');dive(9,4,4,'output');
+// Circuit belt Q, west pair: drop tile (5,4), down the free column 6 to row 5, east under the middle cable
+// machine's arm (8 -> 10).
+belt(5,4,4);belt(6,4,8);belt(6,5,4);belt(7,5,4);dive(8,5,4,'input');dive(10,5,4,'output');
+if(!even){
+ // P dives again under the east circuit tiles (10 -> 14), then one surface tile and a dead-end curve at (16,4)
+ // facing the last copper arm on row 3, away from the exit.
+ dive(10,4,4,'input');dive(14,4,4,'output');belt(15,4,4);belt(16,4,0);
+ // East pair: drop tile (13,4) runs WEST to the gap column 11 and side-loads the merge tile (11,5) from the
+ // north. From there Q dives under the east arms (12 -> 17) to the exit (18,5), a straight tile fed from
+ // behind, which holds 8 when blocked. The exit is on the same tile as in twin-belt.
+ belt(11,5,4);belt(13,4,12);belt(12,4,12);belt(11,4,8);
+ dive(12,5,4,'input');dive(17,5,4,'output');exitBelt=belt(18,5,4);
+}else{
+ // Even lanes, one column wider: the west pair stays on row 5 (10 -> 11 -> 17 underground) and turns north at
+ // (18,5); the east pair goes up the free column 14 to row 3, under the last arm (15 -> 17) and turns south at
+ // (18,3). Both side-load the merge tile (18,4) from opposite sides, one pair per lane; the exit (19,4) is fed
+ // from behind. P dives under the east circuit tiles (12 -> 15) and ends in the dead-end curve at (16,4).
+ belt(10,4,4);belt(11,4,4);dive(12,4,4,'input');dive(15,4,4,'output');belt(16,4,0);
+ dive(11,5,4,'input');dive(17,5,4,'output');belt(18,5,0);
+ belt(13,4,4);belt(14,4,0);belt(14,3,4);dive(15,3,4,'input');dive(17,3,4,'output');belt(18,3,8);
+ belt(18,4,4);exitBelt=belt(19,4,4);
+ assert(!at(17,4),'the merge tile must have nothing behind it');
+}
+for(const [x,y] of [[7,3],[8,3],[7,4],[8,4]])assert(!at(x,y),'substation hole must be free');
+assert.equal(at(16,4).direction,0,'the plate belt ends in a curve, not toward a circuit belt');
+labelSpots={'copper-plate':[3,3],'iron-plate':[3,5]};
+}else if(variant.twin){
 // ---------- twin-belt: machine rows y=0..2 and y=7..9, belts A (y=4) and B (y=5) in the aisle ----------
 for(const cy of [1,8])for(const c of columns){
  add('assembling-machine-2',c.x,cy,{position:{x:c.x+.5,y:cy+.5},recipe:c.recipe});machineCounts[c.recipe]=(machineCounts[c.recipe]||0)+1;
@@ -211,13 +268,16 @@ for(const e of entities)e.tags={...e.tags,flight_science_entity:e.entity_number}
 
 // ---------- blueprint ----------
 // The non-twin variants keep their original description so their strings stay reproducible (history/).
-const description=variant.twin?`Official 2.1.24 Space Age; 10 assembling machine 2 (6 copper cable, 4 electronic circuit), no modules, red belts, fast, long-handed and bulk inserters, two substations. WEST: copper plates ${fmt(required['copper-plate'])}/min (upper entrance) and iron plates ${fmt(required['iron-plate'])}/min (lower entrance); both may arrive on both lanes, the blueprint side-loads each onto its own lane of the plate belt (row 4). EAST: one red belt exit on row 5, ${target} electronic circuits/min, one machine row per lane. Cable is handed machine to machine; keep the bulk arms (hand 2) at the outer cable machines and the fast arms at the middle one: the hand sizes fix the 2:1 cable split. Keep the plate filters on the input arms and the dead-end curve at the east end of the plate belt. Supply electricity at either substation.`:`Official 2.1.24 Space Age; 10 assembling machine 2 (6 copper cable, 4 electronic circuit), no modules, red belts, fast and bulk inserters, one substation. WEST: copper plates ${fmt(required['copper-plate'])}/min (upper entrance) and iron plates ${fmt(required['iron-plate'])}/min (lower entrance); both may arrive on both lanes, the blueprint side-loads each onto its own lane of the shared input belt. EAST: one red belt exit, ${target} electronic circuits/min, one row per lane. Cable is handed machine to machine; keep the bulk arms (hand 2) at the outer cable machines and the fast arms at the middle one: the hand sizes fix the 2:1 cable split. Supply electricity at the substation.`;
+const exitText=variant.merge==='opposite-sides'?`one red belt exit on row 4, ${target} electronic circuits/min, ${target/2} per lane`:`one red belt exit on row 5, ${target} electronic circuits/min (${target*3/4} on the north lane, ${target/4} on the south lane)`;
+const description=variant.aisle==='single'?`Official 2.1.24 Space Age; 10 assembling machine 2 (6 copper cable, 4 electronic circuit), no modules, red belts, fast and bulk inserters, one substation. WEST: copper plates ${fmt(required['copper-plate'])}/min (upper entrance) and iron plates ${fmt(required['iron-plate'])}/min (lower entrance); both may arrive on both lanes, the blueprint side-loads each onto its own lane of the plate belt (row 4). EAST: ${exitText}. Cable is handed machine to machine; keep the bulk arms (hand 2) at the outer cable machines and the fast arms at the middle one: the hand sizes fix the 2:1 cable split. Keep the plate filters on the input arms, the underground belt pairs and the dead-end curve at the east end of the plate belt. Supply electricity at the substation.`:variant.twin?`Official 2.1.24 Space Age; 10 assembling machine 2 (6 copper cable, 4 electronic circuit), no modules, red belts, fast, long-handed and bulk inserters, two substations. WEST: copper plates ${fmt(required['copper-plate'])}/min (upper entrance) and iron plates ${fmt(required['iron-plate'])}/min (lower entrance); both may arrive on both lanes, the blueprint side-loads each onto its own lane of the plate belt (row 4). EAST: one red belt exit on row 5, ${target} electronic circuits/min, one machine row per lane. Cable is handed machine to machine; keep the bulk arms (hand 2) at the outer cable machines and the fast arms at the middle one: the hand sizes fix the 2:1 cable split. Keep the plate filters on the input arms and the dead-end curve at the east end of the plate belt. Supply electricity at either substation.`:`Official 2.1.24 Space Age; 10 assembling machine 2 (6 copper cable, 4 electronic circuit), no modules, red belts, fast and bulk inserters, one substation. WEST: copper plates ${fmt(required['copper-plate'])}/min (upper entrance) and iron plates ${fmt(required['iron-plate'])}/min (lower entrance); both may arrive on both lanes, the blueprint side-loads each onto its own lane of the shared input belt. EAST: one red belt exit, ${target} electronic circuits/min, one row per lane. Cable is handed machine to machine; keep the bulk arms (hand 2) at the outer cable machines and the fast arms at the middle one: the hand sizes fix the 2:1 cable split. Supply electricity at the substation.`;
 const bp={item:'blueprint',version:562954249961472,label:'Green-circuit supplier · 360/min',description,entities,wires,icons:[{index:1,signal:{type:'item',name:product}}]};
 const code=encodeBlueprint({blueprint:bp});
 // Status comes only from a full-protocol report for this exact string in the output folder.
 let status='unverified',measured;
 try{const report=JSON.parse(await fs.readFile(out+'/native-report.json','utf8'));const r=report.builds?.find(b=>b.blueprintSha256===sha(code));
- if(r&&!report.short){status=r.passed&&report.passed?'qualified':'not-qualified';measured={steadyPerMinute:r.outputsPerMinute[product],recoveryPerMinute:r.recovery?.outputsPerMinute?.[product],blockedExitStock:r.blocked?.collectionPauseStock?.[0]?.count,reportCreatedAt:report.createdAt};}}catch{}
+ if(r&&!report.short){status=r.passed&&report.passed?'qualified':'not-qualified';measured={steadyPerMinute:r.outputsPerMinute[product],recoveryPerMinute:r.recovery?.outputsPerMinute?.[product],blockedExitStock:r.blocked?.collectionPauseStock?.[0]?.count,reportCreatedAt:report.createdAt};
+  // Per-lane delivery at the exit (reports made before the harness counted lanes have none).
+  const lanes=r.outputPorts?.[0]?.collectedByLane;if(Array.isArray(lanes))measured.exitLanesPerMinute={north:lanes[0]/report.protocolMinutes.measureMinutes,south:lanes[1]/report.protocolMinutes.measureMinutes};}}catch{}
 const construction=Object.fromEntries([...new Set(entities.map(e=>e.name))].sort().map(n=>[n,entities.filter(e=>e.name===n).length]));
 const manifest={
  id,name:bp.label,file:id+'.txt',blueprintSha256:sha(code),prototypeSha256:sha(bytes),class:'rate',status,...(measured?{measured}:{}),
@@ -229,7 +289,7 @@ const manifest={
  loopControl:[],stockControl:{mode:'belt-exit',exit:exitBelt.entity_number,cap:exitCap},
  armRoles:{gap:gapArms.map(e=>e.entity_number),input:inputArms.map(e=>e.entity_number),output:outputArms.map(e=>e.entity_number)},
  protocol,construction,
- setupNotes:[description,`Belt the exit east to the circuit entrances of the consumers; one red belt carries up to five copies (1,800/min). The exit holds ${exitCap} circuits when the consumer stops taking them, and every machine then stops.`,'Feed plates at or above the listed rates; extra plates simply back up on the entrance belts.'],
+ setupNotes:[description,variant.merge==='side-load'?`Belt the exit east to the circuit entrances of the consumers. The exit holds ${exitCap} circuits when the consumer stops taking them, and every machine then stops. Sharing one red belt (1,800/min, 900 per lane): side-load the copies onto it from alternating sides, two copies per lane, four copies per belt. Joined lane for lane, three copies fill the north lane (${3*target*3/4} of 900).`:`Belt the exit east to the circuit entrances of the consumers; one red belt carries up to five copies (1,800/min). The exit holds ${exitCap} circuits when the consumer stops taking them, and every machine then stops.`,'Feed plates at or above the listed rates; extra plates simply back up on the entrance belts.'],
 };
 await fs.mkdir(out,{recursive:true});
 await fs.writeFile(out+'/'+id+'.txt',code+'\n');
