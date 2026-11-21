@@ -1,0 +1,5 @@
+# eight-by-four (8 x 4 = 32 tiles, rejected as larger)
+
+Tried in the design review. Machine on rows 1..3 facing west; row 0 holds the three panels and the substation. The fast arm `(5,3)` drops onto the corner `(6,3)` where the column `(6,2)` turns east (north lane); the long-handed arm `(5,2)` reaches over the column and drops onto `(7,2)`, a belt running west towards the arm, which the game fills on its right lane; the two turns carry that to the south lane of the corner, which feeds the exit `(7,3)` from behind. 6 belts, 3 fast arms, 1 long-handed arm.
+
+Full protocol passed at 22.5 / 4.5 / 450 (`native-report.json` here, SHA-256 `b3cb37ba1b50fa34f74946d20952f16ae6c869f0cbc5d095c3af1e301276ca76`): 45.0 steady, 45.0 recovery, 135 crafts, exit 8 = 4 + 4 when blocked, machine stopped on a full output. Rejected only because `five-by-six` (5 x 6 = 30) is 2 tiles smaller with the same parts. Lane rule measured in `scripts/concrete-supplier/probes/reach.lua` (`fastToward`, `longToward`, `longTowardPair`).

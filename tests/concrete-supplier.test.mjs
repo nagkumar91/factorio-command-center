@@ -47,6 +47,7 @@ test('one record; product, target, cap, nominal demand and machines are the spec
  assert.deepEqual(m.protocol,{warmupMinutes:15,measureMinutes:30,blockedMinutes:5,settleMinutes:5,recoveryMinutes:10});
  assert.equal(bp.version,562954249961473);assert.deepEqual(bp.icons.map(i=>i.signal.name),['concrete']);
  assert(['qualified','native-validation-pending'].includes(m.status));
+ assert.equal(m.variant,'five-by-six');assert.equal(m.supply,'nominal');
 });
 
 test('blueprint, native report, prototypes, harness and validator hashes agree',async()=>{
@@ -106,6 +107,9 @@ test('three west entrances (two belts, one pipe) with labelled panels; one east 
  }
  // Expected figures: the published supply is the recipe demand (lowest figure that passed).
  assert.deepEqual(Object.fromEntries(entrances.map(p=>[p.item,p.nominalPerMinute])),{'stone-brick':22.5,water:450,'iron-ore':4.5});
+ assert.deepEqual(Object.fromEntries(entrances.map(p=>[p.item,p.perMinute])),{'stone-brick':22.5,water:450,'iron-ore':4.5});
+ // Same entrances as the 7 x 5 version it replaced: west edge, stone brick on row 0, water on row 1, iron ore on row 2.
+ assert.deepEqual(Object.fromEntries(entrances.map(p=>[p.item,tile(byId.get(p.entity))])),{'stone-brick':[0,0],water:[0,1],'iron-ore':[0,2]});
  const outputs=m.ports.filter(p=>p.kind==='output');assert.equal(outputs.length,1);assert.deepEqual(m.outputs,outputs);
  const o=outputs[0];assert.equal(o.item,'concrete');assert.equal(o.externalSide,'east');assert.equal(o.transport,'belt');assert.equal(o.cap,8);assert.equal(o.direction,4);
  const exit=byId.get(o.entity);assert.equal(exit.name,'fast-transport-belt');assert.equal(exit.direction,4);
@@ -115,6 +119,8 @@ test('three west entrances (two belts, one pipe) with labelled panels; one east 
  for(let k=1;k<=3;k++)assert(!entityAt(ex+k,ey),'east approach clear');
  assert.equal(ex+1,m.footprint.right,'exit on the east edge');assert.equal(ey,m.footprint.bottom-1,'exit on the bottom row');
  assert.deepEqual(m.supplierLinks,[{consumer:'launch-kit',item:'concrete',exitRowFromTop:ey-m.footprint.top,perMinute:45}]);
+ assert.deepEqual([ex,ey],[4,5],'exit tile of the 5 x 6 layout');assert.equal(m.supplierLinks[0].exitRowFromTop,5);
+ assert.match(m.setupNotes[1],/exit row \(row 5 from its top\)/);
  const power=m.ports.filter(p=>p.kind==='power');assert.equal(power.length,1);assert.equal(byId.get(power[0].entity).name,'substation');
  assert.equal(entities.filter(e=>e.name==='substation').length,1);assert.equal((bp.wires||[]).length,0,'no wires');
 });
@@ -137,16 +143,20 @@ test('allowed entities, arm settings, machine, lanes of the two output arms',()=
  for(const armId of m.armRoles.input){const arm=byId.get(armId);assert.equal(arm.name,'fast-inserter');assert(arm.use_filters);
   const src=entityAt(...pickTile(arm));assert(m.inputs.some(p=>p.entity===src.entity_number),'picks from an entrance');assert.equal(arm.filters[0].name,m.inputs.find(p=>p.entity===src.entity_number).item);
   assert.equal(entityAt(...dropTile(arm)),machine,'drops into the machine');}
- // Output arms: one drops onto an east-running belt of the exit row, either straight away from it (arm west of the
- // belt) or from the north; the game fills the south lane both ways. The other drops onto a stub that ends running
- // south into an exit-row belt that is itself fed from behind, so the stub side-loads it: the north lane. Both lane
- // rules were measured natively (scripts/concrete-supplier/probes/results/lanes.json).
+ // Output arms, both under the machine: one drops onto an east-running belt of the exit row from the north (the
+ // published 5 x 6 layout uses a long-handed arm for it, two tiles above the exit row, swinging over a panel); the
+ // game fills the south lane. The other, a fast arm, drops onto a stub that ends running south into an exit-row
+ // belt that is itself fed from behind, so the stub side-loads it: the north lane. Both lane rules were measured
+ // natively (scripts/concrete-supplier/probes/results/lanes.json for fast arms, reach.json for the long-handed arm).
  assert.equal(m.armRoles.output.length,2);
  const exit=byId.get(m.outputs[0].entity),[ex,ey]=tile(exit);
  const drops=m.armRoles.output.map(i=>byId.get(i)).map(a=>{assert.equal(entityAt(...pickTile(a)),machine);return{arm:a,to:entityAt(...dropTile(a))};});
  const onRow=drops.find(d=>d.to.name==='fast-transport-belt'&&d.to.direction===4&&[12,0].includes(d.arm.direction)&&tile(d.to)[1]===ey);
  assert(onRow,'one arm drops onto an east-running exit-row belt from the west or the north');
- const stub=drops.find(d=>d!==onRow);assert.equal(stub.to.name,'fast-transport-belt');
+ assert.equal(onRow.arm.name,'long-handed-inserter','the exit-row arm is the long-handed one');assert.equal(onRow.arm.direction,0,'it drops from the north');
+ {const[ax,ay]=tile(onRow.arm);assert.equal(ay,ey-2);assert.equal(entityAt(ax,ay+1)?.name,'display-panel','a panel sits under its swing');assert.equal(entityAt(ax-1,ey)?.name,'substation','nothing feeds its belt from behind');}
+ const stub=drops.find(d=>d!==onRow);assert.equal(stub.to.name,'fast-transport-belt');assert.equal(stub.arm.name,'fast-inserter');
+ assert.equal(entities.filter(e=>e.name==='long-handed-inserter').length,1);assert.match(bp.description,/fast inserters and one long-handed inserter/);
  let cur=stub.to,steps=0;
  for(;;){const[x,y]=tile(cur),[dx,dy]=vec(cur.direction),nxt=entityAt(x+dx,y+dy);assert(nxt&&nxt.name==='fast-transport-belt','stub stays on belts');
   if(tile(nxt)[1]===ey){assert.equal(cur.direction,8,'stub enters the exit row running south');assert.equal(nxt.direction,4);
@@ -161,9 +171,31 @@ test('footprint, area goal and bill of materials recomputed from the decoded str
  assert.equal(m.areaGoal.achievedTiles,f.width*f.height);
  assert.deepEqual({goal:m.areaGoal.goalTiles,stretch:m.areaGoal.stretchTiles,fallback:m.areaGoal.fallbackTiles},{goal:40,stretch:36,fallback:60});
  assert(m.areaGoal.achievedTiles<=m.areaGoal.stretchTiles,'meets the stretch goal');
+ assert.deepEqual([f.left,f.top,f.width,f.height],[0,0,5,6]);assert.equal(m.areaGoal.achievedTiles,30);
  const bill={};for(const e of entities)bill[e.name]=(bill[e.name]||0)+1;
  assert.deepEqual(m.billOfMaterials.items,bill);assert.deepEqual(m.construction,Object.fromEntries(Object.entries(bill).sort()));
+ assert.deepEqual(m.construction,{'assembling-machine-2':1,'display-panel':3,'fast-inserter':3,'fast-transport-belt':6,'long-handed-inserter':1,pipe:2,substation:1});
+ // Every tile but two is used: (4,3) and (4,4), east of the two output arms.
+ const empty=[];for(let y=0;y<6;y++)for(let x=0;x<5;x++)if(!entityAt(x,y))empty.push([x,y]);
+ assert.deepEqual(empty,[[4,3],[4,4]]);
  assert.equal(bp.tiles,undefined,'no tiles');
+});
+
+test('the replaced 7 x 5 version is kept in history; the published one is smaller with the same interface',async()=>{
+ const h=dir+'history/seven-by-five-449f804a/';
+ const old=JSON.parse(await read(h+'manifest.json'))[0],oldCode=(await read(h+'concrete-supplier.txt')).toString().trim(),oldReport=JSON.parse(await read(h+'native-report.json'));
+ assert.equal(hash(oldCode),'449f804ab8030a03609676db13c1b320551db240776069ee99cb546abbe5afe2');assert.equal(old.blueprintSha256,hash(oldCode));
+ assert.equal(oldReport.builds[0].blueprintSha256,old.blueprintSha256);assert.equal(oldReport.passed,true);
+ assert.match((await read(h+'NOTE.md')).toString(),/superseded by five-by-six/);
+ const area=x=>x.footprint.width*x.footprint.height;
+ assert.equal(area(old),35);assert(area(m)<=area(old)*.95,'at least 5% fewer tiles');
+ assert.deepEqual(m.products,old.products);assert.deepEqual(m.targets,old.targets);assert.deepEqual(m.outputCaps,old.outputCaps);assert.deepEqual(m.machineCounts,old.machineCounts);assert.deepEqual(m.protocol,old.protocol);
+ const sides=x=>x.ports.filter(p=>p.externalSide).map(p=>[p.kind,p.item,p.externalSide,p.perMinute??p.cap]);
+ assert.deepEqual(sides(m),sides(old),'same entrances, figures, exit and cap, in the same order');
+ const rows=x=>x.ports.filter(p=>p.externalSide==='west').map(p=>Math.floor(p.y)-x.footprint.top);assert.deepEqual(rows(m),rows(old),'entrances on the same rows');
+ // The README states the published hash and size.
+ const readme=(await read(dir+'README.md')).toString();
+ assert(readme.includes(m.blueprintSha256),'README names the published SHA-256');assert.match(readme,/Footprint 5 x 6 = 30 tiles/);assert.match(readme,/exitRowFromTop: 5/);
 });
 
 test('generator is reproducible and leaves the published folder byte-identical',async t=>{

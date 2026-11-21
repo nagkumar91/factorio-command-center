@@ -188,6 +188,6 @@ test('interfaces: which supplier exit feeds which entrance, with copies',()=>{
  // One green-circuit supplier covers the kit and rocket supplies together.
  const circuits=rows.filter(r=>r.supplier==='green-circuits').reduce((a,r)=>a+r.panelPerMinute,0);
  assert.ok(circuits<=by['green-circuits'].m.targets['electronic-circuit']);
- // Placement rows from the manifests: the concrete supplier sits 4 rows above the kit (exit row 4, entrance row 0).
- const concrete=rows.find(r=>r.supplier==='concrete-supplier');if(concrete){assert.equal(concrete.offset,concrete.entranceRowFromTop-concrete.exitRowFromTop);assert.match(concrete.placement,/4 rows above/);}
+ // Placement rows from the manifests: the concrete supplier sits 5 rows above the kit (exit row 5, entrance row 0).
+ const concrete=rows.find(r=>r.supplier==='concrete-supplier');if(concrete){assert.equal(concrete.offset,concrete.entranceRowFromTop-concrete.exitRowFromTop);assert.match(concrete.placement,/5 rows above/);}
 });

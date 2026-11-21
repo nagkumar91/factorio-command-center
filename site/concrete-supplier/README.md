@@ -4,4 +4,4 @@ Open index.html from disk; it needs only the parent site's styles.css, flight-pl
 
 Regenerate: node scripts/space-launch-pages.mjs (from factorio-command-center/).
 
-Blueprint SHA-256 449f804ab8030a03609676db13c1b320551db240776069ee99cb546abbe5afe2; native report passed for this exact string.
+Blueprint SHA-256 3550a2f8d2615e7f396eb5948d8a7a7f3447ad3e55ae597a872cc08558419336; native report passed for this exact string.

@@ -1,16 +1,18 @@
 // Concrete supplier: 45 concrete per minute from stone bricks, iron ore and piped water, on one red belt exit.
 // One assembling machine 2 faces west so its water input meets the west entrance pipe directly; stone bricks and
-// iron ore arrive on two dead-end entrance stubs beside it, one fast arm each. Two fast arms take concrete out,
+// iron ore arrive on two dead-end entrance stubs beside it, one fast arm each. Two arms take concrete out,
 // one per lane of the exit belt, so the exit tile (fed from behind) holds exactly 8 when blocked:
 //  - one arm drops onto an east-running belt of the exit row (from the north, or straight away from it), which the
 //    game fills on its right (south) lane;
 //  - the other drops onto a short stub that ends running south and side-loads the exit row: the north lane.
-// Published variant: seven-by-five (7 x 5 = 35). The earlier four-row (9 x 4) and five-row (8 x 5) are in history/.
-// (Lane rules measured natively: scripts/concrete-supplier/probes/lanes.lua, results/lanes.json.)
+// Published variant: five-by-six (5 x 6 = 30), where the first of those arms is a long-handed arm under the machine
+// that reaches over a panel to the exit row. The earlier seven-by-five (7 x 5), four-row (9 x 4), five-row (8 x 5)
+// and the eight-by-four candidate (8 x 4) are in history/.
+// (Lane rules measured natively: scripts/concrete-supplier/probes/lanes.lua and reach.lua, results/*.json.)
 //
 // Pure Node and reproducible: the same variant, supply figures and raw dump give the same blueprint string.
-// Usage: node scripts/concrete-supplier/generate.mjs [--variant seven-by-five|four-row|five-row] [--out dir]
-//        [--supply nominal|margin] (entrance figures; the published set is in SUPPLY below)
+// Usage: node scripts/concrete-supplier/generate.mjs [--variant five-by-six|eight-by-four|seven-by-five|four-row|five-row]
+//        [--out dir] [--supply nominal|margin] (entrance figures; the published set is in SUPPLY below)
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -21,7 +23,7 @@ import {starterBounds} from '../science-factory/local-ports/compact-shared-layou
 export const RAW=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
 const args=process.argv.slice(2),flag=(name,fallback)=>{const i=args.indexOf('--'+name);return i>=0?args[i+1]:fallback;};
 const id='concrete-supplier';
-const variantName=flag('variant',process.env.CONCRETE_VARIANT||'seven-by-five');
+const variantName=flag('variant',process.env.CONCRETE_VARIANT||'five-by-six');
 const supplyName=flag('supply',process.env.CONCRETE_SUPPLY||'nominal');
 const out=flag('out',process.env.CONCRETE_OUT||'blueprint-sources/'+id);
 await fs.mkdir('.cache/'+id,{recursive:true});
@@ -61,6 +63,7 @@ const add=(name,x,y,extra={})=>place({entity_number:next++,name,position:{x:x+.5
 const at=(x,y)=>occupied.get(key(x,y));
 const filter=item=>({use_filters:true,filters:[{index:1,name:item,quality:'normal',comparator:'='}]});
 const fast=(x,y,d,extra={})=>add('fast-inserter',x,y,{direction:d,override_stack_size:1,...extra});
+const long=(x,y,d,extra={})=>add('long-handed-inserter',x,y,{direction:d,override_stack_size:1,...extra});
 const belt=(x,y,d,extra={})=>add('fast-transport-belt',x,y,{direction:d,...extra});
 const pipe=(x,y)=>add('pipe',x,y);
 const entrance={},armRoles={input:[],output:[]};let machine,exitBelt,labelSpots;
@@ -91,7 +94,7 @@ const VARIANTS={
   belt(6,4,4);exitBelt=belt(7,4,4);
   labelSpots={'stone-brick':[0,3],water:[1,3],'iron-ore':[0,4]};
  },
- // 7 x 5 (published; from the review of 926ac81b7): five-row with the upper arm's stub folded back west, so the
+ // 7 x 5 (published until the design review; from the review of 926ac81b7): five-row with the upper arm's stub folded back west, so the
  // exit sits one column closer. The lower arm (4,3) drops from the north onto (4,4), which runs east: south lane.
  // The upper arm (5,2) drops onto (6,2) south, (6,3) west, (5,3) south, which side-loads (5,4) from the north:
  // north lane. (5,4) feeds the exit (6,4) from behind. Substation in the 2 x 2 hole at x 2..3, y 3..4.
@@ -104,6 +107,35 @@ const VARIANTS={
   armRoles.output.push(fast(5,2,12));belt(6,2,8);belt(6,3,12);belt(5,3,8);
   belt(5,4,4);exitBelt=belt(6,4,4);
   labelSpots={'stone-brick':[0,3],water:[1,3],'iron-ore':[0,4]};
+ },
+ // 8 x 4 = 32 (qualified, rejected as larger than five-by-six): machine on rows 1..3 facing west, row 0 holds the
+ // panels and the substation. The lower fast arm (5,3) drops onto (6,3), the corner where the column (6,2) turns
+ // east: north lane. The long-handed arm (5,2) reaches over the column and drops onto (7,2), which runs west,
+ // towards the arm, and turns south into the column: the game puts those items on the belt's right lane, which
+ // the two turns carry to the south lane of the corner. The corner feeds the exit (7,3) from behind.
+ 'eight-by-four':()=>{
+  machine=add('assembling-machine-2',2,1,{position:{x:3.5,y:2.5},direction:12,recipe:product});
+  entrance['stone-brick']=belt(0,1,4);armRoles.input.push(fast(1,1,12,filter('stone-brick')));
+  entrance.water=pipe(0,2);pipe(1,2);
+  entrance['iron-ore']=belt(0,3,4);armRoles.input.push(fast(1,3,12,filter('iron-ore')));
+  armRoles.output.push(fast(5,3,12));
+  armRoles.output.push(long(5,2,12));belt(7,2,12);belt(6,2,8);
+  belt(6,3,4);exitBelt=belt(7,3,4);
+  labelSpots={'stone-brick':[0,0],water:[1,0],'iron-ore':[2,0]};
+ },
+ // 5 x 6 = 30 (published): machine on rows 0..2 facing west, both output arms under it. The long-handed arm (2,3)
+ // reaches over the iron-ore panel at (2,4) and drops onto (2,5), the first belt of the exit row, from the north:
+ // south lane. The fast arm (3,3) drops onto (3,4), which runs south and side-loads (3,5): north lane. (3,5) is
+ // fed from behind by (2,5) and feeds the exit (4,5) from behind. Substation in the 2 x 2 hole at x 0..1, y 4..5.
+ 'five-by-six':()=>{
+  machine=add('assembling-machine-2',2,0,{position:{x:3.5,y:1.5},direction:12,recipe:product});
+  entrance['stone-brick']=belt(0,0,4);armRoles.input.push(fast(1,0,12,filter('stone-brick')));
+  entrance.water=pipe(0,1);pipe(1,1);
+  entrance['iron-ore']=belt(0,2,4);armRoles.input.push(fast(1,2,12,filter('iron-ore')));
+  armRoles.output.push(long(2,3,0));belt(2,5,4);
+  armRoles.output.push(fast(3,3,0));belt(3,4,8);
+  belt(3,5,4);exitBelt=belt(4,5,4);
+  labelSpots={'stone-brick':[0,3],water:[1,3],'iron-ore':[2,4]};
  },
 };
 assert(VARIANTS[variantName],'unknown variant '+variantName);VARIANTS[variantName]();
@@ -135,7 +167,9 @@ assert.equal(exitBelt.position.y+.5,footprint.bottom,'exit on the bottom row');
 assert.equal(exitBelt.position.x+.5,footprint.right,'exit on the east edge');
 
 // ---------- blueprint ----------
-const description=`Official 2.1.24 Space Age; one assembling machine 2 making concrete, no modules, red belts, fast inserters, one substation. WEST: stone bricks ${fmt(supply['stone-brick'])}/min (top belt), water ${fmt(supply.water)}/min (pipe), iron ore ${fmt(supply['iron-ore'])}/min (bottom belt); each belt may carry its item on either lane. EAST: one red belt exit on the bottom row, ${target} concrete/min, on both lanes; it holds 8 when the consumer stops taking concrete, and the machine then stops by itself. Keep the two output arms where they are: one fills each lane of the exit. Supply electricity at the substation.`;
+const longArms=entities.filter(e=>e.name==='long-handed-inserter').length;
+const arms=longArms?`fast inserters and ${longArms===1?'one long-handed inserter':longArms+' long-handed inserters'}`:'fast inserters';
+const description=`Official 2.1.24 Space Age; one assembling machine 2 making concrete, no modules, red belts, ${arms}, one substation. WEST: stone bricks ${fmt(supply['stone-brick'])}/min (top belt), water ${fmt(supply.water)}/min (pipe), iron ore ${fmt(supply['iron-ore'])}/min (bottom belt); each belt may carry its item on either lane. EAST: one red belt exit on the bottom row, ${target} concrete/min, on both lanes; it holds 8 when the consumer stops taking concrete, and the machine then stops by itself. Keep the two output arms where they are: one fills each lane of the exit. Supply electricity at the substation.`;
 const bp={item:'blueprint',version:562954249961473,label:'Concrete supplier · 45/min',description,entities,wires,icons:[{index:1,signal:{type:'item',name:product}}]};
 const code=encodeBlueprint({blueprint:bp});
 // Status comes only from a full-protocol report for this exact string in the output folder.

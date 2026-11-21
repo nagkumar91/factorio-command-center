@@ -1,0 +1,3 @@
+# seven-by-five (7 x 5 = 35 tiles, superseded by five-by-six)
+
+The layout published in the space-launch round (SHA-256 `449f804ab8030a03609676db13c1b320551db240776069ee99cb546abbe5afe2`, full protocol passed: 45.0 steady, 45.0 recovery, exit 8 = 4 + 4 when blocked; `native-report.json` here). Replaced in the design review because `five-by-six` (5 x 6 = 30) passes the same protocol at the same entrance figures in 5 fewer tiles and with 2 fewer belts: both output arms sit under the machine and a long-handed arm reaches the exit row, so the two columns east of the machine are no longer needed. `node scripts/concrete-supplier/generate.mjs --variant seven-by-five --out <folder>` still writes this exact string (checked in the review).
