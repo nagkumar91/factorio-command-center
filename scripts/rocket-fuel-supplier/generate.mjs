@@ -1,22 +1,25 @@
 // Rocket-fuel supplier: 6 rocket fuel per minute from piped light oil only, on one red belt exit.
 // One chemical plant makes solid fuel from light oil and hands it machine to machine (one fast arm each) to two
 // assembling machine 2 making rocket fuel. One light-oil entrance pipe feeds all three machines.
-// Published variant "ell" (7 x 8): the chemical plant hands solid fuel east to the north rocket-fuel machine and
-// south to the south one (which faces east and takes light oil from a pipe-to-ground pair under the hand-off arm).
-// The two rocket-fuel machines fill the two lanes of the exit belt, so the exit tile (fed from behind) holds
-// exactly 8 when blocked: the north machine's arm drops onto a south-running column (right lane, which becomes the
-// south lane at the corner); the south machine's arm drops onto the corner tile from the west (north lane). Both
-// lane rules were measured natively (scripts/concrete-supplier/probes/lanes.lua). Only fast inserters.
-// (The rejected "staggered" variant, 11 x 6, used a long-handed arm and a one-tile side-load stub instead.)
+// Published variant "seven-square-buried" (7 x 7, design review of 11-21): chemical plant north-west, one
+// rocket-fuel machine east of it and one south of it. The two machines fill the two lanes of the exit belt, so
+// the exit tile (fed from behind) holds exactly 8 when blocked: the east machine's arm drops on a west-running
+// belt on row 0 from the south (far lane = right lane), which turns south, runs under the machine in a red
+// underground belt and comes up into the corner tile behind the exit (right lane = south lane); the south
+// machine's arm drops onto that corner tile from the west (inner lane = north lane). Lane rules measured
+// natively (scripts/concrete-supplier/probes/lanes.lua). Only fast inserters; one substation.
+// Earlier variants, kept so their history folders can be regenerated: "ell" (7 x 8, published until 11-21,
+// superseded as larger), "staggered" (11 x 6), "seven-square" (7 x 7 with one medium pole, no substation) and
+// "seven-square-substation" (7 x 7, but its exit tile holds 7, not 8); see the comments at each.
 // Exit gate: the two solid-fuel arms run only while the exit tile holds fewer than 8 rocket fuel (exit tile read
-// in hold mode, red wire). Measured in this layout at 660/min light oil: with the gate the rocket-fuel machines
-// stop about 2 minutes after the consumer stops, with nothing left in their output slots; without it they still
-// stop by themselves, on a full output holding 4 rocket fuel each, but only after about 5 and 8 minutes (295 s
-// and 468 s of a 10-minute blocked phase). The gate is kept for the faster, cleaner stop. (The 20-in-output
-// limit from the probe is for a bare machine with no output arm and does not apply here.)
+// in hold mode, red wire). Measured in the published layout at 660/min light oil: with the gate the rocket-fuel
+// machines stop about a minute and a half after the consumer stops (88 s and 87 s), with nothing left in their
+// output slots. Without it the east machine first fills its whole buried lane: it kept crafting for 828 s of a
+// 20-minute blocked phase and a 10-minute blocked phase fails (review run with the gate and wires removed, SHA
+// 8bf568bf...). So in this layout the gate is needed to pass, not only for a cleaner stop.
 //
 // Pure Node and reproducible: the same variant, supply set and raw dump give the same blueprint string.
-// Usage: node scripts/rocket-fuel-supplier/generate.mjs [--variant staggered|...] [--supply nominal|margin] [--out dir]
+// Usage: node scripts/rocket-fuel-supplier/generate.mjs [--variant seven-square-buried|ell|staggered|seven-square|seven-square-substation] [--supply nominal|margin] [--out dir]
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -27,13 +30,16 @@ import {starterBounds} from '../science-factory/local-ports/compact-shared-layou
 export const RAW=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
 const args=process.argv.slice(2),flag=(name,fallback)=>{const i=args.indexOf('--'+name);return i>=0?args[i+1]:fallback;};
 const id='rocket-fuel-supplier';
-const variantName=flag('variant',process.env.FUEL_VARIANT||'ell');
+const variantName=flag('variant',process.env.FUEL_VARIANT||'seven-square-buried');
 const supplyName=flag('supply',process.env.FUEL_SUPPLY||'nominal');
 const out=flag('out',process.env.FUEL_OUT||'blueprint-sources/'+id);
 await fs.mkdir('.cache/'+id,{recursive:true});
 const bytes=await fs.readFile(RAW),raw=JSON.parse(bytes),sha=s=>createHash('sha256').update(s).digest('hex');
 
-const product='rocket-fuel',target=6,exitCap=8;
+const product='rocket-fuel',target=6;
+// The exit tile holds 8 (4 per lane) when both lanes reach it from behind. The unpublished
+// "seven-square-substation" variant drops one machine's fuel straight onto the exit tile, which then holds 7.
+const exitCap=variantName==='seven-square-substation'?7:8;
 const targets={[product]:target},products=[product];
 const protocol={warmupMinutes:15,measureMinutes:30,blockedMinutes:10,settleMinutes:5,recoveryMinutes:10};
 const fluid='light-oil';
@@ -71,7 +77,7 @@ const belt=(x,y,d,extra={})=>add('fast-transport-belt',x,y,{direction:d,...extra
 const ug=(x,y,d,type)=>add('fast-underground-belt',x,y,{direction:d,type});
 const pipe=(x,y)=>add('pipe',x,y);
 const machine=(name,recipe,cx,cy,direction=0)=>add(name,cx,cy,{position:{x:cx+.5,y:cy+.5},direction,recipe});
-const roles={handOff:[],output:[]};let entrance,exitBelt,labelSpot,gateReaderTile;
+const roles={handOff:[],output:[]};let entrance,exitBelt,labelSpot,gateReaderTile,buried=false;
 
 const VARIANTS={
  // 11 x 6. Row 0: the light-oil pipe. West rocket-fuel machine on rows 1..3, chemical plant on rows 1..3,
@@ -124,6 +130,45 @@ const VARIANTS={
   exitBelt=belt(6,6,4,{control_behavior:{circuit_read_hand_contents:true,circuit_contents_read_mode:1}});
   labelSpot=[3,2];
  },
+ // 7 x 7 with a substation, first try of the design review of 11-21. REJECTED: its exit tile holds 7 when
+ // blocked, not 8. Same machines and pipes as the published layout, but without the underground belt: the south
+ // machine's arm drops on a south-running column (left lane, the exit's north lane after the corner, 4 on the
+ // exit tile) and the east machine's arm drops straight onto the exit tile. An arm dropping on a blocked belt
+ // tile fills 3 of that lane's 4 places (measured natively), so the exit holds 4 + 3 = 7 and the gate is
+ // "rocket-fuel < 7". Kept as the evidence for that mechanic.
+ 'seven-square-substation':()=>{
+  entrance=pipe(0,3);pipe(0,4);pipe(0,5);add('pipe-to-ground',1,3,{direction:12});add('pipe-to-ground',3,3,{direction:4});
+  machine('chemical-plant','solid-fuel-from-light-oil',1,1,8);
+  machine('assembling-machine-2','rocket-fuel',5,3,12);
+  machine('assembling-machine-2','rocket-fuel',2,5,12);
+  roles.handOff.push(fast(3,2,12,{control_behavior:gate}),fast(2,3,0,{control_behavior:gate}));
+  roles.output.push(fast(4,5,12));belt(5,5,8);belt(5,6,4);   // south machine -> column, left lane -> north lane
+  roles.output.push(fast(6,5,0));                             // east machine -> straight onto the exit tile, south lane
+  exitBelt=belt(6,6,4,{control_behavior:{circuit_read_hand_contents:true,circuit_contents_read_mode:1}});
+  labelSpot=[0,6];
+ },
+ // PUBLISHED. 7 x 7 with a substation and an exit tile that holds 8 (design review of 11-21). Chemical plant
+ // north-west (faces south, light oil from the entrance pipe below its west corner); east rocket-fuel machine
+ // one row lower (rows 2..4, faces west, fed straight by the pipe-to-ground that passes under the south hand-off
+ // arm), which leaves the 2 x 2 hole for the substation in rows 0..1; south machine one column east (x 1..3,
+ // faces west) so the west column carries the light oil to it. The east machine's fuel leaves on its NORTH
+ // side: its arm drops on a belt on row 0 that runs west one tile, turns south, goes underground beneath the
+ // machine and comes up into the corner tile behind the exit. The south machine's arm drops on that corner tile
+ // from the west. So both lanes reach the exit tile from behind. scripts/rocket-fuel-supplier/layout-search.mjs
+ // finds this as the only layout with a substation in any rectangle of 53 tiles or fewer.
+ 'seven-square-buried':()=>{
+  entrance=pipe(0,3);pipe(0,4);pipe(0,5);add('pipe-to-ground',1,3,{direction:12});add('pipe-to-ground',3,3,{direction:4});
+  machine('chemical-plant','solid-fuel-from-light-oil',1,1,8);
+  machine('assembling-machine-2','rocket-fuel',5,3,12);
+  machine('assembling-machine-2','rocket-fuel',2,5,12);
+  roles.handOff.push(fast(3,2,12,{control_behavior:gate}),fast(2,3,0,{control_behavior:gate}));
+  roles.output.push(fast(6,1,8));belt(6,0,12);belt(5,0,8);     // east machine -> row 0, far (right) lane -> south lane
+  ug(5,1,8,'input');ug(5,5,8,'output');belt(5,6,4);            // under the east machine to the corner behind the exit
+  buried=true;
+  roles.output.push(fast(4,6,12));                             // south machine -> corner tile from behind, north lane
+  exitBelt=belt(6,6,4,{control_behavior:{circuit_read_hand_contents:true,circuit_contents_read_mode:1}});
+  labelSpot=[0,6];
+ },
 };
 const mediumPoleOnly=variantName==='seven-square';
 assert(VARIANTS[variantName],'unknown variant '+variantName);VARIANTS[variantName]();
@@ -162,7 +207,7 @@ assert.equal(exitBelt.position.x+.5,footprint.right,'exit on the east edge');
 
 // ---------- blueprint ----------
 const armWords=entities.some(e=>e.name==='long-handed-inserter')?'fast and long-handed inserters':'fast inserters';
-const description=`Official 2.1.24 Space Age; one chemical plant (solid fuel from light oil) and two assembling machine 2 (rocket fuel), no modules, red belts, ${armWords}, ${mediumPoleOnly?"one medium electric pole (no substation)":"one substation"}. WEST: light oil ${fmt(supply[fluid])}/min into the ${mediumPoleOnly?"west":"top-left"} pipe; it feeds all three machines. EAST: one red belt exit on the bottom row, ${target} rocket fuel/min, one machine per lane. Solid fuel is handed machine to machine. The two solid-fuel arms are wired to the exit belt tile and run only while it holds fewer than ${exitCap} rocket fuel, so the machines stop soon after the consumer stops taking fuel and restart by themselves; keep that red wire and condition. Supply electricity at the ${mediumPoleOnly?"medium pole":"substation"}.`;
+const description=`Official 2.1.24 Space Age; one chemical plant (solid fuel from light oil) and two assembling machine 2 (rocket fuel), no modules, red belts, ${armWords}, ${mediumPoleOnly?"one medium electric pole (no substation)":"one substation"}. WEST: light oil ${fmt(supply[fluid])}/min into the ${variantName==='ell'||variantName==='staggered'?"top-left":"west"} pipe; it feeds all three machines. EAST: one red belt exit on the bottom row, ${target} rocket fuel/min, one machine per lane. Solid fuel is handed machine to machine.${buried?" The east machine's rocket fuel leaves on the top row and passes under that machine in a red underground belt.":""} The two solid-fuel arms are wired to the exit belt tile and run only while it holds fewer than ${exitCap} rocket fuel, so the machines stop soon after the consumer stops taking fuel and restart by themselves; keep that red wire and condition. Supply electricity at the ${mediumPoleOnly?"medium pole":"substation"}.`;
 const bp={item:'blueprint',version:562954249961473,label:'Rocket-fuel supplier · 6/min',description,entities,wires,icons:[{index:1,signal:{type:'item',name:product}}]};
 const code=encodeBlueprint({blueprint:bp});
 let status='native-validation-pending',measured;
@@ -180,7 +225,7 @@ const manifest={
  inputs:ports.filter(p=>p.kind==='input'),fluids:ports.filter(p=>p.kind==='fluid'),outputs:ports.filter(p=>p.kind==='output'),ports,
  machineCounts,footprint,areaGoal:{goalTiles:78,stretchTiles:66,fallbackTiles:110,achievedTiles:footprint.width*footprint.height},
  loopControl:[],
- stockControl:{mode:'belt-exit',exit:exitBelt.entity_number,cap:exitCap,lanes:'one rocket-fuel machine per lane; the exit tile is fed from behind and holds 4 per lane',gate:{reader:exitBelt.entity_number,readerMode:'per-tile-hold',wire:'red',arms:roles.handOff.map(e=>e.entity_number),condition:`${product} < ${exitCap}`,why:variantName==='ell'?'faster, cleaner stop (measured in this layout at 660/min light oil): with the gate the rocket-fuel machines stop about 2 minutes after the consumer stops, with nothing left in their output slots; without it they still stop by themselves on a full output holding 4 rocket fuel each, but only after about 5 and 8 minutes (295 s and 468 s), 72 s before the last minute of a 10-minute blocked phase':'stops the rocket-fuel machines soon after the exit fills (not measured without the gate for this variant)'}},
+ stockControl:{mode:'belt-exit',exit:exitBelt.entity_number,cap:exitCap,lanes:exitCap===8?'one rocket-fuel machine per lane; the exit tile is fed from behind and holds 4 per lane':'one rocket-fuel machine per lane; the exit tile is fed from behind on its north lane (4) and takes the east machine\'s arm directly on its south lane (3), 7 in all',gate:{reader:exitBelt.entity_number,readerMode:'per-tile-hold',wire:'red',arms:roles.handOff.map(e=>e.entity_number),condition:`${product} < ${exitCap}`,why:variantName==='seven-square-buried'?'needed to pass (measured in this layout at 660/min light oil): with the gate the rocket-fuel machines stop about a minute and a half after the consumer stops (88 s and 87 s), with nothing left in their output slots; without it the east machine first fills its buried lane and kept crafting for 828 s of a 20-minute blocked phase, so a 10-minute blocked phase fails':variantName==='ell'?'faster, cleaner stop (measured in this layout at 660/min light oil): with the gate the rocket-fuel machines stop about 2 minutes after the consumer stops, with nothing left in their output slots; without it they still stop by themselves on a full output holding 4 rocket fuel each, but only after about 5 and 8 minutes (295 s and 468 s), 72 s before the last minute of a 10-minute blocked phase':variantName==='seven-square-substation'?'stops the rocket-fuel machines within about a minute and a half of the exit filling, with nothing left in their output slots (blocked.statusSamples in this variant\'s report); a short run with the condition left at "< 8", which never closes because the exit tile holds 7, still stopped by itself within the 10-minute blocked phase':'stops the rocket-fuel machines soon after the exit fills (not measured without the gate for this variant)'}},
  armRoles:{handOff:roles.handOff.map(e=>e.entity_number),output:roles.output.map(e=>e.entity_number)},
  protocol,construction,
  billOfMaterials:{items:billItems},

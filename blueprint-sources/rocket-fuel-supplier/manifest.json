@@ -3,7 +3,7 @@
     "id": "rocket-fuel-supplier",
     "name": "Rocket-fuel supplier · 6/min",
     "file": "rocket-fuel-supplier.txt",
-    "blueprintSha256": "5e86373d041a07540f2b52e3beba12326c760d45920d515e989377cabcdf79fb",
+    "blueprintSha256": "32d9a8e9718cc3436ff3461db1ad64a61b44642e1929ee6b69e83ef574914705",
     "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
     "class": "rate",
     "status": "qualified",
@@ -15,13 +15,13 @@
         "light-oil": 660
       },
       "machineCrafts": {
-        "solid-fuel-from-light-oil@1.5,2.5": 1800,
-        "rocket-fuel@5.5,2.5": 90,
-        "rocket-fuel@1.5,6.5": 90
+        "solid-fuel-from-light-oil@1.5,1.5": 1800,
+        "rocket-fuel@5.5,3.5": 90,
+        "rocket-fuel@2.5,5.5": 90
       },
-      "reportCreatedAt": "2026-11-21T01:59:46.924Z"
+      "reportCreatedAt": "2026-11-21T05:13:13.168Z"
     },
-    "variant": "ell",
+    "variant": "seven-square-buried",
     "supply": "nominal",
     "products": [
       "rocket-fuel"
@@ -80,15 +80,15 @@
         "item": "light-oil",
         "entity": 1,
         "x": 0.5,
-        "y": 0.5,
+        "y": 3.5,
         "position": {
           "x": 0.5,
-          "y": 0.5
+          "y": 3.5
         },
         "externalSide": "west",
         "nominalPerMinute": 660,
         "perMinute": 660,
-        "displayEntity": 22
+        "displayEntity": 19
       }
     ],
     "outputs": [
@@ -99,12 +99,12 @@
           "rocket-fuel"
         ],
         "item": "rocket-fuel",
-        "entity": 21,
+        "entity": 18,
         "x": 6.5,
-        "y": 7.5,
+        "y": 6.5,
         "position": {
           "x": 6.5,
-          "y": 7.5
+          "y": 6.5
         },
         "externalSide": "east",
         "direction": 4,
@@ -122,15 +122,15 @@
         "item": "light-oil",
         "entity": 1,
         "x": 0.5,
-        "y": 0.5,
+        "y": 3.5,
         "position": {
           "x": 0.5,
-          "y": 0.5
+          "y": 3.5
         },
         "externalSide": "west",
         "nominalPerMinute": 660,
         "perMinute": 660,
-        "displayEntity": 22
+        "displayEntity": 19
       },
       {
         "kind": "output",
@@ -139,12 +139,12 @@
           "rocket-fuel"
         ],
         "item": "rocket-fuel",
-        "entity": 21,
+        "entity": 18,
         "x": 6.5,
-        "y": 7.5,
+        "y": 6.5,
         "position": {
           "x": 6.5,
-          "y": 7.5
+          "y": 6.5
         },
         "externalSide": "east",
         "direction": 4,
@@ -155,12 +155,12 @@
         "kind": "power",
         "label": "External electricity",
         "items": [],
-        "entity": 23,
-        "x": 6,
-        "y": 5,
+        "entity": 20,
+        "x": 4,
+        "y": 1,
         "position": {
-          "x": 6,
-          "y": 5
+          "x": 4,
+          "y": 1
         }
       }
     ],
@@ -172,42 +172,42 @@
       "left": 0,
       "top": 0,
       "right": 7,
-      "bottom": 8,
+      "bottom": 7,
       "width": 7,
-      "height": 8
+      "height": 7
     },
     "areaGoal": {
       "goalTiles": 78,
       "stretchTiles": 66,
       "fallbackTiles": 110,
-      "achievedTiles": 56
+      "achievedTiles": 49
     },
     "loopControl": [],
     "stockControl": {
       "mode": "belt-exit",
-      "exit": 21,
+      "exit": 18,
       "cap": 8,
       "lanes": "one rocket-fuel machine per lane; the exit tile is fed from behind and holds 4 per lane",
       "gate": {
-        "reader": 21,
+        "reader": 18,
         "readerMode": "per-tile-hold",
         "wire": "red",
         "arms": [
-          13,
-          14
+          9,
+          10
         ],
         "condition": "rocket-fuel < 8",
-        "why": "faster, cleaner stop (measured in this layout at 660/min light oil): with the gate the rocket-fuel machines stop about 2 minutes after the consumer stops, with nothing left in their output slots; without it they still stop by themselves on a full output holding 4 rocket fuel each, but only after about 5 and 8 minutes (295 s and 468 s), 72 s before the last minute of a 10-minute blocked phase"
+        "why": "needed to pass (measured in this layout at 660/min light oil): with the gate the rocket-fuel machines stop about a minute and a half after the consumer stops (88 s and 87 s), with nothing left in their output slots; without it the east machine first fills its buried lane and kept crafting for 828 s of a 20-minute blocked phase, so a 10-minute blocked phase fails"
       }
     },
     "armRoles": {
       "handOff": [
-        13,
-        14
+        9,
+        10
       ],
       "output": [
-        15,
-        19
+        11,
+        17
       ]
     },
     "protocol": {
@@ -222,19 +222,21 @@
       "chemical-plant": 1,
       "display-panel": 1,
       "fast-inserter": 4,
-      "fast-transport-belt": 5,
-      "pipe": 7,
+      "fast-transport-belt": 4,
+      "fast-underground-belt": 2,
+      "pipe": 3,
       "pipe-to-ground": 2,
       "substation": 1
     },
     "billOfMaterials": {
       "items": {
-        "pipe": 7,
+        "pipe": 3,
         "pipe-to-ground": 2,
         "chemical-plant": 1,
         "assembling-machine-2": 2,
         "fast-inserter": 4,
-        "fast-transport-belt": 5,
+        "fast-transport-belt": 4,
+        "fast-underground-belt": 2,
         "display-panel": 1,
         "substation": 1
       }
@@ -243,13 +245,13 @@
       {
         "consumer": "rocket-supplies",
         "item": "rocket-fuel",
-        "exitRowFromTop": 7,
+        "exitRowFromTop": 6,
         "perMinute": 6
       }
     ],
     "setupNotes": [
-      "Official 2.1.24 Space Age; one chemical plant (solid fuel from light oil) and two assembling machine 2 (rocket fuel), no modules, red belts, fast inserters, one substation. WEST: light oil 660/min into the top-left pipe; it feeds all three machines. EAST: one red belt exit on the bottom row, 6 rocket fuel/min, one machine per lane. Solid fuel is handed machine to machine. The two solid-fuel arms are wired to the exit belt tile and run only while it holds fewer than 8 rocket fuel, so the machines stop soon after the consumer stops taking fuel and restart by themselves; keep that red wire and condition. Supply electricity at the substation.",
-      "Place this supplier west of rocket supplies with its exit row (row 7 from its top) on the rocket-fuel entrance row and join them with a straight red belt. One copy covers rocket supplies (it takes about 5 rocket fuel a minute).",
+      "Official 2.1.24 Space Age; one chemical plant (solid fuel from light oil) and two assembling machine 2 (rocket fuel), no modules, red belts, fast inserters, one substation. WEST: light oil 660/min into the west pipe; it feeds all three machines. EAST: one red belt exit on the bottom row, 6 rocket fuel/min, one machine per lane. Solid fuel is handed machine to machine. The east machine's rocket fuel leaves on the top row and passes under that machine in a red underground belt. The two solid-fuel arms are wired to the exit belt tile and run only while it holds fewer than 8 rocket fuel, so the machines stop soon after the consumer stops taking fuel and restart by themselves; keep that red wire and condition. Supply electricity at the substation.",
+      "Place this supplier west of rocket supplies with its exit row (row 6 from its top) on the rocket-fuel entrance row and join them with a straight red belt. One copy covers rocket supplies (it takes about 5 rocket fuel a minute).",
       "Feed light oil at or above the panel figure; extra simply stays in the pipe."
     ]
   }

@@ -1,4 +1,5 @@
 // rocket-fuel-supplier: manifest, string, native report and layout rules (CONTRACT sections 3-13, rocket-fuel-supplier.md).
+// Published layout: 7 x 7 "seven-square-buried" (design review of 11-21), which replaced the 7 x 8 "ell" in place.
 // Runs without the prototype dump: sizes and items come from inline tables; only the regeneration test needs the dump.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -140,15 +141,38 @@ test('allowed entities, arm settings, machines, hand-offs and the lanes of the t
  assert.deepEqual(m.armRoles.handOff,m.stockControl.gate.arms);
  const fed=m.armRoles.handOff.map(i=>byId.get(i)).map(a=>{assert.equal(a.name,'fast-inserter');assert.equal(entityAt(...pickTile(a)),plant);return entityAt(...dropTile(a));});
  assert.deepEqual(new Set(fed),new Set(fuel));
- // Output arms: one drops onto a south-running column from the north (right lane, the exit's south lane after
- // the corner); the other drops onto the corner tile from the west (north lane). Measured natively (lane probe).
+ // Output arms, both lanes reaching the exit tile from behind (lane rules measured natively, lane probe):
+ // - the east machine's arm stands north of it and drops on a west-running belt on the top row from the south
+ //   (far lane = right lane); that belt turns south, enters an underground belt at once, passes under the
+ //   machine and comes up one tile above the corner (right lane = the exit's south lane);
+ // - the south machine's arm drops onto the corner tile from the west (inner lane = north lane).
  assert.equal(m.armRoles.output.length,2);
- const outs=m.armRoles.output.map(i=>byId.get(i)).map(a=>{assert(fuel.includes(entityAt(...pickTile(a))));return{arm:a,to:entityAt(...dropTile(a))};});
- const column=outs.find(d=>d.arm.direction===0&&d.to.direction===8),corner=outs.find(d=>d.arm.direction===12&&d.to.direction===4);
- assert(column&&corner,'one column drop, one corner drop');
- const [cx,cy]=tile(corner.to);assert.equal(entityAt(cx,cy-1).direction,8,'corner is fed by the column');assert.equal(tile(column.to)[0],cx);
+ const outs=m.armRoles.output.map(i=>byId.get(i)).map(a=>{assert.equal(a.name,'fast-inserter');assert.equal(a.control_behavior,undefined,'output arms are not gated');const from=entityAt(...pickTile(a));assert(fuel.includes(from));return{arm:a,from,to:entityAt(...dropTile(a))};});
+ assert.notEqual(outs[0].from,outs[1].from,'one output arm per machine');
+ const top=outs.find(d=>d.arm.direction===8&&d.to.direction===12),corner=outs.find(d=>d.arm.direction===12&&d.to.direction===4);
+ assert(top&&corner,'one drop on the top-row belt from the south, one drop on the corner from the west');
+ for(const d of outs)assert.equal(d.to.name,'fast-transport-belt','no arm drops on an underground belt end');
+ const exit=byId.get(m.outputs[0].entity),[ex,ey]=tile(exit);
+ for(const d of outs)assert.notEqual(d.to,exit,'no arm drops on the exit tile itself (it would then hold 7)');
+ const [tx,ty]=tile(top.to);assert.equal(ty,m.footprint.top,'east machine output on the top row');
+ const turn=entityAt(tx-1,ty);assert(turn.name==='fast-transport-belt'&&turn.direction===8,'top-row belt turns south');
+ assert(!entityAt(tx+1,ty)||!/belt/.test(entityAt(tx+1,ty).name),'nothing feeds the top-row belt from behind');
+ const under=entities.filter(e=>e.name==='fast-underground-belt');assert.equal(under.length,2);
+ const down=under.find(e=>e.type==='input'),up=under.find(e=>e.type==='output');
+ assert.deepEqual(tile(down),[tx-1,ty+1],'underground entrance straight below the turn, fed from behind');assert.equal(down.direction,8);assert.equal(up.direction,8);
+ const [ux,uy]=tile(up);assert.equal(ux,tx-1);assert(uy-(ty+1)-1>=1&&uy-(ty+1)-1<=6,'1 to 6 tiles between the underground ends (red reach)');
+ for(let y=ty+2;y<uy;y++)assert(!entityAt(ux,y)||!/belt/.test(entityAt(ux,y).name),'no belt between the underground ends');
+ const buriedMachine=fuel.filter(f=>{for(let y=ty+2;y<uy;y++)if(entityAt(ux,y)===f)return true;return false;});assert.deepEqual(buriedMachine,[top.from],'the belt runs under the machine it serves');
+ for(const e of under){const [x,y]=tile(e);for(const [dx,dy,dir] of [[-1,0,4],[1,0,12]]){const side=entityAt(x+dx,y+dy);assert(!(side&&/belt/.test(side.name)&&side.direction===dir),'nothing side-loads an underground end');}}
+ const [cx,cy]=tile(corner.to);assert.deepEqual([cx,cy],[ux,uy+1],'the underground exit feeds the corner from the north');
  assert.equal(entityAt(cx-1,cy),corner.arm,'nothing feeds the corner from behind: it is a curve');
- assert.equal(cy,m.footprint.bottom-1,'corner on the exit row');
+ assert.deepEqual([cx+1,cy],[ex,ey],'the corner is the tile behind the exit');assert.equal(cy,m.footprint.bottom-1,'corner on the exit row');
+ // Light oil: both rocket-fuel machines and the plant face a pipe (or the open end of the pipe-to-ground pair).
+ const faces=e=>({0:[0,-2],4:[2,0],8:[0,2],12:[-2,0]})[e.direction||0];
+ for(const f of fuel){const [fx,fy]=tile(f),[dx,dy]=faces(f),feed=entityAt(fx+dx,fy+dy);assert(feed&&['pipe','pipe-to-ground'].includes(feed.name),'light oil at the faced side of '+f.entity_number);
+  if(feed.name==='pipe-to-ground')assert.equal(feed.direction,(f.direction+8)%16,'the pipe-to-ground opens into the machine');}
+ assert.equal(plant.direction,8);const [px,py]=tile(plant);assert.equal(entityAt(px-1,py+2).name,'pipe','the entrance pipe is under the plant\'s south-west input');
+ assert.equal(entityAt(px-1,py+2),byId.get(m.fluids[0].entity));
 });
 
 test('footprint, area goal and bill of materials recomputed from the decoded string',()=>{
@@ -158,9 +182,51 @@ test('footprint, area goal and bill of materials recomputed from the decoded str
  assert.equal(m.areaGoal.achievedTiles,f.width*f.height);
  assert.deepEqual({goal:m.areaGoal.goalTiles,stretch:m.areaGoal.stretchTiles,fallback:m.areaGoal.fallbackTiles},{goal:78,stretch:66,fallback:110});
  assert(m.areaGoal.achievedTiles<=m.areaGoal.stretchTiles,'meets the stretch goal');
+ assert.deepEqual([f.width,f.height],[7,7],'7 x 7 (design review of 11-21; the replaced layout was 7 x 8)');
  const bill={};for(const e of entities)bill[e.name]=(bill[e.name]||0)+1;
- assert.deepEqual(m.billOfMaterials.items,bill);assert.deepEqual(m.construction,Object.fromEntries(Object.entries(bill).sort()));
+ assert.deepEqual(m.billOfMaterials.items,bill);
+ assert.deepEqual(bill,{pipe:3,'pipe-to-ground':2,'chemical-plant':1,'assembling-machine-2':2,'fast-inserter':4,'fast-transport-belt':4,'fast-underground-belt':2,'display-panel':1,substation:1});assert.equal(entities.length,20);assert.deepEqual(m.construction,Object.fromEntries(Object.entries(bill).sort()));
  assert.equal(bp.tiles,undefined,'no tiles');
+});
+
+test('history: the replaced 7 x 8 version and the rejected direct-drop 7 x 7 keep their own passing reports',async()=>{
+ const load=async folder=>{const h=dir+'history/'+folder+'/';const [c]=JSON.parse(await read(h+'manifest.json')),cCode=(await read(h+c.file)).toString().trim(),cReport=JSON.parse(await read(h+'native-report.json'));
+  const cb=cReport.builds.find(b=>b.id===c.id);
+  assert.equal(hash(cCode),c.blueprintSha256,folder);assert.equal(cb.blueprintSha256,c.blueprintSha256,folder);assert.notEqual(c.blueprintSha256,m.blueprintSha256,folder);
+  assert(!cReport.short&&cReport.passed===true&&cb.passed===true,'full protocol passed for '+folder);assert.equal(cReport.prototypeSha256,officialSha);
+  assert((await read(h+'NOTE.md')).toString().trim().length>0,'note says why '+folder+' is not the published version');
+  return {c,cb,ce:decodeBlueprint(cCode).blueprint.entities};};
+ // The version this one replaced in place: same interface, seven more tiles.
+ const old=await load('ell-seven-by-eight-5e86373d');
+ assert.equal(old.c.blueprintSha256,'5e86373d041a07540f2b52e3beba12326c760d45920d515e989377cabcdf79fb');
+ assert.deepEqual([old.c.footprint.width,old.c.footprint.height],[7,8]);
+ assert(m.areaGoal.achievedTiles<=.95*old.c.areaGoal.achievedTiles,'at least 5% fewer tiles than the replaced version');
+ for(const k of ['products','targets','outputCaps','machineCounts','protocol'])assert.deepEqual(m[k],old.c[k],'same '+k+' as the replaced version');
+ assert.deepEqual(m.recipeAudit.externalPerMinute,old.c.recipeAudit.externalPerMinute);
+ const iface=x=>x.ports.filter(p=>p.kind!=='power').map(p=>[p.kind,p.item,p.externalSide,p.perMinute??null,p.cap??null,p.transport??null]);
+ assert.deepEqual(iface(m),iface(old.c),'same entrances and exits, same sides, same order, same figures');
+ const names=x=>[...new Set(x.map(e=>e.name))];
+ for(const n of names(entities))assert(names(old.ce).includes(n)||n==='fast-underground-belt','no entity kind the replaced version lacked, except the red underground belt: '+n);
+ assert(m.measured.steadyPerMinute>=old.c.measured.steadyPerMinute&&m.measured.recoveryPerMinute>=old.c.measured.recoveryPerMinute,'rates not lower than the replaced version');
+ // Why no arm may drop on the exit tile: the 7 x 7 that does holds 4 + 3 = 7 when blocked.
+ const direct=await load('seven-square-substation-exit-holds-seven');
+ const dExit=direct.ce.find(e=>e.entity_number===direct.c.outputs[0].entity),[dx,dy]=tile(dExit);
+ assert.equal(direct.c.armRoles.output.map(i=>direct.ce.find(e=>e.entity_number===i)).filter(a=>{const[x,y]=dropTile(a);return x===dx&&y===dy;}).length,1);
+ assert.deepEqual(direct.cb.blocked.collectionPauseStock.map(p=>[p.count,p.lanes]),[[7,[4,3]]]);
+});
+
+test('layout search: no 7 x 7 without an underground belt; with one, exactly the published layout',async()=>{
+ // Pure Node (no dump, no game). The sweep of every rectangle of 53 tiles or fewer is described in the README.
+ const search=async(...flags)=>{const out=(await promisify(execFile)(process.execPath,[`scripts/${id}/layout-search.mjs`,'7x7','--show','2',...flags],{cwd:rootPath})).stdout.trim().split('\n');return{...JSON.parse(out[0]),pictures:out.slice(1).join('\n')};};
+ const plain=await search();assert.equal(plain.tiles,49);assert(plain.stats.withBelts>0,'belt routes with a substation exist');assert.equal(plain.found,0,'none of them can also be piped');
+ const buried=await search('--underground-belts');assert.equal(buried.found,1);
+ // The one layout found is the published string: compare machine, arm, belt, pipe and substation tiles.
+ const rows=buried.pictures.split('\n').filter(r=>[...r].length===7).slice(0,7);assert.equal(rows.length,7);
+ const want=name=>new Set(entities.filter(e=>name.includes(e.name)).flatMap(e=>{const b=box(e),r=[];for(let x=Math.floor(b.left+.01);x<b.right-.01;x++)for(let y=Math.floor(b.top+.01);y<b.bottom-.01;y++)r.push(x+','+y);return r;}));
+ const got=chars=>new Set(rows.flatMap((r,y)=>[...r].map((c,x)=>chars.includes(c)?x+','+y:null).filter(Boolean)));
+ assert.deepEqual(got('C'),want(['chemical-plant']));assert.deepEqual(got('AB'),want(['assembling-machine-2']));assert.deepEqual(got('S'),want(['substation']));
+ assert.deepEqual(got('^>v<nesw'),want(['fast-inserter']));assert.deepEqual(got('↑→↓←E∩∪'),want(['fast-transport-belt','fast-underground-belt']));assert.deepEqual(got('∩∪'),want(['fast-underground-belt']));
+ assert.deepEqual(got('#=U'),want(['pipe','pipe-to-ground']));assert.deepEqual(got('U'),want(['pipe-to-ground']));
 });
 
 test('generator is reproducible and leaves the published folder byte-identical',async t=>{

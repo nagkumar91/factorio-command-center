@@ -15,3 +15,5 @@ RRRi>>E
 Full protocol passed at light oil 660/min (`native-report.json` here, SHA-256 `af139f3a2e08fd6cb32bddc9e2b41d56f19bc217e5f60e8b3ecc6e1a85ae9395`): steady 6.0, recovery 6.0, 90 + 90 rocket-fuel and 1,800 solid-fuel crafts in 30 minutes, exit 8 = 4 + 4 when blocked, every machine stopped.
 
 Not published: no 2 x 2 hole is left, so it is powered by one medium electric pole and has no substation. The contract ("substation first; medium pole only as a fill-in") and the user's rule ("substations for power") do not allow that as written. It saves 7 tiles (56 to 49, 12.5%). If the user grants the exception, make `seven-square` the default variant in `scripts/rocket-fuel-supplier/generate.mjs`, re-run generate, validate, generate, and update the README (exit row from top becomes 6) and tests.
+
+Superseded 11-21: the published `seven-square-buried` layout is 7 x 7 with a substation, so the exception is no longer needed.
