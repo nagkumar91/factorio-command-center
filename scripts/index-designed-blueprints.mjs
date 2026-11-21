@@ -5,10 +5,12 @@ import path from 'node:path';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
 import {decodeBlueprint,encodeBlueprint,blueprintMaterials} from './blueprints.mjs';
-import {blueprintPreview} from './blueprint-preview.mjs';
+import {blueprintPreview,blueprintPreviewSvg} from './blueprint-preview.mjs';
+import sharp from 'sharp';
 import {blueprintCoverage} from './blueprint-coverage.mjs';
 import {writeData} from './write-data.mjs';
 import '../site/lib/production.js';
+import {kitBillProblems} from './space-launch-pages.mjs';
 const hash=s=>createHash('sha256').update(s.trim()).digest('hex');
 const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
 const [catalog,production,library,community,atlas]=await Promise.all(['catalog','production','library','community','atlas'].map(n=>read(`site/data/${n}.json`)));
@@ -19,19 +21,29 @@ const todayFolders=new Set(['compact-expansion-workshop','rgby-science','five-sc
 // Essentials round (21 November 2026): its own release group; the "today" group stays at nine.
 const essentialsGroup='essentials-20261121';
 const essentialsFolders=new Set(['green-circuits','essentials-mall','robot-essentials','six-science']);
+// Space launch round (21 November 2026): its own release group, shown by ?collection=space-launch.
+const spaceLaunchGroup='space-launch-20261121';
+const spaceLaunchFolders=new Set(['concrete-supplier','rocket-fuel-supplier','launch-kit','rocket-supplies','white-platform','white-pack-receiver']);
 // BEGIN workshop recommendation promotion
-function promoteWorkshop(entries,entry){
+function promoteWorkshop(entries,entry,products=entry.products){
  if(entry.validation?.status!=='game-tested'||entry.validation.blueprintSha256!==entry.blueprintSha256)throw Error('Workshop promotion requires exact-hash native qualification');
- const promoted=new Set(entry.products);
+ const promoted=new Set(products);
  // Only earlier recommendations for these products are superseded. Keep the
  // records, other recommendations and all source/version history intact.
  for(const earlier of entries.slice(0,entries.indexOf(entry))){
   if(earlier.recommendedProducts)earlier.recommendedProducts=earlier.recommendedProducts.filter(id=>!promoted.has(id));
  }
- entry.recommendedProducts=[...entry.products];
+ entry.recommendedProducts=[...products];
 }
 // END workshop recommendation promotion
 const destination='sources/designed-blueprints';
+// A platform blueprint is mostly foundation: draw its tiles under the entities in the library thumbnail.
+async function tiledPreview(b,id){
+ const svg=await blueprintPreviewSvg(b,production);if(!svg)return undefined;
+ const tiles=(b.tiles||[]).map(t=>`<rect x="${t.position.x}" y="${t.position.y}" width="1" height="1" fill="#46525a" stroke="#17272e" stroke-width=".04"/>`).join('');
+ const out=svg.replace(/(<svg\b[^>]*>\s*<rect\b[^>]*\/>)/,'$1'+tiles);
+ await fs.mkdir('site/assets/blueprints',{recursive:true});const file=`assets/blueprints/${id}.png`;await sharp(Buffer.from(out)).png().toFile('site/'+file);return file;
+}
 await fs.mkdir('site/'+destination,{recursive:true});
 const unique=a=>[...new Set(a.filter(Boolean))];
 async function copySource(file){const to=destination+'/'+file.replace(/^blueprint-sources\//,'');await fs.mkdir(path.dirname('site/'+to),{recursive:true});await fs.copyFile(file,'site/'+to);return to;}
@@ -54,7 +66,7 @@ async function register({file,info={},category,purpose,page,proof,report,version
  const consumedIds=unique(consumedProducts);
  if(consumedIds.length)notes.push(`Makes ${consumedIds.join(', ')} inside; the connected labs use every pack, so nothing is exported.`);
  const releaseFolder=file.replace(/^blueprint-sources\//,'').split('/')[0];
- const entry={...(todayFolders.has(releaseFolder)?{releaseGroup}:essentialsFolders.has(releaseFolder)?{releaseGroup:essentialsGroup}:{}),id:recordId,name:title,collection:sourceCollection,category,section:category,purpose,designedCollection:true,lifecycle:archive?'archive':'current',gameVersion:version,profile:profile||'Space Age',...(operatingBoundary?{operatingBoundary}:{}),coverageExcluded:coverageExcluded||archive,author:sourceAuthor,sourceURL:sourceURL||page||localSource,file:localSource,isBook:false,icons:unique([...(b.icons||[]).map(i=>i.signal?.name),...productIds]).slice(0,4),...blueprintMaterials(object,catalog),code,products:productIds,...(consumedIds.length?{consumedProducts:consumedIds}:{}),analysis:{...analysis,kind:purpose,inputs:inputIds,outputs:productIds,netOutputs:productIds,internal:analysis.internal.filter(id=>!productIds.includes(id)&&!inputIds.includes(id)),serviceInputs:unique([...(analysis.serviceInputs||[]),...(info.initialSeeds?['Initial tree seeds']:[])]),serviceOutputs:category==='Forestry'&&info.id!=='forest-kit'?['Tree planting and pollution absorption']:analysis.serviceOutputs,notes:unique([...(analysis.notes||[]),...notes])},setupNotes:notes,operatingPorts:{inputs:info.inputs||[],fluids:info.fluids||[],outputs:info.outputs||[],optional:info.optionalInputs||[]},blueprintSha256:sha,validation:{status:verified?'game-tested':'untested',note:verified?`Exact blueprint SHA-256 matched native Factorio ${version} evidence. ${measured?'Measured delivery: '+Object.entries(measured).map(([id,n])=>id+' '+Number(n).toFixed(2)+'/min').join('; ')+'.':'Operational behavior tested; no manufacturing throughput claim.'}`:'Preserved design; no matching native production qualification is published for this exact version. Recipe/layout analysis does not establish connected routing or sustained output.',blueprintSha256:sha,...(reportURL?{report:reportURL}:{})},...(measured?{measuredOutputsPerMinute:measured}:{}),sources:unique([localSource,page,reportURL,sourceURL]),alternateSources:[],preview:preview||await blueprintPreview(b,recordId,production),...(info.footprint&&!Array.isArray(info.footprint)?{footprint:info.footprint}:{})};
+ const entry={...(todayFolders.has(releaseFolder)?{releaseGroup}:essentialsFolders.has(releaseFolder)?{releaseGroup:essentialsGroup}:spaceLaunchFolders.has(releaseFolder)?{releaseGroup:spaceLaunchGroup}:{}),id:recordId,name:title,collection:sourceCollection,category,section:category,purpose,designedCollection:true,lifecycle:archive?'archive':'current',gameVersion:version,profile:profile||'Space Age',...(operatingBoundary?{operatingBoundary}:{}),coverageExcluded:coverageExcluded||archive,author:sourceAuthor,sourceURL:sourceURL||page||localSource,file:localSource,isBook:false,icons:unique([...(b.icons||[]).map(i=>i.signal?.name),...productIds]).slice(0,4),...blueprintMaterials(object,catalog),code,products:productIds,...(consumedIds.length?{consumedProducts:consumedIds}:{}),analysis:{...analysis,kind:purpose,inputs:inputIds,outputs:productIds,netOutputs:productIds,internal:analysis.internal.filter(id=>!productIds.includes(id)&&!inputIds.includes(id)),serviceInputs:unique([...(analysis.serviceInputs||[]),...(info.initialSeeds?['Initial tree seeds']:[])]),serviceOutputs:category==='Forestry'&&info.id!=='forest-kit'?['Tree planting and pollution absorption']:analysis.serviceOutputs,notes:unique([...(analysis.notes||[]),...notes])},setupNotes:notes,operatingPorts:{inputs:info.inputs||[],fluids:info.fluids||[],outputs:info.outputs||[],optional:info.optionalInputs||[]},blueprintSha256:sha,validation:{status:verified?'game-tested':'untested',note:verified?`Exact blueprint SHA-256 matched native Factorio ${version} evidence. ${measured?'Measured delivery: '+Object.entries(measured).map(([id,n])=>id+' '+Number(n).toFixed(2)+'/min').join('; ')+'.':'Operational behavior tested; no manufacturing throughput claim.'}`:'Preserved design; no matching native production qualification is published for this exact version. Recipe/layout analysis does not establish connected routing or sustained output.',blueprintSha256:sha,...(reportURL?{report:reportURL}:{})},...(measured?{measuredOutputsPerMinute:measured}:{}),sources:unique([localSource,page,reportURL,sourceURL]),alternateSources:[],preview:preview||await blueprintPreview(b,recordId,production),...(info.footprint&&!Array.isArray(info.footprint)?{footprint:info.footprint}:{})};
  entries.push(entry);seen.set(sha,entry);audit.push({id:recordId,name:title,blueprintSha256:sha,file:localSource,collection:sourceCollection,section:category,purpose,inputs:inputIds,outputs:productIds,...(consumedIds.length?{consumedProducts:consumedIds}:{}),validation:entry.validation.status,report:reportURL,gameVersion:version,lifecycle:entry.lifecycle});
 }
 const specs=[
@@ -96,14 +108,27 @@ for(const info of fiveManifest){
 }
 // New workshops are admitted only after exact-code native qualification. Never infer
 // manufacturing coverage from their construction inventory or intermediate recipes.
-for(const [folder,category,purpose,expected] of [
+const SPACE_SUPPLY='Supply every labeled operating input, including fluids where listed, at or above its panel figure, and external electricity. Preserve stock controls, circuit wires and passive-provider chest limits. Construction materials are not operating inputs.';
+const KIT_ITEMS=['rocket-silo','cargo-landing-pad','space-platform-starter-pack','space-platform-foundation','asteroid-collector','crusher','assembling-machine-2','electric-furnace','fast-inserter','solar-panel','accumulator','constant-combinator','arithmetic-combinator','decider-combinator','passive-provider-chest','substation'];
+const supplierName={'green-circuits':'green-circuit supplier','concrete-supplier':'concrete supplier','rocket-fuel-supplier':'rocket-fuel supplier'};
+for(const [folder,category,purpose,expected,opts={}] of [
  ['robot-logistics-workshop','Robots and logistics','Robot production',['construction-robot','logistic-robot','roboport','passive-provider-chest','storage-chest']],
  ['inserter-workshop','Inserters','Production',['inserter','long-handed-inserter','fast-inserter','bulk-inserter']],
  // Essentials round, promoted in this order so each leads coverage for its own products.
  ['green-circuits','Circuits','Circuit production',['electronic-circuit']],
  ['essentials-mall','Building essentials','Production',['assembling-machine-2','fast-transport-belt','fast-underground-belt','fast-splitter','fast-inserter','bulk-inserter','electric-furnace','electric-mining-drill']],
  ['robot-essentials','Robots and logistics','Robot production',['construction-robot','logistic-robot','roboport','storage-chest','passive-provider-chest']],
- ['six-science','Science · six packs from supplied circuits','Science production',['automation-science-pack','logistic-science-pack','military-science-pack','chemical-science-pack','production-science-pack','utility-science-pack']]
+ ['six-science','Science · six packs from supplied circuits','Science production',['automation-science-pack','logistic-science-pack','military-science-pack','chemical-science-pack','production-science-pack','utility-science-pack']],
+ // Space launch round, promoted in this order. Each option says what differs from a rate workshop:
+ // outputs (the kit lists its 16 chest items, not its intermediates), recommend (the kit leads only
+ // its space items), inputs (the platform has none: its collectors catch chunks in orbit), and the
+ // receiver crafts nothing, so it is searchable by its delivered packs but excluded from coverage.
+ ['concrete-supplier','Space launch · suppliers','Production',['concrete'],{setup:[SPACE_SUPPLY]}],
+ ['rocket-fuel-supplier','Space launch · suppliers','Production',['rocket-fuel'],{setup:[SPACE_SUPPLY]}],
+ ['launch-kit','Space launch · kit','Production',KIT_ITEMS,{outputs:info=>Object.keys(info.outputCaps),recommend:['rocket-silo','cargo-landing-pad','space-platform-starter-pack','space-platform-foundation','asteroid-collector','crusher'],setup:[SPACE_SUPPLY,'On demand: the kit has no rate. Its native run measured the time to a complete kit from empty; take items out of a chest and exactly those are made again.','Robot network: leave the starter pack and the platform parts in the kit\'s passive provider chests, inside one roboport network with logistic robots that also covers the rocket silo. With "Automatic requests from space platforms" on, the silo takes its cargo from that network and refuses cargo put in by hand. The kit makes no roboports or robots.','First launch: in a save that has never created a space platform, the asteroid collector and crusher recipes unlock only when the first platform is created, so the kit fills 14 of its 16 chests and waits (blueprint-sources/launch-kit/history/first-launch-order). Place the silo and create the platform as soon as the silo and the starter pack are ready; the kit then makes the crusher and the four collectors by itself and the last cargo rocket waits for them. The measured kit time applies to a save where a platform already exists.'],supplierCopies:true}],
+ ['rocket-supplies','Space launch · rocket supplies','Production',['processing-unit','low-density-structure'],{setup:[SPACE_SUPPLY,'Rocket fuel passes straight through to its own chest; it is supplied, not made here.'],supplierCopies:true}],
+ ['white-platform','Space science · orbital platform','Science production',['space-science-pack'],{inputs:[],rates:b=>({'space-science-pack':b.steady.madePerMinute}),setup:['Space platform blueprint: no supplied inputs. Its four asteroid collectors catch chunks in Nauvis orbit; the crusher, furnace and assemblers make the packs inside. Paste it with its hub on a platform made from one starter pack; it snaps to the real hub and keeps the hub\'s "request missing construction materials" setting on.']}],
+ ['white-pack-receiver','Space science · ground receiver','Science production',['space-science-pack'],{outputs:()=>['space-science-pack'],inputs:['space-science-pack'],recommend:[],coverageExcluded:true,rates:b=>({'space-science-pack':b.steady.collectedPerMinute}),setup:['Receives space science packs from the platform in orbit by cargo pod and delivers them to a passive provider chest; it crafts nothing. A planet allows one cargo landing pad: if one already exists, add the space science pack request to it and build only the arm, chest and substation.']}]
 ]){
  const dir='blueprint-sources/'+folder,manifest=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',report=await read(reportFile);
  if(manifest.length!==1)throw Error('Expected one current workshop: '+folder);
@@ -111,14 +136,22 @@ for(const [folder,category,purpose,expected] of [
   const sha=hash(await fs.readFile(dir+'/'+info.file,'utf8'));
   const proof=report.builds?.find(b=>b.blueprintSha256===sha&&b.passed===true);
   const unqualified=report.passed!==true||!proof||info.blueprintSha256!==sha;
-  // An essentials blueprint that did not qualify is left out of the library; the landing page names it.
-  if(unqualified&&essentialsFolders.has(folder)){console.warn('Not registered (no exact-hash passing native report): '+folder);continue;}
+  // An essentials or space-launch blueprint that did not qualify is left out of the library; its landing page names it.
+  if(unqualified&&(essentialsFolders.has(folder)||spaceLaunchFolders.has(folder))){console.warn('Not registered (no exact-hash passing native report): '+folder);continue;}
   if(unqualified)throw Error('Workshop requires exact-hash passing native production proof: '+folder);
-  if(JSON.stringify([...info.products].sort())!==JSON.stringify([...expected].sort()))throw Error('Unexpected workshop products: '+folder);
+  // The kit is published only with the exact platform and receiver strings its bill was made from.
+  if(folder==='launch-kit'){const problems=kitBillProblems(await read('scripts/launch-kit/bill.json'),(await read('blueprint-sources/white-platform/manifest.json'))[0],(await read('blueprint-sources/white-pack-receiver/manifest.json'))[0],info);if(problems.length){console.warn('Not registered (kit bill does not match the published platform): '+problems.join('; '));continue;}}
+  const outputs=opts.outputs?opts.outputs(info):info.products;
+  if(JSON.stringify([...outputs].sort())!==JSON.stringify([...expected].sort()))throw Error('Unexpected workshop products: '+folder);
   const supply=info.greenCircuitSupply?['Needs supplied electronic circuits: '+info.greenCircuitSupply.perMinute+' per minute at the targets; '+info.greenCircuitSupply.copiesOfGreenCircuits+' green-circuit supplier cop'+(info.greenCircuitSupply.copiesOfGreenCircuits===1?'y':'ies')+' (360 per minute each) cover'+(info.greenCircuitSupply.copiesOfGreenCircuits===1?'s':'')+' it.']:[];
-  await register({file:dir+'/'+info.file,info,category,purpose,page:folder+'/index.html',proof,report:reportFile,outputs:info.products,version:report.gameVersion,setup:['Supply every labeled operating input, including fluids where listed, and external electricity. Preserve stock controls, circuit wires and passive-provider chest limits. Intermediates are manufactured inside; construction materials are not operating inputs.',...supply]});
+  // Supplier copies for the space-launch consumers come from the manifest's supplierLinks.
+  if(opts.supplierCopies)for(const l of info.supplierLinks||[])if(l.supplier)supply.push(`Needs supplied ${l.item.replaceAll('-',' ')}: ${l.perMinute} per minute at the panel figure; ${l.copies} ${supplierName[l.supplier]||l.supplier} cop${l.copies===1?'y':'ies'} cover${l.copies===1?'s':''} it.${l.note?' '+l.note:''}`);
+  // Measured rates are the products' own; the rocket-fuel pass-through and the kit (no rate) report none.
+  const rates=opts.rates?opts.rates(proof):spaceLaunchFolders.has(folder)&&proof.outputsPerMinute?Object.fromEntries(Object.entries(proof.outputsPerMinute).filter(([id])=>outputs.includes(id))):proof.outputsPerMinute;
+  const platformPreview=folder==='white-platform'?await tiledPreview(decodeBlueprint(await fs.readFile(dir+'/'+info.file,'utf8')).blueprint,'designed-'+sha.slice(0,16)):undefined;
+  await register({file:dir+'/'+info.file,info,category,purpose,page:folder+'/index.html',proof:{...proof,outputsPerMinute:rates},report:reportFile,outputs,...(opts.inputs?{inputs:opts.inputs}:{}),coverageExcluded:opts.coverageExcluded,preview:platformPreview,version:report.gameVersion,setup:[...(opts.setup||['Supply every labeled operating input, including fluids where listed, and external electricity. Preserve stock controls, circuit wires and passive-provider chest limits. Intermediates are manufactured inside; construction materials are not operating inputs.']),...supply]});
   const entry=entries.at(-1);
-  promoteWorkshop(entries,entry);entry.recommendation='Latest qualified '+folder.replaceAll('-',' ');
+  promoteWorkshop(entries,entry,opts.recommend??outputs);entry.recommendation='Latest qualified '+folder.replaceAll('-',' ');
  }
 }
 const space=await read('blueprint-sources/flight-space-science/manifest.json'),spaceReport='blueprint-sources/flight-space-science/validation/native-report.json',spaceProof=await read(spaceReport);

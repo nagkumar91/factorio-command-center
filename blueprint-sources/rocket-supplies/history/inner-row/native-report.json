@@ -1,0 +1,1538 @@
+{
+  "builds": [
+    {
+      "id": "rocket-supplies",
+      "outputsPerMinute": {
+        "rocket-fuel": 5,
+        "processing-unit": 5.033333333333333,
+        "low-density-structure": 5
+      },
+      "inputs": [
+        {
+          "item": "rocket-fuel",
+          "entity": 87,
+          "perMinute": 5,
+          "acceptedDuringMeasurement": 150,
+          "measuredPerMinute": 5,
+          "productiveRoute": [
+            87,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120,
+            128
+          ],
+          "passThrough": true,
+          "acceptedDuringRecovery": 50,
+          "acceptedTotal": 936
+        },
+        {
+          "item": "copper-plate",
+          "entity": 88,
+          "perMinute": 120,
+          "acceptedDuringMeasurement": 3600,
+          "measuredPerMinute": 120,
+          "productiveRoute": [
+            88,
+            62,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            65
+          ],
+          "passThrough": false,
+          "acceptedDuringRecovery": 1200,
+          "acceptedTotal": 16906
+        },
+        {
+          "item": "plastic-bar",
+          "entity": 89,
+          "perMinute": 45,
+          "acceptedDuringMeasurement": 1350,
+          "measuredPerMinute": 45,
+          "productiveRoute": [
+            89,
+            61,
+            62,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            64
+          ],
+          "passThrough": false,
+          "acceptedDuringRecovery": 450,
+          "acceptedTotal": 6350
+        },
+        {
+          "item": "steel-plate",
+          "entity": 90,
+          "perMinute": 10,
+          "acceptedDuringMeasurement": 300,
+          "measuredPerMinute": 10,
+          "productiveRoute": [
+            90,
+            60,
+            61,
+            62,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            68
+          ],
+          "passThrough": false,
+          "acceptedDuringRecovery": 101,
+          "acceptedTotal": 1418
+        },
+        {
+          "item": "electronic-circuit",
+          "entity": 91,
+          "perMinute": 120,
+          "acceptedDuringMeasurement": 3600,
+          "measuredPerMinute": 120,
+          "productiveRoute": [
+            91,
+            59,
+            60,
+            61,
+            62,
+            1,
+            2,
+            63
+          ],
+          "passThrough": false,
+          "acceptedDuringRecovery": 1200,
+          "acceptedTotal": 16913
+        }
+      ],
+      "fluids": [
+        {
+          "item": "sulfuric-acid",
+          "entity": 92,
+          "perMinute": 25,
+          "acceptedDuringMeasurement": 750,
+          "measuredPerMinute": 25,
+          "sourceFluidSegment": 1,
+          "productiveConsumers": [
+            63,
+            67
+          ],
+          "acceptedDuringRecovery": 250
+        }
+      ],
+      "outputPorts": [
+        {
+          "item": "rocket-fuel",
+          "entity": 128,
+          "collectedDuringMeasurement": 150
+        },
+        {
+          "item": "processing-unit",
+          "entity": 130,
+          "collectedDuringMeasurement": 151
+        },
+        {
+          "item": "low-density-structure",
+          "entity": 132,
+          "collectedDuringMeasurement": 150
+        }
+      ],
+      "machines": [
+        {
+          "entity": 63,
+          "recipe": "processing-unit",
+          "actualRecipe": "processing-unit",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 10,
+          "measuredCrafts": 113,
+          "status": "working",
+          "statusSamples": {
+            "working": 1461,
+            "item_ingredient_shortage": 339
+          },
+          "missing": {
+            "advanced-circuit": 339
+          },
+          "inventory": [
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 28
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 64,
+          "recipe": "advanced-circuit",
+          "actualRecipe": "advanced-circuit",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 6,
+          "measuredCrafts": 225,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "inventory": [
+            {
+              "name": "plastic-bar",
+              "quality": "normal",
+              "count": 4
+            },
+            {
+              "name": "copper-cable",
+              "quality": "normal",
+              "count": 8
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 4
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 65,
+          "recipe": "copper-cable",
+          "actualRecipe": "copper-cable",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 0.5,
+          "measuredCrafts": 602,
+          "status": "full_output",
+          "statusSamples": {
+            "full_output": 1255,
+            "item_ingredient_shortage": 206,
+            "working": 339
+          },
+          "missing": {
+            "copper-plate": 206
+          },
+          "inventory": {},
+          "output": [
+            {
+              "name": "copper-cable",
+              "quality": "normal",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "entity": 66,
+          "recipe": "advanced-circuit",
+          "actualRecipe": "advanced-circuit",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 6,
+          "measuredCrafts": 76,
+          "status": "full_output",
+          "statusSamples": {
+            "full_output": 1135,
+            "item_ingredient_shortage": 57,
+            "working": 608
+          },
+          "missing": {
+            "plastic-bar": 57,
+            "copper-cable": 19
+          },
+          "inventory": {},
+          "output": [
+            {
+              "name": "advanced-circuit",
+              "quality": "normal",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "entity": 67,
+          "recipe": "processing-unit",
+          "actualRecipe": "processing-unit",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 10,
+          "measuredCrafts": 38,
+          "status": "fluid_ingredient_shortage",
+          "statusSamples": {
+            "working": 482,
+            "fluid_ingredient_shortage": 1318
+          },
+          "inventory": [
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 40
+            },
+            {
+              "name": "advanced-circuit",
+              "quality": "normal",
+              "count": 4
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 68,
+          "recipe": "low-density-structure",
+          "actualRecipe": "low-density-structure",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 15,
+          "measuredCrafts": 90,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "inventory": [
+            {
+              "name": "copper-plate",
+              "quality": "normal",
+              "count": 40
+            },
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 4
+            },
+            {
+              "name": "plastic-bar",
+              "quality": "normal",
+              "count": 10
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 69,
+          "recipe": "low-density-structure",
+          "actualRecipe": "low-density-structure",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 15,
+          "measuredCrafts": 61,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "working": 1213,
+            "item_ingredient_shortage": 587
+          },
+          "missing": {
+            "plastic-bar": 587,
+            "copper-plate": 210
+          },
+          "inventory": [
+            {
+              "name": "copper-plate",
+              "quality": "normal",
+              "count": 18
+            },
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": {}
+        }
+      ],
+      "powered": true,
+      "importedEntities": 134,
+      "exactRecipeChecks": 18907,
+      "externalApproachesClear": true,
+      "stockNetworksIsolated": true,
+      "inserterCapacityResearch": {
+        "fast": 0,
+        "bulkUnlockBonus": 1
+      },
+      "arms": [
+        {
+          "entity": 70,
+          "statusSamples": {
+            "waiting_for_source_items": 788,
+            "working": 1012
+          }
+        },
+        {
+          "entity": 71,
+          "statusSamples": {
+            "waiting_for_source_items": 1800
+          }
+        },
+        {
+          "entity": 72,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 976,
+            "working": 450,
+            "waiting_for_source_items": 374
+          }
+        },
+        {
+          "entity": 73,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 1499,
+            "working": 301
+          }
+        },
+        {
+          "entity": 74,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 1477,
+            "working": 114,
+            "waiting_for_source_items": 209
+          }
+        },
+        {
+          "entity": 75,
+          "statusSamples": {
+            "waiting_for_source_items": 885,
+            "working": 357,
+            "waiting_for_space_in_destination": 558
+          }
+        },
+        {
+          "entity": 76,
+          "statusSamples": {
+            "waiting_for_source_items": 1800
+          }
+        },
+        {
+          "entity": 77,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 574,
+            "working": 900,
+            "waiting_for_source_items": 326
+          }
+        },
+        {
+          "entity": 78,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 574,
+            "waiting_for_source_items": 1031,
+            "working": 195
+          }
+        },
+        {
+          "entity": 79,
+          "statusSamples": {
+            "waiting_for_source_items": 1710,
+            "working": 90
+          }
+        },
+        {
+          "entity": 80,
+          "statusSamples": {
+            "waiting_for_source_items": 1190,
+            "working": 610
+          }
+        },
+        {
+          "entity": 81,
+          "statusSamples": {
+            "waiting_for_source_items": 1727,
+            "working": 73
+          }
+        },
+        {
+          "entity": 82,
+          "statusSamples": {
+            "waiting_for_source_items": 1785,
+            "working": 15
+          }
+        },
+        {
+          "entity": 83,
+          "statusSamples": {
+            "waiting_for_source_items": 1575,
+            "working": 225
+          }
+        },
+        {
+          "entity": 84,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 976,
+            "working": 450,
+            "waiting_for_source_items": 374
+          }
+        },
+        {
+          "entity": 85,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 1477,
+            "working": 95,
+            "waiting_for_source_items": 228
+          }
+        },
+        {
+          "entity": 86,
+          "statusSamples": {
+            "waiting_for_source_items": 1242,
+            "waiting_for_space_in_destination": 558
+          }
+        },
+        {
+          "entity": 127,
+          "statusSamples": {
+            "waiting_for_source_items": 1800
+          }
+        },
+        {
+          "entity": 129,
+          "statusSamples": {
+            "waiting_for_source_items": 1687,
+            "working": 113
+          }
+        },
+        {
+          "entity": 131,
+          "statusSamples": {
+            "waiting_for_source_items": 1762,
+            "working": 38
+          }
+        }
+      ],
+      "recovery": {
+        "settleMinutes": 5,
+        "measurementMinutes": 10,
+        "outputsPerMinute": {
+          "rocket-fuel": 5,
+          "processing-unit": 4.9,
+          "low-density-structure": 5
+        }
+      },
+      "blocked": {
+        "minutes": 140,
+        "collectionPauseStock": [
+          {
+            "item": "rocket-fuel",
+            "entity": 128,
+            "count": 400,
+            "capacity": 400,
+            "maxDuringBlocked": 400
+          },
+          {
+            "item": "processing-unit",
+            "entity": 130,
+            "count": 400,
+            "capacity": 400,
+            "maxDuringBlocked": 400
+          },
+          {
+            "item": "low-density-structure",
+            "entity": 132,
+            "count": 400,
+            "capacity": 400,
+            "maxDuringBlocked": 400
+          }
+        ],
+        "machinesAtBlockEnd": [
+          {
+            "entity": 63,
+            "recipe": "processing-unit",
+            "craftsInLastMinute": 0,
+            "status": "full_output",
+            "output": [
+              {
+                "name": "processing-unit",
+                "quality": "normal",
+                "count": 2
+              }
+            ],
+            "input": {}
+          },
+          {
+            "entity": 64,
+            "recipe": "advanced-circuit",
+            "craftsInLastMinute": 0,
+            "status": "item_ingredient_shortage",
+            "output": {},
+            "input": [
+              {
+                "name": "copper-cable",
+                "quality": "normal",
+                "count": 8
+              }
+            ]
+          },
+          {
+            "entity": 65,
+            "recipe": "copper-cable",
+            "craftsInLastMinute": 0,
+            "status": "item_ingredient_shortage",
+            "output": {},
+            "input": {}
+          },
+          {
+            "entity": 66,
+            "recipe": "advanced-circuit",
+            "craftsInLastMinute": 0,
+            "status": "item_ingredient_shortage",
+            "output": {},
+            "input": {}
+          },
+          {
+            "entity": 67,
+            "recipe": "processing-unit",
+            "craftsInLastMinute": 0,
+            "status": "item_ingredient_shortage",
+            "output": [
+              {
+                "name": "processing-unit",
+                "quality": "normal",
+                "count": 1
+              }
+            ],
+            "input": [
+              {
+                "name": "electronic-circuit",
+                "quality": "normal",
+                "count": 16
+              },
+              {
+                "name": "advanced-circuit",
+                "quality": "normal",
+                "count": 4
+              }
+            ]
+          },
+          {
+            "entity": 68,
+            "recipe": "low-density-structure",
+            "craftsInLastMinute": 0,
+            "status": "full_output",
+            "output": [
+              {
+                "name": "low-density-structure",
+                "quality": "normal",
+                "count": 3
+              }
+            ],
+            "input": {}
+          },
+          {
+            "entity": 69,
+            "recipe": "low-density-structure",
+            "craftsInLastMinute": 0,
+            "status": "item_ingredient_shortage",
+            "output": {},
+            "input": [
+              {
+                "name": "copper-plate",
+                "quality": "normal",
+                "count": 25
+              },
+              {
+                "name": "steel-plate",
+                "quality": "normal",
+                "count": 3
+              },
+              {
+                "name": "plastic-bar",
+                "quality": "normal",
+                "count": 4
+              }
+            ]
+          }
+        ],
+        "chestSeries": {
+          "rocket-fuel": [
+            {
+              "minute": 5,
+              "count": 25
+            },
+            {
+              "minute": 10,
+              "count": 50
+            },
+            {
+              "minute": 15,
+              "count": 75
+            },
+            {
+              "minute": 20,
+              "count": 100
+            },
+            {
+              "minute": 25,
+              "count": 125
+            },
+            {
+              "minute": 30,
+              "count": 150
+            },
+            {
+              "minute": 35,
+              "count": 175
+            },
+            {
+              "minute": 40,
+              "count": 200
+            },
+            {
+              "minute": 45,
+              "count": 225
+            },
+            {
+              "minute": 50,
+              "count": 250
+            },
+            {
+              "minute": 55,
+              "count": 275
+            },
+            {
+              "minute": 60,
+              "count": 300
+            },
+            {
+              "minute": 65,
+              "count": 325
+            },
+            {
+              "minute": 70,
+              "count": 350
+            },
+            {
+              "minute": 75,
+              "count": 375
+            },
+            {
+              "minute": 80,
+              "count": 400
+            },
+            {
+              "minute": 85,
+              "count": 400
+            },
+            {
+              "minute": 90,
+              "count": 400
+            },
+            {
+              "minute": 95,
+              "count": 400
+            },
+            {
+              "minute": 100,
+              "count": 400
+            },
+            {
+              "minute": 105,
+              "count": 400
+            },
+            {
+              "minute": 110,
+              "count": 400
+            },
+            {
+              "minute": 115,
+              "count": 400
+            },
+            {
+              "minute": 120,
+              "count": 400
+            },
+            {
+              "minute": 125,
+              "count": 400
+            },
+            {
+              "minute": 130,
+              "count": 400
+            },
+            {
+              "minute": 135,
+              "count": 400
+            },
+            {
+              "minute": 140,
+              "count": 400
+            }
+          ],
+          "processing-unit": [
+            {
+              "minute": 5,
+              "count": 24
+            },
+            {
+              "minute": 10,
+              "count": 49
+            },
+            {
+              "minute": 15,
+              "count": 75
+            },
+            {
+              "minute": 20,
+              "count": 100
+            },
+            {
+              "minute": 25,
+              "count": 124
+            },
+            {
+              "minute": 30,
+              "count": 149
+            },
+            {
+              "minute": 35,
+              "count": 175
+            },
+            {
+              "minute": 40,
+              "count": 200
+            },
+            {
+              "minute": 45,
+              "count": 224
+            },
+            {
+              "minute": 50,
+              "count": 249
+            },
+            {
+              "minute": 55,
+              "count": 275
+            },
+            {
+              "minute": 60,
+              "count": 300
+            },
+            {
+              "minute": 65,
+              "count": 324
+            },
+            {
+              "minute": 70,
+              "count": 349
+            },
+            {
+              "minute": 75,
+              "count": 375
+            },
+            {
+              "minute": 80,
+              "count": 400
+            },
+            {
+              "minute": 85,
+              "count": 400
+            },
+            {
+              "minute": 90,
+              "count": 400
+            },
+            {
+              "minute": 95,
+              "count": 400
+            },
+            {
+              "minute": 100,
+              "count": 400
+            },
+            {
+              "minute": 105,
+              "count": 400
+            },
+            {
+              "minute": 110,
+              "count": 400
+            },
+            {
+              "minute": 115,
+              "count": 400
+            },
+            {
+              "minute": 120,
+              "count": 400
+            },
+            {
+              "minute": 125,
+              "count": 400
+            },
+            {
+              "minute": 130,
+              "count": 400
+            },
+            {
+              "minute": 135,
+              "count": 400
+            },
+            {
+              "minute": 140,
+              "count": 400
+            }
+          ],
+          "low-density-structure": [
+            {
+              "minute": 5,
+              "count": 25
+            },
+            {
+              "minute": 10,
+              "count": 50
+            },
+            {
+              "minute": 15,
+              "count": 75
+            },
+            {
+              "minute": 20,
+              "count": 100
+            },
+            {
+              "minute": 25,
+              "count": 125
+            },
+            {
+              "minute": 30,
+              "count": 151
+            },
+            {
+              "minute": 35,
+              "count": 176
+            },
+            {
+              "minute": 40,
+              "count": 200
+            },
+            {
+              "minute": 45,
+              "count": 225
+            },
+            {
+              "minute": 50,
+              "count": 250
+            },
+            {
+              "minute": 55,
+              "count": 275
+            },
+            {
+              "minute": 60,
+              "count": 300
+            },
+            {
+              "minute": 65,
+              "count": 325
+            },
+            {
+              "minute": 70,
+              "count": 351
+            },
+            {
+              "minute": 75,
+              "count": 376
+            },
+            {
+              "minute": 80,
+              "count": 400
+            },
+            {
+              "minute": 85,
+              "count": 400
+            },
+            {
+              "minute": 90,
+              "count": 400
+            },
+            {
+              "minute": 95,
+              "count": 400
+            },
+            {
+              "minute": 100,
+              "count": 400
+            },
+            {
+              "minute": 105,
+              "count": 400
+            },
+            {
+              "minute": 110,
+              "count": 400
+            },
+            {
+              "minute": 115,
+              "count": 400
+            },
+            {
+              "minute": 120,
+              "count": 400
+            },
+            {
+              "minute": 125,
+              "count": 400
+            },
+            {
+              "minute": 130,
+              "count": 400
+            },
+            {
+              "minute": 135,
+              "count": 400
+            },
+            {
+              "minute": 140,
+              "count": 400
+            }
+          ]
+        },
+        "ringAtBlockEnd": [
+          {
+            "signal": {
+              "name": "copper-plate"
+            },
+            "count": 40
+          },
+          {
+            "signal": {
+              "name": "steel-plate"
+            },
+            "count": 6
+          },
+          {
+            "signal": {
+              "name": "plastic-bar"
+            },
+            "count": 20
+          },
+          {
+            "signal": {
+              "name": "electronic-circuit"
+            },
+            "count": 40
+          },
+          {
+            "signal": {
+              "name": "processing-unit"
+            },
+            "count": 4
+          },
+          {
+            "signal": {
+              "name": "low-density-structure"
+            },
+            "count": 4
+          }
+        ],
+        "stopWindowMinutes": 5,
+        "entranceAcceptance": [
+          {
+            "item": "rocket-fuel",
+            "blocked": 629,
+            "inStopWindow": 0,
+            "inLastMinute": 0
+          },
+          {
+            "item": "copper-plate",
+            "blocked": 9707,
+            "inStopWindow": 0,
+            "inLastMinute": 0
+          },
+          {
+            "item": "plastic-bar",
+            "blocked": 3647,
+            "inStopWindow": 0,
+            "inLastMinute": 0
+          },
+          {
+            "item": "steel-plate",
+            "blocked": 813,
+            "inStopWindow": 0,
+            "inLastMinute": 0
+          },
+          {
+            "item": "electronic-circuit",
+            "blocked": 9714,
+            "inStopWindow": 0,
+            "inLastMinute": 0
+          },
+          {
+            "item": "sulfuric-acid",
+            "blocked": 3500,
+            "inStopWindow": 125,
+            "inLastMinute": 25
+          }
+        ],
+        "machinesStoppedInLastMinute": true
+      },
+      "loopSamples": {
+        "rocket-supplies": {
+          "maxStock": 115,
+          "capacity": 496,
+          "lastSignals": [
+            {
+              "signal": {
+                "name": "copper-plate"
+              },
+              "count": 11
+            },
+            {
+              "signal": {
+                "name": "steel-plate"
+              },
+              "count": 6
+            },
+            {
+              "signal": {
+                "name": "plastic-bar"
+              },
+              "count": 3
+            },
+            {
+              "signal": {
+                "name": "electronic-circuit"
+              },
+              "count": 6
+            },
+            {
+              "signal": {
+                "name": "low-density-structure"
+              },
+              "count": 1
+            }
+          ]
+        }
+      },
+      "ringItemMax": {
+        "copper-plate": 41,
+        "electronic-circuit": 40,
+        "plastic-bar": 21,
+        "steel-plate": 7,
+        "low-density-structure": 4,
+        "processing-unit": 4
+      },
+      "ringSeries": [
+        {
+          "minute": 0,
+          "total": 0
+        },
+        {
+          "minute": 5,
+          "total": 20,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 4,
+          "low-density-structure": 1
+        },
+        {
+          "minute": 10,
+          "total": 34,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 5,
+          "electronic-circuit": 14,
+          "processing-unit": 1
+        },
+        {
+          "minute": 15,
+          "total": 22,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 7
+        },
+        {
+          "minute": 20,
+          "total": 23,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 5,
+          "electronic-circuit": 4
+        },
+        {
+          "minute": 25,
+          "total": 23,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 8
+        },
+        {
+          "minute": 30,
+          "total": 38,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 5,
+          "electronic-circuit": 18,
+          "processing-unit": 1
+        },
+        {
+          "minute": 35,
+          "total": 21,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 2,
+          "electronic-circuit": 7
+        },
+        {
+          "minute": 40,
+          "total": 21,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 4,
+          "electronic-circuit": 3
+        },
+        {
+          "minute": 45,
+          "total": 20,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 4,
+          "low-density-structure": 1
+        },
+        {
+          "minute": 50,
+          "total": 34,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 5,
+          "electronic-circuit": 14,
+          "processing-unit": 1
+        },
+        {
+          "minute": 55,
+          "total": 22,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 7
+        },
+        {
+          "minute": 60,
+          "total": 23,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 5,
+          "electronic-circuit": 4
+        },
+        {
+          "minute": 65,
+          "total": 23,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 8
+        },
+        {
+          "minute": 70,
+          "total": 38,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 5,
+          "electronic-circuit": 18,
+          "processing-unit": 1
+        },
+        {
+          "minute": 75,
+          "total": 21,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 2,
+          "electronic-circuit": 7
+        },
+        {
+          "minute": 80,
+          "total": 21,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 4,
+          "electronic-circuit": 3
+        },
+        {
+          "minute": 85,
+          "total": 20,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 4,
+          "low-density-structure": 1
+        },
+        {
+          "minute": 90,
+          "total": 34,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 5,
+          "electronic-circuit": 14,
+          "processing-unit": 1
+        },
+        {
+          "minute": 95,
+          "total": 22,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 7
+        },
+        {
+          "minute": 100,
+          "total": 23,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 5,
+          "electronic-circuit": 4
+        },
+        {
+          "minute": 105,
+          "total": 23,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 8
+        },
+        {
+          "minute": 110,
+          "total": 38,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 5,
+          "electronic-circuit": 18,
+          "processing-unit": 1
+        },
+        {
+          "minute": 115,
+          "total": 21,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 2,
+          "electronic-circuit": 7
+        },
+        {
+          "minute": 120,
+          "total": 21,
+          "copper-plate": 13,
+          "steel-plate": 1,
+          "plastic-bar": 4,
+          "electronic-circuit": 3
+        },
+        {
+          "minute": 125,
+          "total": 20,
+          "copper-plate": 11,
+          "steel-plate": 1,
+          "plastic-bar": 3,
+          "electronic-circuit": 4,
+          "low-density-structure": 1
+        },
+        {
+          "minute": 130,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 135,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 140,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 145,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 150,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 155,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 160,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 165,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 170,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 175,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 180,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 185,
+          "total": 114,
+          "copper-plate": 40,
+          "steel-plate": 6,
+          "plastic-bar": 20,
+          "electronic-circuit": 40,
+          "processing-unit": 4,
+          "low-density-structure": 4
+        },
+        {
+          "minute": 190,
+          "total": 25,
+          "copper-plate": 12,
+          "steel-plate": 6,
+          "plastic-bar": 3,
+          "electronic-circuit": 3,
+          "low-density-structure": 1
+        },
+        {
+          "minute": 195,
+          "total": 33,
+          "copper-plate": 12,
+          "steel-plate": 6,
+          "plastic-bar": 4,
+          "electronic-circuit": 9,
+          "processing-unit": 1,
+          "low-density-structure": 1
+        },
+        {
+          "minute": 200,
+          "total": 27,
+          "copper-plate": 11,
+          "steel-plate": 6,
+          "plastic-bar": 3,
+          "electronic-circuit": 6,
+          "low-density-structure": 1
+        }
+      ],
+      "bulkInserters": [],
+      "complete": true,
+      "blueprintSha256": "14e20c6c617691f2228ef8b23a5cd161a4a59b7f96e7bbbb53a366e325b044e9",
+      "checks": {
+        "complete": true,
+        "steady": true,
+        "recovery": true,
+        "everyMachineCrafted": true,
+        "entrancesProductive": true,
+        "fluidsProductive": true,
+        "drawWithinPanels": true,
+        "outputsDelivered": true,
+        "blockedCapsExact": true,
+        "machinesStoppedInLastBlockedMinute": true,
+        "rocketFuelEntranceStopped": true,
+        "ringBelow90": true,
+        "wiringAndPower": true,
+        "bulkHandAtMostTwo": true
+      },
+      "passed": true
+    }
+  ],
+  "feedPolicy": "Throttled: each declared belt entrance gets perMinute/3600 items of credit per tick (capped at 8) inserted one at a time on alternating lanes; each declared fluid entrance gets perMinute/3600 per tick plus the refused carry (capped at one second). Electricity through one energy interface on the power port network. Declared items collected from the declared east chests once per second, except while blocked.",
+  "researchPolicy": "All recipes enabled; fast inserter stack bonus zero; bulk unlock-equivalent capacity bonus +1 only",
+  "gameVersion": "2.1.24",
+  "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+  "harnessSha256": "000aaa7a78254777b4ec23bd8a74b4b791476a147cddcb1ce6447e0438ff068c",
+  "dataHarnessSha256": "24f54ca5e196ea5d8f011ba7130c8ee9c5abebe7218980aa42fdde87cd8684fa",
+  "validatorSha256": "4f323b2c7c6fef6062ceb2f26f369c9c19a33816f69ce77fb445a83d3a89a57a",
+  "configurationSha256": "2457114a37409b3b80d533d01042270bc0f2a29ecc3cf1e45f3f86f00929f4e8",
+  "protocolMinutes": {
+    "warmupMinutes": 15,
+    "measureMinutes": 30,
+    "blockedMinutes": 140,
+    "settleMinutes": 5,
+    "recoveryMinutes": 10,
+    "stopAcceptingWindowMinutes": 5
+  },
+  "createdAt": "2026-11-21T01:39:32.764Z",
+  "passed": true
+}

@@ -1,0 +1,322 @@
+{
+  "builds": [
+    {
+      "id": "rocket-fuel-supplier",
+      "importedEntities": 23,
+      "externalApproachesClear": true,
+      "ringWiringChecked": true,
+      "gateWiringChecked": true,
+      "powered": true,
+      "loopSamples": {},
+      "exactRecipeChecks": 8103,
+      "outputsPerMinute": {
+        "rocket-fuel": 6
+      },
+      "madePerMinute": {
+        "rocket-fuel": 6
+      },
+      "consumptionPerMinute": {},
+      "inputs": [],
+      "fluids": [
+        {
+          "item": "light-oil",
+          "entity": 1,
+          "perMinute": 660,
+          "acceptedDuringMeasurement": 19800,
+          "acceptedPerMinute": 660,
+          "measuredPerMinute": 660,
+          "sourceFluidSegment": 1,
+          "connectedConsumers": [
+            10,
+            11,
+            12
+          ],
+          "productiveConsumers": [
+            10,
+            11,
+            12
+          ],
+          "disconnectedConsumers": {},
+          "entranceFluid": 0.02037036418914795
+        }
+      ],
+      "outputPorts": [
+        {
+          "item": "rocket-fuel",
+          "entity": 21,
+          "collectedDuringMeasurement": 180
+        }
+      ],
+      "machines": [
+        {
+          "entity": 10,
+          "recipe": "solid-fuel-from-light-oil",
+          "actualRecipe": "solid-fuel-from-light-oil",
+          "x": 1.5,
+          "y": 2.5,
+          "nativeCraftingSpeed": 1,
+          "nativeRecipeEnergy": 1,
+          "measuredCrafts": 1800,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "input": {},
+          "output": [
+            {
+              "name": "solid-fuel",
+              "quality": "normal",
+              "count": 29
+            }
+          ],
+          "fluids": [
+            {
+              "name": "light-oil",
+              "amount": 31.099999964237213
+            }
+          ]
+        },
+        {
+          "entity": 11,
+          "recipe": "rocket-fuel",
+          "actualRecipe": "rocket-fuel",
+          "x": 5.5,
+          "y": 2.5,
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 15,
+          "measuredCrafts": 90,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "input": [
+            {
+              "name": "solid-fuel",
+              "quality": "normal",
+              "count": 20
+            }
+          ],
+          "output": {},
+          "fluids": [
+            {
+              "name": "light-oil",
+              "amount": 36.883331418037415
+            }
+          ]
+        },
+        {
+          "entity": 12,
+          "recipe": "rocket-fuel",
+          "actualRecipe": "rocket-fuel",
+          "x": 1.5,
+          "y": 6.5,
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 15,
+          "measuredCrafts": 90,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "input": [
+            {
+              "name": "solid-fuel",
+              "quality": "normal",
+              "count": 20
+            }
+          ],
+          "output": {},
+          "fluids": [
+            {
+              "name": "light-oil",
+              "amount": 2.0166685581207275
+            }
+          ]
+        }
+      ],
+      "arms": [
+        {
+          "entity": 13,
+          "name": "fast-inserter",
+          "x": 3.5,
+          "y": 2.5,
+          "status": "waiting_for_space_in_destination",
+          "samples": {
+            "working": 90,
+            "waiting_for_space_in_destination": 90
+          }
+        },
+        {
+          "entity": 14,
+          "name": "fast-inserter",
+          "x": 2.5,
+          "y": 4.5,
+          "status": "waiting_for_space_in_destination",
+          "samples": {
+            "waiting_for_space_in_destination": 180
+          }
+        },
+        {
+          "entity": 15,
+          "name": "fast-inserter",
+          "x": 4.5,
+          "y": 4.5,
+          "status": "waiting_for_source_items",
+          "samples": {
+            "waiting_for_source_items": 180
+          }
+        },
+        {
+          "entity": 19,
+          "name": "fast-inserter",
+          "x": 3.5,
+          "y": 7.5,
+          "status": "waiting_for_source_items",
+          "samples": {
+            "waiting_for_source_items": 180
+          }
+        }
+      ],
+      "inserterCapacityResearch": {
+        "fast": 0,
+        "bulkUnlockBonus": 1,
+        "technology": "bulk-inserter unlock-equivalent baseline only; no later capacity upgrades",
+        "appliedBy": "explicit force capacity properties"
+      },
+      "blocked": {
+        "minutes": 10,
+        "mode": "natural-production-only-collection-stopped-entrances-still-fed",
+        "collectionPauseStock": [
+          {
+            "item": "rocket-fuel",
+            "entity": 21,
+            "count": 8,
+            "lanes": [
+              4,
+              4
+            ],
+            "capacity": 8,
+            "maxDuringBlocked": 8
+          }
+        ],
+        "machinesStoppedInLastMinute": true,
+        "stillCrafting": [],
+        "machinesAtEnd": [
+          {
+            "entity": 10,
+            "recipe": "solid-fuel-from-light-oil",
+            "status": "full_output",
+            "output": [
+              {
+                "name": "solid-fuel",
+                "quality": "normal",
+                "count": 50
+              }
+            ]
+          },
+          {
+            "entity": 11,
+            "recipe": "rocket-fuel",
+            "status": "item_ingredient_shortage",
+            "output": {}
+          },
+          {
+            "entity": 12,
+            "recipe": "rocket-fuel",
+            "status": "item_ingredient_shortage",
+            "output": {}
+          }
+        ],
+        "statusSamples": {
+          "10": {
+            "working": 93,
+            "full_output": 507
+          },
+          "11": {
+            "working": 128,
+            "item_ingredient_shortage": 472
+          },
+          "12": {
+            "working": 115,
+            "item_ingredient_shortage": 485
+          },
+          "13": {
+            "working": 4,
+            "waiting_for_space_in_destination": 3,
+            "disabled_by_control_behavior": 53
+          },
+          "14": {
+            "waiting_for_space_in_destination": 7,
+            "disabled_by_control_behavior": 53
+          },
+          "15": {
+            "waiting_for_source_items": 60
+          },
+          "19": {
+            "waiting_for_source_items": 60
+          }
+        }
+      },
+      "recovery": {
+        "blockedMinutes": 10,
+        "settlingMinutes": 5,
+        "measurementMinutes": 10,
+        "outputsPerMinute": {
+          "rocket-fuel": 6
+        },
+        "inputs": {},
+        "fluids": [
+          {
+            "item": "light-oil",
+            "acceptedPerMinute": 660
+          }
+        ]
+      },
+      "bulkInserters": [],
+      "finished": true,
+      "blueprintSha256": "5e86373d041a07540f2b52e3beba12326c760d45920d515e989377cabcdf79fb",
+      "checks": {
+        "finished": true,
+        "steadyRates": true,
+        "recoveryRates": true,
+        "everyMachineCrafted": true,
+        "everyEntranceProductive": true,
+        "everyFluidProductive": true,
+        "entranceDrawWithinPanel": true,
+        "everyOutputDelivered": true,
+        "blockedStockExact": true,
+        "machinesStoppedWhileBlocked": true,
+        "ringBelowNinetyPercent": true,
+        "powerAndGeometry": true,
+        "bulkHandAtMostTwo": true
+      },
+      "passed": true
+    }
+  ],
+  "feedPolicy": "Declared west entrances only, throttled to the manifest perMinute: belts get a credit of perMinute/3600 per tick (capped at 8) and one item per credit, alternating lanes; fluids get perMinute/3600 per tick plus the refused carry (capped at one second of supply); electricity through one energy interface on the power port network; no inventory seeded; declared products collected from the declared east belt exit every 4 ticks",
+  "researchPolicy": "All recipes enabled; fast inserter stack bonus zero; bulk inserter unlock-equivalent capacity bonus +1 only; no technologies researched",
+  "gameVersion": "2.1.24",
+  "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+  "harnessSha256": "db5c8970c5031dc1faec87ed657e1874861056da80638c281fa2fc85551f989b",
+  "dataHarnessSha256": "24f54ca5e196ea5d8f011ba7130c8ee9c5abebe7218980aa42fdde87cd8684fa",
+  "validatorSha256": "8f3b139881aba3aa64bf14eecff9196247cfe10e3763c31a9585ad1673d66f7c",
+  "configurationSha256": "59e49f185af916da4b2caf274c78a18ecdda52226dcdb0816ee75a15e63fff41",
+  "protocolMinutes": {
+    "warmupMinutes": 15,
+    "measureMinutes": 30,
+    "blockedMinutes": 10,
+    "settleMinutes": 5,
+    "recoveryMinutes": 10
+  },
+  "protocol": {
+    "warmupMinutes": 15,
+    "measureMinutes": 30,
+    "blockedMinutes": 10,
+    "settleMinutes": 5,
+    "recoveryMinutes": 10
+  },
+  "warmupMinutes": 15,
+  "measurementMinutes": 30,
+  "createdAt": "2026-11-21T01:59:46.924Z",
+  "runRoot": ".cache/rocket-fuel-supplier/native-1795226381395",
+  "passed": true
+}

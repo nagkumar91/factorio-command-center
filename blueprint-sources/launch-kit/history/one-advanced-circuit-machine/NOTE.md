@@ -1,0 +1,1 @@
+Exploration evidence, not a qualification. Silo reserves and the foundation-first gate in place, one advanced-circuit machine. Every hold and refill check passed, but the single AC machine worked 73.5 minutes and the kit took 78.2 minutes; at that length the acid and lubricant entrances accepted 1.22 and 1.23 times one kit. A second AC machine (as the spec planned) fixed it.

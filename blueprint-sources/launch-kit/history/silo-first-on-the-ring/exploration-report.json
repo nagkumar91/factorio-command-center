@@ -1,0 +1,2805 @@
+{
+  "gameVersion": "2.1.24",
+  "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+  "harnessSha256": "d9ba02cf74620179cfed24909e22ba823e3697c6ec8624a46fffc912446da418",
+  "dataHarnessSha256": "24f54ca5e196ea5d8f011ba7130c8ee9c5abebe7218980aa42fdde87cd8684fa",
+  "validatorSha256": "c01880b0f6c93a534d6ecf187d3cc55457d188df0f3063aed1b903b9e5125c8a",
+  "configurationSha256": "dbc2dc0e2d262c738a3db3ed7c05fee381e6a2b6bb8c013151b7c969f1670174",
+  "protocol": {
+    "kitLimitMinutes": 100,
+    "holdMinutes": 5,
+    "refillLimitMinutes": 15,
+    "longHoldMinutes": 5,
+    "holdQuietMinutes": 5,
+    "longHoldQuietMinutes": 5,
+    "refill": {
+      "fast-inserter": "half",
+      "space-platform-foundation": 50,
+      "asteroid-collector": 1,
+      "solar-panel": "half",
+      "cargo-landing-pad": 1
+    },
+    "perKitTolerance": 1.15,
+    "stragglerLimits": {
+      "processing-unit": 4,
+      "electric-engine-unit": 4,
+      "low-density-structure": 4,
+      "concrete": 20
+    },
+    "throttled": true
+  },
+  "createdAt": "2026-11-21T01:52:28.369Z",
+  "wallSeconds": 18,
+  "short": true,
+  "builds": [
+    {
+      "id": "launch-kit",
+      "blueprintSha256": "3a54044ca98959ddd2acab5853f30194b79534ca965b1c3869f89a4a9773cff3",
+      "protocol": {
+        "kitLimitTicks": 360000,
+        "holdTicks": 18000,
+        "refillLimitTicks": 54000,
+        "longHoldTicks": 18000,
+        "holdQuietTicks": 18000,
+        "longHoldQuietTicks": 18000,
+        "refill": {
+          "fast-inserter": "half",
+          "space-platform-foundation": 50,
+          "asteroid-collector": 1,
+          "solar-panel": "half",
+          "cargo-landing-pad": 1
+        }
+      },
+      "feedPolicy": "Declared west entrances only, throttled to their declared per-minute supply (belt credit capped at 8, one item at a time on alternating lanes; fluids per tick with a one-second carry); items removed only from declared east chests in the selective-refill step; no inventories seeded",
+      "fill": {
+        "completedMinute": {
+          "decider-combinator": 2.316666666666667,
+          "arithmetic-combinator": 2.6666666666666665,
+          "constant-combinator": 2.8833333333333333,
+          "solar-panel": 3.1666666666666665,
+          "passive-provider-chest": 3.566666666666667,
+          "accumulator": 5.266666666666667,
+          "assembling-machine-2": 8.9,
+          "electric-furnace": 10.816666666666666,
+          "fast-inserter": 12.866666666666667,
+          "substation": 14.05,
+          "space-platform-foundation": 50.03333333333333,
+          "rocket-silo": 64.55,
+          "crusher": 72.45,
+          "space-platform-starter-pack": 73.26666666666667,
+          "cargo-landing-pad": 75.55,
+          "asteroid-collector": 92.46666666666667
+        },
+        "order": [
+          "decider-combinator",
+          "arithmetic-combinator",
+          "constant-combinator",
+          "solar-panel",
+          "passive-provider-chest",
+          "accumulator",
+          "assembling-machine-2",
+          "electric-furnace",
+          "fast-inserter",
+          "substation",
+          "space-platform-foundation",
+          "rocket-silo",
+          "crusher",
+          "space-platform-starter-pack",
+          "cargo-landing-pad",
+          "asteroid-collector"
+        ],
+        "progress": [
+          {
+            "minute": 5,
+            "chests": {
+              "space-platform-foundation": 7,
+              "solar-panel": 10,
+              "fast-inserter": 0,
+              "assembling-machine-2": 0,
+              "electric-furnace": 0,
+              "accumulator": 0,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 0,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "concrete": 4,
+              "solar-panel": 1,
+              "iron-plate": 5,
+              "copper-plate": 8,
+              "steel-plate": 22,
+              "plastic-bar": 16,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 4
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 7,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 0,
+              "electric-furnace": 0,
+              "fast-inserter": 0,
+              "solar-panel": 11,
+              "accumulator": 0,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 0
+            }
+          },
+          {
+            "minute": 10,
+            "chests": {
+              "space-platform-foundation": 18,
+              "solar-panel": 10,
+              "fast-inserter": 7,
+              "assembling-machine-2": 4,
+              "electric-furnace": 0,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 0,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "concrete": 4,
+              "solar-panel": 1,
+              "iron-plate": 5,
+              "copper-plate": 8,
+              "steel-plate": 22,
+              "plastic-bar": 16,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "space-platform-foundation": 1
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 19,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 0,
+              "fast-inserter": 7,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 0
+            }
+          },
+          {
+            "minute": 15,
+            "chests": {
+              "space-platform-foundation": 33,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 7,
+              "stone-brick": 4,
+              "concrete": 4,
+              "solar-panel": 1,
+              "iron-plate": 8,
+              "copper-plate": 8,
+              "steel-plate": 23,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 2,
+              "electric-engine-unit": 1,
+              "low-density-structure": 1,
+              "space-platform-foundation": 1
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 34,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 20,
+            "chests": {
+              "space-platform-foundation": 55,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 8,
+              "stone-brick": 4,
+              "concrete": 4,
+              "solar-panel": 1,
+              "iron-plate": 9,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 1,
+              "low-density-structure": 1,
+              "space-platform-foundation": 2
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 57,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 25,
+            "chests": {
+              "space-platform-foundation": 78,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 4,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 15,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 1,
+              "electric-engine-unit": 1,
+              "low-density-structure": 1,
+              "space-platform-foundation": 1
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 79,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 30,
+            "chests": {
+              "space-platform-foundation": 100,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 4,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 2,
+              "low-density-structure": 6,
+              "space-platform-foundation": 2
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 102,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 35,
+            "chests": {
+              "space-platform-foundation": 123,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 4,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 2,
+              "electric-engine-unit": 1,
+              "low-density-structure": 6,
+              "space-platform-foundation": 1
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 124,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 40,
+            "chests": {
+              "space-platform-foundation": 145,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 4,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 1,
+              "low-density-structure": 6,
+              "space-platform-foundation": 2
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 147,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 45,
+            "chests": {
+              "space-platform-foundation": 168,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 6,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 1,
+              "electric-engine-unit": 1,
+              "low-density-structure": 6,
+              "space-platform-foundation": 1
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 169,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 50,
+            "chests": {
+              "space-platform-foundation": 190,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 16,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 2,
+              "low-density-structure": 6,
+              "space-platform-foundation": 2
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 192,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 55,
+            "chests": {
+              "space-platform-foundation": 191,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 16,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 2,
+              "electric-engine-unit": 1,
+              "low-density-structure": 6,
+              "space-platform-foundation": 2
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 214,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 60,
+            "chests": {
+              "space-platform-foundation": 191,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 0
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 16,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 1,
+              "low-density-structure": 6,
+              "space-platform-foundation": 2
+            },
+            "finished": {
+              "rocket-silo": 0,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 237,
+              "asteroid-collector": 0,
+              "crusher": 0,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 65,
+            "chests": {
+              "space-platform-foundation": 191,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 1,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 0,
+              "crusher": 1
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 16,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 1,
+              "electric-engine-unit": 1,
+              "low-density-structure": 1,
+              "space-platform-foundation": 4
+            },
+            "finished": {
+              "rocket-silo": 1,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 255,
+              "asteroid-collector": 0,
+              "crusher": 1,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 70,
+            "chests": {
+              "space-platform-foundation": 191,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 1,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "asteroid-collector": 1,
+              "crusher": 2
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 16,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 2,
+              "electric-engine-unit": 4,
+              "low-density-structure": 1,
+              "space-platform-foundation": 4
+            },
+            "finished": {
+              "rocket-silo": 1,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 0,
+              "space-platform-foundation": 255,
+              "asteroid-collector": 1,
+              "crusher": 2,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 75,
+            "chests": {
+              "space-platform-foundation": 191,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 1,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 1,
+              "asteroid-collector": 1,
+              "crusher": 3
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 16,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 23,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 2,
+              "electric-engine-unit": 8,
+              "low-density-structure": 1,
+              "space-platform-foundation": 4
+            },
+            "finished": {
+              "rocket-silo": 1,
+              "cargo-landing-pad": 0,
+              "space-platform-starter-pack": 1,
+              "space-platform-foundation": 255,
+              "asteroid-collector": 1,
+              "crusher": 3,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 80,
+            "chests": {
+              "space-platform-foundation": 191,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 1,
+              "cargo-landing-pad": 1,
+              "space-platform-starter-pack": 1,
+              "asteroid-collector": 2,
+              "crusher": 3
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 16,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 8,
+              "electric-engine-unit": 6,
+              "low-density-structure": 1,
+              "space-platform-foundation": 4
+            },
+            "finished": {
+              "rocket-silo": 1,
+              "cargo-landing-pad": 1,
+              "space-platform-starter-pack": 1,
+              "space-platform-foundation": 255,
+              "asteroid-collector": 2,
+              "crusher": 3,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 85,
+            "chests": {
+              "space-platform-foundation": 191,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 1,
+              "cargo-landing-pad": 1,
+              "space-platform-starter-pack": 1,
+              "asteroid-collector": 2,
+              "crusher": 3
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 16,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 8,
+              "electric-engine-unit": 8,
+              "low-density-structure": 1,
+              "space-platform-foundation": 4
+            },
+            "finished": {
+              "rocket-silo": 1,
+              "cargo-landing-pad": 1,
+              "space-platform-starter-pack": 1,
+              "space-platform-foundation": 255,
+              "asteroid-collector": 2,
+              "crusher": 3,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          },
+          {
+            "minute": 90,
+            "chests": {
+              "space-platform-foundation": 191,
+              "solar-panel": 10,
+              "fast-inserter": 24,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1,
+              "rocket-silo": 1,
+              "cargo-landing-pad": 1,
+              "space-platform-starter-pack": 1,
+              "asteroid-collector": 3,
+              "crusher": 3
+            },
+            "ring": {
+              "pipe": 12,
+              "stone-brick": 4,
+              "concrete": 16,
+              "solar-panel": 1,
+              "iron-plate": 16,
+              "copper-plate": 8,
+              "steel-plate": 24,
+              "plastic-bar": 16,
+              "iron-gear-wheel": 8,
+              "copper-cable": 8,
+              "electronic-circuit": 16,
+              "advanced-circuit": 6,
+              "processing-unit": 8,
+              "electric-engine-unit": 8,
+              "low-density-structure": 1,
+              "space-platform-foundation": 4
+            },
+            "finished": {
+              "rocket-silo": 1,
+              "cargo-landing-pad": 1,
+              "space-platform-starter-pack": 1,
+              "space-platform-foundation": 255,
+              "asteroid-collector": 3,
+              "crusher": 3,
+              "assembling-machine-2": 4,
+              "electric-furnace": 1,
+              "fast-inserter": 24,
+              "solar-panel": 11,
+              "accumulator": 1,
+              "constant-combinator": 1,
+              "arithmetic-combinator": 1,
+              "decider-combinator": 4,
+              "passive-provider-chest": 1,
+              "substation": 1
+            }
+          }
+        ],
+        "kitTick": 332880,
+        "kitMinutes": 92.46666666666667,
+        "complete": true,
+        "finishedAtKit": {
+          "rocket-silo": 1,
+          "cargo-landing-pad": 1,
+          "space-platform-starter-pack": 1,
+          "space-platform-foundation": 255,
+          "asteroid-collector": 4,
+          "crusher": 3,
+          "assembling-machine-2": 4,
+          "electric-furnace": 1,
+          "fast-inserter": 24,
+          "solar-panel": 11,
+          "accumulator": 1,
+          "constant-combinator": 1,
+          "arithmetic-combinator": 1,
+          "decider-combinator": 4,
+          "passive-provider-chest": 1,
+          "substation": 1
+        },
+        "productionStats": {
+          "rocket-silo": 1,
+          "cargo-landing-pad": 1,
+          "space-platform-starter-pack": 1
+        },
+        "acceptedAtKit": {
+          "concrete": 1232,
+          "plastic-bar": 1874,
+          "iron-plate": 1654,
+          "stone-brick": 30,
+          "copper-plate": 6776,
+          "steel-plate": 7074,
+          "electronic-circuit": 7434,
+          "sulfuric-acid": 1941.8058332800865,
+          "lubricant": 5170
+        },
+        "peakMinuteDraw": {
+          "concrete": 25,
+          "plastic-bar": 37,
+          "iron-plate": 30,
+          "stone-brick": 1,
+          "copper-plate": 130,
+          "steel-plate": 135,
+          "electronic-circuit": 140,
+          "sulfuric-acid": 21,
+          "lubricant": 62
+        },
+        "idleStock": {
+          "belts": {
+            "electric-engine-unit": 8,
+            "plastic-bar": 32,
+            "iron-plate": 32,
+            "concrete": 32,
+            "steel-plate": 123,
+            "iron-gear-wheel": 8,
+            "copper-cable": 8,
+            "processing-unit": 8,
+            "advanced-circuit": 6,
+            "pipe": 12,
+            "copper-plate": 122,
+            "space-platform-foundation": 4,
+            "low-density-structure": 1,
+            "electronic-circuit": 147,
+            "stone-brick": 20,
+            "solar-panel": 1
+          },
+          "ring": {
+            "pipe": 12,
+            "stone-brick": 4,
+            "concrete": 16,
+            "solar-panel": 1,
+            "iron-plate": 16,
+            "copper-plate": 8,
+            "steel-plate": 24,
+            "plastic-bar": 16,
+            "iron-gear-wheel": 8,
+            "copper-cable": 8,
+            "electronic-circuit": 16,
+            "advanced-circuit": 6,
+            "processing-unit": 8,
+            "electric-engine-unit": 8,
+            "low-density-structure": 1,
+            "space-platform-foundation": 4
+          },
+          "machineInputs": {
+            "iron-plate": 31,
+            "electronic-circuit": 71,
+            "assembling-machine-1": 3,
+            "steel-plate": 83,
+            "steel-chest": 3,
+            "battery": 2,
+            "copper-plate": 43,
+            "advanced-circuit": 16,
+            "copper-cable": 21,
+            "plastic-bar": 10,
+            "processing-unit": 1
+          },
+          "machineOutputs": {
+            "iron-gear-wheel": 3,
+            "engine-unit": 4,
+            "electric-engine-unit": 4,
+            "assembling-machine-1": 2,
+            "steel-chest": 2,
+            "copper-cable": 9,
+            "advanced-circuit": 4,
+            "processing-unit": 3,
+            "pipe": 5
+          },
+          "hands": {},
+          "fluids": {
+            "sulfuric-acid": 491.8058329820633,
+            "lubricant": 1060
+          }
+        },
+        "machines": [
+          {
+            "entity": 197,
+            "recipe": "iron-gear-wheel",
+            "finished": 378,
+            "status": "full_output",
+            "statusSamples": {
+              "item_ingredient_shortage": 1454,
+              "working": 296,
+              "full_output": 3798
+            },
+            "input": {
+              "iron-plate": 1
+            },
+            "output": {
+              "iron-gear-wheel": 3
+            }
+          },
+          {
+            "entity": 201,
+            "recipe": "engine-unit",
+            "finished": 278,
+            "status": "full_output",
+            "statusSamples": {
+              "item_ingredient_shortage": 855,
+              "working": 3706,
+              "full_output": 987
+            },
+            "input": {},
+            "output": {
+              "engine-unit": 4
+            }
+          },
+          {
+            "entity": 204,
+            "recipe": "electric-engine-unit",
+            "finished": 274,
+            "status": "full_output",
+            "statusSamples": {
+              "item_ingredient_shortage": 855,
+              "working": 3654,
+              "full_output": 1039
+            },
+            "input": {},
+            "output": {
+              "electric-engine-unit": 4
+            }
+          },
+          {
+            "entity": 207,
+            "recipe": "assembling-machine-1",
+            "finished": 9,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5474,
+              "working": 3,
+              "full_output": 71
+            },
+            "input": {
+              "iron-plate": 20,
+              "electronic-circuit": 6
+            },
+            "output": {
+              "assembling-machine-1": 2
+            }
+          },
+          {
+            "entity": 210,
+            "recipe": "assembling-machine-2",
+            "finished": 4,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5546,
+              "working": 2
+            },
+            "input": {
+              "assembling-machine-1": 3,
+              "steel-plate": 6,
+              "electronic-circuit": 7
+            },
+            "output": {}
+          },
+          {
+            "entity": 213,
+            "recipe": "inserter",
+            "finished": 24,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5538,
+              "working": 10
+            },
+            "input": {
+              "iron-plate": 2,
+              "electronic-circuit": 3
+            },
+            "output": {}
+          },
+          {
+            "entity": 216,
+            "recipe": "fast-inserter",
+            "finished": 24,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5538,
+              "working": 10
+            },
+            "input": {
+              "iron-plate": 4,
+              "electronic-circuit": 4
+            },
+            "output": {}
+          },
+          {
+            "entity": 219,
+            "recipe": "steel-chest",
+            "finished": 6,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5420,
+              "working": 3,
+              "full_output": 125
+            },
+            "input": {
+              "steel-plate": 5
+            },
+            "output": {
+              "steel-chest": 2
+            }
+          },
+          {
+            "entity": 222,
+            "recipe": "passive-provider-chest",
+            "finished": 1,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5548
+            },
+            "input": {
+              "steel-chest": 3,
+              "electronic-circuit": 6
+            },
+            "output": {}
+          },
+          {
+            "entity": 225,
+            "recipe": "battery",
+            "finished": 7,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5267,
+              "working": 29,
+              "fluid_ingredient_shortage": 252
+            },
+            "input": {},
+            "output": {}
+          },
+          {
+            "entity": 228,
+            "recipe": "accumulator",
+            "finished": 1,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5534,
+              "working": 14
+            },
+            "input": {
+              "iron-plate": 4,
+              "battery": 2
+            },
+            "output": {}
+          },
+          {
+            "entity": 231,
+            "recipe": "solar-panel",
+            "finished": 11,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5402,
+              "working": 146
+            },
+            "input": {
+              "copper-plate": 2,
+              "steel-plate": 6,
+              "electronic-circuit": 10
+            },
+            "output": {}
+          },
+          {
+            "entity": 234,
+            "recipe": "electric-furnace",
+            "finished": 1,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5541,
+              "working": 7
+            },
+            "input": {
+              "steel-plate": 20,
+              "advanced-circuit": 6
+            },
+            "output": {}
+          },
+          {
+            "entity": 237,
+            "recipe": "decider-combinator",
+            "finished": 4,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5546,
+              "working": 2
+            },
+            "input": {
+              "electronic-circuit": 11
+            },
+            "output": {}
+          },
+          {
+            "entity": 240,
+            "recipe": "arithmetic-combinator",
+            "finished": 1,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5548
+            },
+            "input": {
+              "copper-cable": 7
+            },
+            "output": {}
+          },
+          {
+            "entity": 243,
+            "recipe": "constant-combinator",
+            "finished": 1,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5547,
+              "working": 1
+            },
+            "input": {
+              "copper-cable": 1,
+              "electronic-circuit": 4
+            },
+            "output": {}
+          },
+          {
+            "entity": 246,
+            "recipe": "low-density-structure",
+            "finished": 141,
+            "status": "working",
+            "statusSamples": {
+              "item_ingredient_shortage": 842,
+              "working": 2836,
+              "full_output": 1870
+            },
+            "input": {
+              "copper-plate": 41,
+              "steel-plate": 4,
+              "plastic-bar": 10
+            },
+            "output": {}
+          },
+          {
+            "entity": 251,
+            "recipe": "space-platform-foundation",
+            "finished": 255,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 2146,
+              "working": 3402
+            },
+            "input": {
+              "steel-plate": 40,
+              "copper-cable": 1
+            },
+            "output": {}
+          },
+          {
+            "entity": 256,
+            "recipe": "copper-cable",
+            "finished": 3709,
+            "status": "full_output",
+            "statusSamples": {
+              "item_ingredient_shortage": 126,
+              "working": 2430,
+              "full_output": 2992
+            },
+            "input": {},
+            "output": {
+              "copper-cable": 9
+            }
+          },
+          {
+            "entity": 261,
+            "recipe": "advanced-circuit",
+            "finished": 561,
+            "status": "full_output",
+            "statusSamples": {
+              "item_ingredient_shortage": 57,
+              "working": 4488,
+              "full_output": 1003
+            },
+            "input": {},
+            "output": {
+              "advanced-circuit": 4
+            }
+          },
+          {
+            "entity": 266,
+            "recipe": "processing-unit",
+            "finished": 262,
+            "status": "full_output",
+            "statusSamples": {
+              "item_ingredient_shortage": 773,
+              "fluid_ingredient_shortage": 579,
+              "working": 3419,
+              "full_output": 777
+            },
+            "input": {
+              "electronic-circuit": 20
+            },
+            "output": {
+              "processing-unit": 3
+            }
+          },
+          {
+            "entity": 270,
+            "recipe": "substation",
+            "finished": 1,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5548
+            },
+            "input": {
+              "steel-plate": 2,
+              "copper-cable": 12,
+              "advanced-circuit": 10
+            },
+            "output": {}
+          },
+          {
+            "entity": 273,
+            "recipe": "pipe",
+            "finished": 673,
+            "status": "full_output",
+            "statusSamples": {
+              "item_ingredient_shortage": 2109,
+              "working": 362,
+              "full_output": 3077
+            },
+            "input": {},
+            "output": {
+              "pipe": 5
+            }
+          },
+          {
+            "entity": 299,
+            "recipe": "rocket-silo",
+            "finished": 1,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5508,
+              "working": 40
+            },
+            "input": {},
+            "output": {}
+          },
+          {
+            "entity": 308,
+            "recipe": "cargo-landing-pad",
+            "finished": 1,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5508,
+              "working": 40
+            },
+            "input": {},
+            "output": {}
+          },
+          {
+            "entity": 315,
+            "recipe": "space-platform-starter-pack",
+            "finished": 1,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5468,
+              "working": 80
+            },
+            "input": {
+              "processing-unit": 1
+            },
+            "output": {}
+          },
+          {
+            "entity": 322,
+            "recipe": "asteroid-collector",
+            "finished": 4,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5495,
+              "working": 53
+            },
+            "input": {},
+            "output": {}
+          },
+          {
+            "entity": 329,
+            "recipe": "crusher",
+            "finished": 3,
+            "status": "item_ingredient_shortage",
+            "statusSamples": {
+              "item_ingredient_shortage": 5509,
+              "working": 39
+            },
+            "input": {},
+            "output": {}
+          }
+        ]
+      },
+      "routes": [
+        {
+          "item": "concrete",
+          "route": [
+            115,
+            116,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            299
+          ]
+        },
+        {
+          "item": "plastic-bar",
+          "route": [
+            118,
+            119,
+            113,
+            114,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            261
+          ]
+        },
+        {
+          "item": "iron-plate",
+          "route": [
+            121,
+            122,
+            111,
+            112,
+            113,
+            114,
+            1,
+            2,
+            197
+          ]
+        },
+        {
+          "item": "stone-brick",
+          "route": [
+            124,
+            125,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99,
+            100,
+            234
+          ]
+        },
+        {
+          "item": "copper-plate",
+          "route": [
+            152,
+            153,
+            154,
+            156,
+            157,
+            158,
+            159,
+            246
+          ]
+        },
+        {
+          "item": "steel-plate",
+          "route": [
+            167,
+            168,
+            96,
+            97,
+            98,
+            99,
+            100,
+            234
+          ]
+        },
+        {
+          "item": "electronic-circuit",
+          "route": [
+            190,
+            191,
+            192,
+            193,
+            194,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            231
+          ]
+        },
+        {
+          "item": "sulfuric-acid",
+          "route": [
+            127,
+            128,
+            129,
+            130,
+            131,
+            132,
+            133,
+            134,
+            225
+          ]
+        },
+        {
+          "item": "lubricant",
+          "route": [
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            148,
+            149,
+            150,
+            151,
+            204
+          ]
+        }
+      ],
+      "hold": {
+        "minutes": 5,
+        "samples": 300,
+        "mismatches": 0,
+        "quietMinutes": 5,
+        "quietCrafts": {},
+        "slackMax": {
+          "space-platform-foundation": 4,
+          "solar-panel": 1
+        },
+        "finished": {
+          "rocket-silo": 1,
+          "cargo-landing-pad": 1,
+          "space-platform-starter-pack": 1,
+          "space-platform-foundation": 255,
+          "asteroid-collector": 4,
+          "crusher": 3,
+          "assembling-machine-2": 4,
+          "electric-furnace": 1,
+          "fast-inserter": 24,
+          "solar-panel": 11,
+          "accumulator": 1,
+          "constant-combinator": 1,
+          "arithmetic-combinator": 1,
+          "decider-combinator": 4,
+          "passive-provider-chest": 1,
+          "substation": 1
+        },
+        "ring": {
+          "pipe": 12,
+          "stone-brick": 4,
+          "concrete": 16,
+          "solar-panel": 1,
+          "iron-plate": 16,
+          "copper-plate": 8,
+          "steel-plate": 24,
+          "plastic-bar": 16,
+          "iron-gear-wheel": 8,
+          "copper-cable": 8,
+          "electronic-circuit": 16,
+          "advanced-circuit": 6,
+          "processing-unit": 8,
+          "electric-engine-unit": 8,
+          "low-density-structure": 6,
+          "space-platform-foundation": 4
+        },
+        "exact": {
+          "rocket-silo": {
+            "input": {},
+            "output": {},
+            "finished": 1,
+            "crafting": false
+          },
+          "cargo-landing-pad": {
+            "input": {},
+            "output": {},
+            "finished": 1,
+            "crafting": false
+          },
+          "space-platform-starter-pack": {
+            "input": {
+              "processing-unit": 1
+            },
+            "output": {},
+            "finished": 1,
+            "crafting": false
+          },
+          "asteroid-collector": {
+            "input": {},
+            "output": {},
+            "finished": 4,
+            "crafting": false
+          },
+          "crusher": {
+            "input": {},
+            "output": {},
+            "finished": 3,
+            "crafting": false
+          }
+        },
+        "exactStragglers": {
+          "processing-unit": 1
+        }
+      },
+      "refill": {
+        "removed": {
+          "space-platform-foundation": 50,
+          "solar-panel": 5,
+          "fast-inserter": 12,
+          "cargo-landing-pad": 1,
+          "asteroid-collector": 1
+        },
+        "startMinute": 97.46666666666667,
+        "complete": true,
+        "minutes": 10.666666666666666,
+        "doneMinute": {
+          "fast-inserter": 1.2333333333333334,
+          "solar-panel": 1.4,
+          "asteroid-collector": 4.433333333333334,
+          "cargo-landing-pad": 7.366666666666666,
+          "space-platform-foundation": 10.666666666666666
+        },
+        "crafts": {
+          "rocket-silo": 0,
+          "cargo-landing-pad": 1,
+          "space-platform-starter-pack": 0,
+          "space-platform-foundation": 47,
+          "asteroid-collector": 1,
+          "crusher": 0,
+          "assembling-machine-2": 0,
+          "electric-furnace": 0,
+          "fast-inserter": 12,
+          "solar-panel": 5,
+          "accumulator": 0,
+          "constant-combinator": 0,
+          "arithmetic-combinator": 0,
+          "decider-combinator": 0,
+          "passive-provider-chest": 0,
+          "substation": 0
+        },
+        "otherChestMismatches": 0,
+        "endChests": {
+          "space-platform-foundation": 191,
+          "solar-panel": 10,
+          "fast-inserter": 24,
+          "assembling-machine-2": 4,
+          "electric-furnace": 1,
+          "accumulator": 1,
+          "constant-combinator": 1,
+          "arithmetic-combinator": 1,
+          "decider-combinator": 4,
+          "passive-provider-chest": 1,
+          "substation": 1,
+          "rocket-silo": 1,
+          "cargo-landing-pad": 1,
+          "space-platform-starter-pack": 1,
+          "asteroid-collector": 4,
+          "crusher": 3
+        }
+      },
+      "longHold": {
+        "minutes": 5,
+        "samples": 300,
+        "mismatches": 0,
+        "quietMinutes": 5,
+        "quietCrafts": {
+          "space-platform-foundation": 2
+        },
+        "slackMax": {
+          "space-platform-foundation": 3,
+          "solar-panel": 1
+        },
+        "finished": {
+          "rocket-silo": 1,
+          "cargo-landing-pad": 2,
+          "space-platform-starter-pack": 1,
+          "space-platform-foundation": 304,
+          "asteroid-collector": 5,
+          "crusher": 3,
+          "assembling-machine-2": 4,
+          "electric-furnace": 1,
+          "fast-inserter": 36,
+          "solar-panel": 16,
+          "accumulator": 1,
+          "constant-combinator": 1,
+          "arithmetic-combinator": 1,
+          "decider-combinator": 4,
+          "passive-provider-chest": 1,
+          "substation": 1
+        },
+        "ring": {
+          "pipe": 12,
+          "stone-brick": 4,
+          "concrete": 16,
+          "solar-panel": 1,
+          "iron-plate": 16,
+          "copper-plate": 8,
+          "steel-plate": 24,
+          "plastic-bar": 16,
+          "iron-gear-wheel": 8,
+          "copper-cable": 8,
+          "electronic-circuit": 16,
+          "advanced-circuit": 6,
+          "processing-unit": 8,
+          "electric-engine-unit": 8,
+          "low-density-structure": 6,
+          "space-platform-foundation": 3
+        },
+        "exact": {
+          "rocket-silo": {
+            "input": {},
+            "output": {},
+            "finished": 1,
+            "crafting": false
+          },
+          "cargo-landing-pad": {
+            "input": {},
+            "output": {},
+            "finished": 2,
+            "crafting": false
+          },
+          "space-platform-starter-pack": {
+            "input": {
+              "processing-unit": 1
+            },
+            "output": {},
+            "finished": 1,
+            "crafting": false
+          },
+          "asteroid-collector": {
+            "input": {},
+            "output": {},
+            "finished": 5,
+            "crafting": false
+          },
+          "crusher": {
+            "input": {},
+            "output": {},
+            "finished": 3,
+            "crafting": false
+          }
+        }
+      },
+      "complete": true,
+      "ringOverall": {
+        "maxStock": 161,
+        "itemMax": {
+          "copper-plate": 8,
+          "steel-plate": 24,
+          "electronic-circuit": 16,
+          "concrete": 16,
+          "iron-plate": 16,
+          "plastic-bar": 16,
+          "copper-cable": 8,
+          "solar-panel": 1,
+          "advanced-circuit": 6,
+          "stone-brick": 4,
+          "decider-combinator": 2,
+          "space-platform-foundation": 4,
+          "iron-gear-wheel": 8,
+          "arithmetic-combinator": 1,
+          "constant-combinator": 1,
+          "passive-provider-chest": 1,
+          "accumulator": 1,
+          "assembling-machine-2": 1,
+          "fast-inserter": 2,
+          "electric-furnace": 1,
+          "processing-unit": 8,
+          "substation": 1,
+          "pipe": 12,
+          "low-density-structure": 6,
+          "electric-engine-unit": 8
+        },
+        "violations": 0,
+        "capacity": 912
+      },
+      "chestMax": {
+        "solar-panel": 10,
+        "decider-combinator": 4,
+        "space-platform-foundation": 191,
+        "arithmetic-combinator": 1,
+        "constant-combinator": 1,
+        "passive-provider-chest": 1,
+        "accumulator": 1,
+        "assembling-machine-2": 4,
+        "fast-inserter": 24,
+        "electric-furnace": 1,
+        "substation": 1,
+        "crusher": 3,
+        "rocket-silo": 1,
+        "asteroid-collector": 4,
+        "space-platform-starter-pack": 1,
+        "cargo-landing-pad": 1
+      },
+      "chestOverCap": {},
+      "endTick": 407280,
+      "powered": true,
+      "importedEntities": 349,
+      "exactRecipeChecks": 155344,
+      "externalApproachesClear": true,
+      "stockNetworksIsolated": true,
+      "inserterCapacityResearch": {
+        "fast": 0,
+        "bulkUnlockBonus": 1
+      },
+      "bulkInserters": {},
+      "acceptedTotal": {
+        "concrete": 1432,
+        "plastic-bar": 2062,
+        "iron-plate": 1750,
+        "stone-brick": 30,
+        "copper-plate": 7873,
+        "steel-plate": 8164,
+        "electronic-circuit": 7928,
+        "sulfuric-acid": 2375.8058332800865,
+        "lubricant": 5290
+      },
+      "peakMinuteDraw": {
+        "concrete": 25,
+        "plastic-bar": 37,
+        "iron-plate": 30,
+        "stone-brick": 1,
+        "copper-plate": 130,
+        "steel-plate": 135,
+        "electronic-circuit": 140,
+        "sulfuric-acid": 21,
+        "lubricant": 62
+      },
+      "machinesAtEnd": [
+        {
+          "entity": 197,
+          "recipe": "iron-gear-wheel",
+          "finished": 401,
+          "status": "full_output",
+          "statusSamples": {
+            "item_ingredient_shortage": 1454,
+            "working": 296,
+            "full_output": 3798
+          },
+          "input": {},
+          "output": {
+            "iron-gear-wheel": 3
+          }
+        },
+        {
+          "entity": 201,
+          "recipe": "engine-unit",
+          "finished": 286,
+          "status": "full_output",
+          "statusSamples": {
+            "item_ingredient_shortage": 855,
+            "working": 3706,
+            "full_output": 987
+          },
+          "input": {},
+          "output": {
+            "engine-unit": 4
+          }
+        },
+        {
+          "entity": 204,
+          "recipe": "electric-engine-unit",
+          "finished": 282,
+          "status": "full_output",
+          "statusSamples": {
+            "item_ingredient_shortage": 855,
+            "working": 3654,
+            "full_output": 1039
+          },
+          "input": {},
+          "output": {
+            "electric-engine-unit": 4
+          }
+        },
+        {
+          "entity": 207,
+          "recipe": "assembling-machine-1",
+          "finished": 9,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5474,
+            "working": 3,
+            "full_output": 71
+          },
+          "input": {
+            "iron-plate": 20,
+            "electronic-circuit": 6
+          },
+          "output": {
+            "assembling-machine-1": 2
+          }
+        },
+        {
+          "entity": 210,
+          "recipe": "assembling-machine-2",
+          "finished": 4,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5546,
+            "working": 2
+          },
+          "input": {
+            "assembling-machine-1": 3,
+            "steel-plate": 6,
+            "electronic-circuit": 7
+          },
+          "output": {}
+        },
+        {
+          "entity": 213,
+          "recipe": "inserter",
+          "finished": 39,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5538,
+            "working": 10
+          },
+          "input": {
+            "iron-plate": 3,
+            "electronic-circuit": 3
+          },
+          "output": {}
+        },
+        {
+          "entity": 216,
+          "recipe": "fast-inserter",
+          "finished": 36,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5538,
+            "working": 10
+          },
+          "input": {
+            "inserter": 3,
+            "electronic-circuit": 4
+          },
+          "output": {}
+        },
+        {
+          "entity": 219,
+          "recipe": "steel-chest",
+          "finished": 6,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5420,
+            "working": 3,
+            "full_output": 125
+          },
+          "input": {
+            "steel-plate": 5
+          },
+          "output": {
+            "steel-chest": 2
+          }
+        },
+        {
+          "entity": 222,
+          "recipe": "passive-provider-chest",
+          "finished": 1,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5548
+          },
+          "input": {
+            "steel-chest": 3,
+            "electronic-circuit": 6
+          },
+          "output": {}
+        },
+        {
+          "entity": 225,
+          "recipe": "battery",
+          "finished": 7,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5267,
+            "working": 29,
+            "fluid_ingredient_shortage": 252
+          },
+          "input": {},
+          "output": {}
+        },
+        {
+          "entity": 228,
+          "recipe": "accumulator",
+          "finished": 1,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5534,
+            "working": 14
+          },
+          "input": {
+            "iron-plate": 4,
+            "battery": 2
+          },
+          "output": {}
+        },
+        {
+          "entity": 231,
+          "recipe": "solar-panel",
+          "finished": 16,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5402,
+            "working": 146
+          },
+          "input": {
+            "copper-plate": 1,
+            "steel-plate": 6,
+            "electronic-circuit": 16
+          },
+          "output": {}
+        },
+        {
+          "entity": 234,
+          "recipe": "electric-furnace",
+          "finished": 1,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5541,
+            "working": 7
+          },
+          "input": {
+            "steel-plate": 20,
+            "advanced-circuit": 6
+          },
+          "output": {}
+        },
+        {
+          "entity": 237,
+          "recipe": "decider-combinator",
+          "finished": 4,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5546,
+            "working": 2
+          },
+          "input": {
+            "electronic-circuit": 11
+          },
+          "output": {}
+        },
+        {
+          "entity": 240,
+          "recipe": "arithmetic-combinator",
+          "finished": 1,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5548
+          },
+          "input": {
+            "copper-cable": 7
+          },
+          "output": {}
+        },
+        {
+          "entity": 243,
+          "recipe": "constant-combinator",
+          "finished": 1,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5547,
+            "working": 1
+          },
+          "input": {
+            "copper-cable": 1,
+            "electronic-circuit": 4
+          },
+          "output": {}
+        },
+        {
+          "entity": 246,
+          "recipe": "low-density-structure",
+          "finished": 170,
+          "status": "full_output",
+          "statusSamples": {
+            "item_ingredient_shortage": 842,
+            "working": 2836,
+            "full_output": 1870
+          },
+          "input": {},
+          "output": {
+            "low-density-structure": 4
+          }
+        },
+        {
+          "entity": 251,
+          "recipe": "space-platform-foundation",
+          "finished": 304,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 2146,
+            "working": 3402
+          },
+          "input": {
+            "steel-plate": 40,
+            "copper-cable": 9
+          },
+          "output": {}
+        },
+        {
+          "entity": 256,
+          "recipe": "copper-cable",
+          "finished": 4263,
+          "status": "full_output",
+          "statusSamples": {
+            "item_ingredient_shortage": 126,
+            "working": 2430,
+            "full_output": 2992
+          },
+          "input": {},
+          "output": {
+            "copper-cable": 13
+          }
+        },
+        {
+          "entity": 261,
+          "recipe": "advanced-circuit",
+          "finished": 590,
+          "status": "full_output",
+          "statusSamples": {
+            "item_ingredient_shortage": 57,
+            "working": 4488,
+            "full_output": 1003
+          },
+          "input": {},
+          "output": {
+            "advanced-circuit": 4
+          }
+        },
+        {
+          "entity": 266,
+          "recipe": "processing-unit",
+          "finished": 276,
+          "status": "full_output",
+          "statusSamples": {
+            "item_ingredient_shortage": 773,
+            "fluid_ingredient_shortage": 579,
+            "working": 3419,
+            "full_output": 777
+          },
+          "input": {
+            "electronic-circuit": 40,
+            "advanced-circuit": 1
+          },
+          "output": {
+            "processing-unit": 2
+          }
+        },
+        {
+          "entity": 270,
+          "recipe": "substation",
+          "finished": 1,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5548
+          },
+          "input": {
+            "steel-plate": 2,
+            "copper-cable": 12,
+            "advanced-circuit": 10
+          },
+          "output": {}
+        },
+        {
+          "entity": 273,
+          "recipe": "pipe",
+          "finished": 688,
+          "status": "full_output",
+          "statusSamples": {
+            "item_ingredient_shortage": 2109,
+            "working": 362,
+            "full_output": 3077
+          },
+          "input": {},
+          "output": {
+            "pipe": 4
+          }
+        },
+        {
+          "entity": 299,
+          "recipe": "rocket-silo",
+          "finished": 1,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5508,
+            "working": 40
+          },
+          "input": {},
+          "output": {}
+        },
+        {
+          "entity": 308,
+          "recipe": "cargo-landing-pad",
+          "finished": 2,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5508,
+            "working": 40
+          },
+          "input": {},
+          "output": {}
+        },
+        {
+          "entity": 315,
+          "recipe": "space-platform-starter-pack",
+          "finished": 1,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5468,
+            "working": 80
+          },
+          "input": {
+            "processing-unit": 1
+          },
+          "output": {}
+        },
+        {
+          "entity": 322,
+          "recipe": "asteroid-collector",
+          "finished": 5,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5495,
+            "working": 53
+          },
+          "input": {},
+          "output": {}
+        },
+        {
+          "entity": 329,
+          "recipe": "crusher",
+          "finished": 3,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 5509,
+            "working": 39
+          },
+          "input": {},
+          "output": {}
+        }
+      ],
+      "entrances": [
+        {
+          "item": "concrete",
+          "perMinute": 25,
+          "perKit": 1200,
+          "measuredPerKit": 1232,
+          "ratio": 1.027,
+          "consumedPerKit": 1184,
+          "averageDrawPerMinute": 13.3,
+          "peakMinuteDraw": 25
+        },
+        {
+          "item": "plastic-bar",
+          "perMinute": 35,
+          "perKit": 1722,
+          "measuredPerKit": 1874,
+          "ratio": 1.088,
+          "consumedPerKit": 1816,
+          "averageDrawPerMinute": 20.3,
+          "peakMinuteDraw": 37
+        },
+        {
+          "item": "iron-plate",
+          "perMinute": 30,
+          "perKit": 1391,
+          "measuredPerKit": 1654,
+          "ratio": 1.189,
+          "consumedPerKit": 1575,
+          "averageDrawPerMinute": 17.9,
+          "peakMinuteDraw": 30
+        },
+        {
+          "item": "stone-brick",
+          "perMinute": 1,
+          "perKit": 10,
+          "measuredPerKit": 30,
+          "ratio": 3,
+          "consumedPerKit": 6,
+          "averageDrawPerMinute": 0.3,
+          "peakMinuteDraw": 1
+        },
+        {
+          "item": "copper-plate",
+          "perMinute": 130,
+          "perKit": 6405,
+          "measuredPerKit": 6776,
+          "ratio": 1.058,
+          "consumedPerKit": 6603,
+          "averageDrawPerMinute": 73.3,
+          "peakMinuteDraw": 130
+        },
+        {
+          "item": "steel-plate",
+          "perMinute": 135,
+          "perKit": 6723,
+          "measuredPerKit": 7074,
+          "ratio": 1.052,
+          "consumedPerKit": 6844,
+          "averageDrawPerMinute": 76.5,
+          "peakMinuteDraw": 135
+        },
+        {
+          "item": "electronic-circuit",
+          "perMinute": 140,
+          "perKit": 6822,
+          "measuredPerKit": 7434,
+          "ratio": 1.09,
+          "consumedPerKit": 7200,
+          "averageDrawPerMinute": 80.4,
+          "peakMinuteDraw": 140
+        },
+        {
+          "item": "sulfuric-acid",
+          "perMinute": 21,
+          "perKit": 1350,
+          "measuredPerKit": 1941.8,
+          "ratio": 1.438,
+          "consumedPerKit": 1450,
+          "averageDrawPerMinute": 21,
+          "peakMinuteDraw": 21
+        },
+        {
+          "item": "lubricant",
+          "perMinute": 62,
+          "perKit": 3930,
+          "measuredPerKit": 5170,
+          "ratio": 1.316,
+          "consumedPerKit": 4110,
+          "averageDrawPerMinute": 55.9,
+          "peakMinuteDraw": 62
+        }
+      ],
+      "failures": [
+        "entrance iron-plate accepted 1654 by kit completion, more than 1.15 x 1391",
+        "entrance stone-brick accepted 30 by kit completion, more than 1.15 x 10",
+        "entrance sulfuric-acid accepted 1941.8 by kit completion, more than 1.15 x 1350",
+        "entrance lubricant accepted 5170 by kit completion, more than 1.15 x 3930",
+        "long hold: final machines crafted in the last 5 minutes {\"space-platform-foundation\":2}"
+      ],
+      "passed": false
+    }
+  ],
+  "passed": false
+}

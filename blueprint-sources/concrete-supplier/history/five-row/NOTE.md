@@ -1,0 +1,3 @@
+# five-row (8 x 5 = 40 tiles, rejected as larger)
+
+The second layout tried. Machine on rows 0..2 facing west; an arm under it drops concrete onto the exit row from the north (south lane) and an arm on its east side drops onto a two-tile stub that side-loads the exit row from the north (north lane); exit on row 4. Full protocol passed at the recipe-demand supply (22.5 / 4.5 / 450): 45.0 steady, 45.0 recovery, exit 8 when blocked, machine stopped. Rejected only because the four-row layout (9 x 4 = 36) is 4 tiles smaller. Report made by the earlier harness revision `c45163fb...` (before the gate-wiring check, which does not apply here).

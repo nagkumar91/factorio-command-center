@@ -10,6 +10,7 @@ execFileSync('node', ['scripts/workshop-guides.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/index-designed-blueprints.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/todays-flight-builds.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/essentials-pages.mjs'], {stdio:'inherit'});
+execFileSync('node', ['scripts/space-launch-pages.mjs'], {stdio:'inherit'});
 const mod=JSON.parse(await readFile('starter_initializer/info.json','utf8'));
 await cp(`${mod.name}_${mod.version}.zip`,`site/sources/${mod.name}_${mod.version}.zip`);
 for (const name of ['catalog', 'library', 'production', 'community', 'atlas']) {

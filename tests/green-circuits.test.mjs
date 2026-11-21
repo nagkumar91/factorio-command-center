@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import {existsSync} from 'node:fs';
+import {openSync,closeSync} from 'node:fs';
+// The dump counts as installed only when it can be opened (a file that exists but cannot be read skips too).
+const readable=p=>{try{closeSync(openSync(p,'r'));return true;}catch{return false;}};
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {createHash} from 'node:crypto';
@@ -178,7 +180,7 @@ test('footprint matches the decoded string and beats the baseline',()=>{
 });
 
 test('generator is reproducible: the same variant gives the same string',async t=>{
- if(!existsSync(rawPath)){t.skip('Pinned local prototype dump is not installed (set FACTORIO_RAW)');return;}
+ if(!readable(rawPath)){t.skip('Pinned local prototype dump is not installed (set FACTORIO_RAW)');return;}
  const out='.cache/green-circuits/test-regenerate';
  await promisify(execFile)(process.execPath,['scripts/green-circuits/generate.mjs','--variant',m.variant,'--out',out],{cwd:rootPath});
  const again=(await read(out+'/green-circuits.txt')).toString().trim();

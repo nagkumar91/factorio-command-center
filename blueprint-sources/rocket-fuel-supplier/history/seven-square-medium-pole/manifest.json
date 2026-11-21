@@ -1,0 +1,256 @@
+[
+  {
+    "id": "rocket-fuel-supplier",
+    "name": "Rocket-fuel supplier · 6/min",
+    "file": "rocket-fuel-supplier.txt",
+    "blueprintSha256": "af139f3a2e08fd6cb32bddc9e2b41d56f19bc217e5f60e8b3ecc6e1a85ae9395",
+    "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "class": "rate",
+    "status": "qualified",
+    "measured": {
+      "steadyPerMinute": 6,
+      "recoveryPerMinute": 6,
+      "blockedExitStock": 8,
+      "entrancesPerMinute": {
+        "light-oil": 660
+      },
+      "machineCrafts": {
+        "solid-fuel-from-light-oil@1.5,1.5": 1800,
+        "rocket-fuel@5.5,1.5": 90,
+        "rocket-fuel@1.5,5.5": 90
+      },
+      "reportCreatedAt": "2026-11-21T02:00:04.458Z"
+    },
+    "variant": "seven-square",
+    "supply": "nominal",
+    "products": [
+      "rocket-fuel"
+    ],
+    "targets": {
+      "rocket-fuel": 6
+    },
+    "outputCaps": {
+      "rocket-fuel": 8
+    },
+    "recipeAudit": {
+      "externalPerMinute": {
+        "light-oil": 660
+      },
+      "craftsPerMinute": {
+        "rocket-fuel": 6,
+        "solid-fuel-from-light-oil": 60
+      },
+      "machinesExact": {
+        "rocket-fuel": 2,
+        "solid-fuel-from-light-oil": 1
+      },
+      "recipeIngredients": {
+        "rocket-fuel": [
+          {
+            "type": "item",
+            "name": "solid-fuel",
+            "amount": 10
+          },
+          {
+            "type": "fluid",
+            "name": "light-oil",
+            "amount": 10
+          }
+        ],
+        "solid-fuel-from-light-oil": [
+          {
+            "type": "fluid",
+            "name": "light-oil",
+            "amount": 10
+          }
+        ]
+      },
+      "internal": {
+        "solid-fuel": "made by solid-fuel-from-light-oil in the chemical plant and handed directly to the rocket-fuel machines; not a product, no exit"
+      }
+    },
+    "inputs": [],
+    "fluids": [
+      {
+        "kind": "fluid",
+        "label": "light-oil",
+        "items": [
+          "light-oil"
+        ],
+        "item": "light-oil",
+        "entity": 1,
+        "x": 0.5,
+        "y": 3.5,
+        "position": {
+          "x": 0.5,
+          "y": 3.5
+        },
+        "externalSide": "west",
+        "nominalPerMinute": 660,
+        "perMinute": 660,
+        "displayEntity": 22
+      }
+    ],
+    "outputs": [
+      {
+        "kind": "output",
+        "label": "rocket-fuel",
+        "items": [
+          "rocket-fuel"
+        ],
+        "item": "rocket-fuel",
+        "entity": 21,
+        "x": 6.5,
+        "y": 6.5,
+        "position": {
+          "x": 6.5,
+          "y": 6.5
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "belt",
+        "cap": 8
+      }
+    ],
+    "ports": [
+      {
+        "kind": "fluid",
+        "label": "light-oil",
+        "items": [
+          "light-oil"
+        ],
+        "item": "light-oil",
+        "entity": 1,
+        "x": 0.5,
+        "y": 3.5,
+        "position": {
+          "x": 0.5,
+          "y": 3.5
+        },
+        "externalSide": "west",
+        "nominalPerMinute": 660,
+        "perMinute": 660,
+        "displayEntity": 22
+      },
+      {
+        "kind": "output",
+        "label": "rocket-fuel",
+        "items": [
+          "rocket-fuel"
+        ],
+        "item": "rocket-fuel",
+        "entity": 21,
+        "x": 6.5,
+        "y": 6.5,
+        "position": {
+          "x": 6.5,
+          "y": 6.5
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "belt",
+        "cap": 8
+      },
+      {
+        "kind": "power",
+        "label": "External electricity",
+        "items": [],
+        "entity": 23,
+        "x": 3.5,
+        "y": 4.5,
+        "position": {
+          "x": 3.5,
+          "y": 4.5
+        }
+      }
+    ],
+    "machineCounts": {
+      "solid-fuel-from-light-oil": 1,
+      "rocket-fuel": 2
+    },
+    "footprint": {
+      "left": 0,
+      "top": 0,
+      "right": 7,
+      "bottom": 7,
+      "width": 7,
+      "height": 7
+    },
+    "areaGoal": {
+      "goalTiles": 78,
+      "stretchTiles": 66,
+      "fallbackTiles": 110,
+      "achievedTiles": 49
+    },
+    "loopControl": [],
+    "stockControl": {
+      "mode": "belt-exit",
+      "exit": 21,
+      "cap": 8,
+      "lanes": "one rocket-fuel machine per lane; the exit tile is fed from behind and holds 4 per lane",
+      "gate": {
+        "reader": 21,
+        "readerMode": "per-tile-hold",
+        "wire": "red",
+        "arms": [
+          12,
+          13
+        ],
+        "condition": "rocket-fuel < 8",
+        "why": "stops the rocket-fuel machines soon after the exit fills (not measured without the gate for this variant)"
+      }
+    },
+    "armRoles": {
+      "handOff": [
+        12,
+        13
+      ],
+      "output": [
+        14,
+        18
+      ]
+    },
+    "protocol": {
+      "warmupMinutes": 15,
+      "measureMinutes": 30,
+      "blockedMinutes": 10,
+      "settleMinutes": 5,
+      "recoveryMinutes": 10
+    },
+    "construction": {
+      "assembling-machine-2": 2,
+      "chemical-plant": 1,
+      "display-panel": 1,
+      "fast-inserter": 4,
+      "fast-transport-belt": 6,
+      "medium-electric-pole": 1,
+      "pipe": 6,
+      "pipe-to-ground": 2
+    },
+    "billOfMaterials": {
+      "items": {
+        "pipe": 6,
+        "pipe-to-ground": 2,
+        "chemical-plant": 1,
+        "assembling-machine-2": 2,
+        "fast-inserter": 4,
+        "fast-transport-belt": 6,
+        "display-panel": 1,
+        "medium-electric-pole": 1
+      }
+    },
+    "supplierLinks": [
+      {
+        "consumer": "rocket-supplies",
+        "item": "rocket-fuel",
+        "exitRowFromTop": 6,
+        "perMinute": 6
+      }
+    ],
+    "setupNotes": [
+      "Official 2.1.24 Space Age; one chemical plant (solid fuel from light oil) and two assembling machine 2 (rocket fuel), no modules, red belts, fast inserters, one medium electric pole (no substation). WEST: light oil 660/min into the west pipe; it feeds all three machines. EAST: one red belt exit on the bottom row, 6 rocket fuel/min, one machine per lane. Solid fuel is handed machine to machine. The two solid-fuel arms are wired to the exit belt tile and run only while it holds fewer than 8 rocket fuel, so the machines stop soon after the consumer stops taking fuel and restart by themselves; keep that red wire and condition. Supply electricity at the medium pole.",
+      "Place this supplier west of rocket supplies with its exit row (row 6 from its top) on the rocket-fuel entrance row and join them with a straight red belt. One copy covers rocket supplies (it takes about 5 rocket fuel a minute).",
+      "Feed light oil at or above the panel figure; extra simply stays in the pipe."
+    ]
+  }
+]

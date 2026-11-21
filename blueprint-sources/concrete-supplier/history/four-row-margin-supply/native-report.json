@@ -1,0 +1,297 @@
+{
+  "builds": [
+    {
+      "id": "concrete-supplier",
+      "importedEntities": 18,
+      "externalApproachesClear": true,
+      "ringWiringChecked": true,
+      "powered": true,
+      "loopSamples": {},
+      "exactRecipeChecks": 2701,
+      "outputsPerMinute": {
+        "concrete": 45
+      },
+      "madePerMinute": {
+        "concrete": 45
+      },
+      "consumptionPerMinute": {
+        "stone-brick": 22.5,
+        "iron-ore": 4.5
+      },
+      "inputs": [
+        {
+          "item": "stone-brick",
+          "entity": 2,
+          "perMinute": 24,
+          "acceptedDuringMeasurement": 675,
+          "acceptedPerMinute": 22.5,
+          "measuredPerMinute": 22.5,
+          "productiveRoute": [
+            2,
+            1
+          ],
+          "entranceLanes": [
+            4,
+            4
+          ]
+        },
+        {
+          "item": "iron-ore",
+          "entity": 6,
+          "perMinute": 4.8,
+          "acceptedDuringMeasurement": 140,
+          "acceptedPerMinute": 4.666666666666667,
+          "measuredPerMinute": 4.666666666666667,
+          "productiveRoute": [
+            6,
+            1
+          ],
+          "entranceLanes": [
+            4,
+            4
+          ]
+        }
+      ],
+      "fluids": [
+        {
+          "item": "water",
+          "entity": 4,
+          "perMinute": 473,
+          "acceptedDuringMeasurement": 13670.168888926506,
+          "acceptedPerMinute": 455.6722962975502,
+          "measuredPerMinute": 455.6722962975502,
+          "sourceFluidSegment": 1,
+          "connectedConsumers": [
+            1
+          ],
+          "productiveConsumers": [
+            1
+          ],
+          "disconnectedConsumers": {},
+          "entranceFluid": 82.65013885498047
+        }
+      ],
+      "outputPorts": [
+        {
+          "item": "concrete",
+          "entity": 14,
+          "collectedDuringMeasurement": 1350
+        }
+      ],
+      "machines": [
+        {
+          "entity": 1,
+          "recipe": "concrete",
+          "actualRecipe": "concrete",
+          "x": 3.5,
+          "y": 2.5,
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 10,
+          "measuredCrafts": 135,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "input": [
+            {
+              "name": "stone-brick",
+              "quality": "normal",
+              "count": 10
+            },
+            {
+              "name": "iron-ore",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": {},
+          "fluids": [
+            {
+              "name": "water",
+              "amount": 400
+            }
+          ]
+        }
+      ],
+      "arms": [
+        {
+          "entity": 3,
+          "name": "fast-inserter",
+          "x": 1.5,
+          "y": 1.5,
+          "status": "waiting_for_space_in_destination",
+          "samples": {
+            "waiting_for_space_in_destination": 135,
+            "working": 45
+          }
+        },
+        {
+          "entity": 7,
+          "name": "fast-inserter",
+          "x": 1.5,
+          "y": 3.5,
+          "status": "waiting_for_space_in_destination",
+          "samples": {
+            "waiting_for_space_in_destination": 135,
+            "waiting_for_source_items": 45
+          }
+        },
+        {
+          "entity": 8,
+          "name": "fast-inserter",
+          "x": 5.5,
+          "y": 3.5,
+          "status": "waiting_for_source_items",
+          "samples": {
+            "waiting_for_source_items": 135,
+            "working": 45
+          }
+        },
+        {
+          "entity": 10,
+          "name": "fast-inserter",
+          "x": 5.5,
+          "y": 2.5,
+          "status": "waiting_for_source_items",
+          "samples": {
+            "waiting_for_source_items": 135,
+            "working": 45
+          }
+        }
+      ],
+      "inserterCapacityResearch": {
+        "fast": 0,
+        "bulkUnlockBonus": 1,
+        "technology": "bulk-inserter unlock-equivalent baseline only; no later capacity upgrades",
+        "appliedBy": "explicit force capacity properties"
+      },
+      "blocked": {
+        "minutes": 5,
+        "mode": "natural-production-only-collection-stopped-entrances-still-fed",
+        "collectionPauseStock": [
+          {
+            "item": "concrete",
+            "entity": 14,
+            "count": 8,
+            "lanes": [
+              4,
+              4
+            ],
+            "capacity": 8,
+            "maxDuringBlocked": 8
+          }
+        ],
+        "machinesStoppedInLastMinute": true,
+        "stillCrafting": [],
+        "machinesAtEnd": [
+          {
+            "entity": 1,
+            "recipe": "concrete",
+            "status": "full_output",
+            "output": [
+              {
+                "name": "concrete",
+                "quality": "normal",
+                "count": 45
+              }
+            ]
+          }
+        ],
+        "statusSamples": {
+          "1": {
+            "working": 86,
+            "full_output": 214
+          },
+          "3": {
+            "waiting_for_space_in_destination": 29,
+            "working": 1
+          },
+          "7": {
+            "waiting_for_space_in_destination": 29,
+            "waiting_for_source_items": 1
+          },
+          "8": {
+            "waiting_for_source_items": 2,
+            "working": 1,
+            "waiting_for_space_in_destination": 27
+          },
+          "10": {
+            "waiting_for_source_items": 2,
+            "working": 1,
+            "waiting_for_space_in_destination": 27
+          }
+        }
+      },
+      "recovery": {
+        "blockedMinutes": 5,
+        "settlingMinutes": 5,
+        "measurementMinutes": 10,
+        "outputsPerMinute": {
+          "concrete": 45
+        },
+        "inputs": [
+          {
+            "item": "stone-brick",
+            "acceptedPerMinute": 22.5
+          },
+          {
+            "item": "iron-ore",
+            "acceptedPerMinute": 4.5
+          }
+        ],
+        "fluids": [
+          {
+            "item": "water",
+            "acceptedPerMinute": 450
+          }
+        ]
+      },
+      "bulkInserters": [],
+      "finished": true,
+      "blueprintSha256": "9ad74e75ef324e0803ec37b79b336e7a4a7a1f82544a2b819a5a02177ff3cd56",
+      "checks": {
+        "finished": true,
+        "steadyRates": true,
+        "recoveryRates": true,
+        "everyMachineCrafted": true,
+        "everyEntranceProductive": true,
+        "everyFluidProductive": true,
+        "entranceDrawWithinPanel": true,
+        "everyOutputDelivered": true,
+        "blockedStockExact": true,
+        "machinesStoppedWhileBlocked": true,
+        "ringBelowNinetyPercent": true,
+        "powerAndGeometry": true,
+        "bulkHandAtMostTwo": true
+      },
+      "passed": true
+    }
+  ],
+  "feedPolicy": "Declared west entrances only, throttled to the manifest perMinute: belts get a credit of perMinute/3600 per tick (capped at 8) and one item per credit, alternating lanes; fluids get perMinute/3600 per tick plus the refused carry (capped at one second of supply); electricity through one energy interface on the power port network; no inventory seeded; declared products collected from the declared east belt exit every 4 ticks",
+  "researchPolicy": "All recipes enabled; fast inserter stack bonus zero; bulk inserter unlock-equivalent capacity bonus +1 only; no technologies researched",
+  "gameVersion": "2.1.24",
+  "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+  "harnessSha256": "c45163fbea363025f1408841371015c2d35cb30658f50e0f5e26d60c537ad4f1",
+  "dataHarnessSha256": "24f54ca5e196ea5d8f011ba7130c8ee9c5abebe7218980aa42fdde87cd8684fa",
+  "validatorSha256": "36d369ca9b58d271de4e0d2436af4f63cc61c8f9e7582991ee3bc97a4ff57467",
+  "configurationSha256": "acc0ee553a9ab661f4e845a1444773754d13efdcd2114b446c776d1ce70b271e",
+  "protocolMinutes": {
+    "warmupMinutes": 15,
+    "measureMinutes": 30,
+    "blockedMinutes": 5,
+    "settleMinutes": 5,
+    "recoveryMinutes": 10
+  },
+  "protocol": {
+    "warmupMinutes": 15,
+    "measureMinutes": 30,
+    "blockedMinutes": 5,
+    "settleMinutes": 5,
+    "recoveryMinutes": 10
+  },
+  "warmupMinutes": 15,
+  "measurementMinutes": 30,
+  "createdAt": "2026-11-21T01:29:07.407Z",
+  "runRoot": ".cache/concrete-supplier/native-1795224541386",
+  "passed": true
+}

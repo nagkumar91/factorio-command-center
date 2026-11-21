@@ -29,5 +29,23 @@ try{
  assert.ok((await page.locator('.collection-banner').textContent()).includes('Essentials builds'));
  assert.deepEqual([...await search('inputs','electronic circuit')].sort(),[mall,robots,six].sort());
  assert.deepEqual(await search('outputs','electronic circuit'),[supplier]);
- assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials are findable by input and output.');
+ // Space launch round: output searches find each product's design; input searches find the consumers
+ // of light oil and concrete. The receiver delivers packs but crafts nothing; rocket supplies only passes
+ // rocket fuel through, so neither appears where it would claim production.
+ const concrete='Concrete supplier · 45/min',fuel='Rocket-fuel supplier · 6/min',kit='Space launch kit · silo, pad, starter pack and platform parts',supplies='Rocket supplies · 6 rockets per hour',platform='White-pack platform · 60/min in Nauvis orbit',receiver='White-pack receiver · landing pad to chest';
+ await page.goto(url+'?collection=flight-plans#blueprints');await page.reload();await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ for(const [query,want] of [['rocket silo',[kit]],['space science pack',[platform,receiver]],['concrete',[concrete]],['rocket fuel',[fuel]],['processing unit',[supplies]],['low density structure',[supplies]]]){const found=await search('outputs',query);for(const title of want)assert.ok(found.includes(title),'outputs: '+query+' gave '+found.join(' | '));}
+ assert.ok(!(await search('outputs','rocket fuel')).includes(supplies),'rocket supplies passes rocket fuel through');
+ assert.ok((await search('inputs','light oil')).includes(fuel),'inputs: light oil');
+ const concreteUsers=await search('inputs','concrete');assert.ok(concreteUsers.includes(kit),'inputs: concrete finds the kit');assert.ok(!concreteUsers.includes(concrete),'the concrete supplier does not need concrete');
+ assert.ok((await search('inputs','rocket fuel')).includes(supplies),'inputs: rocket fuel finds rocket supplies');
+ await page.goto(url+'?collection=space-launch#blueprints');await page.reload();await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ assert.equal(await page.locator('#blueprint-source').inputValue(),'Space launch · 21 November');
+ assert.deepEqual([...await titles()].sort(),[concrete,fuel,kit,supplies,platform,receiver].sort(),'space launch view lists exactly the six');
+ assert.ok((await page.locator('.collection-banner').textContent()).includes('Space launch builds'));
+ assert.deepEqual(await search('inputs','light oil'),[fuel]);
+ assert.deepEqual(await search('inputs','concrete'),[kit]);
+ assert.deepEqual(await search('outputs','rocket fuel'),[fuel]);
+ assert.deepEqual([...await search('outputs','space science pack')].sort(),[platform,receiver].sort());
+ assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials and the space launch builds are findable by input and output.');
 }finally{await browser.close();}

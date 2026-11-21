@@ -1,0 +1,3 @@
+# four-row, margin supply (9 x 4, superseded)
+
+The published layout with the entrance panels at the contract's starting figures (recipe demand x 1.05, rounded up): stone bricks 24, iron ore 4.8, water 473 per minute. Full protocol passed (45.0 steady, 45.0 recovery, exit 8 = 4 + 4 when blocked). Superseded because the same layout also passed the full protocol at the recipe demand itself (22.5 / 4.5 / 450), which the contract asks the panels to state. The report was made by an earlier revision of `scripts/concrete-supplier/control.lua` (harness `c45163fb...`, before the gate-wiring check was added; the check does not apply to this design).

@@ -1,0 +1,147 @@
+[
+  {
+    "id": "white-pack-receiver",
+    "name": "White-pack receiver · landing pad to chest",
+    "file": "white-pack-receiver.txt",
+    "blueprintSha256": "00456afec81e22b0e1201e6780fe04c27634a2f77dbbd723d2448e86a17e87ae",
+    "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "class": "receiver",
+    "status": "qualified",
+    "measured": {
+      "steadyPerMinute": 60,
+      "recoveryPerMinute": 96.28888888888889,
+      "firstPodSeconds": 64.03333333333333,
+      "blockedChest": 2000,
+      "blockedPad": 1000,
+      "platform": "white-platform (real platform built from the blueprint string)",
+      "reportCreatedAt": "2026-11-21T02:13:57.900Z"
+    },
+    "products": [],
+    "targets": {},
+    "deliveredItems": [
+      "space-science-pack"
+    ],
+    "deliveryTarget": {
+      "space-science-pack": 60
+    },
+    "outputCaps": {
+      "space-science-pack": 2000
+    },
+    "recipeAudit": {
+      "externalPerMinute": {},
+      "craftsPerMinute": {},
+      "recipeIngredients": {}
+    },
+    "inputs": [],
+    "fluids": [],
+    "outputs": [
+      {
+        "kind": "output",
+        "label": "space-science-pack",
+        "items": [
+          "space-science-pack"
+        ],
+        "item": "space-science-pack",
+        "entity": 3,
+        "x": 5.5,
+        "y": -0.5,
+        "position": {
+          "x": 5.5,
+          "y": -0.5
+        },
+        "externalSide": "east",
+        "cap": 2000,
+        "arm": 2
+      }
+    ],
+    "ports": [
+      {
+        "kind": "output",
+        "label": "space-science-pack",
+        "items": [
+          "space-science-pack"
+        ],
+        "item": "space-science-pack",
+        "entity": 3,
+        "x": 5.5,
+        "y": -0.5,
+        "position": {
+          "x": 5.5,
+          "y": -0.5
+        },
+        "externalSide": "east",
+        "cap": 2000,
+        "arm": 2
+      },
+      {
+        "kind": "power",
+        "label": "External electricity",
+        "items": [],
+        "x": 5,
+        "y": 1,
+        "entity": 4,
+        "position": {
+          "x": 5,
+          "y": 1
+        }
+      }
+    ],
+    "machineCounts": {},
+    "footprint": {
+      "left": -4,
+      "top": -4,
+      "right": 6,
+      "bottom": 4,
+      "width": 10,
+      "height": 8
+    },
+    "areaGoal": {
+      "goalTiles": 80,
+      "stretchTiles": null,
+      "fallbackTiles": 96,
+      "achievedTiles": 80
+    },
+    "loopControl": [],
+    "stockControl": {
+      "mode": "bar",
+      "chest": 3,
+      "arm": 2,
+      "bar": 10,
+      "cap": 2000,
+      "pad": 1,
+      "padRequest": 1000
+    },
+    "protocol": {
+      "buildLimitMinutes": 10,
+      "warmupMinutes": 60,
+      "measureMinutes": 120,
+      "blockedMinutes": 105,
+      "holdMinutes": 15,
+      "recoveryMinutes": 60,
+      "recoveryMeasuredMinutes": 45,
+      "rocketDeliveryLimitMinutes": 60,
+      "firstPodLimitMinutes": 5
+    },
+    "construction": {
+      "cargo-landing-pad": 1,
+      "fast-inserter": 1,
+      "passive-provider-chest": 1,
+      "substation": 1
+    },
+    "billOfMaterials": {
+      "items": {
+        "cargo-landing-pad": 1,
+        "fast-inserter": 1,
+        "passive-provider-chest": 1,
+        "substation": 1
+      }
+    },
+    "supplierLinks": [],
+    "platform": "white-platform",
+    "setupNotes": [
+      "Factorio 2.1.24 Space Age. One cargo landing pad that requests 1000 space science packs, one fast inserter and one passive provider chest limited to 10 stacks (2000 packs). Build it on Nauvis under the white-pack platform: the platform drops a cargo pod every 30 seconds with what the pad lacks, so packs arrive with no click. A force may have only one cargo landing pad per planet; if you already have one, add a request for space science packs to it and build only the inserter, chest and substation next to it. Supply electricity at the substation.",
+      "One cargo landing pad per planet: in a save that already has one, the blueprint pad cannot be built. Add a request for space science packs (1,000) to the existing pad and build only the inserter, chest and substation.",
+      "The chest stops at 2000 packs (10 stacks), the pad keeps up to 1000 and the platform hub up to its own cap; everything resumes by itself when robots take packs from the chest."
+    ]
+  }
+]

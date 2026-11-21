@@ -1,0 +1,371 @@
+{
+  "releaseGroup": "space-launch-20261121",
+  "published": [
+    {
+      "id": "concrete-supplier",
+      "name": "Concrete supplier · 45/min",
+      "class": "rate",
+      "blueprintSha256": "449f804ab8030a03609676db13c1b320551db240776069ee99cb546abbe5afe2",
+      "footprint": {
+        "left": 0,
+        "top": 0,
+        "right": 7,
+        "bottom": 5,
+        "width": 7,
+        "height": 5
+      },
+      "page": "concrete-supplier/index.html"
+    },
+    {
+      "id": "rocket-fuel-supplier",
+      "name": "Rocket-fuel supplier · 6/min",
+      "class": "rate",
+      "blueprintSha256": "5e86373d041a07540f2b52e3beba12326c760d45920d515e989377cabcdf79fb",
+      "footprint": {
+        "left": 0,
+        "top": 0,
+        "right": 7,
+        "bottom": 8,
+        "width": 7,
+        "height": 8
+      },
+      "page": "rocket-fuel-supplier/index.html"
+    },
+    {
+      "id": "launch-kit",
+      "name": "Space launch kit · silo, pad, starter pack and platform parts",
+      "class": "kit",
+      "blueprintSha256": "a54b80568899d01f7a1f7d436ad3a64ee3d07e1c68ca88fd203eb715d2ed0b63",
+      "footprint": {
+        "left": 0,
+        "top": 0,
+        "right": 32,
+        "bottom": 27,
+        "width": 32,
+        "height": 27
+      },
+      "page": "launch-kit/index.html"
+    },
+    {
+      "id": "rocket-supplies",
+      "name": "Rocket supplies · 6 rockets per hour",
+      "class": "rate",
+      "blueprintSha256": "b10cbc287a0104307b394c9d2dbb11d82f2fedf12251126fa42aa3585b4fd106",
+      "footprint": {
+        "left": 0,
+        "top": 0,
+        "right": 14,
+        "bottom": 12,
+        "width": 14,
+        "height": 12
+      },
+      "page": "rocket-supplies/index.html"
+    },
+    {
+      "id": "white-platform",
+      "name": "White-pack platform · 60/min in Nauvis orbit",
+      "class": "platform",
+      "blueprintSha256": "f4cc0325a68ecf1add4e58c71483098c77f48cee7a2f6553783165d5ac1b37d0",
+      "footprint": {
+        "left": -8,
+        "top": -8,
+        "right": 11,
+        "bottom": 8,
+        "width": 19,
+        "height": 16
+      },
+      "page": "white-platform/index.html"
+    },
+    {
+      "id": "white-pack-receiver",
+      "name": "White-pack receiver · landing pad to chest",
+      "class": "receiver",
+      "blueprintSha256": "00456afec81e22b0e1201e6780fe04c27634a2f77dbbd723d2448e86a17e87ae",
+      "footprint": {
+        "left": -4,
+        "top": -4,
+        "right": 6,
+        "bottom": 4,
+        "width": 10,
+        "height": 8
+      },
+      "page": "white-pack-receiver/index.html"
+    }
+  ],
+  "notPublished": [],
+  "interfaces": [
+    {
+      "supplier": "concrete-supplier",
+      "consumer": "launch-kit",
+      "item": "concrete",
+      "copies": 1,
+      "panelPerMinute": 23,
+      "measuredPerMinute": 23,
+      "entranceRowFromTop": 0,
+      "exitRowFromTop": 4,
+      "placement": "Place the concrete supplier's top row 4 rows above the launch kit's top row, any distance west, and join exit to entrance with a straight red belt."
+    },
+    {
+      "supplier": "green-circuits",
+      "consumer": "launch-kit",
+      "item": "electronic-circuit",
+      "copies": 1,
+      "panelPerMinute": 127,
+      "measuredPerMinute": 129,
+      "entranceRowFromTop": 25,
+      "exitRowFromTop": 5,
+      "placement": "Place the green-circuit supplier's top row 20 rows below the launch kit's top row, any distance west, and join exit to entrance with a straight red belt."
+    },
+    {
+      "supplier": "rocket-fuel-supplier",
+      "consumer": "rocket-supplies",
+      "item": "rocket-fuel",
+      "copies": 1,
+      "panelPerMinute": 5,
+      "measuredPerMinute": 5,
+      "entranceRowFromTop": 0,
+      "exitRowFromTop": 7,
+      "placement": "Place the rocket-fuel supplier's top row 7 rows above the rocket supplies's top row, any distance west, and join exit to entrance with a straight red belt."
+    },
+    {
+      "supplier": "green-circuits",
+      "consumer": "rocket-supplies",
+      "item": "electronic-circuit",
+      "copies": 1,
+      "panelPerMinute": 120,
+      "measuredPerMinute": 120,
+      "entranceRowFromTop": 10,
+      "exitRowFromTop": 5,
+      "placement": "No clear row north of the circuit entrance (the copper, plastic and steel entrances sit on the rows just above it, all four side-loading onto the ring's west column), so a green-circuits copy cannot sit directly west with its exit on this row without covering the copper, plastic, steel and acid approaches: place it further south or west and bring its belt in on row 10."
+    }
+  ],
+  "greenCircuits": {
+    "demandPerMinute": 247,
+    "copies": 1
+  },
+  "kit": {
+    "minutes": 68.75,
+    "items": [
+      {
+        "item": "rocket-silo",
+        "count": 1,
+        "spare": 0,
+        "max": 1
+      },
+      {
+        "item": "cargo-landing-pad",
+        "count": 1,
+        "spare": 0,
+        "max": 1,
+        "receiver": 1
+      },
+      {
+        "item": "space-platform-starter-pack",
+        "count": 1,
+        "spare": 0,
+        "max": 1
+      },
+      {
+        "item": "space-platform-foundation",
+        "count": 137,
+        "spare": 14,
+        "max": 330,
+        "platform": 137
+      },
+      {
+        "item": "asteroid-collector",
+        "count": 4,
+        "spare": 0,
+        "max": 8,
+        "platform": 4
+      },
+      {
+        "item": "crusher",
+        "count": 1,
+        "spare": 0,
+        "max": 6,
+        "platform": 1
+      },
+      {
+        "item": "assembling-machine-2",
+        "count": 4,
+        "spare": 0,
+        "max": 10,
+        "platform": 4
+      },
+      {
+        "item": "electric-furnace",
+        "count": 1,
+        "spare": 0,
+        "max": 4,
+        "platform": 1
+      },
+      {
+        "item": "fast-inserter",
+        "count": 17,
+        "spare": 2,
+        "max": 50,
+        "platform": 16,
+        "receiver": 1
+      },
+      {
+        "item": "solar-panel",
+        "count": 6,
+        "spare": 0,
+        "max": 30,
+        "platform": 6
+      },
+      {
+        "item": "accumulator",
+        "count": 4,
+        "spare": 0,
+        "max": 10,
+        "platform": 4
+      },
+      {
+        "item": "constant-combinator",
+        "count": 1,
+        "spare": 0,
+        "max": 10,
+        "platform": 1
+      },
+      {
+        "item": "arithmetic-combinator",
+        "count": 1,
+        "spare": 0,
+        "max": 10,
+        "platform": 1
+      },
+      {
+        "item": "decider-combinator",
+        "count": 5,
+        "spare": 0,
+        "max": 10,
+        "platform": 5
+      },
+      {
+        "item": "passive-provider-chest",
+        "count": 1,
+        "spare": 0,
+        "max": 10,
+        "receiver": 1
+      },
+      {
+        "item": "substation",
+        "count": 1,
+        "spare": 0,
+        "max": 10,
+        "receiver": 1
+      }
+    ]
+  },
+  "rocketPlan": {
+    "rockets": [
+      {
+        "rocket": 1,
+        "cargo": {
+          "space-platform-starter-pack": 1
+        },
+        "weightKg": 1000,
+        "measured": {
+          "space-platform-starter-pack": 1
+        },
+        "measuredKg": 1000
+      },
+      {
+        "rocket": 2,
+        "cargo": {
+          "space-platform-foundation": 50
+        },
+        "weightKg": 1000,
+        "measured": {
+          "space-platform-foundation": 50
+        },
+        "measuredKg": 1000
+      },
+      {
+        "rocket": 3,
+        "cargo": {
+          "space-platform-foundation": 50
+        },
+        "weightKg": 1000,
+        "measured": {
+          "space-platform-foundation": 50
+        },
+        "measuredKg": 1000
+      },
+      {
+        "rocket": 4,
+        "cargo": {
+          "arithmetic-combinator": 1,
+          "constant-combinator": 1,
+          "accumulator": 4,
+          "electric-furnace": 1,
+          "assembling-machine-2": 1,
+          "space-platform-foundation": 37,
+          "crusher": 1
+        },
+        "weightKg": 1000,
+        "measured": {
+          "arithmetic-combinator": 1,
+          "constant-combinator": 1,
+          "accumulator": 4,
+          "electric-furnace": 1,
+          "assembling-machine-2": 1,
+          "space-platform-foundation": 37,
+          "crusher": 1
+        },
+        "measuredKg": 1000
+      },
+      {
+        "rocket": 5,
+        "cargo": {
+          "fast-inserter": 16,
+          "decider-combinator": 5,
+          "solar-panel": 6,
+          "assembling-machine-2": 3,
+          "asteroid-collector": 4
+        },
+        "weightKg": 1000,
+        "measured": {
+          "fast-inserter": 16,
+          "decider-combinator": 5,
+          "solar-panel": 6,
+          "assembling-machine-2": 3,
+          "asteroid-collector": 4
+        },
+        "measuredKg": 1000
+      }
+    ],
+    "requestedWeightKg": 4000,
+    "rocketLiftKg": 1000,
+    "cargoRockets": 4,
+    "totalRockets": 5,
+    "measuredLaunches": 5,
+    "builtMinutes": 13.483333333333333,
+    "partsPerRocket": 50,
+    "perRocket": {
+      "processing-unit": 50,
+      "low-density-structure": 50,
+      "rocket-fuel": 50
+    },
+    "campaign": {
+      "processing-unit": 250,
+      "low-density-structure": 250,
+      "rocket-fuel": 250
+    }
+  },
+  "book": {
+    "file": "space-launch/space-launch-book.txt",
+    "sha256": "44860327d143f52689764241cc88ad8e0f8cc65853a2449c6c27584608aaccf4",
+    "blueprints": [
+      "green-circuits",
+      "concrete-supplier",
+      "rocket-fuel-supplier",
+      "launch-kit",
+      "rocket-supplies",
+      "white-platform",
+      "white-pack-receiver"
+    ]
+  }
+}
