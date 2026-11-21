@@ -72,12 +72,20 @@ test('guide pages and the landing page are offline, exact and complete',async()=
   assert.ok(html.includes(r.code.slice(0,200)),r.id+' import string');
   assert.equal((await fs.readFile(`site/${r.id}/${r.m.file}`,'utf8')).trim(),r.code);
   assert.equal(JSON.parse(await fs.readFile(`site/${r.id}/native-report.json`,'utf8')).passed,true);
+  // Supply advice follows the evidence: panel figures only when a panel-supply run passed for this exact string.
+  if(r.panelSupply){
+   const panel=JSON.parse(await fs.readFile(`site/${r.id}/panel-supply-report.json`,'utf8'));
+   assert.equal(exactNativeEvidence(r.m,r.code,panel).passed,true,r.id+' panel supply report');
+   assert.ok(html.includes('href="panel-supply-report.json"'),r.id+' links the panel supply report');
+   assert.match(html,/panel figures are enough/,r.id);assert.doesNotMatch(html,/Plan supply for the Measured column/,r.id);
+  }else assert.match(html,/Plan supply for the Measured column/,r.id);
   for(const p of [...r.m.inputs,...r.m.fluids])assert.ok(html.includes(`(${p.x}, ${p.y})`),r.id+' entrance '+p.item);
   assert.ok(html.includes(`node scripts/${r.id}/generate.mjs`),r.id+' reproduce');
   assert.doesNotMatch(html,/(?:src|href)="(?:https?:)?\/\//,r.id+' no network URLs');
   assert.doesNotMatch(await fs.readFile(`site/${r.id}/layout.svg`,'utf8'),/href="https?:/);
  }
  const landing=await fs.readFile('site/essentials/index.html','utf8');
+ assert.ok(records.find(r=>r.id==='robot-essentials').panelSupply,'robot essentials carries its passing panel-supply run');
  assert.doesNotMatch(landing,/(?:src|href)="(?:https?:)?\/\//);
  for(const r of published){assert.ok(landing.includes(`href="../${r.id}/index.html"`),r.id);assert.ok(landing.includes(`href="../${r.id}/native-report.json"`),r.id);assert.ok(landing.includes(r.m.blueprintSha256),r.id);}
  const book=decodeBlueprint(await fs.readFile('site/essentials/essentials-book.txt','utf8')).blueprint_book;

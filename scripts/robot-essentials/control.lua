@@ -148,6 +148,20 @@ local function import_checks(t,b)
  if b.productionClock then
   local clockNetwork=t.entities[b.productionClock.timer].get_circuit_network(defines.wire_connector_id.combinator_output_red)
   for _,id in pairs(b.productionClock.moduloEntities)do local n=t.entities[id].get_circuit_network(defines.wire_connector_id.combinator_input_red);check(n and n.network_id==clockNetwork.network_id,'timer input wire missing '..id)end
+  local gate=b.productionClock.supplyGate
+  if gate then
+   local e=t.entities[gate.entity];local ring=t.entities[b.loopControl[1].reader].get_circuit_network(defines.wire_connector_id.circuit_red)
+   local input=e.get_circuit_network(defines.wire_connector_id.combinator_input_red);check(input and input.network_id==ring.network_id,'supply gate does not read the ring')
+   local output=e.get_circuit_network(defines.wire_connector_id.combinator_output_red);check(output and output.network_id==clockNetwork.network_id,'supply gate does not drive the timer')
+   local seen=0
+   for _,c in ipairs(e.get_control_behavior().parameters.conditions)do check(c.comparator=='>' and gate.thresholds[c.first_signal.name]==c.constant,'supply gate threshold changed '..c.first_signal.name);seen=seen+1 end
+   check(seen==table_size(gate.thresholds),'supply gate condition count')
+   local out=e.get_control_behavior().parameters.outputs
+   check(#out==1 and out[1].signal.name==gate.signal and out[1].copy_count_from_input==false and (out[1].constant or 1)==gate.boost,'supply gate output changed')
+   local timer=t.entities[b.productionClock.timer].get_control_behavior().parameters
+   check(timer.operation=='+' and timer.second_constant==b.productionClock.unitsPerTick.nominal and timer.first_signal.name==gate.signal and timer.output_signal.name==gate.signal,'timer step changed')
+   t.supplyGate=e
+  end
   for _,token in pairs(b.productionClock.robotTokens or {})do
    local arm=t.entities[token.output];local behavior=arm.get_control_behavior();check(behavior.circuit_read_hand_contents and behavior.circuit_hand_read_mode==defines.control_behavior.inserter.hand_read_mode.hold,'robot pickup reset must hold hand contents')
    local private=t.entities[token.handReset].get_circuit_network(defines.wire_connector_id.combinator_input_green);local hand=arm.get_circuit_network(defines.wire_connector_id.circuit_green);check(private and hand and private.network_id==hand.network_id,'robot hand reset disconnected')
@@ -170,15 +184,45 @@ script.on_event(defines.events.on_tick,function()
   for id,e in pairs(t.bulkEntities)do if e.held_stack.valid_for_read then
    t.bulkMaxHand[id]=math.max(t.bulkMaxHand[id]or 0,e.held_stack.count)
   end end
-  -- The only ingredient writes are to the two lanes of the declared input belt.
-  for i,p in ipairs(b.fluids or {})do local n=t.entities[p.entity].insert_fluid{name=p.item,amount=1000};if game.tick>W and game.tick<=MEASURE_END then t.fluidFed[i]=(t.fluidFed[i]or 0)+n end end
-  if game.tick%4==0 then for i,p in ipairs(b.inputs)do
-   local belt=t.entities[p.entity]
-   for lane=1,2 do if belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
-    t.fed[i]=(t.fed[i]or 0)+1
-    if game.tick>W then t.measuredFed[i]=(t.measuredFed[i]or 0)+1 end
-   end end
-  end end
+  -- payload.supply: feed entrances at a multiple of their panel figures instead of saturating
+  -- them. belt and fluid are the multiples for all belt and fluid entrances, items overrides one
+  -- entrance by name; an entrance without a multiple is saturated as in the plain protocol.
+  -- Supply the workshop does not take waits as a backlog (belts: `backlog` items, default 16,
+  -- about two belt tiles; fluids: two seconds) and is lost beyond that, like a supplier that
+  -- stalls on a full belt.
+  local supply=payload.supply or {}
+  local function multiple(p,kind)local k=supply.items and supply.items[p.item];if k==nil then k=supply[kind] end;return k end
+  for i,p in ipairs(b.fluids or {})do
+   local k=multiple(p,'fluid');local amount=1000
+   if k then t.fluidCredit=t.fluidCredit or {};local rate=p.perMinute*k/3600;t.fluidCredit[i]=math.min((t.fluidCredit[i]or 0)+rate,rate*120);amount=t.fluidCredit[i] end
+   local n=amount>0 and t.entities[p.entity].insert_fluid{name=p.item,amount=amount} or 0
+   if k then t.fluidCredit[i]=t.fluidCredit[i]-n end
+   if game.tick>W and game.tick<=MEASURE_END then t.fluidFed[i]=(t.fluidFed[i]or 0)+n end
+  end
+  for i,p in ipairs(b.inputs)do
+   local k=multiple(p,'belt');local belt=t.entities[p.entity]
+   if k then
+    t.beltCredit=t.beltCredit or {};t.beltLane=t.beltLane or {}
+    t.beltCredit[i]=math.min((t.beltCredit[i]or 0)+p.perMinute*k/3600,supply.backlog or 16)
+    if t.beltCredit[i]>=1 then
+     local first=t.beltLane[i]or 1
+     for step=0,1 do local lane=(first+step-1)%2+1
+      if belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
+       t.beltCredit[i]=t.beltCredit[i]-1;t.beltLane[i]=lane%2+1
+       t.fed[i]=(t.fed[i]or 0)+1
+       if game.tick>W and game.tick<=MEASURE_END then t.measuredFed[i]=(t.measuredFed[i]or 0)+1 end
+       break
+      end
+     end
+    end
+   elseif game.tick%4==0 then
+    -- The only ingredient writes are to the two lanes of the declared input belt.
+    for lane=1,2 do if belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
+     t.fed[i]=(t.fed[i]or 0)+1
+     if game.tick>W and game.tick<=MEASURE_END then t.measuredFed[i]=(t.measuredFed[i]or 0)+1 end
+    end end
+   end
+  end
   -- Selective stocking is natural: stop collecting one product, inject none.
   if NP>0 and game.tick>SELECTIVE_START and (game.tick-SELECTIVE_START)%PH==0 then
    local phase=(game.tick-SELECTIVE_START)/PH
@@ -208,6 +252,10 @@ script.on_event(defines.events.on_tick,function()
     local signals=t.entities[loop.reader].get_signals(defines.wire_connector_id.circuit_red)or {}
     local count=0;for _,signal in ipairs(signals)do if signal.signal.type~='virtual' then count=count+signal.count;t.ringItemMax[signal.signal.name]=math.max(t.ringItemMax[signal.signal.name]or 0,signal.count) end end
     local sample=t.loopSamples[loop.name]or {maxStock=0,capacity=loop.capacity};sample.maxStock=math.max(sample.maxStock,count);sample.lastSignals=signals;t.loopSamples[loop.name]=sample
+    if payload.ringSeries and game.tick>W and game.tick<=MEASURE_END then
+     t.ringSeries=t.ringSeries or {}
+     for item in pairs(loop.limits)do local list=t.ringSeries[item]or {};list[#list+1]=signal_count(signals,item);t.ringSeries[item]=list end
+    end
     check(count<loop.capacity*.9,'loop overfilled '..loop.name)
    end
    if t.tokenBus and game.tick>W and game.tick<=MEASURE_END then
@@ -217,6 +265,10 @@ script.on_event(defines.events.on_tick,function()
      if signal_count(bus,token.tokenSignal)>0 then s.tokenHeld=s.tokenHeld+1 end
      if signal_count(bus,token.resetSignal)>0 then s.holding=s.holding+1 end
      t.tokenSamples[item]=s
+    end
+    if t.supplyGate then
+     t.supplySamples=t.supplySamples or {boosted=0,samples=0};t.supplySamples.samples=t.supplySamples.samples+1
+     if signal_count(t.supplyGate.get_control_behavior().signals_last_tick,b.productionClock.supplyGate.signal)>0 then t.supplySamples.boosted=t.supplySamples.boosted+1 end
     end
    end
    for id,e in pairs(t.entities)do if crafting(e) or e.type=='inserter' then
@@ -250,7 +302,7 @@ script.on_event(defines.events.on_tick,function()
  if game.tick==MEASURE_END then
   local report={builds={},feedPolicy='Declared exterior belt lanes and declared fluid pipes only; collect products only from the declared east chest every second',researchPolicy='All recipes enabled; fast inserter stack bonus zero; bulk unlock-equivalent capacity bonus +1 only'}
   for index,t in ipairs(storage.tests)do
-   local b=payload.builds[index];local r={id=t.id,outputsPerMinute={},consumptionPerMinute={},inputs={},outputPorts={},machines={},powered=t.powered,importedEntities=#b.entities,loopSamples=t.loopSamples,ringItemMax=t.ringItemMax,tokenSamples=t.tokenSamples,exactRecipeChecks=t.actualRecipeChecks,externalApproachesClear=true,stockNetworksIsolated=t.stockNetworksIsolated}
+   local b=payload.builds[index];local r={id=t.id,outputsPerMinute={},consumptionPerMinute={},inputs={},outputPorts={},machines={},powered=t.powered,importedEntities=#b.entities,loopSamples=t.loopSamples,ringItemMax=t.ringItemMax,ringSeries=t.ringSeries,tokenSamples=t.tokenSamples,supplyGateSamples=t.supplySamples,exactRecipeChecks=t.actualRecipeChecks,externalApproachesClear=true,stockNetworksIsolated=t.stockNetworksIsolated}
    check(t.force.inserter_stack_size_bonus==0 and t.force.bulk_inserter_capacity_bonus==1,'inserter capacity baseline drifted')
    r.inserterCapacityResearch={fast=t.force.inserter_stack_size_bonus,bulkUnlockBonus=t.force.bulk_inserter_capacity_bonus,technology='bulk-inserter unlock-equivalent baseline only; no later capacity upgrades',appliedBy='explicit force capacity properties'}
    r.bulkInserters={}

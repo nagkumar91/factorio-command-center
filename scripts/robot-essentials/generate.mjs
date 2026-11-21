@@ -17,13 +17,27 @@ const OUT=process.env.RE_OUT||'blueprint-sources/'+id;
 // for exploration and for reproducing history/ candidates, e.g.
 // RE_OPTIONS='{"rear":true,"acid":"row","gearArms":1}' rebuilds the first qualified layout.
 const options={rear:false,acid:'west',gearArms:2,cornerChest:true,...JSON.parse(process.env.RE_OPTIONS||'{}')};
+// Two-speed token clock (published). The timer adds `base` every tick, which paces the products
+// for supply at exactly the entrance panel figures (`nominal` times the targets). One decider,
+// the supply gate, adds `boost` more while every gated item's ring stock is above its threshold:
+// plastic and copper (the tightest entrances), steel, and four stocks that fall when another
+// entrance or a fluid runs short (gears for iron, advanced circuits for electronic circuits,
+// batteries for sulfuric acid, electric engines for lubricant). That only holds when the
+// entrances deliver more than the panels say. A one-speed clock fast enough for the old measured
+// rates overdraws the panels (history/one-speed-timer-d2c80909); one slow enough for the panels
+// would lower the measured rates. supplyGate:false rebuilds the earlier free-running timer,
+// machine order and reserves.
+const supplyGate=options.supplyGate===false?null:{base:8,boost:1,...options.supplyGate,thresholds:options.supplyGate?.thresholds||{'plastic-bar':18,'copper-plate':20,'steel-plate':16,'iron-gear-wheel':10,'advanced-circuit':8,battery:6,'electric-engine-unit':3}};
+const nominal={'construction-robot':0.98,'logistic-robot':0.975,roboport:1.012,'storage-chest':0.985,'passive-provider-chest':0.985,...options.nominal};
 
 // ---------------------------------------------------------------- targets
 const targets={'construction-robot':5,'logistic-robot':5,roboport:0.5,'storage-chest':2,'passive-provider-chest':2};
 const products=Object.keys(targets);
 const caps={'construction-robot':20,'logistic-robot':20,roboport:2,'storage-chest':10,'passive-provider-chest':10};
 const headroom={'construction-robot':1.05,'logistic-robot':1.08,roboport:1.15,'storage-chest':1.1,'passive-provider-chest':1.1,...options.headroom};
+// Free-running timer: one unit per tick. Two-speed clock: `base` or `base+boost` units per tick.
 const periodTicks=Object.fromEntries(products.map(p=>[p,Math.floor(3600/(targets[p]*headroom[p]))]));
+const periodUnits=supplyGate?Object.fromEntries(products.map(p=>[p,Math.floor(3600*supplyGate.base/(targets[p]*nominal[p]))])):periodTicks;
 const boundary=['electronic-circuit','iron-plate','copper-plate','steel-plate','plastic-bar','sulfuric-acid','lubricant'];
 
 // rear:true: plastic and cable ride a dead-end rear belt behind the advanced-circuit
@@ -48,6 +62,23 @@ const limits=rear?{
  ...options.limits};
 // Reserves (item > reserve) on arms that feed upstream consumers of a shared item.
 const reserves={'electronic-circuit':16,'iron-plate':8,'steel-plate':8,'iron-gear-wheel':8,'advanced-circuit':8,...options.reserves};
+// roboportLast (published): the roboport sits west of the three engine machines on the bottom
+// row, so on the one-way ring it is the last machine offered steel, gears and advanced circuits
+// and its two-craft buffer only ever takes what the others left. false is the earlier order
+// (roboport east of the engines, first at their steel and gears).
+const roboportLast=options.roboportLast??(options.supplyGate!==false);
+// The roboport's steel and advanced-circuit arm leaves more advanced circuits on the ring
+// (published: 16, earlier 8), so the ring's advanced-circuit count stays a usable health signal
+// for the supply gate and the logistic robot and chest machines are never left with scraps.
+const roboportAdvancedReserve=options.roboportAdvancedReserve??(options.supplyGate===false?reserves['advanced-circuit']:16);
+// The cable machine is upstream of the bottom battery plant for copper; with a reserve
+// (published: 8, earlier none) it cannot take the last copper on the ring.
+const cableCopperReserve=options.cableCopperReserve??(options.supplyGate===false?null:8);
+// The gear machine is the first iron user on the route and the roboport's 45 gears keep it
+// hungry, so its reserve is higher (published: 16) than the pipe machine's (8): when iron is
+// tight the ring still carries iron round to the pipe machine and the bottom battery plant.
+const gearIronReserve=options.gearIronReserve??(options.supplyGate===false?reserves['iron-plate']:16);
+const pipeIronReserve=options.pipeIronReserve??reserves['iron-plate'];
 
 // ---------------------------------------------------------------- recipe audit
 const required={},crafts={};
@@ -58,6 +89,11 @@ function expand(item,n){
 }
 for(const[p,n]of Object.entries(targets))expand(p,n);
 const round1=v=>Math.round(v*10)/10;
+// Each product's own share of the entrance figures at its target (for the pace arithmetic).
+const perProduct={};
+{const total={...required},totalCrafts={...crafts};
+ for(const[p,n]of Object.entries(targets)){for(const k of Object.keys(required))delete required[k];expand(p,n);perProduct[p]=Object.fromEntries(Object.entries(required).map(([k,v])=>[k,Math.round(v*1000)/1000]));}
+ for(const k of Object.keys(required))delete required[k];Object.assign(required,total);for(const k of Object.keys(crafts))delete crafts[k];Object.assign(crafts,totalCrafts);}
 for(const k of Object.keys(required))required[k]=round1(required[k]);
 for(const k of Object.keys(crafts))crafts[k]=Math.round(crafts[k]*1000)/1000;
 
@@ -105,7 +141,7 @@ for(const e of loop)e.control_behavior={circuit_read_hand_contents:true,circuit_
 const ringNodes=loop.map(e=>({entity:e,connector:1}));
 const controlled=[],reserveArms=[];
 const toRing=(e,item,limit=limits[item])=>{e.control_behavior={...e.control_behavior,...cond(item,'<',limit)};ringNodes.push({entity:e,connector:1});controlled.push(e.entity_number);return e;};
-const reserveGate=(e,item)=>{e.control_behavior={...e.control_behavior,...cond(item,'>',reserves[item])};ringNodes.push({entity:e,connector:1});reserveArms.push({entity:e.entity_number,item,reserve:reserves[item]});return e;};
+const reserveGate=(e,item,reserve=reserves[item])=>{e.control_behavior={...e.control_behavior,...cond(item,'>',reserve)};ringNodes.push({entity:e,connector:1});reserveArms.push({entity:e.entity_number,item,reserve});return e;};
 
 const machines=[];
 function machine(recipe,cx,cy,direction=0){
@@ -120,8 +156,8 @@ const productArms={};
 topRecipes.forEach((recipe,i)=>{
  const cx=slotX(i+1),cy=-3;machine(recipe,cx,cy,acidWest&&recipe==='battery'?12:0);
  if(recipe==='iron-gear-wheel'){
-  reserveGate(arm(cx-1,-1,8,{...filters(['iron-plate']),name:'bulk-inserter'}),'iron-plate');
-  if(options.gearArms===2)reserveGate(arm(cx,-1,8,{...filters(['iron-plate']),name:'bulk-inserter'}),'iron-plate');
+  reserveGate(arm(cx-1,-1,8,{...filters(['iron-plate']),name:'bulk-inserter'}),'iron-plate',gearIronReserve);
+  if(options.gearArms===2)reserveGate(arm(cx,-1,8,{...filters(['iron-plate']),name:'bulk-inserter'}),'iron-plate',gearIronReserve);
   toRing(arm(cx+1,-1,0),'iron-gear-wheel');
  }else if(recipe==='battery'){
   arm(cx+1,-1,8,filters(['iron-plate','copper-plate']));
@@ -130,7 +166,8 @@ topRecipes.forEach((recipe,i)=>{
   reserveGate(arm(cx-1,-1,8,filters(['steel-plate'])),'steel-plate');
   toRing(arm(cx+1,-1,0),'steel-chest');
  }else if(recipe==='copper-cable'){
-  arm(cx-1,-1,8,filters(['copper-plate']));
+  if(cableCopperReserve===null)arm(cx-1,-1,8,filters(['copper-plate']));
+  else reserveGate(arm(cx-1,-1,8,filters(['copper-plate'])),'copper-plate',cableCopperReserve);
   if(rear)arm(cx,-5,8,{name:'bulk-inserter'}); // cable to the north lane of the rear belt
   else toRing(arm(cx+1,-1,0,{name:'bulk-inserter'}),'copper-cable'); // 146 cable/min onto the ring
  }else{
@@ -152,16 +189,16 @@ for(const[recipe,cx]of inside){
 }
 
 // BOTTOM ROW (y 8..10): picks from and drops on the bottom belt (arms at y=7).
-const bottom=acidWest?['battery','electric-engine-unit','electric-engine-unit','electric-engine-unit','pipe','engine-unit','engine-unit','engine-unit','roboport','passive-provider-chest']:['electric-engine-unit','electric-engine-unit','electric-engine-unit','iron-gear-wheel','pipe','engine-unit','engine-unit','engine-unit','roboport','passive-provider-chest'];
+const bottom=acidWest?['battery','electric-engine-unit','electric-engine-unit','electric-engine-unit','pipe',...(roboportLast?['roboport','engine-unit','engine-unit','engine-unit']:['engine-unit','engine-unit','engine-unit','roboport']),'passive-provider-chest']:['electric-engine-unit','electric-engine-unit','electric-engine-unit','iron-gear-wheel','pipe','engine-unit','engine-unit','engine-unit','roboport','passive-provider-chest'];
 const bottomFeeds={battery:['iron-plate','copper-plate'],'electric-engine-unit':['engine-unit','electronic-circuit'],'engine-unit':['steel-plate','iron-gear-wheel','pipe'],'passive-provider-chest':['steel-chest','electronic-circuit','advanced-circuit']};
 bottom.forEach((recipe,i)=>{
  const cx=slotX(i+1),cy=9;machine(recipe,cx,cy,recipe==='electric-engine-unit'?8:recipe==='battery'?12:0);
  if(recipe==='battery'&&options.acidMirror)machines.at(-1).entity.mirror=true;
  if(recipe==='roboport'){
   reserveGate(arm(cx-1,7,0,filters(['iron-gear-wheel'])),'iron-gear-wheel');
-  reserveGate(arm(cx,7,0,filters(['steel-plate','advanced-circuit'])),'advanced-circuit');
+  reserveGate(arm(cx,7,0,filters(['steel-plate','advanced-circuit'])),'advanced-circuit',roboportAdvancedReserve);
  }
- if(recipe==='iron-gear-wheel'||recipe==='pipe')reserveGate(arm(cx-1,7,0,{...filters(['iron-plate']),...(recipe==='iron-gear-wheel'&&options.gearArm!=='fast'?{name:'bulk-inserter'}:{})}),'iron-plate');
+ if(recipe==='iron-gear-wheel'||recipe==='pipe')reserveGate(arm(cx-1,7,0,{...filters(['iron-plate']),...(recipe==='iron-gear-wheel'&&options.gearArm!=='fast'?{name:'bulk-inserter'}:{})}),'iron-plate',recipe==='pipe'?pipeIronReserve:reserves['iron-plate']);
  // Optional second iron arm in the gear machine's free front tile.
  if(recipe==='iron-gear-wheel'&&options.gearArms===2)reserveGate(arm(cx,7,0,{...filters(['iron-plate']),name:'bulk-inserter'}),'iron-plate');
  if(!['roboport','iron-gear-wheel','pipe'].includes(recipe))arm(cx-1,7,0,filters(bottomFeeds[recipe]));
@@ -284,16 +321,28 @@ products.forEach((item,i)=>{
 const tokenAnchor={x:21,y:11.5,...options.tokenAnchor};
 for(const t of tokenParts){
  const signal=virtual('signal-'+String.fromCharCode(65+t.i));
- const latch=decider(tokenAnchor,[c(t.reset,'=',0),c(signal,'=',0,'and'),c(t.reset,'=',0,'or'),c(t.token,'>',0,'and')],[one(t.token)]);
- const mod=arithmetic(latch.position,virtual('signal-T'),'%',periodTicks[t.item],signal);
+ // Two-speed clock: the timer moves 8 or 9 units a tick, so a period start is the one or two
+ // ticks with the remainder inside one step of zero. Both signs: after about 46 days of play the
+ // timer passes 2^31 and is negative, and a negative remainder is negative or zero
+ // (probe-clock-wrap.mjs proves both natively).
+ const start=supplyGate?[c(signal,'<',supplyGate.base+supplyGate.boost,'and'),c(signal,'>',-(supplyGate.base+supplyGate.boost),'and')]:[c(signal,'=',0,'and')];
+ const latch=decider(tokenAnchor,[c(t.reset,'=',0),...start,c(t.reset,'=',0,'or'),c(t.token,'>',0,'and')],[one(t.token)]);
+ const mod=arithmetic(latch.position,virtual('signal-T'),'%',periodUnits[t.item],signal);
  net('bus','green',{entity:latch,connector:2},{entity:latch,connector:4});
  net('phase-'+t.item,'red',{entity:mod,connector:3},{entity:latch,connector:1});
  net('timer','red',{entity:mod,connector:1});
  moduloEntities[t.item]=mod.entity_number;
  robotTokens[t.item]={latch:latch.entity_number,permission:t.permission.entity_number,handReset:t.handReset.entity_number,output:t.out.entity_number,tokenSignal:t.token.name,resetSignal:t.reset.name};
 }
-const timer=arithmetic(tokenAnchor,virtual('signal-T'),'+',1,virtual('signal-T'));
+const timer=arithmetic(tokenAnchor,virtual('signal-T'),'+',supplyGate?supplyGate.base:1,virtual('signal-T'));
 net('timer','red',{entity:timer,connector:3},{entity:timer,connector:1});
+// Supply gate: reads the ring and, while every gated item is above its threshold, puts `boost`
+// on the timer's own signal, so the timer adds base+boost that tick.
+let supplyDecider;
+if(supplyGate){
+ supplyDecider=decider(timer.position,Object.entries(supplyGate.thresholds).map(([item,threshold],i)=>c(sig(item),'>',threshold,i?'and':undefined)),[{signal:virtual('signal-T'),copy_count_from_input:false,constant:supplyGate.boost}]);
+ net('ring','red',{entity:supplyDecider,connector:1});net('timer','red',{entity:supplyDecider,connector:3});
+}
 
 // ---------------------------------------------------------------- labels
 for(const p of ports.filter(p=>p.kind==='input'||p.kind==='fluid')){
@@ -349,19 +398,23 @@ const portView=kind=>ports.filter(p=>p.kind===kind).map(p=>({...p,item:p.items[0
 const manifest={
  id,name:label,file:id+'.txt',blueprintSha256:sha(code),prototypeSha256:sha(bytes),class:'rate',status,
  products,targets,outputCaps:caps,
- recipeAudit:{externalPerMinute:required,craftsPerMinute:crafts,recipeIngredients:Object.fromEntries(Object.keys(crafts).map(n=>[n,raw.recipe[n].ingredients]))},
+ recipeAudit:{externalPerMinute:required,...(supplyGate?{externalPerProduct:perProduct}:{}),craftsPerMinute:crafts,recipeIngredients:Object.fromEntries(Object.keys(crafts).map(n=>[n,raw.recipe[n].ingredients]))},
  ports,inputs:portView('input'),fluids:portView('fluid'),
  outputs:products.map(item=>({item,label:item,items:[item],entity:chest.entity_number,x:chest.position.x,y:chest.position.y,position:chest.position,externalSide:'east',cap:caps[item]})),
  machineCounts,footprint,
  areaGoal:{goalTiles:760,stretchTiles:703,achievedTiles:footprint.width*footprint.height},
  loopControl:[{name:id,reader:loop[0].entity_number,readerMode:'per-tile-hold',loop:loop.map(e=>e.entity_number),controlled,reserves:reserveArms,gates:gates.map(e=>e.entity_number),limits,capacity,maximumStock}],
  stockControl:{mode:'dynamic-filter',collector:collector.entity_number,chest:chest.entity_number,caps,deciders:stockDeciders},
- productionClock:{headroom,timer:timer.entity_number,moduloEntities,robotTokens,periodTicks},
+ productionClock:supplyGate?{timer:timer.entity_number,moduloEntities,robotTokens,periodUnits,unitsPerTick:{nominal:supplyGate.base,boosted:supplyGate.base+supplyGate.boost},nominal,
+  tokensPerMinute:Object.fromEntries(products.map(p=>[p,{nominal:Math.round(3600*supplyGate.base/periodUnits[p]*1000)/1000,boosted:Math.round(3600*(supplyGate.base+supplyGate.boost)/periodUnits[p]*1000)/1000}])),
+  supplyGate:{entity:supplyDecider.entity_number,signal:'signal-T',boost:supplyGate.boost,thresholds:supplyGate.thresholds}}
+  :{headroom,timer:timer.entity_number,moduloEntities,robotTokens,periodTicks},
  protocol,
  construction:Object.fromEntries([...new Set(entities.map(e=>e.name))].sort().map(n=>[n,entities.filter(e=>e.name===n).length])),
  setupNotes:[description,
   'Supplied electronic circuits: 145 per minute at the nominal target, one green-circuits copy (360 per minute) covers it.',
-  'Plan supply above the entrance panels: the panel figures are recipe totals at the targets, but the production tokens run the products 5 to 15% above target, so the measured draw is about 163 electronic circuits, 121 iron, 107 copper, 86 steel and 85 plastic per minute (about 15% above the panels) and about 442 sulfuric acid and 165 lubricant per minute (about 10% above theirs). Fed at exactly the panel figures, logistic robots fall to about 1 per minute, because steel reaches the engine machines last; 1.10x still fails and 1.15x (the measured draw) passes (exploration measurement, not the published protocol).',
+  ...(supplyGate?['The entrance panels are the supply to plan for. Fed at exactly the panel figures the workshop makes about 4.9 construction robots, 4.9 logistic robots, 0.5 roboports and 2.0 of each chest per minute (token pace '+products.map(p=>Math.round(3600*supplyGate.base/periodUnits[p]*100)/100).join(' / ')+'), all above the 95% floors; panel-supply-report.json is that full-protocol run. With more supply than the panels a boost of one eighth switches on while the ring is well stocked: about 5.5 / 5.5 / 0.57 / 2.2 / 2.2 per minute from roughly 1.25 times the panel figures upward (about 165 electronic circuits, 120 iron, 107 copper, 85 steel, 84 plastic, 450 sulfuric acid and 169 lubricant per minute when every entrance is saturated). Below the panel figures the roboport falls short first.']
+   :['Plan supply above the entrance panels: the panel figures are recipe totals at the targets, but the production tokens run the products 5 to 15% above target, so the measured draw is about 163 electronic circuits, 121 iron, 107 copper, 86 steel and 85 plastic per minute (about 15% above the panels) and about 442 sulfuric acid and 165 lubricant per minute (about 10% above theirs). Fed at exactly the panel figures, logistic robots fall to about 1 per minute, because steel reaches the engine machines last; 1.10x still fails and 1.15x (the measured draw) passes (exploration measurement, not the published protocol).']),
   'Leave the shared chest unrestricted (no bar). Caps live in the five filter deciders next to the chest.',
   'The ring holds at most the stock limits in loopControl; do not remove the red wires from ring tiles or the entrance belts, which are circuit-gated.'],
  greenCircuitSupply:{perMinute:required['electronic-circuit'],copiesOfGreenCircuits:Math.ceil(required['electronic-circuit']/360)},

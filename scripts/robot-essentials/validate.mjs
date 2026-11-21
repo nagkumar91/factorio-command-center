@@ -5,6 +5,8 @@
 // essentials contract (section 11, rate class with selective phases).
 //
 //   node scripts/robot-essentials/validate.mjs                  full protocol, writes native-report.json
+//   RE_PANEL_SUPPLY=1 node scripts/robot-essentials/validate.mjs full protocol with every entrance fed at exactly
+//                                                               its panel figure, writes panel-supply-report.json
 //   RE_IMPORT_ONLY=1 node scripts/robot-essentials/validate.mjs  import, wiring, fluids, power (61 ticks)
 //   ESSENTIALS_EXPLORE=1 RE_WARMUP=10 RE_MEASURE=10 [RE_BLOCKED=0 RE_SETTLE=0 RE_RECOVERY=0 RE_PHASES=0] ...
 import fs from 'node:fs/promises';
@@ -18,7 +20,7 @@ import {decodeBlueprint} from '../blueprints.mjs';
 const run=promisify(execFile),sha=s=>createHash('sha256').update(s).digest('hex');
 const id='robot-essentials';
 const source=process.env.RE_SOURCE||'blueprint-sources/'+id;
-const explore=process.env.ESSENTIALS_EXPLORE==='1',importOnly=process.env.RE_IMPORT_ONLY==='1';
+const explore=process.env.ESSENTIALS_EXPLORE==='1',importOnly=process.env.RE_IMPORT_ONLY==='1',panelSupply=process.env.RE_PANEL_SUPPLY==='1'&&!explore&&!importOnly;
 const rawPath=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
 const bytes=await fs.readFile(rawPath),raw=JSON.parse(bytes);
 if(source!=='blueprint-sources/'+id&&!explore&&!importOnly)throw Error('A full run publishes only blueprint-sources/'+id+'; use ESSENTIALS_EXPLORE=1 for other sources');
@@ -48,7 +50,14 @@ await fs.mkdir(mod,{recursive:true});
 await fs.writeFile(root+'/mods/mod-list.json',JSON.stringify({mods:['base','elevated-rails','quality','recycler','space-age','robot_essentials_test'].map(name=>({name,enabled:true}))}));
 await fs.writeFile(mod+'/info.json',JSON.stringify({name:'robot_essentials_test',version:'1.0.0',title:'Private robot essentials qualification',author:'local',factorio_version:'2.1',dependencies:['base = 2.1.24','space-age']}));
 await fs.copyFile('scripts/'+id+'/control.lua',mod+'/control.lua');
-await fs.writeFile(mod+'/payload.lua','return [====['+JSON.stringify({builds,protocol,debugTopology:process.env.RE_DEBUG==='1'})+']====]');
+// Supply-limited feeding (control.lua, payload.supply). The published panel-supply run feeds
+// every belt and fluid entrance at exactly its panel figure. Exploration: RE_SUPPLY=1 feeds each
+// belt entrance at that multiple of its panel figure, RE_FLUID_SUPPLY=1 the two fluids,
+// RE_SUPPLY_ITEMS='{"steel-plate":1}' single entrances, RE_SUPPLY_BACKLOG the belt backlog in
+// items; RE_RING_SERIES=1 records ring stock every second.
+const supplyEnv={...(process.env.RE_SUPPLY?{belt:Number(process.env.RE_SUPPLY)}:{}),...(process.env.RE_FLUID_SUPPLY?{fluid:Number(process.env.RE_FLUID_SUPPLY)}:{}),...(process.env.RE_SUPPLY_ITEMS?{items:JSON.parse(process.env.RE_SUPPLY_ITEMS)}:{}),...(process.env.RE_SUPPLY_BACKLOG?{backlog:Number(process.env.RE_SUPPLY_BACKLOG)}:{})};
+const supply=panelSupply?{belt:1,fluid:1}:explore&&Object.keys(supplyEnv).length?supplyEnv:undefined;
+await fs.writeFile(mod+'/payload.lua','return [====['+JSON.stringify({builds,protocol,debugTopology:process.env.RE_DEBUG==='1',...(supply?{supply}:{}),...(explore&&process.env.RE_RING_SERIES==='1'?{ringSeries:true}:{})})+']====]');
 await fs.writeFile(mod+'/data.lua','-- No prototypes added.\n');
 await fs.writeFile(root+'/config.ini',`[path]\nread-data=${app}/data\nwrite-data=${root}\n[general]\nlocale=en\n[other]\nupdate-runner-threads-count=1\n`);
 await fs.writeFile(root+'/map.json',JSON.stringify({seed:12345,width:32,height:32,default_enable_all_autoplace_controls:false}));
@@ -67,7 +76,7 @@ if(importOnly){console.log('Native import geometry, wiring, gates, fluid segment
 
 const report=JSON.parse(await fs.readFile(root+'/script-output/result.json'));
 Object.assign(report,{gameVersion:'2.1.24',prototypeSha256:sha(bytes),harnessSha256:sha(await fs.readFile(mod+'/control.lua')),dataHarnessSha256:sha(await fs.readFile(mod+'/data.lua')),validatorSha256:sha(await fs.readFile('scripts/'+id+'/validate.mjs')),configurationSha256:sha(await fs.readFile(mod+'/payload.lua')),
- protocolMinutes:Object.fromEntries(Object.entries(protocol).map(([k,v])=>[k,k==='phases'?v:v/3600])),warmupMinutes:protocol.warmup/3600,measurementMinutes:protocol.measure/3600,createdAt:new Date().toISOString(),short:explore});
+ ...(supply?{supply}:{}),protocolMinutes:Object.fromEntries(Object.entries(protocol).map(([k,v])=>[k,k==='phases'?v:v/3600])),warmupMinutes:protocol.warmup/3600,measurementMinutes:protocol.measure/3600,createdAt:new Date().toISOString(),short:explore});
 for(const r of report.builds){
  const b=builds.find(b=>b.id===r.id);r.blueprintSha256=b.blueprintSha256;r.fluids=Array.isArray(r.fluids)?r.fluids:[];
  const floor=item=>b.targets[item]*.95,loop=b.loopControl[0],sample=r.loopSamples?.[loop.name];
@@ -84,10 +93,18 @@ for(const r of report.builds){
   bulkHandAtMostTwo:r.bulkInserters.every(x=>x.observedMaxHand<=2),
   selective:protocol.phases===b.products.length&&r.independentStockCapTests?.length===b.products.length&&r.independentStockCapTests.every(t=>t.finalBlockedStock===b.outputCaps[t.blockedProduct]&&Object.entries(t.outputsPerMinute).every(([item,rate])=>rate>=floor(item))),
  };
+ // Two-speed clock: with saturated entrances the measured rates must be the boosted ones.
+ const gate=b.productionClock?.supplyGate;
+ if(gate&&!supply)checks.clockBoostedWhenSaturated=r.supplyGateSamples?.samples>0&&r.supplyGateSamples.boosted>=0.9*r.supplyGateSamples.samples;
+ // Supply-limited run: the harness never fed an entrance more than its stated multiple.
+ if(supply){
+  const within=(p,kind)=>{const k=supply.items?.[p.item]??supply[kind];if(k===undefined)return true;const port=[...b.inputs,...b.fluids].find(x=>x.item===p.item);return p.acceptedDuringMeasurement/(protocol.measure/3600)<=port.perMinute*k*1.001+0.05;};
+  checks.fedWithinStatedSupply=r.inputs.every(p=>within(p,'belt'))&&r.fluids.every(p=>within(p,'fluid'));
+ }
  r.checks=checks;r.passed=Object.values(checks).every(Boolean);
 }
 report.passed=report.builds.every(b=>b.passed);
-const target=explore?'.cache/'+id+'/explore-report.json':source+'/native-report.json';
+const target=explore?(process.env.RE_REPORT||'.cache/'+id+'/explore-report.json'):source+(panelSupply?'/panel-supply-report.json':'/native-report.json');
 await fs.mkdir(path.dirname(target),{recursive:true});
 await fs.writeFile(target,JSON.stringify(report,null,2)+'\n');
 const r=report.builds[0];

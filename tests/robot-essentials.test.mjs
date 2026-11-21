@@ -19,7 +19,12 @@ const targets={'construction-robot':5,'logistic-robot':5,roboport:0.5,'storage-c
 const caps={'construction-robot':20,'logistic-robot':20,roboport:2,'storage-chest':10,'passive-provider-chest':10};
 const products=Object.keys(targets);
 const demand={'steel-plate':74.5,'iron-plate':105,lubricant:150,'electronic-circuit':145,'sulfuric-acid':400,'copper-plate':93,'plastic-bar':73};
-const periods={'construction-robot':685,'logistic-robot':666,roboport:6260,'storage-chest':1636,'passive-provider-chest':1636};
+// Two-speed token clock: the timer adds 8 units a tick (9 while the supply gate is open).
+const nominal={'construction-robot':0.98,'logistic-robot':0.975,roboport:1.012,'storage-chest':0.985,'passive-provider-chest':0.985};
+const periodUnits={'construction-robot':5877,'logistic-robot':5907,roboport:56916,'storage-chest':14619,'passive-provider-chest':14619};
+const gateThresholds={'plastic-bar':18,'copper-plate':20,'steel-plate':16,'iron-gear-wheel':10,'advanced-circuit':8,battery:6,'electric-engine-unit':3};
+const panelReport=JSON.parse(await read(dir+'panel-supply-report.json'));
+const panelEvidence=panelReport.builds.find(b=>b.id===m.id);
 const allowed=new Set(['assembling-machine-2','chemical-plant','fast-transport-belt','fast-underground-belt','fast-splitter','fast-inserter','long-handed-inserter','bulk-inserter','pipe','pipe-to-ground','passive-provider-chest','substation','medium-electric-pole','constant-combinator','arithmetic-combinator','decider-combinator','display-panel']);
 const sorted=v=>[...v].sort();
 const floor=item=>targets[item]*.95;
@@ -36,6 +41,7 @@ test('one record; string, report, prototypes, harness and validator hashes agree
  assert.equal(report.validatorSha256,hash(await read('scripts/robot-essentials/validate.mjs')),'validator changed since the report');
  for(const field of ['dataHarnessSha256','configurationSha256'])assert.match(report[field],/^[a-f0-9]{64}$/);
  assert.notEqual(report.short,true,'an exploration report never qualifies');
+ assert.equal(report.supply,undefined,'the qualifying run saturates every entrance');
 });
 
 test('the report passes, and the pass formula recomputed from its numbers holds',()=>{
@@ -67,6 +73,38 @@ test('the report passes, and the pass formula recomputed from its numbers holds'
  assert.equal(evidence.inserterCapacityResearch.fast,0);assert.equal(evidence.inserterCapacityResearch.bulkUnlockBonus,1);
  const bulk=entities.filter(e=>e.name==='bulk-inserter');assert.equal(evidence.bulkInserters.length,bulk.length);
  for(const b of evidence.bulkInserters)assert(b.observedMaxHand>0&&b.observedMaxHand<=2,'bulk hand above the unlock baseline');
+ // Saturated entrances: the clock ran boosted, and nothing fell below the replaced design's measured rates.
+ assert.equal(evidence.checks.clockBoostedWhenSaturated,true);
+ assert(evidence.supplyGateSamples.boosted>=0.9*evidence.supplyGateSamples.samples);
+ const replaced={'construction-robot':5.27,'logistic-robot':5.4,roboport:0.57,'storage-chest':2.2,'passive-provider-chest':2.2};
+ for(const item of products)assert(Math.round(evidence.outputsPerMinute[item]*100)/100>=replaced[item],`${item} below the replaced design: ${evidence.outputsPerMinute[item]}`);
+});
+
+test('fed at exactly the panel figures, the same full protocol passes',async()=>{
+ assert.equal(panelReport.passed,true);assert.equal(panelEvidence.passed,true);
+ assert.equal(panelEvidence.blueprintSha256,m.blueprintSha256,'panel-supply report is stale for this blueprint');
+ assert.notEqual(panelReport.short,true);assert.deepEqual(panelReport.supply,{belt:1,fluid:1});
+ assert.equal(panelReport.harnessSha256,report.harnessSha256);assert.equal(panelReport.validatorSha256,report.validatorSha256);
+ assert.equal(panelReport.harnessSha256,hash(await read('scripts/robot-essentials/control.lua')));
+ assert.deepEqual(panelReport.protocolMinutes,report.protocolMinutes);
+ const minutes=panelReport.measurementMinutes;
+ for(const p of [...panelEvidence.inputs,...panelEvidence.fluids]){
+  const perMinute=p.acceptedDuringMeasurement/minutes;
+  assert(perMinute<=demand[p.item]*1.001+0.05,`${p.item} fed ${perMinute} above its panel figure`);assert(perMinute>0);
+ }
+ assert.equal(panelEvidence.checks.fedWithinStatedSupply,true);
+ for(const[name,ok]of Object.entries(panelEvidence.checks))assert.equal(ok,true,name);
+ for(const item of products){
+  assert(panelEvidence.outputsPerMinute[item]>=floor(item),`panel supply steady ${item} ${panelEvidence.outputsPerMinute[item]}`);
+  assert(panelEvidence.recovery.outputsPerMinute[item]>=floor(item),`panel supply recovery ${item}`);
+ }
+ for(const p of panelEvidence.recovery.collectionPauseStock)assert.equal(p.count,caps[p.item]);
+ assert.equal(panelEvidence.independentStockCapTests.length,5);
+ for(const phase of panelEvidence.independentStockCapTests){assert.equal(phase.finalBlockedStock,caps[phase.blockedProduct]);for(const item of products.filter(p=>p!==phase.blockedProduct))assert(phase.outputsPerMinute[item]>=floor(item),`panel supply, ${phase.blockedProduct} phase: ${item}`);}
+ assert.equal(panelEvidence.machines.length,entities.filter(e=>e.recipe).length);
+ for(const n of panelEvidence.machines)assert(n.measuredCrafts>0,`idle at panel supply: ${n.recipe}`);
+ // At the panel figures the boost stays off (it would overdraw the entrances).
+ assert(panelEvidence.supplyGateSamples.boosted<=0.05*panelEvidence.supplyGateSamples.samples);
 });
 
 test('products, targets, caps and the recipe boundary match the spec',()=>{
@@ -155,7 +193,18 @@ test('ring conventions: per-tile hold readers, limits under 60%, controlled arms
  const ring=find(node(loop.reader,1));
  for(const id of loop.loop)assert.equal(find(node(id,1)),ring,'ring tile off the network '+id);
  for(const id of loop.controlled){const e=byId.get(id);assert.equal(find(node(id,1)),ring,'controlled entity off the ring '+id);assert.equal(e.control_behavior.circuit_condition.comparator,'<');assert.equal(e.control_behavior.circuit_condition.constant,loop.limits[e.control_behavior.circuit_condition.first_signal.name]);}
- for(const r of loop.reserves){const e=byId.get(r.entity);assert.equal(find(node(r.entity,1)),ring);assert.equal(e.control_behavior.circuit_condition.comparator,'>');assert.equal(e.control_behavior.circuit_condition.constant,r.reserve);}
+ for(const r of loop.reserves){const e=byId.get(r.entity);assert.equal(find(node(r.entity,1)),ring);assert.equal(e.control_behavior.circuit_condition.comparator,'>');assert.equal(e.control_behavior.circuit_condition.constant,r.reserve);assert.equal(e.control_behavior.circuit_condition.first_signal.name,r.item);}
+ // Reserves by the machine each gated arm feeds: the hungriest upstream users wait longest.
+ const machineAt=(x,y)=>entities.find(e=>e.recipe&&Math.abs(e.position.x-x)<=1.5&&Math.abs(e.position.y-y)<=1.5);
+ const fed=r=>{const e=byId.get(r.entity),d=e.direction||0,[dx,dy]=d===8?[0,-1]:d===0?[0,1]:d===4?[-1,0]:[1,0];return machineAt(e.position.x+dx*2,e.position.y+dy*2)?.recipe;}; // arm drops opposite to its pickup side
+ const seen=loop.reserves.map(r=>`${fed(r)}:${r.item}>${r.reserve}`).sort();
+ assert.deepEqual(seen,[...Array(6).fill('advanced-circuit:electronic-circuit>16'),'copper-cable:copper-plate>8','iron-gear-wheel:iron-plate>16','iron-gear-wheel:iron-plate>16','pipe:iron-plate>8','roboport:advanced-circuit>16','roboport:iron-gear-wheel>8','steel-chest:steel-plate>8'].sort());
+ // The roboport is west of the three engine machines on the bottom row: the ring's bottom belt runs
+ // west, so it is the last machine offered steel, gears and advanced circuits.
+ const port=entities.find(e=>e.recipe==='roboport'),engines=entities.filter(e=>e.recipe==='engine-unit');
+ assert.equal(engines.length,3);for(const e of engines){assert.equal(e.position.y,port.position.y);assert(port.position.x<e.position.x,'roboport must be downstream of the engine machines');}
+ const bottomBelt=entities.find(e=>e.name==='fast-transport-belt'&&e.position.y===port.position.y-3&&Math.abs(e.position.x-port.position.x)<1);
+ assert.equal(bottomBelt.direction,12,'bottom belt runs west');
  // Every arm or gate that puts an item on the ring is controlled; every ring entrance is a gate.
  for(const p of m.inputs){assert(loop.gates.includes(p.entity),'belt entrance is not a ring gate '+p.item);assert(loop.controlled.includes(p.entity),'ungated ring entrance '+p.item);}
  // Acid and lubricant never touch: flood pipes through any orthogonal neighbour (stricter than the
@@ -175,14 +224,64 @@ test('ring conventions: per-tile hold readers, limits under 60%, controlled arms
  assert.notEqual(find(node(m.stockControl.chest,2)),ring);assert.notEqual(find(node(m.stockControl.collector,1)),ring);
 });
 
-test('latched tokens use the spec periods',()=>{
- const c=m.productionClock;assert.deepEqual(c.periodTicks,periods);
+test('two-speed latched token clock: paces fit the panels, start window, supply gate wiring',()=>{
+ const c=m.productionClock;
+ assert.deepEqual(c.unitsPerTick,{nominal:8,boosted:9});assert.deepEqual(c.nominal,nominal);assert.deepEqual(c.periodUnits,periodUnits);
+ const pace={};
  for(const[i,item]of products.entries()){
-  assert.equal(c.periodTicks[item],Math.floor(3600/(targets[item]*c.headroom[item])));
+  assert.equal(c.periodUnits[item],Math.floor(3600*8/(targets[item]*nominal[item])));
+  pace[item]=3600*8/c.periodUnits[item];
+  assert(pace[item]>=floor(item)*1.02,`${item} nominal pace too close to its floor`);
+  assert(Math.abs(c.tokensPerMinute[item].nominal-pace[item])<0.001);assert(Math.abs(c.tokensPerMinute[item].boosted-pace[item]*9/8)<0.001);
   const signal='signal-'+String.fromCharCode(65+i);
   const modulo=entities.filter(e=>e.control_behavior?.arithmetic_conditions?.operation==='%'&&e.control_behavior.arithmetic_conditions.output_signal?.name===signal);
-  assert.equal(modulo.length,1);assert.equal(modulo[0].control_behavior.arithmetic_conditions.second_constant,periods[item]);
+  assert.equal(modulo.length,1);assert.equal(modulo[0].control_behavior.arithmetic_conditions.second_constant,periodUnits[item]);
+  assert.equal(modulo[0].control_behavior.arithmetic_conditions.first_signal.name,'signal-T');
   const t=c.robotTokens[item];assert(byId.has(t.latch)&&byId.has(t.permission)&&byId.has(t.handReset));
+  // A period start is the remainder within one step of zero, on either side (a wrapped timer is negative).
+  const conditions=byId.get(t.latch).control_behavior.decider_conditions.conditions.filter(k=>k.first_signal?.name===signal);
+  assert.deepEqual(conditions.map(k=>[k.comparator,k.constant,k.compare_type]).sort(),[['<',9,'and'],['>',-9,'and']].sort());
   const arm=byId.get(t.output);assert.equal(arm.control_behavior.circuit_read_hand_contents,true);assert.equal(arm.control_behavior.circuit_hand_read_mode,1);
  }
+ // The roboport needs five in every ten minutes, so its nominal pace is above target; the others sit just below.
+ assert(pace.roboport>targets.roboport*1.005);
+ // At the nominal paces no entrance is asked for more than its panel figure.
+ const share=m.recipeAudit.externalPerProduct;
+ for(const[raw,panel]of Object.entries(demand)){
+  let total=0,draw=0;for(const item of products){total+=share[item][raw]||0;draw+=(share[item][raw]||0)*pace[item]/targets[item];}
+  assert(Math.abs(total-panel)<0.06,`${raw} shares do not add up to the panel`);assert(draw<=panel,`${raw} nominal draw ${draw} above the panel ${panel}`);
+ }
+ // Timer: T + 8 -> T, output wired back to its own input.
+ const timer=byId.get(c.timer).control_behavior.arithmetic_conditions;
+ assert.deepEqual([timer.first_signal.name,timer.operation,timer.second_constant,timer.output_signal.name],['signal-T','+',8,'signal-T']);
+ assert(bp.wires.some(([a,ac,b,bc])=>a===c.timer&&b===c.timer&&[ac,bc].sort().join()==='1,3'),'timer feedback wire');
+ // Supply gate: one decider, every threshold an AND term, adds 1 to signal-T on the timer's own network.
+ const gate=c.supplyGate;assert.deepEqual(gate.thresholds,gateThresholds);assert.equal(gate.signal,'signal-T');assert.equal(gate.boost,1);
+ const decider=byId.get(gate.entity);assert.equal(decider.name,'decider-combinator');
+ const d=decider.control_behavior.decider_conditions;
+ assert.deepEqual(Object.fromEntries(d.conditions.map(k=>[k.first_signal.name,k.constant])),gateThresholds);
+ for(const[i,k]of d.conditions.entries()){assert.equal(k.comparator,'>');if(i)assert.equal(k.compare_type,'and');}
+ assert.deepEqual(d.outputs,[{signal:{type:'virtual',name:'signal-T'},copy_count_from_input:false,constant:1}]);
+ const parent=new Map(),find=k=>{while(parent.get(k)!==k){parent.set(k,parent.get(parent.get(k)));k=parent.get(k);}return k;};
+ const node=(id,cn)=>{const k=id+':'+cn;if(!parent.has(k))parent.set(k,k);return k;};
+ for(const[a,ac,b,bc]of bp.wires)parent.set(find(node(a,ac)),find(node(b,bc)));
+ assert.equal(find(node(gate.entity,1)),find(node(m.loopControl[0].reader,1)),'gate reads the ring');
+ assert.equal(find(node(gate.entity,3)),find(node(c.timer,1)),'gate output on the timer network');
+ for(const id of Object.values(c.moduloEntities))assert.equal(find(node(id,1)),find(node(c.timer,3)),'modulo on the timer network');
+ assert.notEqual(find(node(c.timer,1)),find(node(m.loopControl[0].reader,1)),'timer network apart from the ring');
+ // Every gated item is one the ring counts, with its threshold below that item's ring limit.
+ for(const[item,threshold]of Object.entries(gateThresholds))assert(threshold<m.loopControl[0].limits[item],item);
+});
+
+test('the replaced version is kept with its evidence',async()=>{
+ const old='history/one-speed-timer-d2c80909/';
+ const oldManifest=JSON.parse(await read(dir+old+'manifest.json'))[0],oldCode=(await read(dir+old+'robot-essentials.txt')).toString().trim();
+ assert.equal(hash(oldCode),'d2c80909a9d3017a54ccf4c7704eeda88500887da964b4d9af792a144af30763');assert.equal(oldManifest.blueprintSha256,hash(oldCode));
+ const oldReport=JSON.parse(await read(dir+old+'native-report.json'));assert.equal(oldReport.passed,true);assert.equal(oldReport.builds[0].blueprintSha256,hash(oldCode));
+ assert.match((await read(dir+old+'NOTE.md')).toString(),/supplyGate/);
+ // Same interface as the replaced version: products, caps, panels, entrance tiles and the output chest tile.
+ assert.deepEqual(oldManifest.products,m.products);assert.deepEqual(oldManifest.outputCaps,m.outputCaps);assert.deepEqual(oldManifest.recipeAudit.externalPerMinute,m.recipeAudit.externalPerMinute);
+ assert.deepEqual(oldManifest.footprint,m.footprint);assert.deepEqual(oldManifest.machineCounts,m.machineCounts);
+ const tile=p=>[p.kind,p.items[0],p.externalSide,p.x,p.y];
+ assert.deepEqual(m.ports.filter(p=>p.kind!=='power').map(tile),oldManifest.ports.filter(p=>p.kind!=='power').map(tile));
 });

@@ -19,6 +19,6 @@ for(const[recipe,list]of Object.entries(by)){
 const loop=Object.values(r.loopSamples||{})[0];
 console.log('ring max',loop?.maxStock,'of',loop?.capacity,'item max',JSON.stringify(r.ringItemMax));
 console.log('ring last',JSON.stringify(Object.fromEntries((loop?.lastSignals||[]).map(s=>[s.signal.name,s.count]))));
-console.log('tokens',JSON.stringify(r.tokenSamples));
+console.log('tokens',JSON.stringify(r.tokenSamples),'supply gate',JSON.stringify(r.supplyGateSamples));
 console.log('inputs',JSON.stringify(r.inputs.map(p=>[p.item,Math.round(p.acceptedDuringMeasurement/min),!!p.productiveRoute?.length])),'fluids',JSON.stringify(r.fluids.map(p=>[p.item,Math.round(p.acceptedDuringMeasurement/min),p.productiveConsumers?.length])));
 console.log('consumption',JSON.stringify(Object.fromEntries(Object.entries(r.consumptionPerMinute||{}).map(([k,v])=>[k,fmt(v)]))),'bulk',JSON.stringify(r.bulkInserters.map(b=>b.observedMaxHand)));
