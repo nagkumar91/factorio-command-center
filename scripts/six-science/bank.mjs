@@ -5,11 +5,12 @@
 //          Q south lane circuits (fed from the north through a curve), Q north lane advanced circuits
 //   by+1 arms   by+2..4 north row: 5 cable makers, 9 advanced-circuit machines, 4 productivity-module machines
 //   by+5 arms   by+6 R: north lane plastic (side-loaded), south lane cable (dropped by the cable makers)
-//   by+7 arms   by+8..10 south row: 13 advanced-circuit machines
+//   by+7 arms   by+8..10 south row: 16 advanced-circuit machines (17 slots, the east one empty)
 //   by+11 arms  by+12 S: north lane circuits (side-loaded), south lane advanced circuits
 import {N, E, S, W, filterOf, below, holdReader} from './grid.mjs';
 
-export function bank(L, raw, bx, by, {cable = 5, north = 9, south = 17, modules = 4, moduleCap = 8, qShort = false, qLoader = null, powerGaps = [], cWest = bx - 2} = {}) {
+// `southEmpty` lists south-row slots left without a machine (S still runs their length to the export ring).
+export function bank(L, raw, bx, by, {cable = 5, north = 9, south = 17, southEmpty = [16], modules = 4, moduleCap = 8, qShort = false, qLoader = null, powerGaps = [], cWest = bx - 2} = {}) {
   const tag = {block: 'bank'};
   const arm = (name, x, y, d, items, extra = {}) => L.arm(name, x, y, d, {...filterOf(items), tags: {...tag, ...extra}});
   const slotX = i => bx + 3 * i; // left tile of slot i
@@ -77,6 +78,7 @@ export function bank(L, raw, bx, by, {cable = 5, north = 9, south = 17, modules 
   }
   // South row.
   for (let i = 0; i < south; i++) {
+    if (southEmpty.includes(i)) continue;
     const left = slotX(i);
     L.machine(left + 1, by + 9, 'advanced-circuit', {tags: {...tag, glyph: 'v'}});
     arm('fast-inserter', left + (powerGaps.includes(i) ? 1 : 2), by + 7, N, ['copper-cable', 'plastic-bar'], {role: 'lane-feed'});
@@ -102,5 +104,5 @@ export function bank(L, raw, bx, by, {cable = 5, north = 9, south = 17, modules 
   for (let y = by + 2; y <= by + 5; y++) qOut = L.belt(qEnd, y, S, {tags: {...tag, export: 'advanced-circuit'}});
   const sOut = L.at(sEnd, by + 12);
   return {feeds, powerHoles: powerGaps.map(g => [slotX(g) + 2, by + 5]), moduleLane: {tiles: mTiles, cap: moduleCap, arms: mArms.map(a => a.entity_number)}, outputs: {modules: mOut, qAdvanced: qOut, sAdvanced: sOut},
-    machineSlots: {north: cable + north, south}, extent: {left: bx - 2, right: qEnd, top: by - (qLoader ? 1 : qShort ? 2 : 3), bottom: by + 12}};
+    machineSlots: {north: cable + north, south: south - southEmpty.length}, extent: {left: bx - 2, right: qEnd, top: by - (qLoader ? 1 : qShort ? 2 : 3), bottom: by + 12}};
 }

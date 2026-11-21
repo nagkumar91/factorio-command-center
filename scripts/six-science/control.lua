@@ -2,6 +2,10 @@
 -- same private import, revive, exterior feeding, energy fixture and once-per-second sampling;
 -- robot-specific token, clock and selective-phase checks removed; per-tile ring checks per
 -- declared reader mode; diagnostics per machine, arm, ring and entrance.
+-- payload.supply (item -> per minute), when present, limits every entrance to that rate (the
+-- panel-supply run of the qualification); without it every entrance is offered a full belt.
+-- The pack governor declared in the manifest is checked part by part: power, the three networks,
+-- the arms' conditions and pulse reading.
 local payload=helpers.json_to_table(require('payload'))
 local function check(ok,msg) if not ok then error('SIX_SCIENCE: '..msg) end end
 local statusName={}
@@ -113,10 +117,22 @@ script.on_event(defines.events.on_tick,function()
   end end
   -- The only writes: fluid into declared fluid entrances, items onto both lanes of declared entrance belts.
   local blocked=tick>M and tick<=B
-  for i,p in ipairs(b.fluids or {})do local n=t.entities[p.entity].insert_fluid{name=p.item,amount=1000};if tick>W and tick<=M then t.fluidFed[i]=(t.fluidFed[i]or 0)+n end end
+  -- payload.supply (item -> per minute) limits an entrance to that rate: a credit grows by rate/3600 each
+  -- tick and is capped at a few items, so supply that the entrance refuses is not banked for later.
+  local supply=payload.supply;t.credit=t.credit or {}
+  for i,p in ipairs(b.fluids or {})do
+   local amount=1000
+   if supply then local c=math.min((t.credit[p.item]or 0)+supply[p.item]/3600,100);t.credit[p.item]=c;amount=c end
+   local n=amount>0 and t.entities[p.entity].insert_fluid{name=p.item,amount=amount} or 0
+   if supply then t.credit[p.item]=t.credit[p.item]-n end
+   if tick>W and tick<=M then t.fluidFed[i]=(t.fluidFed[i]or 0)+n end
+   if tick>S and tick<=R then t.recoveryFluidFed=t.recoveryFluidFed or {};t.recoveryFluidFed[i]=(t.recoveryFluidFed[i]or 0)+n end
+  end
+  if supply then for _,p in ipairs(b.inputs)do t.credit[p.item]=math.min((t.credit[p.item]or 0)+supply[p.item]/3600,8) end end
   if tick%4==0 then for i,p in ipairs(b.inputs)do
    local belt=t.entities[p.entity]
-   for lane=1,2 do if belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
+   for lane=1,2 do if (not supply or t.credit[p.item]>=1) and belt.get_transport_line(lane).insert_at_back{name=p.item,count=1} then
+    if supply then t.credit[p.item]=t.credit[p.item]-1 end
     t.fed[i]=(t.fed[i]or 0)+1
     if tick>W and tick<=M then t.measuredFed[i]=(t.measuredFed[i]or 0)+1 end
     if tick>S and tick<=R then t.recoveryFed[i]=(t.recoveryFed[i]or 0)+1 end
@@ -140,14 +156,46 @@ script.on_event(defines.events.on_tick,function()
      t.chestBars=t.chestBars or {};t.chestBars[p.item]=chest.get_inventory(defines.inventory.chest).get_bar()
     end
     t.stockNetworksIsolated=true
-    for _,e in pairs(t.entities)do if crafting(e) or e.type=='inserter' then
+    for _,e in pairs(t.entities)do if crafting(e) or e.type=='inserter' or e.type=='decider-combinator' or e.type=='arithmetic-combinator' then
      check(e.is_connected_to_electric_network() and e.electric_network_id==t.pole.electric_network_id,'unpowered '..e.name..' '..e.position.x..','..e.position.y)
     end end
+    local g=b.governor
+    if g then
+     local id=defines.wire_connector_id
+     local function net(e,connector,what) local n=e.get_circuit_network(connector);check(n~=nil,'governor: no network on '..what);return n.network_id end
+     local constant,counter,memory,subtractor=t.entities[g.constant],t.entities[g.counter],t.entities[g.memory],t.entities[g.subtractor]
+     check(constant.name=='constant-combinator' and counter.name=='decider-combinator' and memory.name=='arithmetic-combinator' and subtractor.name=='arithmetic-combinator','governor parts changed')
+     local tokens=net(constant,id.circuit_green,'the constant')
+     local pulses=net(subtractor,id.combinator_input_red,'the subtractor input')
+     local loop=net(memory,id.combinator_input_red,'the memory input')
+     check(net(counter,id.combinator_input_green,'the counter input')==tokens and net(memory,id.combinator_output_green,'the memory output')==tokens,'governor: token network broken')
+     check(net(counter,id.combinator_output_red,'the counter output')==loop and net(memory,id.combinator_output_red,'the memory loop')==loop and net(subtractor,id.combinator_output_red,'the subtractor output')==loop,'governor: memory loop broken')
+     check(counter.get_circuit_network(id.combinator_input_red)==nil and memory.get_circuit_network(id.combinator_input_green)==nil and subtractor.get_circuit_network(id.combinator_input_green)==nil,'governor: extra wire on a combinator input')
+     check(tokens~=pulses and tokens~=loop and pulses~=loop,'governor networks merged')
+     for networkId in pairs(ringNetworks)do check(networkId~=tokens and networkId~=pulses and networkId~=loop,'governor network joined a ring') end
+     check(#g.arms==#b.outputs,'one governed arm per output chest')
+     for index,a in ipairs(g.arms)do
+      local e=t.entities[a.arm];local c=e.get_control_behavior()
+      check(a.item==b.outputs[index].item and e.drop_target==t.entities[b.outputs[index].entity],'governed arm does not feed the chest of '..a.item)
+      check(net(e,id.circuit_green,'arm '..a.item)==tokens and net(e,id.circuit_red,'arm '..a.item)==pulses,'governed arm off its networks '..a.item)
+      check(c and c.circuit_enable_disable and c.circuit_read_hand_contents and c.circuit_hand_read_mode==defines.control_behavior.inserter.hand_read_mode.pulse,'governed arm must be enabled by circuit and read its hand as a pulse '..a.item)
+      local condition=c.circuit_condition
+      check(condition and condition.first_signal and condition.first_signal.name==a.item and condition.constant==g.enableAt,'governed arm condition changed '..a.item)
+      check(e.inserter_stack_size_override==1,'governed arm must move one pack per swing '..a.item)
+     end
+     t.governorChecked=true
+    end
    end
    -- Collect declared products from declared chests once per second, except while blocked.
    for outputIndex,p in ipairs(b.outputs or {})do
     local e=t.entities[p.entity];local n=0
-    if not blocked then n=e.remove_item{name=p.item,count=1000000} end
+    if not blocked then
+     -- payload.collectPerMinute (exploration only) takes at most that many packs per minute from each chest.
+     local want=1000000
+     if payload.collectPerMinute then t.collectCredit=t.collectCredit or {};local c=math.min((t.collectCredit[p.item]or 0)+payload.collectPerMinute/60,10);want=math.floor(c);t.collectCredit[p.item]=c end
+     if want>0 then n=e.remove_item{name=p.item,count=want} end
+     if payload.collectPerMinute then t.collectCredit[p.item]=t.collectCredit[p.item]-n end
+    end
     if tick>W and tick<=M then t.output[p.item]=(t.output[p.item]or 0)+n;t.portOutputs[outputIndex]=(t.portOutputs[outputIndex]or 0)+n end
     if tick>S and tick<=R then t.recoveryOutput[p.item]=(t.recoveryOutput[p.item]or 0)+n end
     if blocked then local c=e.get_item_count(p.item);if c>(t.chestMax[p.item]or 0)then t.chestMax[p.item]=c end;check(c<=p.cap,'closed chest cap exceeded '..p.item) end
@@ -183,7 +231,8 @@ script.on_event(defines.events.on_tick,function()
   end
  end
  if tick==M then
-  local report={builds={},feedPolicy='Declared exterior belt lanes (one item per lane every 4 ticks) and declared fluid entrances (every tick) only; electricity through one energy interface on the power port network; declared products collected from declared east chests once per second',researchPolicy='All recipes enabled; fast inserter stack bonus zero; bulk unlock-equivalent capacity bonus +1 only'}
+  local feed=payload.supply and 'Declared exterior belt lanes and declared fluid entrances only, each limited to its declared per-minute figure (a credit of rate/3600 per tick, at most 8 items or 100 fluid banked, one item per lane every 4 ticks at most)' or 'Declared exterior belt lanes (one item per lane every 4 ticks) and declared fluid entrances (every tick) only'
+  local report={builds={},feedPolicy=feed..'; electricity through one energy interface on the power port network; declared products collected from declared east chests once per second',researchPolicy='All recipes enabled; fast inserter stack bonus zero; bulk unlock-equivalent capacity bonus +1 only'}
   for index,t in ipairs(storage.tests)do
    local b=payload.builds[index];local r={id=t.id,blueprintSha256=b.blueprintSha256,outputsPerMinute={},consumptionPerMinute={},inputs={},outputPorts={},machines={},powered=t.powered,importedEntities=#b.entities,loopSamples=t.loopSamples,exactRecipeChecks=t.actualRecipeChecks,externalApproachesClear=true,stockNetworksIsolated=t.stockNetworksIsolated}
    check(t.force.inserter_stack_size_bonus==0 and t.force.bulk_inserter_capacity_bonus==1,'inserter capacity baseline drifted')
@@ -218,6 +267,13 @@ script.on_event(defines.events.on_tick,function()
      r.arms[#r.arms+1]={entity=id,block=tags.block,role=tags.role,item=tags.stock_item,x=t.spec[id].position.x,y=t.spec[id].position.y,status=status(e),samples=t.samples[id]}
     end
    end
+   if b.governor then
+    local signals=t.entities[b.governor.memory].get_signals(defines.wire_connector_id.combinator_output_green)or {}
+    -- The timer network carries the memory plus the constant's bias; an arm runs at enableAt and above.
+    local timers={};for _,x in ipairs(signals)do timers[x.signal.name]=x.count end
+    r.governor={checked=t.governorChecked==true,periodTicks=b.governor.periodTicks,enableAt=b.governor.enableAt,counterStopsAt=b.governor.counterStopsAt,timerNetworkAtMeasureEnd=timers}
+   end
+   if payload.supply then r.supplyPerMinute=payload.supply end
    if payload.debugTopology then
     r.belts={}
     for id,e in pairs(t.entities)do if e.type=='transport-belt' or e.type=='underground-belt' then
@@ -236,6 +292,8 @@ script.on_event(defines.events.on_tick,function()
    local recovery={blockedMinutes=P.blocked/3600,settlingMinutes=P.settle/3600,measurementMinutes=P.recovery/3600,outputsPerMinute={},inputs={}}
    for _,item in ipairs(b.products or {})do recovery.outputsPerMinute[item]=P.recovery>0 and (t.recoveryOutput[item]or 0)/(P.recovery/3600) or 0 end
    for i,p in ipairs(b.inputs)do recovery.inputs[#recovery.inputs+1]={item=p.item,acceptedPerMinute=P.recovery>0 and (t.recoveryFed[i]or 0)/(P.recovery/3600) or 0} end
+   recovery.fluids={}
+   for i,p in ipairs(b.fluids or {})do recovery.fluids[#recovery.fluids+1]={item=p.item,acceptedPerMinute=P.recovery>0 and ((t.recoveryFluidFed or {})[i]or 0)/(P.recovery/3600) or 0} end
    recovery.pauseMode='natural-stocking-collection-paused-no-product-fixtures';recovery.collectionPauseStock=t.collectionPauseStock
    local br=storage.report.builds[index];br.recovery=recovery;br.loopSamplesFinal=t.loopSamples
    local blockedCrafts={}

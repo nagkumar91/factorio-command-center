@@ -13,11 +13,14 @@ import {bank} from './bank.mjs';
 import {bandX, sharedZone, bandY, exportRing, admitExport, G} from './bands.mjs';
 import {powerFiveLayout} from './power.mjs';
 import {buryStraightRuns} from './bury.mjs';
+import {governor} from './governor.mjs';
 import {calculateRequirements, machinesNeeded, PRODUCTS, SPEC_DEMAND} from './requirements.mjs';
 
 const draft = process.argv.includes('--draft');
 const bytes = await fs.readFile(process.env.FACTORIO_RAW), raw = JSON.parse(bytes);
 raw.container = {...raw.container, ...raw['logistic-container']};
+// The shared bounds helper looks combinators up under one prototype group.
+raw['arithmetic-combinator'] = {...raw['arithmetic-combinator'], ...raw['decider-combinator'], ...raw['constant-combinator']};
 const sha = v => createHash('sha256').update(v).digest('hex');
 const req = calculateRequirements(raw);
 assert.deepEqual(req.externalPerMinute, SPEC_DEMAND, 'external demand differs from the spec table');
@@ -36,6 +39,8 @@ const by = bandY(L, raw);
 const rings = [...bx.rings, ...by.rings];
 const ex = exportRing(L, raw, rings);
 const R = ex.ring;
+// Pack governor south of the chest arms (columns exportX+2 and exportX+3).
+const gov = governor(L, ex.chests, G.exportX + 2, G.xRingY + 7, LAYOUT.governor || {});
 // Q's advanced circuits drop onto the export ring's north-east corner.
 const qArm = L.arm('fast-inserter', G.exportX + 1, G.exportTop - 1, N, {...filterOf(['advanced-circuit']), tags: {block: 'export', role: 'controlled-feed', stock_item: 'advanced-circuit'}});
 R.limit(qArm, 'advanced-circuit', R.at(G.exportX + 1, G.exportTop));
@@ -196,7 +201,7 @@ assert.deepEqual(after, before, 'power grew the footprint');
 for (const e of L.entities) e.tags = {...e.tags, flight_science_entity: e.entity_number};
 const allPorts = [...ports, powerPort];
 const bp = {item: 'blueprint', version: 562954249961472, label: 'Six-pack science · 30/min each',
-  description: 'Makes automation, logistic, military, chemical, production and utility science packs at 30/min each from supplied iron, copper, steel, stone brick, stone, coal, plastic, sulfur, electronic circuits, sulfuric acid and lubricant (all entrances on the west, one per material, each labelled). Six passive provider chests on the east hold 200 of each pack. Advanced circuits, engines, frames, processors, low-density structures, rails, furnaces and modules are made inside. Keep every belt reader, red wire and inserter condition; they cap the stock on each ring.',
+  description: `Makes automation, logistic, military, chemical, production and utility science packs at 30/min each from supplied iron, copper, steel, stone brick, stone, coal, plastic, sulfur, electronic circuits, sulfuric acid and lubricant (all entrances on the west, one per material, each labelled with what it draws). Six passive provider chests on the east hold 200 of each pack. A governor beside the chests (four combinators) hands over one pack of each kind every ${gov.periodTicks / 60} seconds, starting ${gov.startDelayTicks / 3600} minutes after it is powered, so the build fills first and then draws what the panels state. Advanced circuits, engines, frames, processors, low-density structures, rails, furnaces and modules are made inside. Keep every belt reader, red and green wire, combinator and inserter condition.`,
   icons: PRODUCTS.slice(0, 4).map((name, i) => ({index: i + 1, signal: {type: 'item', name}})), entities: L.entities, wires: L.wires};
 const underground = optimizeUnderground(bp, allPorts);
 assert(!underground.aborted, 'underground optimizer aborted: ' + underground.aborted);
@@ -224,7 +229,8 @@ const id = 'six-science';
 let status = 'candidate-native-validation-pending';
 try {
   const r = JSON.parse(await fs.readFile(dir + '/native-report.json'));
-  if (r.passed === true && r.short !== true && r.builds?.find(b => b.id === id)?.passed === true && r.builds.find(b => b.id === id).blueprintSha256 === sha(code)) status = 'qualified';
+  const full = r.builds?.find(b => b.id === id), panel = r.panelSupply?.builds?.find(b => b.id === id);
+  if (r.passed === true && r.short !== true && full?.passed === true && full.blueprintSha256 === sha(code) && panel?.passed === true && panel.blueprintSha256 === sha(code)) status = 'qualified';
 } catch {}
 const manifest = {
   id, name: bp.label, file: id + '.txt', blueprintSha256: sha(code), prototypeSha256: sha(bytes), class: 'rate', status,
@@ -236,14 +242,19 @@ const manifest = {
   laneControl: [{name: 'module-lane', readerMode: 'per-tile-hold', tiles: bk.moduleLane.tiles.map(e => e.entity_number), controlled: bk.moduleLane.arms, limits: {'productivity-module': bk.moduleLane.cap},
     note: 'Module output arms run only while the module lane holds fewer than the cap; the lane is a dead-end single-item belt, not a ring.'}],
   stockControl: {mode: 'bar', bar: 1, chests: ex.chests.map(c => ({item: c.item, chest: c.chest.entity_number, arm: c.arm.entity_number}))},
-  protocol: {warmupMinutes: 15, measureMinutes: 30, blockedMinutes: 10, settleMinutes: 5, recoveryMinutes: 10},
+  governor: {...gov, networks: {timer: 'green', handPulses: 'red', memoryLoop: 'red'},
+    note: 'Each chest arm runs while its pack timer shows the start delay plus one period and takes one period off for every pack it lifts (hand read as a pulse, times minus the period). The counter adds one per tick to every pack timer that is below the start delay plus the banked periods. The constant holds the bias that keeps every pack signal non-zero.'},
+  protocol: {warmupMinutes: 15, measureMinutes: 30, blockedMinutes: 10, settleMinutes: 5, recoveryMinutes: 10,
+    runs: ['full-feed: every entrance offered a full belt (fluids every tick)', 'panel-feed: every entrance limited to exactly its panel figure'], passFloorPerMinute: 28.5, governedCeilingPerMinute: 30.6},
   construction, underground: {saved: underground.saved, pairs: underground.pairs.length, straightRunsSaved: buried.saved, straightRunsPairs: buried.pairs},
   power: {substations: power.substations, mediumPoles: power.mediumPoles, dock: power.dock},
   greenCircuitSupply: {perMinute: req.externalPerMinute['electronic-circuit'], copiesOfGreenCircuits: Math.ceil(req.externalPerMinute['electronic-circuit'] / 360)},
   setupNotes: [bp.description, 'Supply both lanes of every west entrance belt; the copper entrance carries 1,035/min.',
     `Needs ${req.externalPerMinute['electronic-circuit']} electronic circuits per minute: ${Math.ceil(req.externalPerMinute['electronic-circuit'] / 360)} copies of the green-circuits supplier (360/min each).`,
     'Power enters at the marked substation; one electric network.',
-    "Plan supply for the measured draw, not the entrance panels: the panels are recipe totals at 30/min, and packs early on the shared spines run above target and take material first. Exploration measurements (full-length runs with a throttled-feed copy of the harness, not part of the qualification): with every entrance fed at exactly its panel figure, production science made 16.6/min and utility 24.0/min against 30, with 7 machines idle; at 1.05x the panels production made 19.5/min, at 1.10x 23.1/min, and at 1.15x every pack held its target. Fed at the measured draw (about 966 electronic circuits, 1,105 copper, 661 iron, 389 steel, 550 plastic, 274 stone brick, 169 coal, 158 stone, 15.8 sulfur, 557 sulfuric acid and 169 lubricant per minute, 5 to 13% above the panels) every pack held its target. Circuits alone limited to 1,080/min (three green-circuits copies) with every other entrance unlimited also passed."],
+    `The panels are the supply to plan for. The governor hands over ${gov.perMinute} of each pack per minute (one every ${gov.periodTicks} ticks per chest arm) and every stock upstream is capped, so a full build draws the recipe totals on the panels and no more. The qualification is two full-length runs of this exact string: every entrance offered a full belt, and every entrance limited to exactly its panel figure; the status is qualified only when both passed (native-report.json, builds and panelSupply).`,
+    `Start: the governor hands over nothing for the first ${gov.startDelayTicks / 3600} minutes after its combinators are powered, so the rings and machines fill at full speed before packs leave. With supply already connected the build then holds 30/min of every pack at the panel figures. If supply arrives after those minutes the build still settles at 30/min each, but while it fills the last packs on the shared spines run a little short (exploration run of a copy without the start delay, supply exactly the panel figures: production 28.6/min, utility 29.2/min and military 29.6/min over minutes 15 to 45, every pack 29.9 to 30.4/min over minutes 60 to 70).`,
+    `After a pause (full chests, no collection) at most ${gov.bankedPeriods} periods are saved per pack, so at most ${gov.bankedPeriods} extra packs of each kind follow before the rate is 30/min again. Fed below the panel figures the last packs on the shared spines fall first (exploration, 0.95 of every panel: production 26.3/min, utility 28.7/min, the other four 30.0/min).`],
 };
 await fs.writeFile(dir + '/' + manifest.file, code + '\n');
 await fs.writeFile(dir + '/manifest.json', JSON.stringify([manifest], null, 2) + '\n');

@@ -26,6 +26,9 @@ export const G = {
   feedShift: 1, bandXShift: 0,
   // Rail cell: west column of the west rail machine and the row of the rail belt.
   railCell: {x: -10, beltY: 52},
+  // Gears and pipes for the engines on the frames ring come from the blue ring's machines over the export
+  // ring and the utility ring (false: the utility ring's bottom row makes them itself, two more machines).
+  relayGearAndPipe: true,
   // Inside-row slots left empty for substations: [ring id, slot].
   insideHoles: [['red-green-military', 5], ['blue', 3], ['blue', 6], ['utility-production', 3], ['utility-production', 6]],
 };
@@ -46,18 +49,21 @@ export function bandX(L, raw) {
   m(B, 'top', 3, 'firearm-magazine', [rear(0, ['iron-plate']), ro()], 'f');
   m(B, 'top', 4, 'military-science-pack', undefined, 'm');
   for (const i of [5, 6, 7]) m(B, 'top', i, 'grenade', [rear(0, ['iron-plate', 'coal']), rear(1, ['iron-plate', 'coal']), ro()], 'n');
-  for (const i of [0, 1, 2, 3, 4]) m(B, 'inside', i, 'logistic-science-pack', [ri(0), r2o()], 'l');
+  // Four logistic machines make exactly 30/min; the governor never asks for more (slot 4 stays empty).
+  for (const i of [0, 1, 2, 3]) m(B, 'inside', i, 'logistic-science-pack', [ri(0), r2o()], 'l');
   for (const i of [6, 7]) m(B, 'inside', i, 'military-science-pack', [ri(0), r2o()], 'm');
   // B bottom row: shared zone (near belt brick | plastic, far belt copper | steel).
   for (const i of [0, 1, 2, 3]) m(B, 'bottom', i, 'automation-science-pack', [rear(0, ['copper-plate'], LONG), ri(1, ['iron-gear-wheel']), ro()], 'a');
   m(B, 'bottom', 4, 'military-science-pack', undefined, 'm');
-  for (const i of [5, 6]) m(B, 'bottom', i, 'piercing-rounds-magazine', [rear(0, ['copper-plate', 'steel-plate'], LONG), ri(1, ['firearm-magazine']), ro()], 'r');
+  // One piercing-rounds machine makes exactly the 7.5/min military science takes (slot 6 stays empty).
+  m(B, 'bottom', 5, 'piercing-rounds-magazine', [rear(0, ['copper-plate', 'steel-plate'], LONG), ri(1, ['firearm-magazine']), ro()], 'r');
   m(B, 'bottom', 7, 'stone-wall', [rear(0, ['stone-brick']), rear(1, ['stone-brick']), ro()], 'w');
   // A: gear and pipe from the iron rear lane, blue packs, engines on the far steel lane.
   m(A, 'top', 0, 'iron-gear-wheel', [rear(0, ['iron-plate']), ro()], 'g');
   m(A, 'top', 1, 'pipe', [rear(0, ['iron-plate']), ro()], 'p');
   for (const i of [2, 3, 4, 5, 6]) m(A, 'top', i, 'chemical-science-pack', undefined, 'c');
-  for (const i of [0, 1, 2, 4]) m(A, 'inside', i, 'chemical-science-pack', [ri(0), r2o()], 'c');
+  // Eight chemical machines (five on top, three inside) make exactly 30/min.
+  for (const i of [0, 1, 2]) m(A, 'inside', i, 'chemical-science-pack', [ri(0), r2o()], 'c');
   for (let i = 0; i < 7; i++) m(A, 'bottom', i, 'engine-unit', [ri(0, ['iron-gear-wheel', 'pipe']), rear(1, ['steel-plate'], LONG), ro()], 'e');
   const feeds = [
     admitWest(L, B, 'electronic-circuit', oy + 1),
@@ -103,12 +109,15 @@ export function bandY(L, raw) {
   for (let i = 3; i < 8; i++) m(Y1, 'bottom', i, 'processing-unit', [rear(0, ['electronic-circuit'], BULK), ri(0, ['advanced-circuit']), ro()], 'x', 8);
   // Y2 top: furnaces and LDS on the shared zone.
   for (const i of [0, 1]) m(Y2, 'top', i, 'electric-furnace', [rear(0, ['steel-plate']), rear(1, ['stone-brick'], LONG), rear(2, ['stone-brick'], LONG), ri(0, ['advanced-circuit']), ro()], 'z');
-  for (let i = 2; i < 7; i++) m(Y2, 'top', i, 'low-density-structure', [rear(0, ['copper-plate', 'steel-plate']), rear(1, ['plastic-bar'], LONG), ro()], 'd');
+  // Ten low-density machines in all (six on Y1, four here) make exactly the 30/min utility science takes.
+  for (let i = 2; i < 6; i++) m(Y2, 'top', i, 'low-density-structure', [rear(0, ['copper-plate', 'steel-plate']), rear(1, ['plastic-bar'], LONG), ro()], 'd');
   for (const i of [0, 1, 2, 4, 5]) m(Y2, 'inside', i, 'utility-science-pack', [ri(0), r2o()], 'y');
-  // Y2 bottom: production packs (rails from rear belt R1), gear and pipe (iron from R1).
+  // Y2 bottom: production packs (rails from rear belt R1).
   for (let i = 0; i < 5; i++) m(Y2, 'bottom', i, 'production-science-pack', [ri(0, ['electric-furnace', 'productivity-module']), rear(2, ['rail'], BULK), ro()], 'q');
-  m(Y2, 'bottom', 5, 'iron-gear-wheel', [rear(0, ['iron-plate']), ro()], 'g');
-  m(Y2, 'bottom', 6, 'pipe', [rear(0, ['iron-plate']), ro()], 'p');
+  if (!G.relayGearAndPipe) {
+    m(Y2, 'bottom', 5, 'iron-gear-wheel', [rear(0, ['iron-plate']), ro()], 'g');
+    m(Y2, 'bottom', 6, 'pipe', [rear(0, ['iron-plate']), ro()], 'p');
+  }
   const feeds = [
     admitWest(L, Y1, 'iron-plate', oy + 1),
     admitWest(L, Y1, 'copper-plate', oy + 2),
@@ -142,10 +151,12 @@ export function bandY(L, raw) {
   for (let x = G.dStartX; x < dEnd; x++) { const b = L.belt(x, dy, E, {tags: {block: 'processor-circuits', lane: 'run'}}); dStart ??= b; }
   L.belt(dEnd, dy, N, {tags: {block: 'processor-circuits', lane: 'end'}});
   feeds.push({item: 'electronic-circuit', entry: dStart, approach: S, block: 'processor-circuits', lane: 'both', tapY: G.dTapY});
-  // R1: rails and iron for the production row. Its first tile is a curve fed from the south by the
+  // R1: rails for the production row (the iron lane that comes with them from the rail cell ends here
+  // unused when gears and pipes are relayed). Its first tile is a curve fed from the south by the
   // rail belt (routed in generate.mjs), so both lanes keep their item.
   const r1x = dEnd + 1, r1 = [];
-  for (let x = r1x; x <= slotGeometry(Y2, 'bottom', 6).left; x++) r1.push(L.belt(x, dy, E, {tags: {block: 'rails', lane: 'run'}}));
+  const r1End = G.relayGearAndPipe ? slotGeometry(Y2, 'bottom', 4).left + 2 : slotGeometry(Y2, 'bottom', 6).left;
+  for (let x = r1x; x <= r1End; x++) r1.push(L.belt(x, dy, E, {tags: {block: 'rails', lane: 'run'}}));
   // Rail cell in the south-west manifold corner: rail | stick | rail above the rail belt RB.
   // RB: iron side-loaded on its north lane at the west end, rails dropped on its south lane.
   const c = G.railCell, rb = c.beltY, my = rb - 3, iy = rb - 6;
@@ -173,7 +184,8 @@ export function exportRing(L, raw, rings) {
   const x0 = G.exportX, top = G.exportTop, bottom = G.exportBottom;
   const R = new Ring(L, {id: 'export', x0, y0: top, w: 1, h: bottom - top, counterClockwise: true,
     limits: {'advanced-circuit': 64, 'productivity-module': 8, 'automation-science-pack': 12, 'logistic-science-pack': 12,
-      'military-science-pack': 12, 'chemical-science-pack': 12, 'production-science-pack': 12, 'utility-science-pack': 12}});
+      'military-science-pack': 12, 'chemical-science-pack': 12, 'production-science-pack': 12, 'utility-science-pack': 12,
+      ...(G.relayGearAndPipe ? {'iron-gear-wheel': 8, pipe: 12} : {})}});
   const [, A, , Y2] = rings;
   const xy = G.xRingY, yy = G.yRingY;
   for (const [item, dy] of [['automation-science-pack', 1], ['logistic-science-pack', 2], ['military-science-pack', 3], ['chemical-science-pack', 4]]) transfer(L, A, R, item, xy + dy);
@@ -182,6 +194,14 @@ export function exportRing(L, raw, rings) {
   transfer(L, Y2, R, 'utility-science-pack', yy + 2);
   transfer(L, R, Y2, 'advanced-circuit', yy + 3, BULK);
   transfer(L, R, Y2, 'productivity-module', yy + 4);
+  if (G.relayGearAndPipe) {
+    // The blue ring's gear and pipe machines also make the 10 gears and 20 pipes a minute the engines on the
+    // frames ring take; they ride the export ring down to the utility ring, which hands them west.
+    transfer(L, A, R, 'iron-gear-wheel', xy);
+    transfer(L, A, R, 'pipe', xy + G.h);
+    transfer(L, R, Y2, 'iron-gear-wheel', yy);
+    transfer(L, R, Y2, 'pipe', yy + 5);
+  }
   // Six adjacent output chests, one stack each, filtered fast arms.
   const products = ['automation-science-pack', 'logistic-science-pack', 'military-science-pack', 'chemical-science-pack', 'production-science-pack', 'utility-science-pack'];
   const chests = products.map((item, j) => {

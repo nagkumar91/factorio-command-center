@@ -86,6 +86,7 @@ test('guide pages and the landing page are offline, exact and complete',async()=
  }
  const landing=await fs.readFile('site/essentials/index.html','utf8');
  assert.ok(records.find(r=>r.id==='robot-essentials').panelSupply,'robot essentials carries its passing panel-supply run');
+ assert.ok(records.find(r=>r.id==='six-science').panelSupply,'six-science carries its passing panel-supply run (embedded in its native report)');
  assert.doesNotMatch(landing,/(?:src|href)="(?:https?:)?\/\//);
  for(const r of published){assert.ok(landing.includes(`href="../${r.id}/index.html"`),r.id);assert.ok(landing.includes(`href="../${r.id}/native-report.json"`),r.id);assert.ok(landing.includes(r.m.blueprintSha256),r.id);}
  const book=decodeBlueprint(await fs.readFile('site/essentials/essentials-book.txt','utf8')).blueprint_book;
