@@ -2,7 +2,8 @@
 // scripts/robot-logistics-workshop/validate.mjs and adapted: protocol minutes come from
 // the manifest, exploration runs (ESSENTIALS_EXPLORE=1) write only
 // .cache/robot-essentials/explore-report.json, and the pass formula follows the
-// essentials contract (section 11, rate class with selective phases).
+// essentials contract (section 11, rate class with selective phases). Full-stack caps (50 / 50 / 10 / 50 / 50): the closed hold
+// and each selective settle are 30 minutes, and capsReachedInTime requires every cap reached inside them.
 //
 //   node scripts/robot-essentials/validate.mjs                  full protocol, writes native-report.json
 //   RE_PANEL_SUPPLY=1 node scripts/robot-essentials/validate.mjs full protocol with every entrance fed at exactly
@@ -92,6 +93,9 @@ for(const r of report.builds){
   wiringAndPower:r.powered===true&&r.externalApproachesClear===true&&r.stockNetworksIsolated===true&&r.exactRecipeChecks>0,
   bulkHandAtMostTwo:r.bulkInserters.every(x=>x.observedMaxHand<=2),
   selective:protocol.phases===b.products.length&&r.independentStockCapTests?.length===b.products.length&&r.independentStockCapTests.every(t=>t.finalBlockedStock===b.outputCaps[t.blockedProduct]&&Object.entries(t.outputsPerMinute).every(([item,rate])=>rate>=floor(item))),
+  // Full-stack caps: each blocked product must reach its cap before the measurement window of the other four starts
+  // (selective settle), and every product within the closed hold, so the others are always measured with it stocked.
+  capsReachedInTime:protocol.blocked>0&&b.products.every(n=>r.recovery?.capReachedMinute?.[n]<=protocol.blocked/3600)&&(protocol.phases===0||r.independentStockCapTests.every(t=>t.capReachedMinute<=protocol.phaseSettle/3600)),
  };
  // Two-speed clock: with saturated entrances the measured rates must be the boosted ones.
  const gate=b.productionClock?.supplyGate;
@@ -108,5 +112,5 @@ const target=explore?(process.env.RE_REPORT||'.cache/'+id+'/explore-report.json'
 await fs.mkdir(path.dirname(target),{recursive:true});
 await fs.writeFile(target,JSON.stringify(report,null,2)+'\n');
 const r=report.builds[0];
-console.log(JSON.stringify({passed:report.passed,checks:r.checks,steady:r.outputsPerMinute,recovery:r.recovery?.outputsPerMinute,pause:r.recovery?.collectionPauseStock?.map(p=>p.item+':'+p.count),selective:r.independentStockCapTests?.map(t=>({blocked:t.blockedProduct,stock:t.finalBlockedStock,rates:t.outputsPerMinute})),ringMax:r.loopSamples,idle:r.machines.filter(m=>!m.measuredCrafts).map(m=>m.recipe)},null,1));
+console.log(JSON.stringify({passed:report.passed,checks:r.checks,capReached:{closed:r.recovery?.capReachedMinute,selective:r.independentStockCapTests?.map(t=>t.blockedProduct+':'+t.capReachedMinute)},steady:r.outputsPerMinute,recovery:r.recovery?.outputsPerMinute,pause:r.recovery?.collectionPauseStock?.map(p=>p.item+':'+p.count),selective:r.independentStockCapTests?.map(t=>({blocked:t.blockedProduct,stock:t.finalBlockedStock,rates:t.outputsPerMinute})),ringMax:r.loopSamples,idle:r.machines.filter(m=>!m.measuredCrafts).map(m=>m.recipe)},null,1));
 process.exitCode=report.passed?0:1;

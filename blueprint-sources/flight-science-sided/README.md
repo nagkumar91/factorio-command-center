@@ -19,6 +19,11 @@ The input figures on the science tiers' panels are recipe arithmetic for exactly
 | Green circuits | Iron plates 60; copper plates 90 | 60.00 | 16 × 5 | 2 |
 | Red circuits | Iron plates 180; copper plates 450; plastic 180 | 90.17 | 49 × 16 | 20 (6 wire, 2 green, 12 red) |
 | Engines | Iron plates 240; steel 60 | 63.00 | 40 × 13 | 17 (1 gear, 2 pipe, 14 engine) |
+| Electric furnaces | Steel plates 200; stone bricks 200; advanced circuits 100 | 20.00 | 15 × 7 | 3 |
+| Productivity modules | Advanced circuits 100; electronic circuits 100 | 20.00 | 25 × 7 | 7 |
+| Low-density structures | Steel plates 120; plastic bars 300; copper plates 1,200 | 60.00 | 34 × 13 | 20 |
+
+The last three rows are the compact tier's south entrance supplies (the purple and yellow block's heavy ingredients), each in `heavy-supplies/<name>/` with its own manifest, native report and README, qualified on the family's flight-21 profile. Processing units and flying robot frames, the other two south entrances, are in progress.
 
 Both green and red circuit factories insert wire directly into green-circuit assemblers. Red circuits make their own greens and wire. Engine gears and pipes are internal. Every feeder has exactly one inlet per material, all on the left, and one collection chest on the right. Normal AM2s, fast inserters and red belts; no modules, robots or inserter-capacity research.
 

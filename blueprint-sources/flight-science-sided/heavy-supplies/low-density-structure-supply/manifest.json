@@ -1,0 +1,162 @@
+[
+  {
+    "id": "low-density-structure-supply",
+    "file": "low-density-structure-supply.txt",
+    "name": "low-density-structure-supply · 60/min",
+    "products": [
+      "low-density-structure"
+    ],
+    "targetPerMinute": 60,
+    "blueprintSha256": "f3a75a556da08c84ccf56148cdffa408bd66f883095b4d00910a55f4489b607a",
+    "prototypeSha256": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
+    "ports": [
+      {
+        "kind": "input",
+        "label": "steel-plate",
+        "items": [
+          "steel-plate"
+        ],
+        "entity": 184,
+        "x": -3.5,
+        "y": 5.5,
+        "direction": 4,
+        "externalSide": "west",
+        "perMinute": 120,
+        "displayEntity": 201
+      },
+      {
+        "kind": "input",
+        "label": "plastic-bar",
+        "items": [
+          "plastic-bar"
+        ],
+        "entity": 187,
+        "x": -3.5,
+        "y": 7.5,
+        "direction": 4,
+        "externalSide": "west",
+        "perMinute": 300,
+        "displayEntity": 202
+      },
+      {
+        "kind": "input",
+        "label": "copper-plate",
+        "items": [
+          "copper-plate"
+        ],
+        "entity": 190,
+        "x": -3.5,
+        "y": 10.5,
+        "direction": 4,
+        "externalSide": "west",
+        "perMinute": 1200,
+        "displayEntity": 203
+      },
+      {
+        "kind": "output",
+        "label": "low-density-structure",
+        "items": [
+          "low-density-structure"
+        ],
+        "entity": 198,
+        "x": 29.5,
+        "y": 6.5,
+        "externalSide": "east",
+        "perMinute": 60,
+        "displayEntity": 204
+      },
+      {
+        "kind": "power",
+        "label": "External electricity",
+        "items": [],
+        "entity": 205,
+        "x": -3,
+        "y": 2
+      }
+    ],
+    "inputs": [
+      {
+        "item": "steel-plate",
+        "entity": 184,
+        "position": {
+          "x": -3.5,
+          "y": 5.5
+        },
+        "direction": 4,
+        "perMinute": 120
+      },
+      {
+        "item": "plastic-bar",
+        "entity": 187,
+        "position": {
+          "x": -3.5,
+          "y": 7.5
+        },
+        "direction": 4,
+        "perMinute": 300
+      },
+      {
+        "item": "copper-plate",
+        "entity": 190,
+        "position": {
+          "x": -3.5,
+          "y": 10.5
+        },
+        "direction": 4,
+        "perMinute": 1200
+      }
+    ],
+    "outputs": [
+      {
+        "item": "low-density-structure",
+        "entity": 198,
+        "position": {
+          "x": 29.5,
+          "y": 6.5
+        },
+        "perMinute": 60
+      }
+    ],
+    "machineCounts": {
+      "low-density-structure": 20
+    },
+    "footprint": {
+      "left": -4,
+      "top": 0,
+      "right": 30,
+      "bottom": 13,
+      "width": 34,
+      "height": 13
+    },
+    "loopControl": [],
+    "setupNotes": [
+      "One inlet per material on the left; collect the output on the right. AM2, fast inserters, red belts, no modules, no circuit dependency. Copper plates arrive on both lanes of one belt; a splitter gives each assembler row its own copper lane. Steel (north lane) and plastic (south lane) share the middle belt. Finished structures leave on the far lane of each outer belt and two filtered inserters fill the collection chest."
+    ],
+    "recipeArithmetic": {
+      "assemblerCraftingSpeed": 0.75,
+      "secondsPerCraft": 15,
+      "perAssemblerPerMinute": 3,
+      "assemblers": 20,
+      "inputsPerMinute": {
+        "steel-plate": 120,
+        "copper-plate": 1200,
+        "plastic-bar": 300
+      },
+      "redBeltLanePerMinute": 900
+    },
+    "status": "native-verified",
+    "variant": "twin-rows",
+    "nativeEvidence": {
+      "file": "native-report.json",
+      "createdAt": "2026-11-22T12:22:52.968Z",
+      "passed": true,
+      "steadyPerMinute": 60,
+      "recoveryPerMinute": 60,
+      "inletsPerMinute": {
+        "steel-plate": 120,
+        "plastic-bar": 300,
+        "copper-plate": 1200
+      }
+    }
+  }
+]

@@ -2,9 +2,11 @@
 
 The smaller robot workshop. It makes construction robots, logistic robots, roboports, storage chests and passive provider chests at half the rate of `robot-logistics-workshop`, from supplied electronic circuits, plates, plastic, sulfuric acid and lubricant. Everything else (cable, advanced circuits, gears, pipes, steel chests, engines, electric engines, batteries, flying robot frames) is made inside.
 
-**Status: qualified.** `native-report.json` says `passed: true` for the exact string in `robot-essentials.txt` (SHA-256 `afdc129e…4c48`, full value in `manifest.json`), from the full protocol on Factorio 2.1.24 Space Age with every entrance saturated. `panel-supply-report.json` is the same full protocol with every belt and pipe entrance fed at exactly its panel figure; it also says `passed: true` for the same string.
+**Status: qualified.** `native-report.json` says `passed: true` for the exact string in `robot-essentials.txt` (SHA-256 `e8d154c9…46e6`, full value in `manifest.json`), from the full protocol on Factorio 2.1.24 Space Age with every entrance saturated. `panel-supply-report.json` is the same full protocol with every belt and pipe entrance fed at exactly its panel figure; it also says `passed: true` for the same string.
 
-This string replaces the one published on 20 November (`history/one-speed-timer-d2c80909`). Same footprint, machines, entrances, panels, output chest and caps; one more decider. What changed and why is under "What the 21 November review changed".
+**Full-stack caps (22 November).** The output chest now stops each product at one full stack: 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests and 50 passive provider chests (stack sizes from the prototype dump). The earlier string, with caps of 20 / 20 / 2 / 10 / 10, is kept complete and qualified in `history/twenty-robot-caps/` (SHA-256 `afdc129e…4c48`); both are listed in `manifest.json` under `versions`, "Full-stack caps" first and "Twenty-robot caps" second. Only the five filter deciders next to the output chest changed (and the blueprint description that names the caps): layout, machines, entrances, panels, ring limits, reserves, clock and supply gate are identical, so the supply table, the sweep file and the margins below hold for both strings. The user's reason: with 20 in the chest the circuit stopped the collector early and a player taking a few robots at a time found only 20; the inserter workshops stop at one full stack, and so does this one now.
+
+The 20 November string `history/one-speed-timer-d2c80909` was replaced by the twenty-robot string: same footprint, machines, entrances, panels, output chest and caps, one more decider. What changed and why is under "What the 21 November review changed".
 
 ## Size
 
@@ -55,7 +57,7 @@ The five belt entrances are circuit-gated belts that side-load straight onto the
 
 ### Supply table (exploration runs, full protocol lengths)
 
-Every belt and both fluids fed at the stated multiple of the panel figures. Supply the workshop does not take waits as a backlog of 16 items per belt entrance (two belt tiles) or two seconds of fluid, and is lost beyond that, like a supplier that stalls on a full belt. Steady rates per minute in the order construction robot / logistic robot / roboport / storage chest / passive provider chest. "Replaced" is the 20 November string on the same harness. All 43 runs are in `exploration-supply-sweep.json`; they are exploration measurements, and only the 1.00x and saturated rows of this string are also published reports.
+Every belt and both fluids fed at the stated multiple of the panel figures (measured on the twenty-robot string; the chest caps do not touch supply, rates or ring limits, and the chest is emptied every second in these runs). Supply the workshop does not take waits as a backlog of 16 items per belt entrance (two belt tiles) or two seconds of fluid, and is lost beyond that, like a supplier that stalls on a full belt. Steady rates per minute in the order construction robot / logistic robot / roboport / storage chest / passive provider chest. "Replaced" is the 20 November string on the same harness. All 43 runs are in `exploration-supply-sweep.json`; they are exploration measurements, and only the 1.00x and saturated rows of this string are also published reports.
 
 | Supply vs panels | This string | Result | Replaced string | Result |
 | --- | --- | --- | --- | --- |
@@ -97,7 +99,7 @@ Known gap: with only the electronic circuits at exactly 145 per minute and every
 
 ## Output (EAST)
 
-One passive provider chest on the east edge, above the ring's north-east corner, holds all five products with independent caps: 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests, 10 passive provider chests. Leave the chest unrestricted (no bar). A filtered fast inserter directly below it picks from the ring's corner tile (31,0) and loads it; its filters come from five decider combinators (`product in chest + in hand < cap`), so a capped product stays on the ring while the others keep flowing.
+One passive provider chest on the east edge, above the ring's north-east corner, holds all five products with independent caps: 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests, 50 passive provider chests (one full stack of each; the twenty-robot version stops at 20 / 20 / 2 / 10 / 10). Leave the chest unrestricted (no bar). A passive provider chest has 48 slots and the five products at their caps fill 5 (50 / 50 + 50 / 50 + 10 / 10 + 50 / 50 + 50 / 50 = 5 slots), so the chest is never the limit. A filtered fast inserter directly below it picks from the ring's corner tile (31,0) and loads it; its filters come from five decider combinators (`product in chest + in hand < cap`), so a capped product stays on the ring while the others keep flowing.
 
 ## How the control works
 
@@ -115,24 +117,24 @@ Preserve: the red wires on the ring tiles, the entrance belts and the controlled
 
 ## Measured (full protocol)
 
-Protocol: 15 min warm-up, 30 min measured, 8 min blocked (collection stopped, nothing injected), 5 min settle, 10 min recovery, then five 15-minute selective phases (one product's collection stopped; 5 min settle, 10 min measured).
+Protocol: 15 min warm-up, 30 min measured, **30 min** blocked (collection stopped, nothing injected), 5 min settle, 10 min recovery, then five **40-minute** selective phases (one product's collection stopped; **30 min** settle, 10 min measured). The twenty-robot string ran 8 minutes blocked and 15-minute selective phases (5 settle, 10 measured). The chest is empty when a hold starts, so the hold must outlast the time one product needs to reach its cap at the measured rate: 50 storage or passive provider chests at 2.0 to 2.2 per minute is 23 to 25 minutes, 10 roboports at 0.5 to 0.6 is 17 to 20, 50 robots at 4.9 to 5.5 is 9 to 10. The harness now records the minute each cap was reached, and `capsReachedInTime` fails the run unless every cap was reached inside the closed hold and inside each selective settle, so the other four products are always measured while the blocked one is stocked. Pass bars are otherwise unchanged.
 
 | Product | Target | Floor (95%) | Saturated: steady | Saturated: recovery | Panel supply: steady | Panel supply: recovery |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| construction-robot | 5 | 4.75 | 5.53 | 5.5 | 4.9 | 4.9 |
-| logistic-robot | 5 | 4.75 | 5.5 | 5.4 | 4.9 | 4.9 |
+| construction-robot | 5 | 4.75 | 5.53 | 5.4 | 4.9 | 4.9 |
+| logistic-robot | 5 | 4.75 | 5.5 | 5.5 | 4.9 | 4.9 |
 | roboport | 0.5 | 0.475 | 0.6 | 0.6 | 0.5 | 0.5 |
-| storage-chest | 2 | 1.9 | 2.2 | 2.2 | 2.0 | 2.0 |
+| storage-chest | 2 | 1.9 | 2.2 | 2.2 | 2.0 | 1.9 |
 | passive-provider-chest | 2 | 1.9 | 2.2 | 2.2 | 2.0 | 1.9 |
 
-Saturated is `native-report.json`, the qualifying run. Panel supply is `panel-supply-report.json`: the same harness, validator, protocol and pass formula, with each belt entrance and each pipe fed at exactly its panel figure (accepted during measurement: 144.8 circuits, 105 iron, 93 copper, 74.5 steel, 73 plastic, 400 acid, 150 lubricant per minute).
+The measured figures above are for the full-stack string; the twenty-robot string measured the same steady and recovery rates (its reports are in `history/twenty-robot-caps/`). Saturated is `native-report.json`, the qualifying run. Panel supply is `panel-supply-report.json`: the same harness, validator, protocol and pass formula, with each belt entrance and each pipe fed at exactly its panel figure (accepted during measurement: 144.8 circuits, 105 iron, 93 copper, 74.5 steel, 73 plastic, 400 acid, 150 lubricant per minute).
 
-In both runs the chest held exactly 20, 20, 2, 10 and 10 at the end of the blocked phase; in every selective phase the stopped product ended exactly at its cap and the other four stayed at or above their floors; every machine crafted during measurement; every entrance fed a productive machine; both fluids reached crafting consumers; bulk hands never exceeded 2.
+In both runs the chest held exactly 50, 50, 10, 50 and 50 at the end of the blocked phase; in every selective phase the stopped product ended exactly at its cap and the other four stayed at or above their floors. Minutes to reach the cap from an empty chest (closed hold, saturated / panel supply): construction robot 9.0 / 10.2, logistic robot 9.1 / 10.3, roboport 17.3 / 18.4, storage chest 22.3 / 24.7, passive provider chest 22.2 / 24.6 (30 allowed); in the selective phases 8.9 to 22.6 minutes saturated and 10.1 to 25.0 at the panels (30 allowed). Lowest other-product rates while one was held at its cap: saturated, logistic robot 5.4, roboport 0.5 (exactly 5 in 10 minutes), storage chest 2.1; panel supply, logistic robot 4.9, roboport 0.5, chests 2.0. Ring peak 360 of 592 saturated, 359 at the panels. every machine crafted during measurement; every entrance fed a productive machine; both fluids reached crafting consumers; bulk hands never exceeded 2.
 
 Margins to know about:
 
 - Saturated: the five frame machines ran at 100% (11.3 frames per minute), so frames bind the two robots; the lowest selective figures were construction robots 5.4 and roboports 0.5 (exactly 5 in 10 minutes).
-- Panel supply: the ten-minute counts are near their minimum by design. Roboports were exactly 5 in the recovery window and in three of the four selective windows that count them, and passive provider chests were 19 in the recovery window (the floor is 19). There is no slack below the panels: see the 0.99x row above.
+- Panel supply: the ten-minute counts are near their minimum by design. Roboports were exactly 5 in the recovery window and in three of the four selective windows that count them, and storage chests and passive provider chests were 19 in the recovery window (the floor is 19). There is no slack below the panels: see the 0.99x row above.
 - Compared with the replaced string, the saturated draw is: circuits 165 (was 163), iron 120 (121), copper 107 (107), steel 85 (86), plastic 84 (85), acid 450 (442), lubricant 169 (165).
 
 ## Reproduce
@@ -140,7 +142,7 @@ Margins to know about:
 From the repository root (worktree), with the official raw dump at the default path or in `FACTORIO_RAW`:
 
 ```sh
-node scripts/robot-essentials/generate.mjs                    # robot-essentials.txt and manifest.json
+node scripts/robot-essentials/generate.mjs                    # robot-essentials.txt and manifest.json (keeps the committed string when it decodes to the same blueprint)
 RE_IMPORT_ONLY=1 node scripts/robot-essentials/validate.mjs   # import, wiring, gates, fluids, power (61 ticks)
 node scripts/robot-essentials/validate.mjs                    # full protocol, saturated: native-report.json
 RE_PANEL_SUPPLY=1 node scripts/robot-essentials/validate.mjs  # full protocol at the panel figures: panel-supply-report.json
@@ -148,7 +150,7 @@ node scripts/robot-essentials/probe-clock-wrap.mjs            # timer overflow a
 node --test tests/robot-essentials.test.mjs
 ```
 
-The generator is deterministic; `RE_OPTIONS` rebuilds the history candidates (each `NOTE.md` gives its options; `"supplyGate":false` selects the earlier clock, machine order and reserves). `scripts/robot-essentials/screen.sh` runs a short exploration (`ESSENTIALS_EXPLORE=1`; it writes `.cache/robot-essentials/explore-report.json` and never a published report), `summary.mjs` prints per-machine crafts, status shares and missing ingredients, and `preview.mjs` draws the layout. Exploration runs can limit supply: `RE_SUPPLY=1.05` (belts), `RE_FLUID_SUPPLY=1.05` (pipes), `RE_SUPPLY_ITEMS='{"steel-plate":1}'` (single entrances), `RE_SUPPLY_BACKLOG=64`; `RE_RING_SERIES=1` records the ring stock every second. The native harness (`control.lua`, `validate.mjs`) is copied from `scripts/robot-logistics-workshop/` and adapted; it feeds only the declared entrance lanes and fluid pipes plus electricity and collects only from the declared chest. A full run takes about 25 seconds of wall time.
+The generator is deterministic; `RE_OPTIONS` rebuilds the history candidates (including `caps` and `protocol` overrides) (each `NOTE.md` gives its options; `"supplyGate":false` selects the earlier clock, machine order and reserves). `scripts/robot-essentials/screen.sh` runs a short exploration (`ESSENTIALS_EXPLORE=1`; it writes `.cache/robot-essentials/explore-report.json` and never a published report), `summary.mjs` prints per-machine crafts, status shares and missing ingredients, and `preview.mjs` draws the layout. Exploration runs can limit supply: `RE_SUPPLY=1.05` (belts), `RE_FLUID_SUPPLY=1.05` (pipes), `RE_SUPPLY_ITEMS='{"steel-plate":1}'` (single entrances), `RE_SUPPLY_BACKLOG=64`; `RE_RING_SERIES=1` records the ring stock every second. The native harness (`control.lua`, `validate.mjs`) is copied from `scripts/robot-logistics-workshop/` and adapted; it feeds only the declared entrance lanes and fluid pipes plus electricity and collects only from the declared chest. A full run takes about 25 seconds of wall time.
 
 ## What the 21 November review changed
 
@@ -178,6 +180,7 @@ Each folder under `history/` has the string, manifest, a report and a `NOTE.md`.
 
 | Candidate | Size | Result | Lesson |
 | --- | ---: | --- | --- |
+| `twenty-robot-caps` | 528 | **qualified** (full protocol, saturated and at the panels), superseded by the full-stack caps | same string with chest caps 20 / 20 / 2 / 10 / 10; kept selectable. `RE_OPTIONS='{"caps":{"construction-robot":20,"logistic-robot":20,"roboport":2,"storage-chest":10,"passive-provider-chest":10},"protocol":{"blockedMinutes":8,"selectiveSettleMinutes":5}}'` rebuilds it |
 | `fast-gear-arm` | 630 | screen failed, logistic robots 4.2 | a fast arm catches too little of the sparse iron on the ring; gears starve engines, electric engines and frames |
 | `rear-belt` | 630 | **qualified** (full protocol), superseded | plastic and cable on a rear belt cost two whole rows |
 | `ring-fed-one-gear-arm` | 595 | screen failed, logistic robots 4.6 | with plastic and cable on the ring the iron limit had to drop, and one gear arm was short again |

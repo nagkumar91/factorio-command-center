@@ -3,7 +3,7 @@
     "id": "robot-essentials",
     "name": "Robot essentials · 5/5/0.5/2/2 per minute",
     "file": "robot-essentials.txt",
-    "blueprintSha256": "afdc129e1e85043a6b9a9a7b026129c8691a29a7994546247cd7e9d333654c48",
+    "blueprintSha256": "e8d154c907fd8aee84de6c6bfbf2d2242cd0dcebd00c3b63c4892c793e2346e6",
     "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
     "class": "rate",
     "status": "qualified",
@@ -22,11 +22,11 @@
       "passive-provider-chest": 2
     },
     "outputCaps": {
-      "construction-robot": 20,
-      "logistic-robot": 20,
-      "roboport": 2,
-      "storage-chest": 10,
-      "passive-provider-chest": 10
+      "construction-robot": 50,
+      "logistic-robot": 50,
+      "roboport": 10,
+      "storage-chest": 50,
+      "passive-provider-chest": 50
     },
     "recipeAudit": {
       "externalPerMinute": {
@@ -432,11 +432,11 @@
         },
         "externalSide": "east",
         "caps": {
-          "construction-robot": 20,
-          "logistic-robot": 20,
-          "roboport": 2,
-          "storage-chest": 10,
-          "passive-provider-chest": 10
+          "construction-robot": 50,
+          "logistic-robot": 50,
+          "roboport": 10,
+          "storage-chest": 50,
+          "passive-provider-chest": 50
         }
       },
       {
@@ -601,7 +601,7 @@
           "y": -1.5
         },
         "externalSide": "east",
-        "cap": 20
+        "cap": 50
       },
       {
         "item": "logistic-robot",
@@ -617,7 +617,7 @@
           "y": -1.5
         },
         "externalSide": "east",
-        "cap": 20
+        "cap": 50
       },
       {
         "item": "roboport",
@@ -633,7 +633,7 @@
           "y": -1.5
         },
         "externalSide": "east",
-        "cap": 2
+        "cap": 10
       },
       {
         "item": "storage-chest",
@@ -649,7 +649,7 @@
           "y": -1.5
         },
         "externalSide": "east",
-        "cap": 10
+        "cap": 50
       },
       {
         "item": "passive-provider-chest",
@@ -665,7 +665,7 @@
           "y": -1.5
         },
         "externalSide": "east",
-        "cap": 10
+        "cap": 50
       }
     ],
     "machineCounts": {
@@ -912,11 +912,11 @@
       "collector": 201,
       "chest": 200,
       "caps": {
-        "construction-robot": 20,
-        "logistic-robot": 20,
-        "roboport": 2,
-        "storage-chest": 10,
-        "passive-provider-chest": 10
+        "construction-robot": 50,
+        "logistic-robot": 50,
+        "roboport": 10,
+        "storage-chest": 50,
+        "passive-provider-chest": 50
       },
       "deciders": {
         "construction-robot": 202,
@@ -1035,11 +1035,11 @@
     "protocol": {
       "warmupMinutes": 15,
       "measureMinutes": 30,
-      "blockedMinutes": 8,
+      "blockedMinutes": 30,
       "settleMinutes": 5,
       "recoveryMinutes": 10,
       "selectivePhases": 5,
-      "selectiveSettleMinutes": 5,
+      "selectiveSettleMinutes": 30,
       "selectiveMeasureMinutes": 10
     },
     "construction": {
@@ -1057,15 +1057,72 @@
       "substation": 2
     },
     "setupNotes": [
-      "Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests, 10 passive provider chests. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. Supply electricity at either substation; the two are wired together.",
+      "Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests, 50 passive provider chests. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. Supply electricity at either substation; the two are wired together.",
       "Supplied electronic circuits: 145 per minute at the nominal target, one green-circuits copy (360 per minute) covers it.",
       "The entrance panels are the supply to plan for. Fed at exactly the panel figures the workshop makes about 4.9 construction robots, 4.9 logistic robots, 0.5 roboports and 2.0 of each chest per minute (token pace 4.9 / 4.88 / 0.51 / 1.97 / 1.97), all above the 95% floors; panel-supply-report.json is that full-protocol run. With more supply than the panels a boost of one eighth switches on while the ring is well stocked: about 5.5 / 5.5 / 0.57 / 2.2 / 2.2 per minute from roughly 1.25 times the panel figures upward (about 165 electronic circuits, 120 iron, 107 copper, 85 steel, 84 plastic, 450 sulfuric acid and 169 lubricant per minute when every entrance is saturated). Below the panel figures the roboport falls short first.",
-      "Leave the shared chest unrestricted (no bar). Caps live in the five filter deciders next to the chest.",
+      "Leave the shared chest unrestricted (no bar). Caps (50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests, 50 passive provider chests) live in the five filter deciders next to the chest; the chest has 48 slots and the five products at their caps fill five.",
       "The ring holds at most the stock limits in loopControl; do not remove the red wires from ring tiles or the entrance belts, which are circuit-gated."
     ],
     "greenCircuitSupply": {
       "perMinute": 145,
       "copiesOfGreenCircuits": 1
-    }
+    },
+    "versions": [
+      {
+        "label": "Full-stack caps",
+        "summary": "The chest holds one full stack of each product: 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests and 50 passive provider chests before the collector stops taking that product.",
+        "blueprintSha256": "e8d154c907fd8aee84de6c6bfbf2d2242cd0dcebd00c3b63c4892c793e2346e6",
+        "file": "robot-essentials.txt",
+        "report": "native-report.json",
+        "width": 33,
+        "height": 16,
+        "tiles": 528,
+        "machines": 28,
+        "outputsPerMinute": {
+          "steady": {
+            "construction-robot": 5.533333333333333,
+            "logistic-robot": 5.5,
+            "roboport": 0.6,
+            "storage-chest": 2.2,
+            "passive-provider-chest": 2.2
+          },
+          "recovery": {
+            "construction-robot": 5.4,
+            "logistic-robot": 5.5,
+            "roboport": 0.6,
+            "storage-chest": 2.2,
+            "passive-provider-chest": 2.2
+          }
+        }
+      },
+      {
+        "label": "Twenty-robot caps",
+        "summary": "The earlier string: the chest stops at 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests and 10 passive provider chests. Same layout, machines and rates.",
+        "blueprintSha256": "afdc129e1e85043a6b9a9a7b026129c8691a29a7994546247cd7e9d333654c48",
+        "file": "history/twenty-robot-caps/robot-essentials.txt",
+        "manifest": "history/twenty-robot-caps/manifest.json",
+        "report": "history/twenty-robot-caps/native-report.json",
+        "width": 33,
+        "height": 16,
+        "tiles": 528,
+        "machines": 28,
+        "outputsPerMinute": {
+          "steady": {
+            "construction-robot": 5.533333333333333,
+            "logistic-robot": 5.5,
+            "roboport": 0.6,
+            "storage-chest": 2.2,
+            "passive-provider-chest": 2.2
+          },
+          "recovery": {
+            "construction-robot": 5.5,
+            "logistic-robot": 5.4,
+            "roboport": 0.6,
+            "storage-chest": 2.2,
+            "passive-provider-chest": 2.2
+          }
+        }
+      }
+    ]
   }
 ]

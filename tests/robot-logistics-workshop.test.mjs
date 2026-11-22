@@ -165,3 +165,35 @@ test('superseded 106 x 24 version is kept with its own qualified report',async()
  assert.match((await read(h+'NOTE.md')).toString(),/superseded/);
  assert(m.footprint.width*m.footprint.height<old.footprint.width*old.footprint.height*.95,'replacement must be at least 5% smaller');
 });
+
+test('output caps are one full stack of each product; the twenty-robot version is kept and listed',async()=>{
+ const caps={'construction-robot':50,'logistic-robot':50,roboport:10,'storage-chest':50,'passive-provider-chest':50};
+ const oldCaps={'construction-robot':20,'logistic-robot':20,roboport:2,'storage-chest':10,'passive-provider-chest':10};
+ assert.deepEqual(m.outputCaps,caps);assert.deepEqual(m.stockControl.caps,caps);
+ // Closed hold and selective settles outlast the slowest cap (50 chests at about 4.4 per minute).
+ assert(m.protocol.blockedMinutes>=15&&m.protocol.selectiveSettleMinutes>=15&&m.protocol.selectivePhases===5);
+ assert.deepEqual(report.protocolMinutes,{warmup:15,measure:30,blocked:m.protocol.blockedMinutes,settle:m.protocol.settleMinutes,recovery:m.protocol.recoveryMinutes,phases:5,phase:m.protocol.selectiveSettleMinutes+m.protocol.selectiveMeasureMinutes,phaseSettle:m.protocol.selectiveSettleMinutes});
+ for(const item of products)assert(evidence.recovery.capReachedMinute[item]<=m.protocol.blockedMinutes,`${item} cap reached after the closed hold`);
+ for(const phase of evidence.independentStockCapTests)assert(phase.capReachedMinute<=m.protocol.selectiveSettleMinutes,`${phase.blockedProduct} cap reached after the selective settle`);
+ for(const phase of evidence.independentStockCapTests)assert.equal(phase.settlingMinutes,m.protocol.selectiveSettleMinutes);
+ const old=dir+'history/twenty-robot-caps/';
+ const [oldManifest]=JSON.parse(await read(old+'manifest.json'));const oldCode=(await read(old+oldManifest.file)).toString().trim();
+ assert.equal(hash(oldCode),'7799803137e2407df1c55de9a8e090a03bbc8d45c5f55f4c633e9ab877ca15fc');assert.equal(oldManifest.blueprintSha256,hash(oldCode));
+ assert.deepEqual(oldManifest.outputCaps,oldCaps);
+ const oldReport=JSON.parse(await read(old+'native-report.json'));assert.equal(oldReport.passed,true);assert.equal(oldReport.builds[0].blueprintSha256,oldManifest.blueprintSha256);
+ assert.match((await read(old+'NOTE.md')).toString(),/twenty/i);
+ // Only the five cap deciders (and the description naming them) differ between the two strings.
+ const oldBp=decodeBlueprint(oldCode).blueprint;assert.equal(oldBp.entities.length,entities.length);
+ const gates=new Set(Object.values(m.stockControl.deciders));assert.equal(gates.size,5);
+ const mask=e=>{const c=structuredClone(e);if(gates.has(c.entity_number))for(const d of c.control_behavior.decider_conditions.conditions)d.constant='cap';return c;};
+ assert.deepEqual(oldBp.entities.map(mask),entities.map(mask));assert.deepEqual(oldBp.wires,bp.wires);
+ assert.deepEqual(oldManifest.loopControl,m.loopControl);assert.deepEqual(oldManifest.productionClock,m.productionClock);assert.deepEqual(oldManifest.footprint,m.footprint);
+ assert.deepEqual(m.versions.map(v=>v.label),['Full-stack caps','Twenty-robot caps']);
+ assert.deepEqual(m.versions.map(v=>v.blueprintSha256),[m.blueprintSha256,oldManifest.blueprintSha256]);
+ assert.deepEqual(m.versions.map(v=>v.file),[m.file,'history/twenty-robot-caps/'+m.file]);
+ for(const v of m.versions){assert.equal(v.tiles,1071);assert.equal(v.machines,55);for(const side of ['steady','recovery'])for(const item of products)assert(v.outputsPerMinute[side][item]>=targets[item]*.95);}
+ // Stack sizes and chest slots (needs the prototype dump; skipped without it).
+ const rawPath=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
+ const bytes=await fs.readFile(rawPath).catch(()=>null);
+ if(bytes){const raw=JSON.parse(bytes);let slots=0;for(const item of products){assert.equal(caps[item],raw.item[item].stack_size,`${item} cap is one full stack`);slots+=Math.ceil(caps[item]/raw.item[item].stack_size);}assert(slots<=raw['logistic-container']['passive-provider-chest'].inventory_size);}
+});

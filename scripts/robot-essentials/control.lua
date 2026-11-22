@@ -242,6 +242,18 @@ script.on_event(defines.events.on_tick,function()
     local selectiveIndex=(NP>0 and game.tick>SELECTIVE_START) and math.floor((game.tick-SELECTIVE_START-1)/PH)+1 or 0
     local selected=selectiveIndex>0 and b.products[selectiveIndex] or nil
     if selected==p.item then paused=true end
+    -- When each stock first reached its cap (minutes into the closed hold or the selective phase): the qualification
+    -- needs the cap reached before the measurement window starts, not only at the end of the phase.
+    if paused then
+     local held=e.get_item_count(p.item)
+     if selected==p.item then
+      t.selectiveReached=t.selectiveReached or {};t.selectiveReached[selectiveIndex]=t.selectiveReached[selectiveIndex] or {}
+      if not t.selectiveReached[selectiveIndex].minute and held>=p.cap then t.selectiveReached[selectiveIndex].minute=((game.tick-SELECTIVE_START-1)%PH)/3600 end
+     elseif game.tick>MEASURE_END and game.tick<=MEASURE_END+B then
+      t.blockedReached=t.blockedReached or {}
+      if not t.blockedReached[p.item] and held>=p.cap then t.blockedReached[p.item]=(game.tick-MEASURE_END)/3600 end
+     end
+    end
     local n=0
     if not paused then n=e.remove_item{name=p.item,count=1000000} end
     if selected and (game.tick-SELECTIVE_START-1)%PH>=PS then t.selectiveCounts=t.selectiveCounts or {};t.selectiveCounts[selectiveIndex]=t.selectiveCounts[selectiveIndex]or {};local q=t.selectiveCounts[selectiveIndex];q[p.item]=(q[p.item]or 0)+n end
@@ -340,7 +352,7 @@ script.on_event(defines.events.on_tick,function()
   for index,t in ipairs(storage.tests)do
    local recovery={blockedMinutes=B/3600,settlingMinutes=S/3600,measurementMinutes=R/3600,outputsPerMinute={}}
    for _,item in ipairs(payload.builds[index].products or {})do recovery.outputsPerMinute[item]=(t.recoveryOutput[item]or 0)/(math.max(R,1)/3600)end
-   recovery.pauseMode='natural-five-product-stocking-collection-paused-no-product-fixtures';recovery.collectionPauseStock=t.collectionPauseStock;recovery.blockedOutputFilled=t.blockedOutputFilled
+   recovery.capReachedMinute=t.blockedReached or {};recovery.pauseMode='natural-five-product-stocking-collection-paused-no-product-fixtures';recovery.collectionPauseStock=t.collectionPauseStock;recovery.blockedOutputFilled=t.blockedOutputFilled
    storage.report.builds[index].recovery=recovery
   end
   helpers.write_file('result.json',helpers.table_to_json(storage.report),false)
@@ -352,6 +364,7 @@ script.on_event(defines.events.on_tick,function()
     local phase={blockedProduct=item,settlingMinutes=PS/3600,measurementMinutes=(PH-PS)/3600,outputsPerMinute={}}
     for _,other in ipairs(b.products)do if other~=item then phase.outputsPerMinute[other]=((t.selectiveCounts[i]or {})[other]or 0)/((PH-PS)/3600) end end
     phase.finalBlockedStock=t.selectiveStocks[i]
+    phase.capReachedMinute=(t.selectiveReached or {})[i] and t.selectiveReached[i].minute or nil
     phases[#phases+1]=phase
    end
    storage.report.builds[index].independentStockCapTests=phases

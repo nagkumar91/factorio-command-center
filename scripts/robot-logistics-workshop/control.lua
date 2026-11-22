@@ -1,4 +1,11 @@
 local payload=helpers.json_to_table(require('payload'))
+-- Phase lengths. The selective phases (one product held at its cap while the other four are collected) default to 15 minutes
+-- (5 settle, 10 measured); payload.selective sets longer phases for full-stack caps. SELECTIVE_START follows the recovery
+-- protocol (closed hold, settle, measure), SELECTIVE_END the five phases.
+local SEL=payload.selective or {phaseTicks=54000,settleTicks=18000}
+local SELECTIVE_START=payload.warmup+payload.measure+(payload.recovery and payload.recovery.pauseTicks+payload.recovery.settleTicks+payload.recovery.measureTicks or 72000)
+local SELECTIVE_END=SELECTIVE_START+5*SEL.phaseTicks
+local MEASURE_MINUTES=(SEL.phaseTicks-SEL.settleTicks)/3600
 local function check(ok,msg) if not ok then error('FLIGHT_SCIENCE: '..msg) end end
 local function status(e) for n,v in pairs(defines.entity_status) do if v==e.status then return n end end return tostring(e.status) end
 local function crafting(e) return e.type=='assembling-machine' or e.type=='furnace' end
@@ -84,13 +91,14 @@ script.on_init(function()
   end end
   check(t.fixture~=nil,'no power fixture')
  end
- if game.tick==payload.warmup+payload.measure+72000+270000 then
+ if game.tick==SELECTIVE_END then
   for index,t in ipairs(storage.tests)do
    local b=payload.builds[index];local phases={}
    for i,item in ipairs(b.products)do
-    local phase={blockedProduct=item,settlingMinutes=5,measurementMinutes=10,outputsPerMinute={}}
-    for _,other in ipairs(b.products)do if other~=item then phase.outputsPerMinute[other]=((t.selectiveCounts[i]or {})[other]or 0)/10 end end
+    local phase={blockedProduct=item,settlingMinutes=SEL.settleTicks/3600,measurementMinutes=MEASURE_MINUTES,outputsPerMinute={}}
+    for _,other in ipairs(b.products)do if other~=item then phase.outputsPerMinute[other]=((t.selectiveCounts[i]or {})[other]or 0)/MEASURE_MINUTES end end
     phase.finalBlockedStock=t.selectiveStocks[i]
+    phase.capReachedMinute=(t.selectiveReached or {})[i] and t.selectiveReached[i].minute or nil
     phases[#phases+1]=phase
    end
    storage.report.builds[index].independentStockCapTests=phases
@@ -100,7 +108,7 @@ script.on_init(function()
 
 end)
 script.on_event(defines.events.on_tick,function()
- if game.tick%3600==0 then helpers.write_file('progress.json',helpers.table_to_json{tick=game.tick,target=payload.warmup+payload.measure+72000},false) end
+ if game.tick%3600==0 then helpers.write_file('progress.json',helpers.table_to_json{tick=game.tick,target=SELECTIVE_START},false) end
  for index,t in ipairs(storage.tests or {})do
   local b=payload.builds[index]
   if game.tick==1 then t.force.enable_all_recipes();t.force.inserter_stack_size_bonus=0;t.force.bulk_inserter_capacity_bonus=1;check(t.force.inserter_stack_size_bonus==0 and t.force.bulk_inserter_capacity_bonus==1,'incorrect inserter unlock baseline') end
@@ -116,10 +124,10 @@ script.on_event(defines.events.on_tick,function()
     if game.tick>payload.warmup then t.measuredFed[i]=(t.measuredFed[i]or 0)+1 end
    end end
   end end
-  local selectiveStart=payload.warmup+payload.measure+72000
+  local selectiveStart=SELECTIVE_START
   -- Selective stocking is natural: stop collecting one product, inject none.
-  if game.tick>selectiveStart and (game.tick-selectiveStart)%54000==0 then
-   local phase=(game.tick-selectiveStart)/54000
+  if game.tick>selectiveStart and (game.tick-selectiveStart)%SEL.phaseTicks==0 then
+   local phase=(game.tick-selectiveStart)/SEL.phaseTicks
    local p=b.outputs[phase];t.selectiveStocks=t.selectiveStocks or {}
    t.selectiveStocks[phase]=t.entities[p.entity].get_item_count(p.item)
    -- Preserve failures as evidence; the validator still requires exact caps.
@@ -178,13 +186,24 @@ script.on_event(defines.events.on_tick,function()
    for outputIndex,p in ipairs(b.researchProbe and {} or b.outputs or {})do
     local e=t.entities[p.entity];local endMeasurement=payload.warmup+payload.measure
     local paused=payload.recovery and game.tick>endMeasurement and game.tick<=endMeasurement+payload.recovery.pauseTicks
-    local selectiveStart=payload.warmup+payload.measure+72000
-    local selectiveIndex=game.tick>selectiveStart and math.floor((game.tick-selectiveStart-1)/54000)+1 or 0
+    local selectiveStart=SELECTIVE_START
+    local selectiveIndex=game.tick>selectiveStart and math.floor((game.tick-selectiveStart-1)/SEL.phaseTicks)+1 or 0
     local selected=selectiveIndex>0 and b.products[selectiveIndex] or nil
     if selected==p.item then paused=true end
+    -- When each stock first reached its cap (minutes into the closed hold or the selective phase).
+    if paused and e.type~='transport-belt' and e.type~='underground-belt' then
+     local held=e.get_item_count(p.item)
+     if selected==p.item then
+      t.selectiveReached=t.selectiveReached or {};t.selectiveReached[selectiveIndex]=t.selectiveReached[selectiveIndex] or {}
+      if not t.selectiveReached[selectiveIndex].minute and held>=p.cap then t.selectiveReached[selectiveIndex].minute=((game.tick-selectiveStart-1)%SEL.phaseTicks)/3600 end
+     elseif game.tick>endMeasurement and game.tick<=endMeasurement+payload.recovery.pauseTicks then
+      t.blockedReached=t.blockedReached or {}
+      if not t.blockedReached[p.item] and held>=p.cap then t.blockedReached[p.item]=(game.tick-endMeasurement)/3600 end
+     end
+    end
     local n=0
     if not paused and e.type~='transport-belt' and e.type~='underground-belt' then n=e.remove_item{name=p.item,count=1000000} end
-    if selected and (game.tick-selectiveStart-1)%54000>=18000 then t.selectiveCounts=t.selectiveCounts or {};t.selectiveCounts[selectiveIndex]=t.selectiveCounts[selectiveIndex]or {};local q=t.selectiveCounts[selectiveIndex];q[p.item]=(q[p.item]or 0)+n end
+    if selected and (game.tick-selectiveStart-1)%SEL.phaseTicks>=SEL.settleTicks then t.selectiveCounts=t.selectiveCounts or {};t.selectiveCounts[selectiveIndex]=t.selectiveCounts[selectiveIndex]or {};local q=t.selectiveCounts[selectiveIndex];q[p.item]=(q[p.item]or 0)+n end
     if payload.recovery and game.tick>endMeasurement+payload.recovery.pauseTicks+payload.recovery.settleTicks and game.tick<=selectiveStart then t.recoveryOutput[p.item]=(t.recoveryOutput[p.item]or 0)+n end
     if game.tick>payload.warmup and game.tick<=payload.warmup+payload.measure then t.output[p.item]=(t.output[p.item]or 0)+n;t.portOutputs[outputIndex]=(t.portOutputs[outputIndex]or 0)+n end
    end
@@ -307,19 +326,20 @@ script.on_event(defines.events.on_tick,function()
   for index,t in ipairs(storage.tests)do
    local recovery={blockedMinutes=payload.recovery.pauseTicks/3600,settlingMinutes=payload.recovery.settleTicks/3600,measurementMinutes=payload.recovery.measureTicks/3600,outputsPerMinute={}}
    for _,item in ipairs(payload.builds[index].products or {})do recovery.outputsPerMinute[item]=(t.recoveryOutput[item]or 0)/(payload.recovery.measureTicks/3600)end
-   recovery.pauseMode=payload.builds[index].researchProbe and 'not-applicable-research-probe' or 'natural-five-product-stocking-collection-paused-no-product-fixtures';recovery.collectionPauseStock=t.collectionPauseStock;recovery.blockedOutputFilled=t.blockedOutputFilled
+   recovery.capReachedMinute=t.blockedReached or {};recovery.pauseMode=payload.builds[index].researchProbe and 'not-applicable-research-probe' or 'natural-five-product-stocking-collection-paused-no-product-fixtures';recovery.collectionPauseStock=t.collectionPauseStock;recovery.blockedOutputFilled=t.blockedOutputFilled
    storage.report.builds[index].recovery=recovery
   end
   helpers.write_file('result.json',helpers.table_to_json(storage.report),false)
  end
 
- if game.tick==payload.warmup+payload.measure+72000+270000 then
+ if game.tick==SELECTIVE_END then
   for index,t in ipairs(storage.tests)do
    local b=payload.builds[index];local phases={}
    for i,item in ipairs(b.products)do
-    local phase={blockedProduct=item,settlingMinutes=5,measurementMinutes=10,outputsPerMinute={}}
-    for _,other in ipairs(b.products)do if other~=item then phase.outputsPerMinute[other]=((t.selectiveCounts[i]or {})[other]or 0)/10 end end
+    local phase={blockedProduct=item,settlingMinutes=SEL.settleTicks/3600,measurementMinutes=MEASURE_MINUTES,outputsPerMinute={}}
+    for _,other in ipairs(b.products)do if other~=item then phase.outputsPerMinute[other]=((t.selectiveCounts[i]or {})[other]or 0)/MEASURE_MINUTES end end
     phase.finalBlockedStock=t.selectiveStocks[i]
+    phase.capReachedMinute=(t.selectiveReached or {})[i] and t.selectiveReached[i].minute or nil
     phases[#phases+1]=phase
    end
    storage.report.builds[index].independentStockCapTests=phases

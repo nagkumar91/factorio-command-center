@@ -16,7 +16,9 @@ const report=JSON.parse(await read(dir+'native-report.json'));
 const evidence=report.builds.find(b=>b.id===m.id);
 const officialSha='ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3';
 const targets={'construction-robot':5,'logistic-robot':5,roboport:0.5,'storage-chest':2,'passive-provider-chest':2};
-const caps={'construction-robot':20,'logistic-robot':20,roboport:2,'storage-chest':10,'passive-provider-chest':10};
+// Full-stack caps: one stack of each product (stack sizes 50 / 50 / 10 / 50 / 50 in the prototype dump).
+const caps={'construction-robot':50,'logistic-robot':50,roboport:10,'storage-chest':50,'passive-provider-chest':50};
+const oldCaps={'construction-robot':20,'logistic-robot':20,roboport:2,'storage-chest':10,'passive-provider-chest':10};
 const products=Object.keys(targets);
 const demand={'steel-plate':74.5,'iron-plate':105,lubricant:150,'electronic-circuit':145,'sulfuric-acid':400,'copper-plate':93,'plastic-bar':73};
 // Two-speed token clock: the timer adds 8 units a tick (9 while the supply gate is open).
@@ -48,6 +50,13 @@ test('the report passes, and the pass formula recomputed from its numbers holds'
  assert.equal(report.passed,true);assert.equal(evidence.passed,true);
  const p=report.protocolMinutes;
  assert(p.warmup>=15&&p.measure>=30&&p.blocked>=8&&p.settle>=5&&p.recovery>=10&&p.phases===5&&p.phase>=15&&p.phaseSettle>=5,'protocol shorter than the spec');
+ // Full-stack caps need long holds: one chest fills 50 at about 2 per minute (25 minutes), the roboport 10 at 0.5 to 0.6 (17 to 20).
+ assert(p.blocked>=30&&p.phaseSettle>=30,'closed hold and selective settle must outlast the slowest cap');
+ for(const f of [evidence,panelEvidence]){
+  for(const item of products)assert(f.recovery.capReachedMinute[item]<=p.blocked,`${item} cap reached after the closed hold`);
+  for(const phase of f.independentStockCapTests)assert(phase.capReachedMinute<=p.phaseSettle,`${phase.blockedProduct} cap reached after the selective settle`);
+  assert.equal(f.checks.capsReachedInTime,true);
+ }
  assert.deepEqual(p,{warmup:m.protocol.warmupMinutes,measure:m.protocol.measureMinutes,blocked:m.protocol.blockedMinutes,settle:m.protocol.settleMinutes,recovery:m.protocol.recoveryMinutes,phase:m.protocol.selectiveSettleMinutes+m.protocol.selectiveMeasureMinutes,phaseSettle:m.protocol.selectiveSettleMinutes,phases:m.protocol.selectivePhases});
  for(const item of products){
   assert(evidence.outputsPerMinute[item]>=floor(item),`steady ${item} ${evidence.outputsPerMinute[item]}`);
@@ -279,9 +288,42 @@ test('the replaced version is kept with its evidence',async()=>{
  assert.equal(hash(oldCode),'d2c80909a9d3017a54ccf4c7704eeda88500887da964b4d9af792a144af30763');assert.equal(oldManifest.blueprintSha256,hash(oldCode));
  const oldReport=JSON.parse(await read(dir+old+'native-report.json'));assert.equal(oldReport.passed,true);assert.equal(oldReport.builds[0].blueprintSha256,hash(oldCode));
  assert.match((await read(dir+old+'NOTE.md')).toString(),/supplyGate/);
- // Same interface as the replaced version: products, caps, panels, entrance tiles and the output chest tile.
- assert.deepEqual(oldManifest.products,m.products);assert.deepEqual(oldManifest.outputCaps,m.outputCaps);assert.deepEqual(oldManifest.recipeAudit.externalPerMinute,m.recipeAudit.externalPerMinute);
+ // Same interface as the replaced version (the chest caps are the twenty-robot ones there): products, caps, panels, entrance tiles and the output chest tile.
+ assert.deepEqual(oldManifest.products,m.products);assert.deepEqual(oldManifest.outputCaps,oldCaps);assert.deepEqual(oldManifest.recipeAudit.externalPerMinute,m.recipeAudit.externalPerMinute);
  assert.deepEqual(oldManifest.footprint,m.footprint);assert.deepEqual(oldManifest.machineCounts,m.machineCounts);
  const tile=p=>[p.kind,p.items[0],p.externalSide,p.x,p.y];
  assert.deepEqual(m.ports.filter(p=>p.kind!=='power').map(tile),oldManifest.ports.filter(p=>p.kind!=='power').map(tile));
+});
+
+test('the twenty-robot caps version is kept with both reports and listed as an older version',async()=>{
+ const old='history/twenty-robot-caps/';
+ const oldManifest=JSON.parse(await read(dir+old+'manifest.json'))[0],oldCode=(await read(dir+old+'robot-essentials.txt')).toString().trim();
+ assert.equal(hash(oldCode),'afdc129e1e85043a6b9a9a7b026129c8691a29a7994546247cd7e9d333654c48');assert.equal(oldManifest.blueprintSha256,hash(oldCode));
+ for(const f of ['native-report.json','panel-supply-report.json']){const r=JSON.parse(await read(dir+old+f));assert.equal(r.passed,true);assert.equal(r.builds[0].blueprintSha256,hash(oldCode));}
+ assert.match((await read(dir+old+'NOTE.md')).toString(),/twenty/i);
+ assert.deepEqual(oldManifest.outputCaps,oldCaps);assert.notEqual(oldManifest.blueprintSha256,m.blueprintSha256);
+ // Only the five chest caps (and the description that names them) differ: the layout, machines, ring limits and clock are the old string's.
+ const oldBp=decodeBlueprint(oldCode).blueprint;
+ assert.equal(oldBp.entities.length,entities.length);
+ const capGates=new Set(Object.values(m.stockControl.deciders));assert.equal(capGates.size,5);
+ const mask=e=>{const c=structuredClone(e);if(capGates.has(c.entity_number))for(const d of c.control_behavior.decider_conditions.conditions)d.constant='cap';return c;};
+ assert.deepEqual(oldBp.entities.map(mask),entities.map(mask),'entities differ beyond the five cap constants');
+ assert.deepEqual(oldBp.wires,bp.wires);
+ assert.deepEqual(oldManifest.loopControl,m.loopControl);assert.deepEqual(oldManifest.productionClock,m.productionClock);assert.deepEqual(oldManifest.footprint,m.footprint);
+ // versions, newest first, built with familyVersions
+ assert.deepEqual(m.versions.map(v=>v.label),['Full-stack caps','Twenty-robot caps']);
+ assert.deepEqual(m.versions.map(v=>v.blueprintSha256),[m.blueprintSha256,oldManifest.blueprintSha256]);
+ assert.deepEqual(m.versions.map(v=>v.file),['robot-essentials.txt',old+'robot-essentials.txt']);
+ for(const v of m.versions){assert(v.tiles===528&&v.machines===28);for(const side of ['steady','recovery'])for(const item of products)assert(v.outputsPerMinute[side][item]>=floor(item));}
+ assert(!m.versions.some(v=>/\d/.test(v.label)));
+});
+
+test('stack sizes and chest slots: five products at their caps fit one passive provider chest',async()=>{
+ const rawPath=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
+ const bytes=await fs.readFile(rawPath).catch(()=>null);
+ if(!bytes)return;
+ const raw=JSON.parse(bytes);
+ let slots=0;
+ for(const item of products){const stack=raw.item[item].stack_size;assert(caps[item]<=stack,`${item} cap above one stack`);assert.equal(caps[item],stack,`${item} cap is one full stack`);slots+=Math.ceil(caps[item]/stack);}
+ assert(slots<=raw['logistic-container']['passive-provider-chest'].inventory_size);
 });

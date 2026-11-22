@@ -5,7 +5,8 @@
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {encodeBlueprint} from '../blueprints.mjs';
+import {encodeBlueprint,decodeBlueprint} from '../blueprints.mjs';
+import {familyVersions} from '../blueprint-versions.mjs';
 import {powerFiveLayout} from './power.mjs';
 import {starterBounds} from '../science-factory/local-ports/compact-shared-layout.mjs';
 
@@ -33,7 +34,12 @@ const nominal={'construction-robot':0.98,'logistic-robot':0.975,roboport:1.012,'
 // ---------------------------------------------------------------- targets
 const targets={'construction-robot':5,'logistic-robot':5,roboport:0.5,'storage-chest':2,'passive-provider-chest':2};
 const products=Object.keys(targets);
-const caps={'construction-robot':20,'logistic-robot':20,roboport:2,'storage-chest':10,'passive-provider-chest':10};
+// Output chest caps: one full stack of each product (stack sizes in the prototype dump: robots 50, roboport 10,
+// chests 50). The earlier twenty-robot string (history/twenty-robot-caps) is RE_OPTIONS='{"caps":{"construction-robot":20,
+// "logistic-robot":20,"roboport":2,"storage-chest":10,"passive-provider-chest":10},"protocol":{"blockedMinutes":8,
+// "selectiveSettleMinutes":5}}'.
+const caps={'construction-robot':50,'logistic-robot':50,roboport:10,'storage-chest':50,'passive-provider-chest':50,...options.caps};
+const capText=products=>products.map(p=>caps[p]+' '+(p==='construction-robot'?'construction robots':p==='logistic-robot'?'logistic robots':p==='roboport'?'roboports':p==='storage-chest'?'storage chests':'passive provider chests')).join(', ');
 const headroom={'construction-robot':1.05,'logistic-robot':1.08,roboport:1.15,'storage-chest':1.1,'passive-provider-chest':1.1,...options.headroom};
 // Free-running timer: one unit per tick. Two-speed clock: `base` or `base+boost` units per tick.
 const periodTicks=Object.fromEntries(products.map(p=>[p,Math.floor(3600/(targets[p]*headroom[p]))]));
@@ -382,9 +388,13 @@ for(const e of entities)e.tags={...e.tags,flight_science_entity:e.entity_number}
 
 // ---------------------------------------------------------------- blueprint and manifest
 const label='Robot essentials · 5/5/0.5/2/2 per minute';
-const description='Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests, 10 passive provider chests. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. '+(options.oldPowerWording?'Supply electricity at the marked substation.':'Supply electricity at either substation; the two are wired together.');
+const description='Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps '+capText(products)+'. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. '+(options.oldPowerWording?'Supply electricity at the marked substation.':'Supply electricity at either substation; the two are wired together.');
 const bp={item:'blueprint',version:562954249961472,label,description,entities,wires,icons:products.slice(0,4).map((name,i)=>({index:i+1,signal:{type:'item',name}}))};
-const code=encodeBlueprint({blueprint:bp});
+// Keep the committed string when it decodes to exactly this blueprint (another zlib build may compress the same
+// JSON differently), so its SHA-256 and native report stay valid everywhere.
+const committed=await fs.readFile(OUT+'/'+id+'.txt','utf8').then(t=>t.trim(),()=>null);
+const sameBlueprint=t=>{try{return JSON.stringify(decodeBlueprint(t))===JSON.stringify({blueprint:bp});}catch{return false;}};
+const code=committed&&sameBlueprint(committed)?committed:encodeBlueprint({blueprint:bp});
 const boundsRaw={...raw,container:{...raw.container,...raw['logistic-container']},'arithmetic-combinator':{...raw['arithmetic-combinator'],...raw['decider-combinator'],...raw['constant-combinator']}};
 const footprint=starterBounds(entities,boundsRaw);
 assert.deepEqual(footprint,preBounds,'power grew the rectangle');
@@ -393,7 +403,9 @@ assert(maximumStock<=0.6*capacity,`ring limits ${maximumStock} above 60% of ${ca
 // Status follows the published evidence: qualified only when the existing report passed for this exact string.
 let status=process.env.RE_STATUS||'native-validation-pending';
 try{const r=JSON.parse(await fs.readFile(OUT+'/native-report.json'));if(!process.env.RE_STATUS&&r.passed===true&&r.short!==true&&r.builds?.[0]?.blueprintSha256===sha(code))status='qualified';}catch{}
-const protocol={warmupMinutes:15,measureMinutes:30,blockedMinutes:8,settleMinutes:5,recoveryMinutes:10,selectivePhases:products.length,selectiveSettleMinutes:5,selectiveMeasureMinutes:10};
+// Protocol minutes. The chest starts empty, so the closed hold and each selective settle must outlast the time one product
+// needs to reach its cap at the measured rate (storage and passive provider chests: 50 at about 2 per minute is 25 minutes).
+const protocol={warmupMinutes:15,measureMinutes:30,blockedMinutes:30,settleMinutes:5,recoveryMinutes:10,selectivePhases:products.length,selectiveSettleMinutes:30,selectiveMeasureMinutes:10,...options.protocol};
 const portView=kind=>ports.filter(p=>p.kind===kind).map(p=>({...p,item:p.items[0]}));
 const manifest={
  id,name:label,file:id+'.txt',blueprintSha256:sha(code),prototypeSha256:sha(bytes),class:'rate',status,
@@ -415,11 +427,17 @@ const manifest={
   'Supplied electronic circuits: 145 per minute at the nominal target, one green-circuits copy (360 per minute) covers it.',
   ...(supplyGate?['The entrance panels are the supply to plan for. Fed at exactly the panel figures the workshop makes about 4.9 construction robots, 4.9 logistic robots, 0.5 roboports and 2.0 of each chest per minute (token pace '+products.map(p=>Math.round(3600*supplyGate.base/periodUnits[p]*100)/100).join(' / ')+'), all above the 95% floors; panel-supply-report.json is that full-protocol run. With more supply than the panels a boost of one eighth switches on while the ring is well stocked: about 5.5 / 5.5 / 0.57 / 2.2 / 2.2 per minute from roughly 1.25 times the panel figures upward (about 165 electronic circuits, 120 iron, 107 copper, 85 steel, 84 plastic, 450 sulfuric acid and 169 lubricant per minute when every entrance is saturated). Below the panel figures the roboport falls short first.']
    :['Plan supply above the entrance panels: the panel figures are recipe totals at the targets, but the production tokens run the products 5 to 15% above target, so the measured draw is about 163 electronic circuits, 121 iron, 107 copper, 86 steel and 85 plastic per minute (about 15% above the panels) and about 442 sulfuric acid and 165 lubricant per minute (about 10% above theirs). Fed at exactly the panel figures, logistic robots fall to about 1 per minute, because steel reaches the engine machines last; 1.10x still fails and 1.15x (the measured draw) passes (exploration measurement, not the published protocol).']),
-  'Leave the shared chest unrestricted (no bar). Caps live in the five filter deciders next to the chest.',
+  'Leave the shared chest unrestricted (no bar). Caps ('+capText(products)+') live in the five filter deciders next to the chest; the chest has 48 slots and the five products at their caps fill five.',
   'The ring holds at most the stock limits in loopControl; do not remove the red wires from ring tiles or the entrance belts, which are circuit-gated.'],
  greenCircuitSupply:{perMinute:required['electronic-circuit'],copiesOfGreenCircuits:Math.ceil(required['electronic-circuit']/360)},
 };
 await fs.mkdir(OUT,{recursive:true});
 await fs.writeFile(OUT+'/'+id+'.txt',code+'\n');
+// Tested versions, newest first (scripts/blueprint-versions.mjs): the full-stack string and the twenty-robot string it
+// replaced, kept complete in history/ with its own passing reports. Only for the published string when the folder holds both.
+const olderDir='history/twenty-robot-caps',hasOlder=await fs.access(OUT+'/'+olderDir+'/manifest.json').then(()=>true,()=>false);
+if(status==='qualified'&&hasOlder&&!options.caps)manifest.versions=await familyVersions(OUT,[
+ {label:'Full-stack caps',summary:'The chest holds one full stack of each product: 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests and 50 passive provider chests before the collector stops taking that product.',file:id+'.txt',width:footprint.width,height:footprint.height,report:'native-report.json'},
+ {label:'Twenty-robot caps',summary:'The earlier string: the chest stops at 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests and 10 passive provider chests. Same layout, machines and rates.',file:olderDir+'/'+id+'.txt',manifest:olderDir+'/manifest.json',report:olderDir+'/native-report.json'}]);
 await fs.writeFile(OUT+'/manifest.json',JSON.stringify([manifest],null,2)+'\n');
 console.log(JSON.stringify({id,out:OUT,footprint,area:footprint.width*footprint.height,machines:Object.values(machineCounts).reduce((a,b)=>a+b,0),entities:entities.length,required,blueprintSha256:manifest.blueprintSha256,maximumStock,capacity}));

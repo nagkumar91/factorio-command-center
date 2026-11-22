@@ -210,6 +210,24 @@ try{
  await page.locator('#modal [data-action="copy-blueprint"]').click();
  assert.equal(await page.evaluate(()=>window.__copiedBlueprint),(await fs.readFile('blueprint-sources/plastic-bars/plastic-bars-large.txt','utf8')).trim(),'copy gives the large string');
  await page.locator('[data-action="close-modal"]').click();
+ // Robot workshops: the full-stack-caps string (current) and the twenty-robot-caps string it replaced, both selectable with rates.
+ for(const [family,query,collection] of [['robot-essentials','robot essentials','essentials'],['robot-logistics-workshop','robot logistics workshop','flight-plans']]){
+  const rec=atlas.blueprints.find(b=>b.file?.startsWith(`sources/designed-blueprints/${family}/`)&&b.publication);
+  assert.ok(rec&&rec.publication.version===2&&rec.publication.history.length===1,family+' has two versions');
+  assert.ok(!rec.publication.alternatives,family+': successive versions keep their numbers');
+  await page.goto(url+'index.html');await page.goto(url+'?collection='+collection+'#blueprints');
+  await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+  await page.locator('#blueprint-direction').selectOption('all');await page.locator('#blueprint-search').fill(query);
+  await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${rec.id}"]`).click();
+  const robotOptions=await page.locator('#blueprint-version option').allInnerTexts();
+  assert.equal(robotOptions.length,2,family);
+  assert.match(robotOptions[0],/^Version 2 · Full-stack caps · Recommended · \d+ × \d+ tiles · Construction robot [\d.]+\/min$/,family+': '+robotOptions[0]);
+  assert.match(robotOptions[1],/^Version 1 · Twenty-robot caps · \d+ × \d+ tiles · Construction robot [\d.]+\/min$/,family+': '+robotOptions[1]);
+  assert.equal(await page.locator('#modal .version-compare tbody tr').count(),2);
+  assert.equal(await page.locator('#modal .version-compare thead th',{hasText:'Construction robot'}).count(),1,'rates per version');
+  console.log(family+' picker: '+JSON.stringify(robotOptions));
+  await page.locator('[data-action="close-modal"]').click();
+ }
  // Families without recorded inputs or power keep the earlier table: no extra columns.
  await page.goto(url+'index.html');await page.goto(url+'?collection=essentials#blueprints');
  await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();

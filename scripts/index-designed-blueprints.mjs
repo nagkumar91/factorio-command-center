@@ -101,6 +101,11 @@ async function versionMachines(record){
  record.publication.machines=await countMachines(decodeBlueprint(record.code).blueprint);
  for(const h of record.publication.history||[])h.machines=await countMachines(decodeBlueprint((await fs.readFile('site/'+h.code,'utf8')).trim()).blueprint);
 }
+// South entrance supply factories of the compact six-pack tier (blueprint-sources/flight-science-sided/heavy-supplies/<id>/):
+// every folder holding a manifest is registered like the family's three supply factories, so a later one needs no edit here.
+const heavySupplyDir='blueprint-sources/flight-science-sided/heavy-supplies';
+const heavySpecs=[];
+for(const id of (await fs.readdir(heavySupplyDir).catch(()=>[])).sort())if(await fs.access(heavySupplyDir+'/'+id+'/manifest.json').then(()=>true,()=>false))heavySpecs.push(['flight-science-sided/heavy-supplies/'+id,'Science · intermediate suppliers','Intermediate production','flight-science-sided/index.html#south-entrance-supplies']);
 const specs=[
  ['compact-expansion-workshop','Malls · building expansion','Production','compact-expansion-workshop/index.html'],
  ['early-controlled-loops','Early game · controlled loops','Production','early-controlled-loops/index.html'],
@@ -110,7 +115,8 @@ const specs=[
  ['flight-science-sided','Science · intermediate suppliers','Intermediate production','flight-science-sided/index.html'],
  ['flight-science-sided/full','Science · six packs integrated','Science production','flight-science-sided/index.html#fully-integrated'],
  ['flight-science-sided/hybrid','Science · six packs hybrid','Science production','flight-science-sided/index.html#hybrid'],
- ['flight-science-sided/compact','Science · six packs compact','Science production','flight-science-sided/index.html#compact']
+ ['flight-science-sided/compact','Science · six packs compact','Science production','flight-science-sided/index.html#compact'],
+ ...heavySpecs
 ];
 for(const [folder,category,purpose,page]of specs){
  const dir='blueprint-sources/'+folder,manifest=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',report=await read(reportFile);

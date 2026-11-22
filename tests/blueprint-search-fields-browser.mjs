@@ -94,5 +94,9 @@ try{
  {const named=new Set(await searchAll('outputs','fast transport belt')),coloured=new Set(await searchAll('outputs','red belt'));for(const t of named)assert.ok(coloured.has(t),'red belt lacks '+t);}
  {const plain=await searchAll('outputs','belt'),again=await searchAll('outputs','belt');assert.deepEqual(plain,again);}
  console.log('Produces this item: red belt '+(await searchAll('outputs','red belt')).length+' cards, yellow belt '+(await searchAll('outputs','yellow belt')).length+' cards, fast transport belt '+(await searchAll('outputs','fast transport belt')).length+' cards');
+ // South entrance supplies of the compact tier: found by the ingredient they make and by their inputs.
+ const south=['electric-furnace-supply · 20/min','productivity-module-supply · 20/min','low-density-structure-supply · 60/min'];
+ for(const [direction,query,want] of [['outputs','electric furnace',[south[0]]],['outputs','productivity module',[south[1]]],['outputs','low density structure',[south[2]]],['all','electric-furnace-supply',[south[0]]],['all','low-density-structure-supply',[south[2]]],['inputs','stone brick',[south[0]]],['inputs','steel plate',[south[0],south[2]]],['inputs','advanced circuit',[south[0],south[1]]],['inputs','electronic circuit',[south[1]]],['inputs','plastic bar',[south[2]]]]){const found=await searchAll(direction,query);for(const title of want)assert.ok(found.includes(title),direction+': '+query+' gave '+found.length+' cards without '+title+': '+found.slice(0,5).join(' | '));}
+ assert.ok(!(await searchAll('outputs','processing unit')).some(t=>/supply/.test(t)&&/processing/.test(t)),'no processing-unit supply is registered yet');
  assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials, the space launch builds, the electric smelter and the circuit suppliers are findable by input and output.');
 }finally{await browser.close();}

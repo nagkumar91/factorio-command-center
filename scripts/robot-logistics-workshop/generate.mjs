@@ -9,7 +9,8 @@
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {encodeBlueprint} from '../blueprints.mjs';
+import {encodeBlueprint,decodeBlueprint} from '../blueprints.mjs';
+import {familyVersions} from '../blueprint-versions.mjs';
 import {starterBounds} from '../science-factory/local-ports/compact-shared-layout.mjs';
 
 export const RAW=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
@@ -22,7 +23,11 @@ const options=JSON.parse(process.env.RLW_OPTIONS||'{}');
 // ---------------------------------------------------------------- targets
 const targets={'construction-robot':10,'logistic-robot':10,roboport:1,'storage-chest':4,'passive-provider-chest':4};
 const products=Object.keys(targets);
-const caps={'construction-robot':20,'logistic-robot':20,roboport:2,'storage-chest':10,'passive-provider-chest':10};
+// Output chest caps: one full stack of each product (stack sizes in the prototype dump: robots 50, roboport 10, chests 50).
+// The earlier twenty-robot string (history/twenty-robot-caps) is RLW_OPTIONS='{"caps":{"construction-robot":20,"logistic-robot":20,
+// "roboport":2,"storage-chest":10,"passive-provider-chest":10}}'.
+const caps={'construction-robot':50,'logistic-robot':50,roboport:10,'storage-chest':50,'passive-provider-chest':50,...options.caps};
+const capText=products.map(p=>caps[p]+' '+(p==='construction-robot'?'construction robots':p==='logistic-robot'?'logistic robots':p==='roboport'?'roboports':p==='storage-chest'?'storage chests':'passive provider chests')).join(', ');
 // Token periods run each product a little above its target so the measured rates clear the targets.
 const headroom={'construction-robot':1.02,'logistic-robot':1.08,roboport:1.18,'storage-chest':1.111,'passive-provider-chest':1.111,...options.headroom};
 const periodTicks=Object.fromEntries(products.map(p=>[p,Math.floor(3600/(targets[p]*headroom[p]))]));
@@ -384,9 +389,13 @@ for(const e of entities)e.tags={...e.tags,flight_science_entity:e.entity_number}
 
 // ---------------------------------------------------------------- blueprint and manifest
 const label='Robot logistics workshop · 10/10/1/4/4 per minute';
-const description='Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast and bulk inserters, substations. WEST entrances north to south: sulfuric acid (pipe), plastic, copper, iron, steel (belts), lubricant (pipe). EAST: one passive provider chest with independent caps 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests, 10 passive provider chests. All circuits, cable, gears, pipes, engines, batteries, frames and steel chests are made inside. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. Supply electricity at any substation; the three are wired together.';
+const description='Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast and bulk inserters, substations. WEST entrances north to south: sulfuric acid (pipe), plastic, copper, iron, steel (belts), lubricant (pipe). EAST: one passive provider chest with independent caps '+capText+'. All circuits, cable, gears, pipes, engines, batteries, frames and steel chests are made inside. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. Supply electricity at any substation; the three are wired together.';
 const bp={item:'blueprint',version:562954249961472,label,description,entities,wires,icons:products.slice(0,4).map((name,i)=>({index:i+1,signal:{type:'item',name}}))};
-const code=encodeBlueprint({blueprint:bp});
+// Keep the committed string when it decodes to exactly this blueprint (another zlib build may compress the same
+// JSON differently), so its SHA-256 and native report stay valid everywhere.
+const committed=await fs.readFile(OUT+'/'+id+'.txt','utf8').then(t=>t.trim(),()=>null);
+const sameBlueprint=t=>{try{return JSON.stringify(decodeBlueprint(t))===JSON.stringify({blueprint:bp});}catch{return false;}};
+const code=committed&&sameBlueprint(committed)?committed:encodeBlueprint({blueprint:bp});
 const boundsRaw={...raw,container:{...raw.container,...raw['logistic-container']},'arithmetic-combinator':{...raw['arithmetic-combinator'],...raw['decider-combinator'],...raw['constant-combinator']}};
 const footprint=starterBounds(entities,boundsRaw);
 const capacity=loop.length*8,maximumStock=Object.values(limits).reduce((a,b)=>a+b,0);
@@ -404,13 +413,24 @@ const manifest={
  stockControl:{mode:'five deciders, independent chest item < cap; dynamic collector filters',collector:collector.entity_number,chest:chest.entity_number,caps,deciders:stockDeciders},
  productionClock:{headroom,timer:timer.entity_number,moduloEntities,robotTokens,periodTicks},
  substations:substations.map(e=>e.entity_number),
+ // Protocol minutes. The chest starts empty, so the closed hold and each selective settle must outlast the time one product
+ // needs to reach its cap at the measured rate (storage chests: 50 at about 4.4 per minute is 11.4 minutes).
+ protocol:{warmupMinutes:15,measureMinutes:30,blockedMinutes:15,settleMinutes:5,recoveryMinutes:10,selectivePhases:products.length,selectiveSettleMinutes:15,selectiveMeasureMinutes:10,...options.protocol},
  construction:Object.fromEntries([...new Set(entities.map(e=>e.name))].sort().map(n=>[n,entities.filter(e=>e.name===n).length])),
  setupNotes:[description,
-  'Leave the shared chest unrestricted (no bar). Caps: 20 construction, 20 logistic, 2 roboports, 10 storage, 10 passive provider; they live in the five filter deciders.',
+  'Leave the shared chest unrestricted (no bar). Caps: '+capText+'; they live in the five filter deciders. The chest has 48 slots and the five products at their caps fill five.',
   'The entrance panels show recipe totals at the targets. The production tokens run the products a little above target, so plan supply for the measured draw in the README, not for the panels.',
   'Do not remove the red wires from ring tiles or the circuit conditions on the arms; the three arms on the west edge (plastic, iron, steel) are the ring entrances.'],
 };
 await fs.mkdir(OUT,{recursive:true});
 await fs.writeFile(OUT+'/'+id+'.txt',code+'\n');
+// Tested versions, newest first (scripts/blueprint-versions.mjs): the full-stack string and the twenty-robot string it
+// replaced, kept complete in history/ with its own passing report. Only for the published string when the folder holds both.
+const olderDir='history/twenty-robot-caps',hasOlder=await fs.access(OUT+'/'+olderDir+'/manifest.json').then(()=>true,()=>false);
+let qualified=false;
+try{const r=JSON.parse(await fs.readFile(OUT+'/native-report.json'));qualified=r.passed===true&&r.short!==true&&r.builds?.[0]?.blueprintSha256===sha(code);}catch{}
+if(qualified&&hasOlder&&!options.caps)manifest.versions=await familyVersions(OUT,[
+ {label:'Full-stack caps',summary:'The chest holds one full stack of each product: 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests and 50 passive provider chests before the collector stops taking that product.',file:id+'.txt',width:footprint.width,height:footprint.height,report:'native-report.json'},
+ {label:'Twenty-robot caps',summary:'The earlier string: the chest stops at 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests and 10 passive provider chests. Same layout, machines and rates.',file:olderDir+'/'+id+'.txt',manifest:olderDir+'/manifest.json',report:olderDir+'/native-report.json'}]);
 await fs.writeFile(OUT+'/manifest.json',JSON.stringify([manifest],null,2)+'\n');
 console.log(JSON.stringify({id,out:OUT,footprint,area:footprint.width*footprint.height,machines:Object.values(machineCounts).reduce((a,b)=>a+b,0),machineCounts,entities:entities.length,required,blueprintSha256:manifest.blueprintSha256,maximumStock,capacity}));
