@@ -78,5 +78,10 @@ try{
  for(const [direction,query] of [['inputs','petroleum gas'],['inputs','light oil'],['inputs','lubricant'],['inputs','sulfuric acid'],['inputs','sulfur'],['outputs','crude oil'],['outputs','iron plate']]){assert.ok(!(await searchAll(direction,query)).includes(oil),direction+': '+query+' is not an oil products '+(direction==='inputs'?'input':'output'));}
  // The plastic supplier takes the gas: petroleum gas as an output finds the oil supplier and as an input finds the plastic supplier.
  assert.ok((await searchAll('inputs','petroleum gas')).includes(plastic)&&(await searchAll('outputs','petroleum gas')).includes(oil));
+ // Small production science: found by its product (also as "purple"), and by each of its six supplied inputs; the
+ // furnaces, modules, rails and sticks it makes inside are neither inputs nor products.
+ const purple='Production science, small · 12.9/min';
+ for(const [direction,query] of [['all','purple'],['all','purple science'],['outputs','purple'],['outputs','purple pack'],['outputs','production science pack'],['all','production science'],['inputs','steel plate'],['inputs','stone brick'],['inputs','stone'],['inputs','iron plate'],['inputs','electronic circuit'],['inputs','advanced circuit'],['inputs','green circuit'],['inputs','red circuit']]){const found=await searchAll(direction,query);assert.ok(found.includes(purple),direction+': '+query+' gave '+found.length+' cards without the small production science: '+found.slice(0,6).join(' | '));}
+ for(const [direction,query] of [['inputs','rail'],['inputs','productivity module'],['inputs','electric furnace'],['outputs','rail'],['outputs','steel plate']]){assert.ok(!(await searchAll(direction,query)).includes(purple),direction+': '+query+' does not find the small production science');}
  assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials, the space launch builds, the electric smelter and the circuit suppliers are findable by input and output.');
 }finally{await browser.close();}

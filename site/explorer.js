@@ -60,9 +60,9 @@ function create(ui) {
   const options = (values, selected) => values.map(value => `<option value="${esc(value)}" ${value === selected ? 'selected' : ''}>${esc(value)}</option>`).join('');
   const matchesWords = (text, query) => query.toLowerCase().replace(/\bbots?\b/g, 'robot').split(/[^a-z0-9]+/).filter(Boolean).every(word => text.toLowerCase().replaceAll('-', ' ').includes(word) || (word.endsWith('s') && text.toLowerCase().includes(word.slice(0, -1))));
   // Circuit colours are the players' names for three items: green = electronic circuit, red = advanced circuit,
-  // blue = processing unit. A colour query matches what it matched before and, in addition, the item it names;
+  // blue = processing unit (and purple = production science pack). A colour query matches what it matched before and, in addition, the item it names;
   // every other query is untouched.
-  const CIRCUIT_COLOURS = [[/\bgreen circuits?\b/g, 'electronic circuit'], [/\bred circuits?\b/g, 'advanced circuit'], [/\bblue circuits?\b/g, 'processing unit']];
+  const CIRCUIT_COLOURS = [[/\bgreen circuits?\b/g, 'electronic circuit'], [/\bred circuits?\b/g, 'advanced circuit'], [/\bblue circuits?\b/g, 'processing unit'], [/\bpurple(?: science)?(?: packs?)?\b/g, 'production science pack']];
   const matches = (text, query) => {
     if (matchesWords(text, query)) return true;
     const named = CIRCUIT_COLOURS.reduce((q, [colour, item]) => q.replace(colour, item), query.toLowerCase());

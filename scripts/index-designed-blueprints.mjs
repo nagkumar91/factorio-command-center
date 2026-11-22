@@ -172,7 +172,10 @@ for(const [folder,category,purpose,expected,opts={}] of [
  ['plastic-bars','Chemicals · plastic bars','Production',['plastic-bar'],{current:'plastic-bars-medium',title:'Plastic bar supplier · three sizes'}],
  // Oil products supplier (22 November 2026): crude oil and water by pipe and iron plates by belt in; gas, acid and sulfur out east, lubricant and light oil out north.
  // Its rates are the design run's measured draw at each outlet (the report's builds are scenarios, with no per-build output rate).
- ['oil-products','Chemicals · oil products','Production',['petroleum-gas','sulfuric-acid','lubricant','sulfur','light-oil'],{recommendUnclaimed:true,rates:(b,info)=>Object.fromEntries(Object.entries(info.measured.scenarios.design.drawn).filter(([,n])=>n>0))}]
+ ['oil-products','Chemicals · oil products','Production',['petroleum-gas','sulfuric-acid','lubricant','sulfur','light-oil'],{recommendUnclaimed:true,rates:(b,info)=>Object.fromEntries(Object.entries(info.measured.scenarios.design.drawn).filter(([,n])=>n>0))}],
+ // Small production science (22 November 2026): two science machines, six supplied materials in on the west, packs out east.
+ // Five-pack science keeps its recommendation for production science packs; this one is found by output and by each input.
+ ['production-science-small','Science · production packs','Science production',['production-science-pack'],{recommend:[]}]
 ]){
  const dir='blueprint-sources/'+folder,allEntries=await read(dir+'/manifest.json');
  // A family of sizes (plastic bars) keeps one manifest record per size and one report per size; opts.current names the

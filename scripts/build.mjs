@@ -12,6 +12,7 @@ execFileSync('node', ['scripts/todays-flight-builds.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/essentials-pages.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/space-launch-pages.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/circuit-supplier-pages.mjs'], {stdio:'inherit'});
+execFileSync('node', ['scripts/production-science-small/page.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/plastic-bar-pages.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/oil-product-pages.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/electric-smelter-pass-through/page.mjs'], {stdio:'inherit'});
