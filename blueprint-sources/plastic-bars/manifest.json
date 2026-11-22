@@ -1,0 +1,999 @@
+[
+  {
+    "id": "plastic-bars-small",
+    "family": "plastic-bars",
+    "size": "small",
+    "name": "Plastic bar supplier · small · 240/min",
+    "file": "plastic-bars-small.txt",
+    "reportFile": "native-report-small.json",
+    "blueprintSha256": "cedfbbb3625152248f7a9d5729c7e94fb9466e6b3d4c2ef3a2b7a5750663a282",
+    "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "class": "rate",
+    "status": "qualified",
+    "measured": {
+      "steadyPerMinute": 240,
+      "recoveryPerMinute": 240,
+      "coalPerMinute": 120,
+      "gasPerMinute": 2400,
+      "exitLanesPerMinute": [
+        0,
+        240
+      ],
+      "blockedExitStock": 4,
+      "reportCreatedAt": "2026-11-22T04:36:46.176Z"
+    },
+    "variant": "small",
+    "layout": {
+      "plants": [
+        1,
+        4
+      ],
+      "substation": {
+        "x": 6,
+        "y": 1
+      },
+      "exitX": 7,
+      "rows": 1
+    },
+    "covers": "every blueprint that takes 180 per minute or less",
+    "products": [
+      "plastic-bar"
+    ],
+    "targets": {
+      "plastic-bar": 240
+    },
+    "outputCaps": {
+      "plastic-bar": 4
+    },
+    "recipeAudit": {
+      "perPlantPerMinute": {
+        "bars": 120,
+        "coal": 60,
+        "gas": 1200
+      },
+      "externalPerMinute": {
+        "coal": 120,
+        "petroleum-gas": 2400
+      },
+      "craftsPerMinute": {
+        "plastic-bar": 120
+      },
+      "machinesExact": {
+        "plastic-bar": 2
+      },
+      "recipeIngredients": {
+        "plastic-bar": [
+          {
+            "type": "fluid",
+            "name": "petroleum-gas",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "coal",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    "inputs": [
+      {
+        "kind": "input",
+        "label": "coal",
+        "items": [
+          "coal"
+        ],
+        "item": "coal",
+        "entity": 8,
+        "x": 0.5,
+        "y": 6.5,
+        "position": {
+          "x": 0.5,
+          "y": 6.5
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "perMinute": 120,
+        "tile": {
+          "x": 0,
+          "y": 6
+        },
+        "displayEntity": 24
+      }
+    ],
+    "fluids": [
+      {
+        "kind": "fluid",
+        "label": "petroleum-gas",
+        "items": [
+          "petroleum-gas"
+        ],
+        "item": "petroleum-gas",
+        "entity": 19,
+        "x": 0.5,
+        "y": 0.5,
+        "position": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "externalSide": "west",
+        "transport": "pipe",
+        "nominalPerMinute": 2400,
+        "perMinute": 2400,
+        "tile": {
+          "x": 0,
+          "y": 0
+        },
+        "connection": "the pipe on the top-left corner tile; a straight pipe from the west along the top row joins it",
+        "displayEntity": 25
+      }
+    ],
+    "outputs": [
+      {
+        "kind": "output",
+        "label": "plastic-bar",
+        "items": [
+          "plastic-bar"
+        ],
+        "item": "plastic-bar",
+        "entity": 18,
+        "x": 7.5,
+        "y": 5.5,
+        "position": {
+          "x": 7.5,
+          "y": 5.5
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "belt",
+        "cap": 4,
+        "tile": {
+          "x": 7,
+          "y": 5
+        }
+      }
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "coal",
+        "items": [
+          "coal"
+        ],
+        "item": "coal",
+        "entity": 8,
+        "x": 0.5,
+        "y": 6.5,
+        "position": {
+          "x": 0.5,
+          "y": 6.5
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "perMinute": 120,
+        "tile": {
+          "x": 0,
+          "y": 6
+        },
+        "displayEntity": 24
+      },
+      {
+        "kind": "fluid",
+        "label": "petroleum-gas",
+        "items": [
+          "petroleum-gas"
+        ],
+        "item": "petroleum-gas",
+        "entity": 19,
+        "x": 0.5,
+        "y": 0.5,
+        "position": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "externalSide": "west",
+        "transport": "pipe",
+        "nominalPerMinute": 2400,
+        "perMinute": 2400,
+        "tile": {
+          "x": 0,
+          "y": 0
+        },
+        "connection": "the pipe on the top-left corner tile; a straight pipe from the west along the top row joins it",
+        "displayEntity": 25
+      },
+      {
+        "kind": "output",
+        "label": "plastic-bar",
+        "items": [
+          "plastic-bar"
+        ],
+        "item": "plastic-bar",
+        "entity": 18,
+        "x": 7.5,
+        "y": 5.5,
+        "position": {
+          "x": 7.5,
+          "y": 5.5
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "belt",
+        "cap": 4,
+        "tile": {
+          "x": 7,
+          "y": 5
+        }
+      },
+      {
+        "kind": "power",
+        "label": "External electricity",
+        "items": [],
+        "entity": 3,
+        "x": 7,
+        "y": 3
+      }
+    ],
+    "machineCounts": {
+      "plastic-bar": 2
+    },
+    "footprint": {
+      "left": 0,
+      "top": 0,
+      "right": 8,
+      "bottom": 7,
+      "width": 8,
+      "height": 7
+    },
+    "tiles": 56,
+    "tilesPerBarPerMinute": 0.233,
+    "exitLanes": {
+      "north": 0,
+      "south": 240
+    },
+    "loopControl": [],
+    "stockControl": {
+      "mode": "belt-exit",
+      "exit": 18,
+      "cap": 4
+    },
+    "armRoles": {
+      "product": [
+        4,
+        6
+      ],
+      "coal": [
+        5,
+        7
+      ]
+    },
+    "protocol": {
+      "warmupMinutes": 15,
+      "measureMinutes": 30,
+      "blockedMinutes": 5,
+      "settleMinutes": 5,
+      "recoveryMinutes": 10
+    },
+    "construction": {
+      "bulk-inserter": 2,
+      "chemical-plant": 2,
+      "display-panel": 2,
+      "fast-transport-belt": 11,
+      "long-handed-inserter": 2,
+      "pipe": 3,
+      "pipe-to-ground": 2,
+      "substation": 1
+    },
+    "entityCount": 25,
+    "setupNotes": [
+      "Official 2.1.24 Space Age; 2 chemical plants (plastic bar), no modules, red belts, bulk and long-handed inserters, pipes and pipe-to-ground, one substation. WEST: coal 120/min on the belt at (0,6) (either lane); petroleum gas 2,400/min into the pipe at (0,0), the top-left corner, from the west. EAST: one red belt exit at (7,5), 240 plastic bars/min (all on the south lane). Supply electricity at the substation.",
+      "Belt the exit east to the plastic entrances of the consumers. The exit tile holds 4 bars when nothing takes them (4 per lane in use), and every plant then stops.",
+      "Feed coal and gas at or above the panel figures; extra coal backs up on the entrance belt and extra gas stays in the pipes."
+    ]
+  },
+  {
+    "id": "plastic-bars-medium",
+    "family": "plastic-bars",
+    "size": "medium",
+    "name": "Plastic bar supplier · medium · 600/min",
+    "file": "plastic-bars-medium.txt",
+    "reportFile": "native-report-medium.json",
+    "blueprintSha256": "13de60bc54744e51cbfd6016c15e41faecbc4e66cc3b368fa0bee1cbfe4b7fbd",
+    "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "class": "rate",
+    "status": "qualified",
+    "measured": {
+      "steadyPerMinute": 600,
+      "recoveryPerMinute": 600,
+      "coalPerMinute": 300,
+      "gasPerMinute": 6000,
+      "exitLanesPerMinute": [
+        0,
+        600
+      ],
+      "blockedExitStock": 4,
+      "reportCreatedAt": "2026-11-22T04:36:47.139Z"
+    },
+    "variant": "medium",
+    "layout": {
+      "plants": [
+        1,
+        4,
+        9,
+        12,
+        15
+      ],
+      "substation": {
+        "x": 6,
+        "y": 1
+      },
+      "exitX": 16,
+      "rows": 1
+    },
+    "covers": "520, 375 and 320 per minute",
+    "products": [
+      "plastic-bar"
+    ],
+    "targets": {
+      "plastic-bar": 600
+    },
+    "outputCaps": {
+      "plastic-bar": 4
+    },
+    "recipeAudit": {
+      "perPlantPerMinute": {
+        "bars": 120,
+        "coal": 60,
+        "gas": 1200
+      },
+      "externalPerMinute": {
+        "coal": 300,
+        "petroleum-gas": 6000
+      },
+      "craftsPerMinute": {
+        "plastic-bar": 300
+      },
+      "machinesExact": {
+        "plastic-bar": 5
+      },
+      "recipeIngredients": {
+        "plastic-bar": [
+          {
+            "type": "fluid",
+            "name": "petroleum-gas",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "coal",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    "inputs": [
+      {
+        "kind": "input",
+        "label": "coal",
+        "items": [
+          "coal"
+        ],
+        "item": "coal",
+        "entity": 17,
+        "x": 0.5,
+        "y": 6.5,
+        "position": {
+          "x": 0.5,
+          "y": 6.5
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "perMinute": 300,
+        "tile": {
+          "x": 0,
+          "y": 6
+        },
+        "displayEntity": 62
+      }
+    ],
+    "fluids": [
+      {
+        "kind": "fluid",
+        "label": "petroleum-gas",
+        "items": [
+          "petroleum-gas"
+        ],
+        "item": "petroleum-gas",
+        "entity": 48,
+        "x": 0.5,
+        "y": 0.5,
+        "position": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "externalSide": "west",
+        "transport": "pipe",
+        "nominalPerMinute": 6000,
+        "perMinute": 6000,
+        "tile": {
+          "x": 0,
+          "y": 0
+        },
+        "connection": "the pipe on the top-left corner tile; a straight pipe from the west along the top row joins it",
+        "displayEntity": 63
+      }
+    ],
+    "outputs": [
+      {
+        "kind": "output",
+        "label": "plastic-bar",
+        "items": [
+          "plastic-bar"
+        ],
+        "item": "plastic-bar",
+        "entity": 47,
+        "x": 16.5,
+        "y": 5.5,
+        "position": {
+          "x": 16.5,
+          "y": 5.5
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "belt",
+        "cap": 4,
+        "tile": {
+          "x": 16,
+          "y": 5
+        }
+      }
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "coal",
+        "items": [
+          "coal"
+        ],
+        "item": "coal",
+        "entity": 17,
+        "x": 0.5,
+        "y": 6.5,
+        "position": {
+          "x": 0.5,
+          "y": 6.5
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "perMinute": 300,
+        "tile": {
+          "x": 0,
+          "y": 6
+        },
+        "displayEntity": 62
+      },
+      {
+        "kind": "fluid",
+        "label": "petroleum-gas",
+        "items": [
+          "petroleum-gas"
+        ],
+        "item": "petroleum-gas",
+        "entity": 48,
+        "x": 0.5,
+        "y": 0.5,
+        "position": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "externalSide": "west",
+        "transport": "pipe",
+        "nominalPerMinute": 6000,
+        "perMinute": 6000,
+        "tile": {
+          "x": 0,
+          "y": 0
+        },
+        "connection": "the pipe on the top-left corner tile; a straight pipe from the west along the top row joins it",
+        "displayEntity": 63
+      },
+      {
+        "kind": "output",
+        "label": "plastic-bar",
+        "items": [
+          "plastic-bar"
+        ],
+        "item": "plastic-bar",
+        "entity": 47,
+        "x": 16.5,
+        "y": 5.5,
+        "position": {
+          "x": 16.5,
+          "y": 5.5
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "belt",
+        "cap": 4,
+        "tile": {
+          "x": 16,
+          "y": 5
+        }
+      },
+      {
+        "kind": "power",
+        "label": "External electricity",
+        "items": [],
+        "entity": 6,
+        "x": 7,
+        "y": 3
+      }
+    ],
+    "machineCounts": {
+      "plastic-bar": 5
+    },
+    "footprint": {
+      "left": 0,
+      "top": 0,
+      "right": 17,
+      "bottom": 7,
+      "width": 17,
+      "height": 7
+    },
+    "tiles": 119,
+    "tilesPerBarPerMinute": 0.198,
+    "exitLanes": {
+      "north": 0,
+      "south": 600
+    },
+    "loopControl": [],
+    "stockControl": {
+      "mode": "belt-exit",
+      "exit": 47,
+      "cap": 4
+    },
+    "armRoles": {
+      "product": [
+        7,
+        9,
+        11,
+        13,
+        15
+      ],
+      "coal": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ]
+    },
+    "protocol": {
+      "warmupMinutes": 15,
+      "measureMinutes": 30,
+      "blockedMinutes": 5,
+      "settleMinutes": 5,
+      "recoveryMinutes": 10
+    },
+    "construction": {
+      "bulk-inserter": 5,
+      "chemical-plant": 5,
+      "display-panel": 2,
+      "fast-transport-belt": 31,
+      "long-handed-inserter": 5,
+      "pipe": 12,
+      "pipe-to-ground": 2,
+      "substation": 1
+    },
+    "entityCount": 63,
+    "setupNotes": [
+      "Official 2.1.24 Space Age; 5 chemical plants (plastic bar), no modules, red belts, bulk and long-handed inserters, pipes and pipe-to-ground, one substation. WEST: coal 300/min on the belt at (0,6) (either lane); petroleum gas 6,000/min into the pipe at (0,0), the top-left corner, from the west. EAST: one red belt exit at (16,5), 600 plastic bars/min (all on the south lane). Supply electricity at the substation.",
+      "Belt the exit east to the plastic entrances of the consumers. The exit tile holds 4 bars when nothing takes them (4 per lane in use), and every plant then stops.",
+      "Feed coal and gas at or above the panel figures; extra coal backs up on the entrance belt and extra gas stays in the pipes."
+    ],
+    "versions": [
+      {
+        "label": "Medium",
+        "summary": "Covers 520, 375 and 320 per minute.",
+        "blueprintSha256": "13de60bc54744e51cbfd6016c15e41faecbc4e66cc3b368fa0bee1cbfe4b7fbd",
+        "file": "plastic-bars-medium.txt",
+        "manifest": "manifest.json",
+        "report": "native-report-medium.json",
+        "width": 17,
+        "height": 7,
+        "tiles": 119,
+        "machines": 5,
+        "outputsPerMinute": {
+          "steady": {
+            "plastic-bar": 600
+          },
+          "recovery": {
+            "plastic-bar": 600
+          }
+        },
+        "inputsPerMinute": {
+          "coal": 300,
+          "petroleum-gas": 6000
+        },
+        "inputsFromBuild": true
+      },
+      {
+        "label": "Small",
+        "summary": "Covers every blueprint that takes 180 per minute or less.",
+        "blueprintSha256": "cedfbbb3625152248f7a9d5729c7e94fb9466e6b3d4c2ef3a2b7a5750663a282",
+        "file": "plastic-bars-small.txt",
+        "manifest": "manifest.json",
+        "report": "native-report-small.json",
+        "width": 8,
+        "height": 7,
+        "tiles": 56,
+        "machines": 2,
+        "outputsPerMinute": {
+          "steady": {
+            "plastic-bar": 240
+          },
+          "recovery": {
+            "plastic-bar": 240
+          }
+        },
+        "inputsPerMinute": {
+          "coal": 120,
+          "petroleum-gas": 2400
+        },
+        "inputsFromBuild": true
+      },
+      {
+        "label": "Large",
+        "summary": "Covers 1,040 per minute (measured draw 1,190.8).",
+        "blueprintSha256": "3574850043cb897414af00399e1f18da975e20abd7e0e724da682c785c474717",
+        "file": "plastic-bars-large.txt",
+        "manifest": "manifest.json",
+        "report": "native-report-large.json",
+        "width": 17,
+        "height": 12,
+        "tiles": 204,
+        "machines": 10,
+        "outputsPerMinute": {
+          "steady": {
+            "plastic-bar": 1200
+          },
+          "recovery": {
+            "plastic-bar": 1200
+          }
+        },
+        "inputsPerMinute": {
+          "coal": 600,
+          "petroleum-gas": 12000
+        },
+        "inputsFromBuild": true
+      }
+    ],
+    "versionsAlternatives": true
+  },
+  {
+    "id": "plastic-bars-large",
+    "family": "plastic-bars",
+    "size": "large",
+    "name": "Plastic bar supplier · large · 1,200/min",
+    "file": "plastic-bars-large.txt",
+    "reportFile": "native-report-large.json",
+    "blueprintSha256": "3574850043cb897414af00399e1f18da975e20abd7e0e724da682c785c474717",
+    "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "class": "rate",
+    "status": "qualified",
+    "measured": {
+      "steadyPerMinute": 1200,
+      "recoveryPerMinute": 1200,
+      "coalPerMinute": 600,
+      "gasPerMinute": 12000,
+      "exitLanesPerMinute": [
+        600,
+        600
+      ],
+      "blockedExitStock": 8,
+      "reportCreatedAt": "2026-11-22T04:36:47.553Z"
+    },
+    "variant": "large-shared-aisle",
+    "layout": {
+      "plants": [
+        1,
+        4,
+        9,
+        12,
+        15
+      ],
+      "bottom": [
+        1,
+        4,
+        8,
+        11,
+        14
+      ],
+      "substation": {
+        "x": 6,
+        "y": 1
+      },
+      "riser": 6,
+      "exitX": 16,
+      "rows": 2,
+      "bottomArms": "long"
+    },
+    "covers": "1,040 per minute (measured draw 1,190.8)",
+    "products": [
+      "plastic-bar"
+    ],
+    "targets": {
+      "plastic-bar": 1200
+    },
+    "outputCaps": {
+      "plastic-bar": 8
+    },
+    "recipeAudit": {
+      "perPlantPerMinute": {
+        "bars": 120,
+        "coal": 60,
+        "gas": 1200
+      },
+      "externalPerMinute": {
+        "coal": 600,
+        "petroleum-gas": 12000
+      },
+      "craftsPerMinute": {
+        "plastic-bar": 600
+      },
+      "machinesExact": {
+        "plastic-bar": 10
+      },
+      "recipeIngredients": {
+        "plastic-bar": [
+          {
+            "type": "fluid",
+            "name": "petroleum-gas",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "coal",
+            "amount": 1
+          }
+        ]
+      }
+    },
+    "inputs": [
+      {
+        "kind": "input",
+        "label": "coal",
+        "items": [
+          "coal"
+        ],
+        "item": "coal",
+        "entity": 37,
+        "x": 0.5,
+        "y": 6.5,
+        "position": {
+          "x": 0.5,
+          "y": 6.5
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "perMinute": 600,
+        "tile": {
+          "x": 0,
+          "y": 6
+        },
+        "displayEntity": 96
+      }
+    ],
+    "fluids": [
+      {
+        "kind": "fluid",
+        "label": "petroleum-gas",
+        "items": [
+          "petroleum-gas"
+        ],
+        "item": "petroleum-gas",
+        "entity": 68,
+        "x": 0.5,
+        "y": 0.5,
+        "position": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "externalSide": "west",
+        "transport": "pipe",
+        "nominalPerMinute": 12000,
+        "perMinute": 12000,
+        "tile": {
+          "x": 0,
+          "y": 0
+        },
+        "connection": "the pipe on the top-left corner tile; a straight pipe from the west along the top row joins it",
+        "displayEntity": 97
+      }
+    ],
+    "outputs": [
+      {
+        "kind": "output",
+        "label": "plastic-bar",
+        "items": [
+          "plastic-bar"
+        ],
+        "item": "plastic-bar",
+        "entity": 67,
+        "x": 16.5,
+        "y": 5.5,
+        "position": {
+          "x": 16.5,
+          "y": 5.5
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "belt",
+        "cap": 8,
+        "tile": {
+          "x": 16,
+          "y": 5
+        }
+      }
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "coal",
+        "items": [
+          "coal"
+        ],
+        "item": "coal",
+        "entity": 37,
+        "x": 0.5,
+        "y": 6.5,
+        "position": {
+          "x": 0.5,
+          "y": 6.5
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "perMinute": 600,
+        "tile": {
+          "x": 0,
+          "y": 6
+        },
+        "displayEntity": 96
+      },
+      {
+        "kind": "fluid",
+        "label": "petroleum-gas",
+        "items": [
+          "petroleum-gas"
+        ],
+        "item": "petroleum-gas",
+        "entity": 68,
+        "x": 0.5,
+        "y": 0.5,
+        "position": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "externalSide": "west",
+        "transport": "pipe",
+        "nominalPerMinute": 12000,
+        "perMinute": 12000,
+        "tile": {
+          "x": 0,
+          "y": 0
+        },
+        "connection": "the pipe on the top-left corner tile; a straight pipe from the west along the top row joins it",
+        "displayEntity": 97
+      },
+      {
+        "kind": "output",
+        "label": "plastic-bar",
+        "items": [
+          "plastic-bar"
+        ],
+        "item": "plastic-bar",
+        "entity": 67,
+        "x": 16.5,
+        "y": 5.5,
+        "position": {
+          "x": 16.5,
+          "y": 5.5
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "belt",
+        "cap": 8,
+        "tile": {
+          "x": 16,
+          "y": 5
+        }
+      },
+      {
+        "kind": "power",
+        "label": "External electricity",
+        "items": [],
+        "entity": 11,
+        "x": 7,
+        "y": 3
+      }
+    ],
+    "machineCounts": {
+      "plastic-bar": 10
+    },
+    "footprint": {
+      "left": 0,
+      "top": 0,
+      "right": 17,
+      "bottom": 12,
+      "width": 17,
+      "height": 12
+    },
+    "tiles": 204,
+    "tilesPerBarPerMinute": 0.17,
+    "exitLanes": {
+      "north": 600,
+      "south": 600
+    },
+    "loopControl": [],
+    "stockControl": {
+      "mode": "belt-exit",
+      "exit": 67,
+      "cap": 8
+    },
+    "armRoles": {
+      "product": [
+        12,
+        14,
+        16,
+        18,
+        20,
+        23,
+        24,
+        26,
+        27,
+        29,
+        30,
+        32,
+        33,
+        35,
+        36
+      ],
+      "coal": [
+        13,
+        15,
+        17,
+        19,
+        21,
+        22,
+        25,
+        28,
+        31,
+        34
+      ]
+    },
+    "protocol": {
+      "warmupMinutes": 15,
+      "measureMinutes": 30,
+      "blockedMinutes": 5,
+      "settleMinutes": 5,
+      "recoveryMinutes": 10
+    },
+    "construction": {
+      "bulk-inserter": 5,
+      "chemical-plant": 10,
+      "display-panel": 2,
+      "fast-inserter": 5,
+      "fast-transport-belt": 31,
+      "long-handed-inserter": 15,
+      "pipe": 24,
+      "pipe-to-ground": 4,
+      "substation": 1
+    },
+    "entityCount": 97,
+    "setupNotes": [
+      "Official 2.1.24 Space Age; 10 chemical plants (plastic bar), no modules, red belts, fast, long-handed and bulk inserters, pipes and pipe-to-ground, one substation. WEST: coal 600/min on the belt at (0,6) (either lane); petroleum gas 12,000/min into the pipe at (0,0), the top-left corner, from the west. EAST: one red belt exit at (16,5), 1,200 plastic bars/min (600 on each lane). Supply electricity at the substation.",
+      "Belt the exit east to the plastic entrances of the consumers. The exit tile holds 8 bars when nothing takes them (4 per lane in use), and every plant then stops.",
+      "Feed coal and gas at or above the panel figures; extra coal backs up on the entrance belt and extra gas stays in the pipes."
+    ]
+  }
+]

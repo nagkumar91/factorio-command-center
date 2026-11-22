@@ -49,7 +49,7 @@ await fs.mkdir('site/'+destination,{recursive:true});
 const unique=a=>[...new Set(a.filter(Boolean))];
 async function copySource(file){const to=destination+'/'+file.replace(/^blueprint-sources\//,'');await fs.mkdir(path.dirname('site/'+to),{recursive:true});await fs.copyFile(file,'site/'+to);return to;}
 async function register(options){
- const {file,info={},category,purpose,page,proof,report,version='2.1.24',inputs,outputs,setup=[],archive=false,preview,sourceCollection=collection,sourceAuthor='Factorio Command Center',sourceURL,profile,operatingBoundary,coverageExcluded=false,consumedProducts=[],versionOf}=options;
+ const {file,info={},category,purpose,page,proof,report,version='2.1.24',inputs,outputs,setup=[],archive=false,preview,sourceCollection=collection,sourceAuthor='Factorio Command Center',sourceURL,profile,operatingBoundary,coverageExcluded=false,consumedProducts=[],versionOf,title:libraryTitle}=options;
  const code=(await fs.readFile(file,'utf8')).trim(),sha=hash(code),object=decodeBlueprint(code);if(!object.blueprint)return;
  if(info.blueprintSha256&&info.blueprintSha256!==sha)throw Error('Manifest SHA mismatch: '+file);
  if(!versionOf&&seen.has(sha)&&sourceCollection!=='Autosaved · optimized v2'){seen.get(sha).alternateSources.push(file.replace(/^blueprint-sources\//,''));return;}
@@ -60,7 +60,7 @@ async function register(options){
  const recordId=versionOf?.id||info.catalogueId||'designed-'+sha.slice(0,16),localSource=file.startsWith('site/')?file.slice(5):await copySource(file);
  let reportURL=report?(report.startsWith('site/')?report.slice(5):await copySource(report)):null;
  const measured=verified?(proof.outputsPerMinute&&typeof proof.outputsPerMinute==='object'?proof.outputsPerMinute:proof.perMinute):null;
- const title=info.name||info.label||b.label||path.basename(file,'.txt');
+ const title=libraryTitle||info.name||info.label||b.label||path.basename(file,'.txt');
  const notes=[...setup,...(info.setupNotes||[]),...(info.notes||[]),`Game profile: Factorio ${version}${profile?' · '+profile:''}.`,...(info.optionalInputs?.length?['Optional supplements (not required): '+unique(info.optionalInputs.map(p=>p.item)).join(', ')+'.']:[])];
  if(info.initialSeeds)notes.push(`Bootstrap with ${info.initialSeeds} tree seeds. Seeds already circulating inside the nursery are retained for replanting; they are not a continuous imported ingredient.`);
  if(file.includes('solid-science-complete'))notes.push('Supply only iron ore, copper ore and finished solid fuel plus electricity. Leave the inherited east gear tap unused; it is not a supported input for the complete factory.');
@@ -167,9 +167,14 @@ for(const [folder,category,purpose,expected,opts={}] of [
  // Circuit suppliers (22 November 2026): siblings of the green-circuit supplier, plates and plastic (and acid) in on the west, one red belt out east.
  ['advanced-circuits','Circuits','Circuit production',['advanced-circuit']],
  // Rocket supplies keeps its recommendation for processing units (a dedicated supplier does not displace it); the supplier is still found by output and input.
- ['processing-units','Circuits','Circuit production',['processing-unit'],{recommend:[]}]
+ ['processing-units','Circuits','Circuit production',['processing-unit'],{recommend:[]}],
+ // Plastic bar suppliers (22 November 2026): one entry, three sizes in its picker (the medium opens first); coal by belt and petroleum gas by pipe in, plastic bars out east.
+ ['plastic-bars','Chemicals · plastic bars','Production',['plastic-bar'],{current:'plastic-bars-medium',title:'Plastic bar supplier · three sizes'}]
 ]){
- const dir='blueprint-sources/'+folder,manifest=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',report=await read(reportFile);
+ const dir='blueprint-sources/'+folder,allEntries=await read(dir+'/manifest.json');
+ // A family of sizes (plastic bars) keeps one manifest record per size and one report per size; opts.current names the
+ // record the library entry stands for (its other sizes are listed in its versions) and the record names its report.
+ const manifest=opts.current?allEntries.filter(e=>e.id===opts.current):allEntries,reportFile=dir+'/'+(manifest[0]?.reportFile||'native-report.json'),report=await read(reportFile);
  if(manifest.length!==1)throw Error('Expected one current workshop: '+folder);
  for(const info of manifest){
   const sha=hash(await fs.readFile(dir+'/'+info.file,'utf8'));
@@ -188,7 +193,7 @@ for(const [folder,category,purpose,expected,opts={}] of [
   // Measured rates are the products' own; the rocket-fuel pass-through and the kit (no rate) report none.
   const rates=opts.rates?opts.rates(proof):spaceLaunchFolders.has(folder)&&proof.outputsPerMinute?Object.fromEntries(Object.entries(proof.outputsPerMinute).filter(([id])=>outputs.includes(id))):proof.outputsPerMinute;
   const platformPreview=folder==='white-platform'?await tiledPreview(decodeBlueprint(await fs.readFile(dir+'/'+info.file,'utf8')).blueprint,'designed-'+sha.slice(0,16)):undefined;
-  await register({file:dir+'/'+info.file,info,category,purpose,page:folder+'/index.html',proof:{...proof,outputsPerMinute:rates},report:reportFile,outputs,...(opts.inputs?{inputs:opts.inputs}:{}),...(opts.sourceAuthor?{sourceAuthor:opts.sourceAuthor,sourceURL:opts.sourceURL}:{}),coverageExcluded:opts.coverageExcluded,preview:platformPreview,version:report.gameVersion,setup:[...(opts.setup||['Supply every labeled operating input, including fluids where listed, and external electricity. Preserve stock controls, circuit wires and passive-provider chest limits. Intermediates are manufactured inside; construction materials are not operating inputs.']),...supply]});
+  await register({file:dir+'/'+info.file,info,category,purpose,page:folder+'/index.html',proof:{...proof,outputsPerMinute:rates},report:reportFile,outputs,...(opts.title?{title:opts.title}:{}),...(opts.inputs?{inputs:opts.inputs}:{}),...(opts.sourceAuthor?{sourceAuthor:opts.sourceAuthor,sourceURL:opts.sourceURL}:{}),coverageExcluded:opts.coverageExcluded,preview:platformPreview,version:report.gameVersion,setup:[...(opts.setup||['Supply every labeled operating input, including fluids where listed, and external electricity. Preserve stock controls, circuit wires and passive-provider chest limits. Intermediates are manufactured inside; construction materials are not operating inputs.']),...supply]});
   const entry=entries.at(-1);
   promoteWorkshop(entries,entry,opts.recommend??outputs);entry.recommendation='Latest qualified '+folder.replaceAll('-',' ');
  }

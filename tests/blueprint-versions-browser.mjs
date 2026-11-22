@@ -178,6 +178,38 @@ try{
  assert.match(unitOptions[1],/^Version 1 · Twin rows · 31 × 29 tiles · Processing unit 26\.57\/min$/);
  assert.match(await page.locator('#modal .version-downloads').innerText(),/Download v2 · Shared channel[\s\S]*Download v1 · Twin rows/);
  await page.locator('[data-action="close-modal"]').click();
+ // Plastic bar suppliers: one card, three sizes as alternatives (medium recommended); coal (belt) and petroleum gas (pipe) in per size.
+ const plastic=atlas.blueprints.find(b=>b.file==='sources/designed-blueprints/plastic-bars/plastic-bars-medium.txt');
+ const plasticManifest=JSON.parse(await fs.readFile('blueprint-sources/plastic-bars/manifest.json'));
+ await page.goto(url+'index.html');await page.goto(url+'index.html?inputs=all#blueprints');
+ await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ await page.locator('#blueprint-direction').selectOption('outputs');
+ await page.locator('#blueprint-search').fill('plastic bar');
+ assert.equal(await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${plastic.id}"]`).count(),1,'one card for three sizes');
+ await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${plastic.id}"]`).click();
+ const plasticOptions=await page.locator('#blueprint-version option').allInnerTexts();
+ assert.equal(plasticOptions.length,3);
+ assert.equal(plasticOptions[0],'Medium · Recommended · 17 × 7 tiles · Plastic bar 600/min');
+ assert.deepEqual(plasticOptions.slice(1).sort(),['Large · 17 × 12 tiles · Plastic bar 1,200/min','Small · 8 × 7 tiles · Plastic bar 240/min']);
+ assert.ok(plasticOptions.every(o=>!/^Version \d/.test(o)),plasticOptions.join(' | '));
+ const plasticCompare=page.locator('#modal .version-compare');
+ assert.equal(await plasticCompare.locator('thead th[data-input-item="coal"]').count(),1,'a coal-in column');
+ assert.equal(await plasticCompare.locator('thead th[data-input-item="petroleum-gas"]').count(),1,'a petroleum-gas-in column (a fluid, by pipe)');
+ assert.equal(await plasticCompare.locator('thead th',{hasText:'Power'}).count(),0,'no power column: the reports record none');
+ for(const e of plasticManifest){
+  const v=plasticManifest.find(x=>x.versions).versions.find(x=>x.blueprintSha256===e.blueprintSha256),row=plasticCompare.locator(`tbody tr[data-version="${3-plasticManifest.find(x=>x.versions).versions.indexOf(v)}"]`);
+  const n=new Intl.NumberFormat(undefined,{maximumFractionDigits:2});
+  assert.equal((await row.locator('td[data-input-item="coal"]').innerText()).trim(),n.format(v.inputsPerMinute.coal),v.label+' coal in');
+  assert.equal((await row.locator('td[data-input-item="petroleum-gas"]').innerText()).trim(),n.format(v.inputsPerMinute['petroleum-gas']),v.label+' gas in');
+  assert.match(await row.locator('td[data-rate-item="plastic-bar"]').innerText(),new RegExp('^'+n.format(e.targets['plastic-bar']).replace(',','\\,')),v.label+' output');
+ }
+ const plasticCurrent=await plasticCompare.locator('tr.selected-version').getAttribute('data-version');
+ assert.equal(plasticCurrent,'3','Medium opens by default');
+ await page.locator('#blueprint-version').selectOption('1');
+ await page.waitForFunction(()=>document.querySelector('#blueprint-version')?.value==='1'&&!document.querySelector('#blueprint-version')?.disabled);
+ await page.locator('#modal [data-action="copy-blueprint"]').click();
+ assert.equal(await page.evaluate(()=>window.__copiedBlueprint),(await fs.readFile('blueprint-sources/plastic-bars/plastic-bars-large.txt','utf8')).trim(),'copy gives the large string');
+ await page.locator('[data-action="close-modal"]').click();
  // Families without recorded inputs or power keep the earlier table: no extra columns.
  await page.goto(url+'index.html');await page.goto(url+'?collection=essentials#blueprints');
  await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();

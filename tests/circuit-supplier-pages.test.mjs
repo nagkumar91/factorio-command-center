@@ -1,12 +1,12 @@
 // Advanced-circuit and processing-unit suppliers on the website: library records, guide pages, navigation entries and the
-// "Circuit suppliers" cross-links. Run after `npm run build` (atlas and guide pages are build outputs). No game data needed.
+// "Suppliers" cross-links. Run after `npm run build` (atlas and guide pages are build outputs). No game data needed.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {SUPPLIER_IDS,loadSuppliers} from '../scripts/circuit-supplier-pages.mjs';
-import {CIRCUIT_SUPPLIERS,circuitSuppliersLine} from '../scripts/circuit-suppliers.mjs';
+import {SUPPLIERS,suppliersLine} from '../scripts/suppliers.mjs';
 import '../site/flight-plans.js';
 
 const sha=s=>createHash('sha256').update(s.trim()).digest('hex');
@@ -81,7 +81,7 @@ test('guide pages: rate, inputs table, output, size, machines, power, buttons an
   assert.equal((await read(`site/${r.id}/${m.file}`)).trim(),r.code);
   for(const f of ['layout.svg','manifest.json','native-report.json','README.md'])await fs.access(`site/${r.id}/${f}`);
   assert.equal(sha(await read(`site/${r.id}/native-report.json`)),sha(JSON.stringify(r.report,null,2).replaceAll('<','\\u003c')+'\n'));
-  assert.ok(html.includes('data-circuit-suppliers'));
+  assert.ok(html.includes('data-suppliers'));
  }
  // Advanced circuits: the two copper entrances are named and added up.
  const advanced=await read('site/advanced-circuits/index.html');
@@ -104,13 +104,14 @@ test('navigation: one entry each, every figure in its words is the family manife
  assert.equal(new Set(plans.map(p=>p.id)).size,plans.length);
 });
 
-test('"Circuit suppliers" cross-link: the three guide pages link to one another, and each names itself without a link',async()=>{
- assert.deepEqual(CIRCUIT_SUPPLIERS.map(s=>s.id),['green-circuits','advanced-circuits','processing-units']);
- for(const s of CIRCUIT_SUPPLIERS){
+test('"Suppliers" cross-link: the four guide pages link to one another, and each names itself without a link',async()=>{
+ assert.deepEqual(SUPPLIERS.map(s=>s.id),['green-circuits','advanced-circuits','processing-units','plastic-bars']);
+ for(const s of SUPPLIERS){
   const html=await read(`site/${s.id}/index.html`);
-  assert.equal((html.match(/data-circuit-suppliers/g)||[]).length,1,s.id);
-  assert.ok(html.includes(circuitSuppliersLine(s.id)),s.id);
-  for(const other of CIRCUIT_SUPPLIERS.filter(o=>o.id!==s.id)){assert.ok(html.includes(`<a href="../${other.id}/index.html" data-circuit-supplier="${other.id}">${other.label}</a>`),`${s.id} links ${other.id}`);await fs.access(`site/${other.id}/index.html`);}
-  assert.ok(html.includes(`<strong aria-current="page" data-circuit-supplier="${s.id}">`),s.id+' marks itself');
+  assert.equal((html.match(/data-suppliers/g)||[]).length,1,s.id);
+  assert.ok(!html.includes('Circuit suppliers:'),s.id+': the old line is replaced');
+  assert.ok(html.includes(suppliersLine(s.id)),s.id);
+  for(const other of SUPPLIERS.filter(o=>o.id!==s.id)){assert.ok(html.includes(`<a href="../${other.id}/index.html" data-supplier="${other.id}">${other.label}</a>`),`${s.id} links ${other.id}`);await fs.access(`site/${other.id}/index.html`);}
+  assert.ok(html.includes(`<strong aria-current="page" data-supplier="${s.id}">`),s.id+' marks itself');
  }
 });

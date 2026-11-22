@@ -16,6 +16,10 @@
 // - inputsPerMinute, powerKW: optional, present only when that build in the report records them (measured
 //   operating inputs per minute, and electric power drawn while working in kW). Families whose reports have
 //   neither get neither, and their pages and pickers render as before.
+//   A report that records each entrance's accepted rate per minute under build.inputs and build.fluids (the usual
+//   shape of a rate supplier's report) but has no inputsPerMinute can opt in with "inputsFromBuild": true on the
+//   version: its inputsPerMinute is then read from those arrays, belts and fluids alike (plastic bars: coal and
+//   petroleum gas per size). Without the flag nothing is derived, so existing families are unchanged.
 //
 // Successive versions (the essentials mall, flight robots) are numbered in the library, oldest is Version 1.
 // A family whose versions are alternatives of one layout (the electric smelter's module variants) sets
@@ -71,11 +75,18 @@ export function measuredOperation(report, blueprintSha256) {
   };
 }
 
+/** Accepted rate per minute of every entrance of the passing build (belts, then fluids), keyed by item; undefined when it lists none. */
+export function acceptedInputs(report, blueprintSha256) {
+  const build = passingBuild(report, blueprintSha256), out = {};
+  for (const e of [...(build?.inputs || []), ...(build?.fluids || [])]) if (e?.item && Number.isFinite(e.acceptedPerMinute)) out[e.item] = (out[e.item] || 0) + e.acceptedPerMinute;
+  return Object.keys(out).length ? out : undefined;
+}
+
 /**
  * One versions entry. familyDir is blueprint-sources/<family>; file, manifest and report are relative to it.
  * Size comes from the version's own manifest entry (footprint) when given, otherwise width/height.
  */
-export async function describeVersion({familyDir, label, summary, file, manifest, report, width, height}) {
+export async function describeVersion({familyDir, label, summary, file, manifest, report, width, height, inputsFromBuild}) {
   if (typeof label !== 'string' || !label.trim() || /\d/.test(label)) throw Error(`version label must be words: ${label}`);
   const code = await fs.readFile(path.join(familyDir, file), 'utf8'), blueprintSha256 = sha(code);
   const blueprint = decodeBlueprint(code.trim())?.blueprint;
@@ -88,10 +99,11 @@ export async function describeVersion({familyDir, label, summary, file, manifest
   }
   if (!(footprint?.width > 0 && footprint?.height > 0)) throw Error(`${file}: version size unknown`);
   const nativeReport = await optionalJSON(path.join(familyDir, report)), rates = measuredRates(nativeReport, blueprintSha256);
-  const {inputsPerMinute, powerKW} = measuredOperation(nativeReport, blueprintSha256);
+  const operation = measuredOperation(nativeReport, blueprintSha256), {powerKW} = operation;
+  const inputsPerMinute = operation.inputsPerMinute ?? (inputsFromBuild ? acceptedInputs(nativeReport, blueprintSha256) : undefined);
   return {label, ...(summary ? {summary} : {}), blueprintSha256, file, ...(manifest ? {manifest} : {}), report,
     width: footprint.width, height: footprint.height, tiles: footprint.width * footprint.height, machines: await countMachines(blueprint),
-    outputsPerMinute: rates, ...(inputsPerMinute ? {inputsPerMinute} : {}), ...(powerKW !== undefined ? {powerKW} : {})};
+    outputsPerMinute: rates, ...(inputsPerMinute ? {inputsPerMinute} : {}), ...(powerKW !== undefined ? {powerKW} : {}), ...(inputsFromBuild ? {inputsFromBuild: true} : {})};
 }
 
 /** All versions of a family, newest first; list items are describeVersion arguments without familyDir. */
@@ -112,7 +124,7 @@ export async function checkVersions(info, familyDir) {
   if (!Array.isArray(versions) || !versions.length) return [];
   if (versions[0].blueprintSha256 !== info.blueprintSha256 || versions[0].file !== info.file) throw Error(`${info.id}: versions[0] must be the current string`);
   for (const v of versions) {
-    const again = await describeVersion({familyDir, label: v.label, summary: v.summary, file: v.file, manifest: v.manifest, report: v.report, width: v.width, height: v.height});
+    const again = await describeVersion({familyDir, label: v.label, summary: v.summary, file: v.file, manifest: v.manifest, report: v.report, width: v.width, height: v.height, inputsFromBuild: v.inputsFromBuild});
     if (JSON.stringify(again) !== JSON.stringify(v)) throw Error(`${info.id}: stored version "${v.label}" no longer matches its files; re-run the family generator`);
   }
   return versions;
@@ -142,7 +154,7 @@ export function versionChoices(versions, products, name = id => id.replaceAll('-
  * download. chip(id) returns the product's heading HTML (it may be async); files are relative to the page.
  * Pair it with VERSIONS_SCRIPT on the page for the copy buttons.
  */
-export async function versionsSection({versions, products, codes, chip, esc, name = id => id.replaceAll('-', ' '), alternatives = false}) {
+export async function versionsSection({versions, products, codes, chip, esc, name = id => id.replaceAll('-', ' '), alternatives = false, noun = 'version'}) {
   const num = n => Number.isFinite(n) ? String(Number(n.toFixed(2))) : 'not measured';
   const withRecovery = versions.some(v => v.outputsPerMinute.recovery);
   // Optional columns: measured inputs per minute and power, only when some version records them.
@@ -151,10 +163,10 @@ export async function versionsSection({versions, products, codes, chip, esc, nam
   const inputHeads = await Promise.all(inputs.map(async id => `<th scope="col" data-input-item="${esc(id)}">${await chip(id)} in</th>`));
   const rows = versions.map((v, i) => `<tr data-version-row="${i}"><th scope="row">${esc(v.label)}${i === 0 ? ' · recommended' : ''}</th><td>${v.width} × ${v.height} = ${v.tiles}</td><td>${v.machines}</td>${inputs.map(id => `<td data-input-item="${esc(id)}">${num(v.inputsPerMinute?.[id])}</td>`).join('')}${products.map(id => `<td>${num(v.outputsPerMinute.steady?.[id])}${withRecovery ? `<br><small>recovery ${num(v.outputsPerMinute.recovery?.[id])}</small>` : ''}</td>`).join('')}${withPower ? `<td data-power>${Number.isFinite(v.powerKW) ? num(v.powerKW) + ' kW' : 'not measured'}</td>` : ''}</tr>`).join('');
   const choices = versionChoices(versions, products, name);
-  const blocks = versions.map((v, i) => `<article class="version-card" data-version="${i}"><h3>${esc(v.label)} · ${i === 0 ? 'recommended, current version' : alternatives ? 'alternative version' : 'earlier version'}</h3><p>${v.summary ? esc(v.summary) : `${v.width} × ${v.height} = ${v.tiles} tiles.`} ${v.machines} machines.</p><div class="actions"><button data-version-copy="${i}">Copy ${esc(v.label)} import</button><a class="button${i === 0 ? ' primary' : ''}" href="${esc(v.file)}" download>Download ${esc(v.label)} import</a><a class="button" href="${esc(v.report)}">Native report</a></div><details><summary>${esc(v.label)} import string</summary><textarea id="version-code-${i}" readonly aria-label="${esc(v.label)} import string">${esc(codes[i])}</textarea></details><p class="hash">SHA-256 ${esc(v.blueprintSha256)}</p></article>`).join('');
+  const blocks = versions.map((v, i) => `<article class="version-card" data-version="${i}"><h3>${esc(v.label)} · ${i === 0 ? `recommended, current ${noun}` : alternatives ? `alternative ${noun}` : `earlier ${noun}`}</h3><p>${v.summary ? esc(v.summary) : `${v.width} × ${v.height} = ${v.tiles} tiles.`} ${v.machines} machines.</p><div class="actions"><button data-version-copy="${i}">Copy ${esc(v.label)} import</button><a class="button${i === 0 ? ' primary' : ''}" href="${esc(v.file)}" download>Download ${esc(v.label)} import</a><a class="button" href="${esc(v.report)}">Native report</a></div><details><summary>${esc(v.label)} import string</summary><textarea id="version-code-${i}" readonly aria-label="${esc(v.label)} import string">${esc(codes[i])}</textarea></details><p class="hash">SHA-256 ${esc(v.blueprintSha256)}</p></article>`).join('');
   const count = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'][versions.length] ?? String(versions.length);
   const intro = alternatives ? 'Every import string below passed its native protocol for its exact SHA-256.' : 'Both import strings passed the full native protocol for their exact SHA-256 and stay available.';
-  return `<section id="versions"><h2>${count} tested versions: which to choose</h2><p>${intro} Each row is measured from that version's own native report: ${inputs.length ? 'the inputs it drew and ' : ''}the steady rate${withRecovery ? ', and below it the rate after output was blocked and resumed (recovery)' : ''}, per minute${withPower ? ', and the electric power it drew while working' : ''}.</p><ul>${choices.map(c => `<li><strong>${esc(c.label)}</strong>${c.recommended ? ' (recommended)' : ''}: ${esc(c.text)}.</li>`).join('')}</ul><div class="table-scroll"><table class="version-compare"><thead><tr><th scope="col">Version</th><th scope="col">Tiles</th><th scope="col">Machines</th>${inputHeads.join('')}${heads.join('')}${withPower ? '<th scope="col">Power</th>' : ''}</tr></thead><tbody>${rows}</tbody></table></div>${blocks}<p id="version-copy-status" role="status" aria-live="polite"></p></section>`;
+  return `<section id="versions"><h2>${count} tested ${noun}s: which to choose</h2><p>${intro} Each row is measured from that ${noun}'s own native report: ${inputs.length ? 'the inputs it drew and ' : ''}the steady rate${withRecovery ? ', and below it the rate after output was blocked and resumed (recovery)' : ''}, per minute${withPower ? ', and the electric power it drew while working' : ''}.</p><ul>${choices.map(c => `<li><strong>${esc(c.label)}</strong>${c.recommended ? ' (recommended)' : ''}: ${esc(c.text)}.</li>`).join('')}</ul><div class="table-scroll"><table class="version-compare"><thead><tr><th scope="col">${noun[0].toUpperCase() + noun.slice(1)}</th><th scope="col">Tiles</th><th scope="col">Machines</th>${inputHeads.join('')}${heads.join('')}${withPower ? '<th scope="col">Power</th>' : ''}</tr></thead><tbody>${rows}</tbody></table></div>${blocks}<p id="version-copy-status" role="status" aria-live="polite"></p></section>`;
 }
 export const VERSIONS_SCRIPT = `document.querySelectorAll('[data-version-copy]').forEach(b=>b.addEventListener('click',async()=>{const t=document.getElementById('version-code-'+b.dataset.versionCopy),s=document.getElementById('version-copy-status');try{if(location.protocol==='file:'||!navigator.clipboard?.writeText)throw Error('manual');await navigator.clipboard.writeText(t.value);s.textContent='Copied';}catch{t.closest('details').open=true;t.focus();t.select();s.textContent='Import selected — press Ctrl+C or Command+C to copy';}}));`;
 export const VERSIONS_STYLE = `.version-card{border:1px solid #465249;border-radius:6px;padding:4px 18px 14px;margin:18px 0;background:#1b2621}.table-scroll{overflow-x:auto;max-width:100%}.version-compare td,.version-compare th{white-space:nowrap}.version-compare small{color:#9ca99e}`;

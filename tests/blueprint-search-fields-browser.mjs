@@ -60,5 +60,17 @@ try{
  assert.ok(!(await search('inputs','sulfuric acid')).includes(advanced),'advanced circuits need no acid');
  assert.ok(!(await search('inputs','advanced circuit')).includes(advanced),'the advanced-circuit supplier does not need advanced circuits');
  assert.ok(!(await search('outputs','plastic bar')).includes(processing),'plastic is an input, not a product');
+ // Circuit colours are names for three items: green = electronic circuit, red = advanced circuit, blue = processing unit (a colour
+ // query matches what it matched before and, in addition, the item it names). The plastic bar suppliers: three sizes, one card.
+ const green='Green-circuit supplier · 360/min',plastic='Plastic bar supplier · three sizes';
+ for(const [direction,query,want] of [['outputs','green circuit',[green]],['outputs','green circuits',[green]],['outputs','Green Circuit',[green]],['outputs','red circuit',[advanced]],['outputs','red circuits',[advanced]],['outputs','blue circuit',[processing]],['outputs','blue circuits',[processing]],['all','red circuit',[advanced]],['all','blue circuit',[processing]],['all','green circuit',[green]],
+  ['outputs','plastic',[plastic]],['outputs','plastic bar',[plastic]],['all','plastic',[plastic,advanced,processing]],['inputs','coal',[plastic]],['inputs','petroleum gas',[plastic]]]){const found=await searchAll(direction,query);for(const title of want)assert.ok(found.includes(title),direction+': '+query+' gave '+found.length+' cards without '+title+': '+found.slice(0,6).join(' | '));}
+ assert.ok(!(await searchAll('inputs','petroleum gas')).includes(advanced),'advanced circuits need no gas');
+ assert.ok(!(await searchAll('inputs','coal')).includes(processing),'processing units need no coal');
+ assert.ok(!(await searchAll('outputs','red circuit')).includes(processing),'red is not blue');
+ assert.ok(!(await searchAll('outputs','blue circuit')).includes(advanced),'blue is not red');
+ assert.ok(!(await searchAll('outputs','green circuit')).includes(advanced),'green is not red');
+ assert.equal((await searchAll('outputs','plastic')).filter(t=>t===plastic).length,1,'three sizes are one card');
+ console.log('Produces this item: red circuit '+(await searchAll('outputs','red circuit')).length+' cards, blue circuit '+(await searchAll('outputs','blue circuit')).length+' cards, green circuit '+(await searchAll('outputs','green circuit')).length+' cards, plastic '+(await searchAll('outputs','plastic')).length+' cards');
  assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials, the space launch builds, the electric smelter and the circuit suppliers are findable by input and output.');
 }finally{await browser.close();}

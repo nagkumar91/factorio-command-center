@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {checkVersions, describeVersion, familyVersions, measuredRates, measuredOperation, versionChoices, versionsAreAlternatives} from '../scripts/blueprint-versions.mjs';
+import {checkVersions, describeVersion, familyVersions, measuredRates, measuredOperation, versionChoices, versionsAreAlternatives, acceptedInputs, versionsSection} from '../scripts/blueprint-versions.mjs';
 
 const hash = s => createHash('sha256').update(s.trim()).digest('hex');
 const read = p => fs.readFile(p, 'utf8');
@@ -221,13 +221,13 @@ test('optional inputs and power: the electric smelter records them per version; 
   assert.ok(html.includes('alternative version') && !html.includes('earlier version'));
 });
 
-test('alternatives flag: only the smelter (module variants) sets it; successive-version families and the processing-unit supplier do not', async () => {
+test('alternatives flag: only the smelter (module variants) and the plastic bar sizes set it; successive-version families and the processing-unit supplier do not', async () => {
   assert.equal(versionsAreAlternatives(undefined), false);
   assert.equal(versionsAreAlternatives({}), false);
   assert.equal(versionsAreAlternatives({versionsAlternatives: true}), true);
   const families = await versionedFamilies();
   const flagged = families.filter(f => versionsAreAlternatives(f.info)).map(f => f.family);
-  assert.deepEqual(flagged, ['electric-smelter-pass-through']);
+  assert.deepEqual(flagged.sort(), ['electric-smelter-pass-through', 'plastic-bars']);
   for (const family of ['essentials-mall', 'flight-robots', 'processing-units']) assert.ok(families.some(f => f.family === family), family + ' lists versions');
   for (const {family, info} of families) {
     const record = atlas.blueprints.find(b => b.blueprintSha256 === info.blueprintSha256);
@@ -236,7 +236,7 @@ test('alternatives flag: only the smelter (module variants) sets it; successive-
     assert.equal('alternatives' in record.publication, versionsAreAlternatives(info), family);
     if (versionsAreAlternatives(info)) assert.equal(record.publication.alternatives, true, family);
     const html = await read(`site/${family}/index.html`);
-    assert.equal(html.includes('alternative version'), versionsAreAlternatives(info), family + ': guide card wording');
+    assert.equal(/alternative (version|size)/.test(html), versionsAreAlternatives(info), family + ': guide card wording');
     assert.equal(html.includes('earlier version'), !versionsAreAlternatives(info), family + ': guide card wording');
   }
   // The picker's naming itself is covered in a browser by tests/blueprint-versions-browser.mjs; here the source is checked once.
@@ -255,4 +255,51 @@ test('processing units: the replaced 31 x 29 layout is the second, selectable ve
   assert.match(html, /<section id="versions"><h2>Two tested versions: which to choose<\/h2>/);
   assert.ok(html.includes('href="history/twin-rows-abe14cdf/processing-units.txt"'));
   await fs.access('site/processing-units/history/twin-rows-abe14cdf/native-report.json');
+});
+
+test('plastic bar sizes: one library entry, three alternatives (Medium recommended) with coal and petroleum gas in per size', async () => {
+  const PB = 'blueprint-sources/plastic-bars', entries = await json(PB + '/manifest.json');
+  const medium = entries.find(e => e.size === 'medium');
+  assert.equal(entries.filter(e => e.versions).length, 1, 'only the recommended record lists the sizes');
+  assert.deepEqual(medium.versions.map(v => v.label), ['Medium', 'Small', 'Large']);
+  assert.equal(medium.versionsAlternatives, true);
+  await checkVersions(medium, PB);
+  for (const v of medium.versions) {
+    const own = entries.find(e => e.blueprintSha256 === v.blueprintSha256), build = (await json(path.join(PB, v.report))).builds.find(b => b.blueprintSha256 === v.blueprintSha256 && b.passed === true);
+    assert.equal(v.inputsFromBuild, true);
+    assert.deepEqual(v.inputsPerMinute, {coal: build.inputs[0].acceptedPerMinute, 'petroleum-gas': build.fluids[0].acceptedPerMinute}, v.label + ': coal by belt and gas by pipe, from its own report');
+    assert.deepEqual(v.inputsPerMinute, {coal: own.inputs[0].perMinute, 'petroleum-gas': own.fluids[0].perMinute}, v.label + ': equals the panel figures');
+    assert.deepEqual([v.width, v.height], [own.footprint.width, own.footprint.height], v.label + ': its own size');
+    assert.equal(v.outputsPerMinute.steady['plastic-bar'], own.targets['plastic-bar']);
+  }
+  assert.deepEqual(medium.versions.map(v => v.width * v.height), [119, 56, 204], 'sizes differ per alternative');
+  // One card; the others live in its picker history, each a full record under the same id.
+  const cards = atlas.blueprints.filter(b => b.file?.startsWith('sources/designed-blueprints/plastic-bars/') && b.publication);
+  assert.equal(cards.length, 1);
+  const card = cards[0];
+  assert.equal(card.blueprintSha256, medium.blueprintSha256);
+  assert.equal(card.name, 'Plastic bar supplier · three sizes');
+  assert.equal(card.publication.alternatives, true);
+  assert.deepEqual(card.publication.inputsPerMinute, medium.versions[0].inputsPerMinute);
+  assert.deepEqual(card.publication.history.map(h => h.label).sort(), ['Large', 'Small']);
+  for (const h of card.publication.history) assert.deepEqual(h.inputsPerMinute, medium.versions.find(v => v.blueprintSha256 === h.blueprintSha256).inputsPerMinute);
+  assert.deepEqual([...card.analysis.inputs].sort(), ['coal', 'petroleum-gas']);
+  assert.deepEqual(card.products, ['plastic-bar']);
+});
+
+test('inputsFromBuild is opt-in and reads belts then fluids; the noun of the guide section is a word that defaults to version', async () => {
+  const report = {builds: [{blueprintSha256: NEW, passed: true, inputs: [{item: 'coal', entity: 1, acceptedPerMinute: 120}], fluids: [{item: 'petroleum-gas', entity: 2, acceptedPerMinute: 2400}]}]};
+  assert.deepEqual(acceptedInputs(report, NEW), {coal: 120, 'petroleum-gas': 2400});
+  assert.equal(acceptedInputs(report, OLD), undefined, 'only the passing build of that exact string');
+  assert.equal(acceptedInputs({builds: [{blueprintSha256: NEW, passed: true}]}, NEW), undefined);
+  // Families without the flag keep their shape: the mall's reports list entrances but its versions carry no inputsPerMinute.
+  const [mall] = await json(MALL + '/manifest.json');
+  for (const v of mall.versions) assert.ok(!('inputsFromBuild' in v) && !('inputsPerMinute' in v), v.label);
+  const v = {label: 'A', blueprintSha256: NEW, file: 'a.txt', report: 'a.json', width: 2, height: 2, tiles: 4, machines: 1, outputsPerMinute: {steady: {x: 1}, recovery: null}};
+  const args = {versions: [v, {...v, label: 'B', blueprintSha256: OLD}], products: ['x'], codes: ['c', 'd'], chip: id => id, esc: x => x};
+  const plain = await versionsSection({...args, alternatives: true}), sized = await versionsSection({...args, alternatives: true, noun: 'size'});
+  assert.match(plain, /Two tested versions: which to choose/);
+  assert.ok(plain.includes('alternative version') && plain.includes('recommended, current version') && plain.includes('<th scope="col">Version</th>'));
+  assert.match(sized, /Two tested sizes: which to choose/);
+  assert.ok(sized.includes('alternative size') && sized.includes('recommended, current size') && sized.includes('<th scope="col">Size</th>') && !sized.includes('version'.concat(' ')));
 });
