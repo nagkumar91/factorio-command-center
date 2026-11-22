@@ -1,0 +1,923 @@
+[
+  {
+    "id": "electric-smelter-pass-through",
+    "variant": "no-modules",
+    "label": "No modules",
+    "name": "Electric smelter · ore through east, plates south",
+    "file": "electric-smelter-pass-through.txt",
+    "blueprintSha256": "9c60d876232d36dee71889e40b4e39bd77f3a74eabe1bd6113e2b6ebc5bd705e",
+    "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "class": "rate",
+    "status": "qualified",
+    "measured": {
+      "ironPlatesPerMinute": 900,
+      "copperPlatesPerMinute": 900,
+      "ironOrePerMinute": 900,
+      "copperOrePerMinute": 900,
+      "forwardedFromFullRedBeltPerMinute": 900,
+      "powerKW": 4834.9,
+      "powerByEntityKW": {
+        "inserter": 194.5,
+        "fast-inserter": 76.4,
+        "roboport": 100,
+        "electric-furnace": 4464
+      },
+      "secondCopyOnRedBeltPerMinute": 900,
+      "recoveryPerMinute": 900,
+      "stoneBricksPerMinute": 746.7,
+      "secondCopyWhileFirstBlockedPerMinute": 900,
+      "efficiencyTwoPowerKW": 1378.9,
+      "efficiencyThreePowerKW": 1378.9,
+      "efficiencyTwoPlatesPerMinute": 900,
+      "efficiencyThreePlatesPerMinute": 900,
+      "scenariosPassed": 6,
+      "scenarios": 6,
+      "reportCreatedAt": "2026-11-22T02:54:48.808Z"
+    },
+    "modules": {
+      "module": null,
+      "count": 0
+    },
+    "computed": {
+      "speedMultiplier": 1,
+      "consumptionMultiplier": 1,
+      "productivity": 0,
+      "orePerMinute": 900,
+      "platesPerMinute": 900,
+      "furnacePowerKW": 4320,
+      "copiesPerRedBelt": 2
+    },
+    "expected": {
+      "orePerMinute": 900,
+      "platesPerMinute": 900
+    },
+    "source": {
+      "collection": "Autosaved",
+      "id": "autosaved-f3d991e31c13c301",
+      "name": "In-Out Electric Smelter",
+      "url": "https://autosaved.org/factorio/blueprints",
+      "file": "original/in-out-electric-smelter.txt",
+      "blueprintSha256": "3c702aa640dfad3ba28b3d1b80446c8a0a3879ac18fb516a3ad14c39f8310624",
+      "fileSha256": "0f5fc27107ad7e92b13f8231f440783af955ec23cbd9034818532c69e074874f",
+      "footprint": {
+        "width": 28,
+        "height": 20
+      },
+      "construction": {
+        "electric-furnace": 24,
+        "fast-inserter": 10,
+        "fast-underground-belt": 22,
+        "inserter": 38,
+        "roboport": 2,
+        "splitter": 3,
+        "substation": 4,
+        "transport-belt": 51,
+        "underground-belt": 8
+      },
+      "entityCount": 162,
+      "ports": "Ore in and plates out both on the west side; no ore leaves the station, so copies cannot share one ore line without extra belts."
+    },
+    "products": [
+      "iron-plate",
+      "copper-plate"
+    ],
+    "targets": {
+      "iron-plate": 900,
+      "copper-plate": 900
+    },
+    "inputs": [
+      {
+        "kind": "input",
+        "label": "Ore in",
+        "items": [
+          "iron-ore",
+          "copper-ore"
+        ],
+        "item": "iron-ore",
+        "entity": 142,
+        "position": {
+          "x": 0.5,
+          "y": 2
+        },
+        "tile": {
+          "x": 0,
+          "y": 1
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "transport": "red belt",
+        "perMinute": 900,
+        "note": "One red belt into the west face of the splitter on row 1. The station takes 900 ore per minute first; everything else continues east."
+      }
+    ],
+    "fluids": [],
+    "outputs": [
+      {
+        "kind": "output",
+        "label": "Plates out",
+        "items": [
+          "iron-plate",
+          "copper-plate"
+        ],
+        "item": "iron-plate",
+        "entity": 212,
+        "position": {
+          "x": 29.5,
+          "y": 19.5
+        },
+        "tile": {
+          "x": 29,
+          "y": 19
+        },
+        "externalSide": "south",
+        "direction": 8,
+        "transport": "yellow belt",
+        "perMinute": 900,
+        "note": "One yellow belt leaving the south edge in the last column, 900 plates per minute."
+      }
+    ],
+    "forward": [
+      {
+        "kind": "forward",
+        "label": "Ore out (forwarded)",
+        "items": [
+          "iron-ore",
+          "copper-ore"
+        ],
+        "item": "iron-ore",
+        "entity": 167,
+        "position": {
+          "x": 29.5,
+          "y": 1.5
+        },
+        "tile": {
+          "x": 29,
+          "y": 1
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "red belt",
+        "perMinute": 900,
+        "note": "The same row as the entrance; 900 ore per minute from a full red belt. A copy placed 30 tiles east takes it with no extra belts; on the last copy it may stay unconnected."
+      }
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "Ore in",
+        "items": [
+          "iron-ore",
+          "copper-ore"
+        ],
+        "item": "iron-ore",
+        "entity": 142,
+        "position": {
+          "x": 0.5,
+          "y": 2
+        },
+        "tile": {
+          "x": 0,
+          "y": 1
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "transport": "red belt",
+        "perMinute": 900,
+        "note": "One red belt into the west face of the splitter on row 1. The station takes 900 ore per minute first; everything else continues east."
+      },
+      {
+        "kind": "forward",
+        "label": "Ore out (forwarded)",
+        "items": [
+          "iron-ore",
+          "copper-ore"
+        ],
+        "item": "iron-ore",
+        "entity": 167,
+        "position": {
+          "x": 29.5,
+          "y": 1.5
+        },
+        "tile": {
+          "x": 29,
+          "y": 1
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "red belt",
+        "perMinute": 900,
+        "note": "The same row as the entrance; 900 ore per minute from a full red belt. A copy placed 30 tiles east takes it with no extra belts; on the last copy it may stay unconnected."
+      },
+      {
+        "kind": "output",
+        "label": "Plates out",
+        "items": [
+          "iron-plate",
+          "copper-plate"
+        ],
+        "item": "iron-plate",
+        "entity": 212,
+        "position": {
+          "x": 29.5,
+          "y": 19.5
+        },
+        "tile": {
+          "x": 29,
+          "y": 19
+        },
+        "externalSide": "south",
+        "direction": 8,
+        "transport": "yellow belt",
+        "perMinute": 900,
+        "note": "One yellow belt leaving the south edge in the last column, 900 plates per minute."
+      },
+      {
+        "kind": "power",
+        "label": "External electricity",
+        "items": [],
+        "entity": 15
+      }
+    ],
+    "chaining": {
+      "pitch": 30,
+      "axis": "east",
+      "touching": true,
+      "copiesPerRedBelt": 2,
+      "note": "Place the next copy 30 tiles east (touching). One red belt (1,800 ore/min) feeds 2 copies at full rate. The ore line inside each copy is red, so a faster belt is held to 1,800 per minute inside the first copy."
+    },
+    "footprint": {
+      "width": 30,
+      "height": 20
+    },
+    "construction": {
+      "electric-furnace": 24,
+      "fast-inserter": 10,
+      "fast-splitter": 2,
+      "fast-transport-belt": 33,
+      "fast-underground-belt": 26,
+      "inserter": 38,
+      "roboport": 2,
+      "splitter": 3,
+      "substation": 4,
+      "transport-belt": 64,
+      "underground-belt": 6
+    },
+    "entityCount": 212,
+    "protocol": {
+      "warmupMinutes": 10,
+      "measureMinutes": 10,
+      "blockedMinutes": 10,
+      "settleMinutes": 3,
+      "recoveryMinutes": 10
+    },
+    "setupNotes": [
+      "Official 2.1.24 Space Age. No modules: 24 electric furnaces with no modules, inserters and fast inserters, yellow belts with red underground belts, 4 substations, 2 roboports. Derived from the Autosaved \"In-Out Electric Smelter\" (autosaved-f3d991e31c13c301, https://autosaved.org/factorio/blueprints). WEST: ore in on one red belt, row 1 (second row). The station takes 900 ore per minute first; the rest leaves EAST on the same row, so copies placed 30 tiles apart chain along one ore line (one red belt feeds 2 copies). SOUTH: 900 plates per minute on one yellow belt in the last column. Iron or copper ore; a blocked plate exit or a full station never stops the ore line, and an unconnected east end does not stop the station. Supply electricity at any substation; copies placed side by side join one network.",
+      "Feed iron ore or copper ore, one kind per ore line. Each was tested on its own; mixed ore on one line was not tested.",
+      "Keep the splitter priorities: the entrance splitter sends ore to the station first (south output); the merge splitter sends plates to the exit column."
+    ],
+    "versions": [
+      {
+        "label": "No modules",
+        "summary": "No modules. Measured per copy: 900 ore in, 900 plates out, 900 ore forwarded from a full red belt; 4,834.9 kW.",
+        "blueprintSha256": "9c60d876232d36dee71889e40b4e39bd77f3a74eabe1bd6113e2b6ebc5bd705e",
+        "file": "electric-smelter-pass-through.txt",
+        "report": "native-report.json",
+        "width": 30,
+        "height": 20,
+        "tiles": 600,
+        "machines": 24,
+        "outputsPerMinute": {
+          "steady": {
+            "iron-plate": 900,
+            "copper-plate": 900
+          },
+          "recovery": {
+            "iron-plate": 900,
+            "copper-plate": 900
+          }
+        },
+        "inputsPerMinute": {
+          "iron-ore": 900,
+          "copper-ore": 900
+        },
+        "powerKW": 4834.9
+      },
+      {
+        "label": "Efficiency modules",
+        "summary": "48 × efficiency module. Measured per copy: 900 ore in, 900 plates out, 900 ore forwarded from a full red belt; 2,242.9 kW.",
+        "blueprintSha256": "933e434264ab1df86a676dba3b4009c24ee012d0a2344cc3c240564ae923c60c",
+        "file": "versions/efficiency/electric-smelter-pass-through.txt",
+        "manifest": "versions/efficiency/manifest.json",
+        "report": "versions/efficiency/native-report.json",
+        "width": 30,
+        "height": 20,
+        "tiles": 600,
+        "machines": 24,
+        "outputsPerMinute": {
+          "steady": {
+            "iron-plate": 900,
+            "copper-plate": 900
+          },
+          "recovery": {
+            "iron-plate": 900,
+            "copper-plate": 900
+          }
+        },
+        "inputsPerMinute": {
+          "iron-ore": 900,
+          "copper-ore": 900
+        },
+        "powerKW": 2242.9
+      },
+      {
+        "label": "Productivity modules, tier one",
+        "summary": "48 × productivity module. Measured per copy: 809.9 ore in, 874.9 plates out, 990.1 ore forwarded from a full red belt; 8,274.9 kW.",
+        "blueprintSha256": "a8f0a50456236a19336f72f83a8afd8ca831b2744aa5fdcbbb92b06009b1a7d2",
+        "file": "versions/productivity-one/electric-smelter-pass-through.txt",
+        "manifest": "versions/productivity-one/manifest.json",
+        "report": "versions/productivity-one/native-report.json",
+        "width": 30,
+        "height": 20,
+        "tiles": 600,
+        "machines": 24,
+        "outputsPerMinute": {
+          "steady": {
+            "iron-plate": 874.9,
+            "copper-plate": 874.9
+          },
+          "recovery": {
+            "iron-plate": 900,
+            "copper-plate": 874.9
+          }
+        },
+        "inputsPerMinute": {
+          "iron-ore": 809.9,
+          "copper-ore": 809.9
+        },
+        "powerKW": 8274.9
+      },
+      {
+        "label": "Productivity modules, tier two",
+        "summary": "48 × productivity module 2. Measured per copy: 720 ore in, 806.4 plates out, 1,080 ore forwarded from a full red belt; 9,980.4 kW.",
+        "blueprintSha256": "7db6d04bb5848dc839c157be5645a2ed94476d2e2d40549eee078d2e7a47b7dd",
+        "file": "versions/productivity-two/electric-smelter-pass-through.txt",
+        "manifest": "versions/productivity-two/manifest.json",
+        "report": "versions/productivity-two/native-report.json",
+        "width": 30,
+        "height": 20,
+        "tiles": 600,
+        "machines": 24,
+        "outputsPerMinute": {
+          "steady": {
+            "iron-plate": 806.4,
+            "copper-plate": 806.4
+          },
+          "recovery": {
+            "iron-plate": 900,
+            "copper-plate": 806.4
+          }
+        },
+        "inputsPerMinute": {
+          "iron-ore": 720,
+          "copper-ore": 720
+        },
+        "powerKW": 9980.4
+      },
+      {
+        "label": "Productivity modules, tier three",
+        "summary": "48 × productivity module 3. Measured per copy: 630 ore in, 755.5 plates out, 1,170 ore forwarded from a full red belt; 11,688 kW.",
+        "blueprintSha256": "bd4fa2d89ec6dc4e47956e6656cc59ab56726b46838be29a70c275484e4df520",
+        "file": "versions/productivity-three/electric-smelter-pass-through.txt",
+        "manifest": "versions/productivity-three/manifest.json",
+        "report": "versions/productivity-three/native-report.json",
+        "width": 30,
+        "height": 20,
+        "tiles": 600,
+        "machines": 24,
+        "outputsPerMinute": {
+          "steady": {
+            "iron-plate": 755.5,
+            "copper-plate": 755.5
+          },
+          "recovery": {
+            "iron-plate": 888.8,
+            "copper-plate": 755.5
+          }
+        },
+        "inputsPerMinute": {
+          "iron-ore": 630,
+          "copper-ore": 630
+        },
+        "powerKW": 11688
+      },
+      {
+        "label": "Speed modules, tier one",
+        "summary": "48 × speed module. Measured per copy: 1,260 ore in, 1,260 plates out, 540 ore forwarded from a full red belt; 9,351.3 kW.",
+        "blueprintSha256": "56b17478ff1699ff4dbc57c5c9d8ac8167d220873ab4e362adc83f7008cdce18",
+        "file": "versions/speed-one/electric-smelter-pass-through.txt",
+        "manifest": "versions/speed-one/manifest.json",
+        "report": "versions/speed-one/native-report.json",
+        "width": 30,
+        "height": 20,
+        "tiles": 600,
+        "machines": 24,
+        "outputsPerMinute": {
+          "steady": {
+            "iron-plate": 1260,
+            "copper-plate": 1260
+          },
+          "recovery": {
+            "iron-plate": 1289.6,
+            "copper-plate": 1260
+          }
+        },
+        "inputsPerMinute": {
+          "iron-ore": 1260,
+          "copper-ore": 1260
+        },
+        "powerKW": 9351.3
+      },
+      {
+        "label": "Speed modules, tier two",
+        "summary": "48 × speed module 2. Measured per copy: 1,440 ore in, 1,440 plates out, 360 ore forwarded from a full red belt; 10,278.8 kW.",
+        "blueprintSha256": "a4eb07abac1f80a6938e46d77c6f1ceca10b9035c2c229b848299f08f006f3e6",
+        "file": "versions/speed-two/electric-smelter-pass-through.txt",
+        "manifest": "versions/speed-two/manifest.json",
+        "report": "versions/speed-two/native-report.json",
+        "width": 30,
+        "height": 20,
+        "tiles": 600,
+        "machines": 24,
+        "outputsPerMinute": {
+          "steady": {
+            "iron-plate": 1440,
+            "copper-plate": 1440
+          },
+          "recovery": {
+            "iron-plate": 1492.5,
+            "copper-plate": 1440
+          }
+        },
+        "inputsPerMinute": {
+          "iron-ore": 1440,
+          "copper-ore": 1440
+        },
+        "powerKW": 10278.8
+      },
+      {
+        "label": "Speed modules, tier three",
+        "summary": "48 × speed module 3. Measured per copy: 1,800 ore in, 1,800 plates out, 0 ore forwarded from a full red belt; 11,250.5 kW.",
+        "blueprintSha256": "bcfe2ab13244575f2ca2e4315a40d4f2bf8ac295a97700d68eb9b1e98a188be6",
+        "file": "versions/speed-three/electric-smelter-pass-through.txt",
+        "manifest": "versions/speed-three/manifest.json",
+        "report": "versions/speed-three/native-report.json",
+        "width": 30,
+        "height": 20,
+        "tiles": 600,
+        "machines": 24,
+        "outputsPerMinute": {
+          "steady": {
+            "iron-plate": 1800,
+            "copper-plate": 1800
+          },
+          "recovery": {
+            "iron-plate": 1800,
+            "copper-plate": 1800
+          }
+        },
+        "inputsPerMinute": {
+          "iron-ore": 1800,
+          "copper-ore": 1800
+        },
+        "powerKW": 11250.5
+      }
+    ],
+    "variants": [
+      {
+        "variant": "no-modules",
+        "label": "No modules",
+        "blueprintSha256": "9c60d876232d36dee71889e40b4e39bd77f3a74eabe1bd6113e2b6ebc5bd705e",
+        "file": "electric-smelter-pass-through.txt",
+        "modules": {
+          "module": null,
+          "count": 0
+        },
+        "fast": false,
+        "computed": {
+          "speedMultiplier": 1,
+          "consumptionMultiplier": 1,
+          "productivity": 0,
+          "orePerMinute": 900,
+          "platesPerMinute": 900,
+          "furnacePowerKW": 4320,
+          "copiesPerRedBelt": 2
+        },
+        "status": "qualified",
+        "measured": {
+          "ironPlatesPerMinute": 900,
+          "copperPlatesPerMinute": 900,
+          "ironOrePerMinute": 900,
+          "copperOrePerMinute": 900,
+          "forwardedFromFullRedBeltPerMinute": 900,
+          "powerKW": 4834.9,
+          "powerByEntityKW": {
+            "inserter": 194.5,
+            "fast-inserter": 76.4,
+            "roboport": 100,
+            "electric-furnace": 4464
+          },
+          "secondCopyOnRedBeltPerMinute": 900,
+          "recoveryPerMinute": 900,
+          "stoneBricksPerMinute": 746.7,
+          "secondCopyWhileFirstBlockedPerMinute": 900,
+          "efficiencyTwoPowerKW": 1378.9,
+          "efficiencyThreePowerKW": 1378.9,
+          "efficiencyTwoPlatesPerMinute": 900,
+          "efficiencyThreePlatesPerMinute": 900,
+          "scenariosPassed": 6,
+          "scenarios": 6,
+          "reportCreatedAt": "2026-11-22T02:54:48.808Z"
+        },
+        "included": true
+      },
+      {
+        "variant": "efficiency",
+        "label": "Efficiency modules",
+        "blueprintSha256": "933e434264ab1df86a676dba3b4009c24ee012d0a2344cc3c240564ae923c60c",
+        "file": "versions/efficiency/electric-smelter-pass-through.txt",
+        "modules": {
+          "module": "efficiency-module",
+          "count": 48,
+          "perFurnace": 2,
+          "effect": {
+            "consumption": -0.3
+          }
+        },
+        "fast": false,
+        "computed": {
+          "speedMultiplier": 1,
+          "consumptionMultiplier": 0.4,
+          "productivity": 0,
+          "orePerMinute": 900,
+          "platesPerMinute": 900,
+          "furnacePowerKW": 1728,
+          "copiesPerRedBelt": 2
+        },
+        "status": "qualified",
+        "measured": {
+          "ironPlatesPerMinute": 900,
+          "copperPlatesPerMinute": 900,
+          "ironOrePerMinute": 900,
+          "copperOrePerMinute": 900,
+          "forwardedFromFullRedBeltPerMinute": 900,
+          "powerKW": 2242.9,
+          "powerByEntityKW": {
+            "inserter": 194.5,
+            "fast-inserter": 76.4,
+            "roboport": 100,
+            "electric-furnace": 1872
+          },
+          "secondCopyOnRedBeltPerMinute": 900,
+          "recoveryPerMinute": 900,
+          "scenariosPassed": 3,
+          "scenarios": 3,
+          "reportCreatedAt": "2026-11-22T02:55:08.556Z"
+        },
+        "included": true
+      },
+      {
+        "variant": "productivity-one",
+        "label": "Productivity modules, tier one",
+        "blueprintSha256": "a8f0a50456236a19336f72f83a8afd8ca831b2744aa5fdcbbb92b06009b1a7d2",
+        "file": "versions/productivity-one/electric-smelter-pass-through.txt",
+        "modules": {
+          "module": "productivity-module",
+          "count": 48,
+          "perFurnace": 2,
+          "effect": {
+            "productivity": 0.04,
+            "consumption": 0.4,
+            "pollution": 0.05,
+            "speed": -0.05
+          }
+        },
+        "fast": false,
+        "computed": {
+          "speedMultiplier": 0.9,
+          "consumptionMultiplier": 1.8,
+          "productivity": 0.08,
+          "orePerMinute": 810,
+          "platesPerMinute": 874.8,
+          "furnacePowerKW": 7776,
+          "copiesPerRedBelt": 2.222
+        },
+        "status": "qualified",
+        "measured": {
+          "ironPlatesPerMinute": 874.9,
+          "copperPlatesPerMinute": 874.9,
+          "ironOrePerMinute": 809.9,
+          "copperOrePerMinute": 809.9,
+          "forwardedFromFullRedBeltPerMinute": 990.1,
+          "powerKW": 8274.9,
+          "powerByEntityKW": {
+            "inserter": 184.6,
+            "fast-inserter": 70.3,
+            "roboport": 100,
+            "electric-furnace": 7920
+          },
+          "secondCopyOnRedBeltPerMinute": 874.8,
+          "recoveryPerMinute": 900,
+          "scenariosPassed": 3,
+          "scenarios": 3,
+          "reportCreatedAt": "2026-11-22T02:55:22.664Z"
+        },
+        "included": true
+      },
+      {
+        "variant": "productivity-two",
+        "label": "Productivity modules, tier two",
+        "blueprintSha256": "7db6d04bb5848dc839c157be5645a2ed94476d2e2d40549eee078d2e7a47b7dd",
+        "file": "versions/productivity-two/electric-smelter-pass-through.txt",
+        "modules": {
+          "module": "productivity-module-2",
+          "count": 48,
+          "perFurnace": 2,
+          "effect": {
+            "productivity": 0.06,
+            "consumption": 0.6,
+            "pollution": 0.07,
+            "speed": -0.1
+          }
+        },
+        "fast": false,
+        "computed": {
+          "speedMultiplier": 0.8,
+          "consumptionMultiplier": 2.2,
+          "productivity": 0.12,
+          "orePerMinute": 720,
+          "platesPerMinute": 806.4,
+          "furnacePowerKW": 9504,
+          "copiesPerRedBelt": 2.5
+        },
+        "status": "qualified",
+        "measured": {
+          "ironPlatesPerMinute": 806.4,
+          "copperPlatesPerMinute": 806.4,
+          "ironOrePerMinute": 720,
+          "copperOrePerMinute": 720,
+          "forwardedFromFullRedBeltPerMinute": 1080,
+          "powerKW": 9980.4,
+          "powerByEntityKW": {
+            "inserter": 169.7,
+            "fast-inserter": 62.7,
+            "roboport": 100,
+            "electric-furnace": 9648
+          },
+          "secondCopyOnRedBeltPerMinute": 806.4,
+          "recoveryPerMinute": 900,
+          "scenariosPassed": 3,
+          "scenarios": 3,
+          "reportCreatedAt": "2026-11-22T02:55:34.159Z"
+        },
+        "included": true
+      },
+      {
+        "variant": "productivity-three",
+        "label": "Productivity modules, tier three",
+        "blueprintSha256": "bd4fa2d89ec6dc4e47956e6656cc59ab56726b46838be29a70c275484e4df520",
+        "file": "versions/productivity-three/electric-smelter-pass-through.txt",
+        "modules": {
+          "module": "productivity-module-3",
+          "count": 48,
+          "perFurnace": 2,
+          "effect": {
+            "productivity": 0.1,
+            "consumption": 0.8,
+            "pollution": 0.1,
+            "speed": -0.15
+          }
+        },
+        "fast": false,
+        "computed": {
+          "speedMultiplier": 0.7,
+          "consumptionMultiplier": 2.6,
+          "productivity": 0.2,
+          "orePerMinute": 630,
+          "platesPerMinute": 756,
+          "furnacePowerKW": 11232,
+          "copiesPerRedBelt": 2.857
+        },
+        "status": "qualified",
+        "measured": {
+          "ironPlatesPerMinute": 755.5,
+          "copperPlatesPerMinute": 755.5,
+          "ironOrePerMinute": 630,
+          "copperOrePerMinute": 630,
+          "forwardedFromFullRedBeltPerMinute": 1170,
+          "powerKW": 11688,
+          "powerByEntityKW": {
+            "inserter": 156.4,
+            "fast-inserter": 55.6,
+            "roboport": 100,
+            "electric-furnace": 11376
+          },
+          "secondCopyOnRedBeltPerMinute": 756,
+          "recoveryPerMinute": 888.8,
+          "scenariosPassed": 3,
+          "scenarios": 3,
+          "reportCreatedAt": "2026-11-22T02:55:51.391Z"
+        },
+        "included": true
+      },
+      {
+        "variant": "speed-one",
+        "label": "Speed modules, tier one",
+        "blueprintSha256": "56b17478ff1699ff4dbc57c5c9d8ac8167d220873ab4e362adc83f7008cdce18",
+        "file": "versions/speed-one/electric-smelter-pass-through.txt",
+        "modules": {
+          "module": "speed-module",
+          "count": 48,
+          "perFurnace": 2,
+          "effect": {
+            "speed": 0.2,
+            "consumption": 0.5,
+            "quality": -0.01
+          }
+        },
+        "fast": true,
+        "computed": {
+          "speedMultiplier": 1.4,
+          "consumptionMultiplier": 2,
+          "productivity": 0,
+          "orePerMinute": 1260,
+          "platesPerMinute": 1260,
+          "furnacePowerKW": 8640,
+          "copiesPerRedBelt": 1.429
+        },
+        "status": "qualified",
+        "measured": {
+          "ironPlatesPerMinute": 1260,
+          "copperPlatesPerMinute": 1260,
+          "ironOrePerMinute": 1260,
+          "copperOrePerMinute": 1260,
+          "forwardedFromFullRedBeltPerMinute": 540,
+          "powerKW": 9351.3,
+          "powerByEntityKW": {
+            "fast-inserter": 467.3,
+            "roboport": 100,
+            "electric-furnace": 8784
+          },
+          "secondCopyOnRedBeltPerMinute": 540,
+          "recoveryPerMinute": 1289.6,
+          "scenariosPassed": 3,
+          "scenarios": 3,
+          "reportCreatedAt": "2026-11-22T02:56:08.080Z"
+        },
+        "included": true
+      },
+      {
+        "variant": "speed-two",
+        "label": "Speed modules, tier two",
+        "blueprintSha256": "a4eb07abac1f80a6938e46d77c6f1ceca10b9035c2c229b848299f08f006f3e6",
+        "file": "versions/speed-two/electric-smelter-pass-through.txt",
+        "modules": {
+          "module": "speed-module-2",
+          "count": 48,
+          "perFurnace": 2,
+          "effect": {
+            "speed": 0.3,
+            "consumption": 0.6,
+            "quality": -0.015
+          }
+        },
+        "fast": true,
+        "computed": {
+          "speedMultiplier": 1.6,
+          "consumptionMultiplier": 2.2,
+          "productivity": 0,
+          "orePerMinute": 1440,
+          "platesPerMinute": 1440,
+          "furnacePowerKW": 9504,
+          "copiesPerRedBelt": 1.25
+        },
+        "status": "qualified",
+        "measured": {
+          "ironPlatesPerMinute": 1440,
+          "copperPlatesPerMinute": 1440,
+          "ironOrePerMinute": 1440,
+          "copperOrePerMinute": 1440,
+          "forwardedFromFullRedBeltPerMinute": 360,
+          "powerKW": 10278.8,
+          "powerByEntityKW": {
+            "fast-inserter": 530.8,
+            "roboport": 100,
+            "electric-furnace": 9648
+          },
+          "secondCopyOnRedBeltPerMinute": 360,
+          "recoveryPerMinute": 1492.5,
+          "scenariosPassed": 3,
+          "scenarios": 3,
+          "reportCreatedAt": "2026-11-22T02:56:19.095Z"
+        },
+        "included": true
+      },
+      {
+        "variant": "speed-three",
+        "label": "Speed modules, tier three",
+        "blueprintSha256": "bcfe2ab13244575f2ca2e4315a40d4f2bf8ac295a97700d68eb9b1e98a188be6",
+        "file": "versions/speed-three/electric-smelter-pass-through.txt",
+        "modules": {
+          "module": "speed-module-3",
+          "count": 48,
+          "perFurnace": 2,
+          "effect": {
+            "speed": 0.5,
+            "consumption": 0.7,
+            "quality": -0.025
+          }
+        },
+        "fast": true,
+        "computed": {
+          "speedMultiplier": 2,
+          "consumptionMultiplier": 2.4,
+          "productivity": 0,
+          "orePerMinute": 1800,
+          "platesPerMinute": 1800,
+          "furnacePowerKW": 10368,
+          "copiesPerRedBelt": 1
+        },
+        "status": "qualified",
+        "measured": {
+          "ironPlatesPerMinute": 1800,
+          "copperPlatesPerMinute": 1800,
+          "ironOrePerMinute": 1800,
+          "copperOrePerMinute": 1800,
+          "forwardedFromFullRedBeltPerMinute": 0,
+          "powerKW": 11250.5,
+          "powerByEntityKW": {
+            "fast-inserter": 638.5,
+            "roboport": 100,
+            "electric-furnace": 10512
+          },
+          "secondCopyOnRedBeltPerMinute": 0,
+          "recoveryPerMinute": 1800,
+          "scenariosPassed": 3,
+          "scenarios": 3,
+          "reportCreatedAt": "2026-11-22T02:56:35.412Z"
+        },
+        "included": true
+      }
+    ],
+    "efficiencyHigherTiers": {
+      "computed": [
+        {
+          "module": "efficiency-module-2",
+          "speedMultiplier": 1,
+          "consumptionMultiplier": 0.2,
+          "productivity": 0,
+          "orePerMinute": 900,
+          "platesPerMinute": 900,
+          "furnacePowerKW": 864,
+          "copiesPerRedBelt": 2
+        },
+        {
+          "module": "efficiency-module-3",
+          "speedMultiplier": 1,
+          "consumptionMultiplier": 0.2,
+          "productivity": 0,
+          "orePerMinute": 900,
+          "platesPerMinute": 900,
+          "furnacePowerKW": 864,
+          "copiesPerRedBelt": 2
+        }
+      ],
+      "measured": {
+        "efficiencyTwoPowerKW": 1378.9,
+        "efficiencyThreePowerKW": 1378.9,
+        "efficiencyTwoPlatesPerMinute": 900,
+        "efficiencyThreePlatesPerMinute": 900
+      }
+    },
+    "recipeAudit": {
+      "furnaces": 24,
+      "furnaceCraftingSpeed": 2,
+      "recipeSeconds": {
+        "iron-plate": 3.2,
+        "copper-plate": 3.2,
+        "stone-brick": 3.2
+      },
+      "perFurnacePerMinute": 37.5,
+      "stationPerMinute": 900,
+      "yellowBeltPerMinute": 900,
+      "redBeltPerMinute": 1800,
+      "stoneBrickNote": "Stone bricks take 2 stone per brick: the station would need 1,800 stone per minute for 900 bricks, more than its inserters move (stone is reported as measured, not as a pass condition)."
+    },
+    "changes": [
+      "Ore now runs through: a red belt along row 1 from the west edge to the east edge, starting with a red splitter whose priority output feeds the station.",
+      "Plates leave on the south edge (last column) instead of the west edge: the two plate lanes now flow east and merge in a splitter on the east side.",
+      "The first splitter of the ore split became a red splitter fed from above by a red belt; the other two splitters and all four ore lanes are unchanged.",
+      "Same 24 furnaces, same 38 inserters and 10 fast inserters, same 4 substations and 2 roboports on the same tiles. 30 x 20 instead of 28 x 20: two columns more on the east side for the plate exit; the west side keeps its width (the entrance splitter stands where the old input belt was, the west plate merge is gone).",
+      "Module requests: the original asked for 2 efficiency modules in each furnace. The main string now has none; efficiency, productivity and speed versions are kept beside it."
+    ]
+  }
+]

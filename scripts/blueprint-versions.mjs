@@ -13,6 +13,9 @@
 // - outputsPerMinute: copied from that version's own native report, the build whose blueprintSha256 is this
 //   exact string and passed (steady = outputsPerMinute, recovery = recovery.outputsPerMinute). null means
 //   "not measured"; nothing is ever estimated.
+// - inputsPerMinute, powerKW: optional, present only when that build in the report records them (measured
+//   operating inputs per minute, and electric power drawn while working in kW). Families whose reports have
+//   neither get neither, and their pages and pickers render as before.
 //
 // A family generator calls familyVersions() and stores the result; the indexer (index-designed-blueprints.mjs)
 // calls checkVersions() and fails the build if a stored entry no longer matches its files.
@@ -54,6 +57,15 @@ export function measuredRates(report, blueprintSha256) {
   return {steady, recovery};
 }
 
+/** Optional measured inputs per minute and power (kW) of one version, from its own report; absent where it has none. */
+export function measuredOperation(report, blueprintSha256) {
+  const build = passingBuild(report, blueprintSha256);
+  return {
+    inputsPerMinute: build?.inputsPerMinute && typeof build.inputsPerMinute === 'object' ? build.inputsPerMinute : undefined,
+    powerKW: Number.isFinite(build?.powerKW) ? build.powerKW : undefined,
+  };
+}
+
 /**
  * One versions entry. familyDir is blueprint-sources/<family>; file, manifest and report are relative to it.
  * Size comes from the version's own manifest entry (footprint) when given, otherwise width/height.
@@ -70,10 +82,11 @@ export async function describeVersion({familyDir, label, summary, file, manifest
     footprint ??= entry.footprint;
   }
   if (!(footprint?.width > 0 && footprint?.height > 0)) throw Error(`${file}: version size unknown`);
-  const rates = measuredRates(await optionalJSON(path.join(familyDir, report)), blueprintSha256);
+  const nativeReport = await optionalJSON(path.join(familyDir, report)), rates = measuredRates(nativeReport, blueprintSha256);
+  const {inputsPerMinute, powerKW} = measuredOperation(nativeReport, blueprintSha256);
   return {label, ...(summary ? {summary} : {}), blueprintSha256, file, ...(manifest ? {manifest} : {}), report,
     width: footprint.width, height: footprint.height, tiles: footprint.width * footprint.height, machines: await countMachines(blueprint),
-    outputsPerMinute: rates};
+    outputsPerMinute: rates, ...(inputsPerMinute ? {inputsPerMinute} : {}), ...(powerKW !== undefined ? {powerKW} : {})};
 }
 
 /** All versions of a family, newest first; list items are describeVersion arguments without familyDir. */
@@ -121,15 +134,19 @@ export function versionChoices(versions, products, name = id => id.replaceAll('-
  * download. chip(id) returns the product's heading HTML (it may be async); files are relative to the page.
  * Pair it with VERSIONS_SCRIPT on the page for the copy buttons.
  */
-export async function versionsSection({versions, products, codes, chip, esc, name = id => id.replaceAll('-', ' ')}) {
+export async function versionsSection({versions, products, codes, chip, esc, name = id => id.replaceAll('-', ' '), alternatives = false}) {
   const num = n => Number.isFinite(n) ? String(Number(n.toFixed(2))) : 'not measured';
   const withRecovery = versions.some(v => v.outputsPerMinute.recovery);
+  // Optional columns: measured inputs per minute and power, only when some version records them.
+  const inputs = [...new Set(versions.flatMap(v => Object.keys(v.inputsPerMinute || {})))], withPower = versions.some(v => Number.isFinite(v.powerKW));
   const heads = await Promise.all(products.map(async id => `<th scope="col">${await chip(id)}</th>`));
-  const rows = versions.map((v, i) => `<tr data-version-row="${i}"><th scope="row">${esc(v.label)}${i === 0 ? ' · recommended' : ''}</th><td>${v.width} × ${v.height} = ${v.tiles}</td><td>${v.machines}</td>${products.map(id => `<td>${num(v.outputsPerMinute.steady?.[id])}${withRecovery ? `<br><small>recovery ${num(v.outputsPerMinute.recovery?.[id])}</small>` : ''}</td>`).join('')}</tr>`).join('');
+  const inputHeads = await Promise.all(inputs.map(async id => `<th scope="col" data-input-item="${esc(id)}">${await chip(id)} in</th>`));
+  const rows = versions.map((v, i) => `<tr data-version-row="${i}"><th scope="row">${esc(v.label)}${i === 0 ? ' · recommended' : ''}</th><td>${v.width} × ${v.height} = ${v.tiles}</td><td>${v.machines}</td>${inputs.map(id => `<td data-input-item="${esc(id)}">${num(v.inputsPerMinute?.[id])}</td>`).join('')}${products.map(id => `<td>${num(v.outputsPerMinute.steady?.[id])}${withRecovery ? `<br><small>recovery ${num(v.outputsPerMinute.recovery?.[id])}</small>` : ''}</td>`).join('')}${withPower ? `<td data-power>${Number.isFinite(v.powerKW) ? num(v.powerKW) + ' kW' : 'not measured'}</td>` : ''}</tr>`).join('');
   const choices = versionChoices(versions, products, name);
-  const blocks = versions.map((v, i) => `<article class="version-card" data-version="${i}"><h3>${esc(v.label)} · ${i === 0 ? 'recommended, current version' : 'earlier version'}</h3><p>${v.summary ? esc(v.summary) : `${v.width} × ${v.height} = ${v.tiles} tiles.`} ${v.machines} machines.</p><div class="actions"><button data-version-copy="${i}">Copy ${esc(v.label)} import</button><a class="button${i === 0 ? ' primary' : ''}" href="${esc(v.file)}" download>Download ${esc(v.label)} import</a><a class="button" href="${esc(v.report)}">Native report</a></div><details><summary>${esc(v.label)} import string</summary><textarea id="version-code-${i}" readonly aria-label="${esc(v.label)} import string">${esc(codes[i])}</textarea></details><p class="hash">SHA-256 ${esc(v.blueprintSha256)}</p></article>`).join('');
-  const count = ['No', 'One', 'Two', 'Three', 'Four', 'Five'][versions.length] ?? String(versions.length);
-  return `<section id="versions"><h2>${count} tested versions: which to choose</h2><p>Both import strings passed the full native protocol for their exact SHA-256 and stay available. Each row is measured from that version's own native report: the steady rate${withRecovery ? ', and below it the rate after output was blocked and resumed (recovery)' : ''}, per minute.</p><ul>${choices.map(c => `<li><strong>${esc(c.label)}</strong>${c.recommended ? ' (recommended)' : ''}: ${esc(c.text)}.</li>`).join('')}</ul><div class="table-scroll"><table class="version-compare"><thead><tr><th scope="col">Version</th><th scope="col">Tiles</th><th scope="col">Machines</th>${heads.join('')}</tr></thead><tbody>${rows}</tbody></table></div>${blocks}<p id="version-copy-status" role="status" aria-live="polite"></p></section>`;
+  const blocks = versions.map((v, i) => `<article class="version-card" data-version="${i}"><h3>${esc(v.label)} · ${i === 0 ? 'recommended, current version' : alternatives ? 'alternative version' : 'earlier version'}</h3><p>${v.summary ? esc(v.summary) : `${v.width} × ${v.height} = ${v.tiles} tiles.`} ${v.machines} machines.</p><div class="actions"><button data-version-copy="${i}">Copy ${esc(v.label)} import</button><a class="button${i === 0 ? ' primary' : ''}" href="${esc(v.file)}" download>Download ${esc(v.label)} import</a><a class="button" href="${esc(v.report)}">Native report</a></div><details><summary>${esc(v.label)} import string</summary><textarea id="version-code-${i}" readonly aria-label="${esc(v.label)} import string">${esc(codes[i])}</textarea></details><p class="hash">SHA-256 ${esc(v.blueprintSha256)}</p></article>`).join('');
+  const count = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'][versions.length] ?? String(versions.length);
+  const intro = alternatives ? 'Every import string below passed its native protocol for its exact SHA-256.' : 'Both import strings passed the full native protocol for their exact SHA-256 and stay available.';
+  return `<section id="versions"><h2>${count} tested versions: which to choose</h2><p>${intro} Each row is measured from that version's own native report: ${inputs.length ? 'the inputs it drew and ' : ''}the steady rate${withRecovery ? ', and below it the rate after output was blocked and resumed (recovery)' : ''}, per minute${withPower ? ', and the electric power it drew while working' : ''}.</p><ul>${choices.map(c => `<li><strong>${esc(c.label)}</strong>${c.recommended ? ' (recommended)' : ''}: ${esc(c.text)}.</li>`).join('')}</ul><div class="table-scroll"><table class="version-compare"><thead><tr><th scope="col">Version</th><th scope="col">Tiles</th><th scope="col">Machines</th>${inputHeads.join('')}${heads.join('')}${withPower ? '<th scope="col">Power</th>' : ''}</tr></thead><tbody>${rows}</tbody></table></div>${blocks}<p id="version-copy-status" role="status" aria-live="polite"></p></section>`;
 }
 export const VERSIONS_SCRIPT = `document.querySelectorAll('[data-version-copy]').forEach(b=>b.addEventListener('click',async()=>{const t=document.getElementById('version-code-'+b.dataset.versionCopy),s=document.getElementById('version-copy-status');try{if(location.protocol==='file:'||!navigator.clipboard?.writeText)throw Error('manual');await navigator.clipboard.writeText(t.value);s.textContent='Copied';}catch{t.closest('details').open=true;t.focus();t.select();s.textContent='Import selected — press Ctrl+C or Command+C to copy';}}));`;
 export const VERSIONS_STYLE = `.version-card{border:1px solid #465249;border-radius:6px;padding:4px 18px 14px;margin:18px 0;background:#1b2621}.table-scroll{overflow-x:auto;max-width:100%}.version-compare td,.version-compare th{white-space:nowrap}.version-compare small{color:#9ca99e}`;

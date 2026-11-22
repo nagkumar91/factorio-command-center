@@ -47,5 +47,10 @@ try{
  assert.deepEqual(await search('inputs','concrete'),[kit]);
  assert.deepEqual(await search('outputs','rocket fuel'),[fuel]);
  assert.deepEqual([...await search('outputs','space science pack')].sort(),[platform,receiver].sort());
- assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials and the space launch builds are findable by input and output.');
+ // Electric smelter pass-through: found by name and machine, by its plates as outputs and by its ores as inputs.
+ const smelter='Electric smelter · ore through east, plates south';
+ await page.goto(url+'?collection=flight-plans#blueprints');await page.reload();await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ for(const [direction,query] of [['all','smelter'],['all','electric furnace'],['outputs','iron plate'],['outputs','copper plate'],['inputs','iron ore'],['inputs','copper ore']]){const found=await search(direction,query);assert.ok(found.includes(smelter),direction+': '+query+' gave '+found.length+' cards without the smelter');}
+ assert.ok(!(await search('outputs','iron ore')).includes(smelter),'forwarded ore is not a product');
+ assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials, the space launch builds and the electric smelter are findable by input and output.');
 }finally{await browser.close();}

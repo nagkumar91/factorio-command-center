@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {checkVersions, describeVersion, familyVersions, measuredRates, versionChoices} from '../scripts/blueprint-versions.mjs';
+import {checkVersions, describeVersion, familyVersions, measuredRates, measuredOperation, versionChoices} from '../scripts/blueprint-versions.mjs';
 
 const hash = s => createHash('sha256').update(s.trim()).digest('hex');
 const read = p => fs.readFile(p, 'utf8');
@@ -186,4 +186,37 @@ test('helpers: missing reports read as not measured, labels must be words, a sta
   assert.equal(choices[0].recommended, true);
   assert.match(choices[1].text, /faster for fast transport belt \(14\.85\/min\), fast inserter \(18\.55\/min\), electric furnace \(2\.7\/min\)/);
   await fs.rm(dir, {recursive: true, force: true});
+});
+
+test('optional inputs and power: the electric smelter records them per version; families without them are unchanged', async () => {
+  const SMELTER = 'blueprint-sources/electric-smelter-pass-through';
+  const [m] = await json(SMELTER + '/manifest.json');
+  assert.deepEqual(m.versions.map(v => v.label), ['No modules', 'Efficiency modules', 'Productivity modules, tier one', 'Productivity modules, tier two', 'Productivity modules, tier three', 'Speed modules, tier one', 'Speed modules, tier two', 'Speed modules, tier three']);
+  for (const v of m.versions) {
+    const build = (await json(path.join(SMELTER, v.report))).builds.find(b => b.blueprintSha256 === v.blueprintSha256 && b.passed === true);
+    assert.deepEqual(v.inputsPerMinute, build.inputsPerMinute, v.label);
+    assert.equal(v.powerKW, build.powerKW, v.label);
+    assert.ok(v.inputsPerMinute['iron-ore'] > 0 && v.powerKW > 0, v.label);
+  }
+  // Other families keep exactly their earlier shape: no inputsPerMinute or powerKW keys, no new columns.
+  for (const family of ['essentials-mall', 'flight-robots']) {
+    const [f] = await json(`blueprint-sources/${family}/manifest.json`);
+    for (const v of f.versions) assert.ok(!('inputsPerMinute' in v) && !('powerKW' in v), family + ' ' + v.label);
+    const html = await read(`site/${family}/index.html`);
+    assert.ok(!html.includes('data-input-item') && !html.includes('data-power'), family + ': guide table unchanged');
+    const record = atlas.blueprints.find(b => b.blueprintSha256 === f.blueprintSha256);
+    assert.ok(!('inputsPerMinute' in record.publication) && record.publication.history.every(h => !('inputsPerMinute' in h) && !('powerKW' in h)), family + ': library record unchanged');
+  }
+  assert.deepEqual(measuredOperation(null, NEW), {inputsPerMinute: undefined, powerKW: undefined});
+  assert.deepEqual(measuredOperation({builds: [{blueprintSha256: NEW, passed: true, inputsPerMinute: {a: 2}, powerKW: 5}]}, NEW), {inputsPerMinute: {a: 2}, powerKW: 5});
+  // Library and guide page carry them.
+  const record = atlas.blueprints.find(b => b.blueprintSha256 === m.blueprintSha256);
+  assert.deepEqual(record.publication.inputsPerMinute, m.versions[0].inputsPerMinute);
+  assert.equal(record.publication.powerKW, m.versions[0].powerKW);
+  for (const h of record.publication.history) { const v = m.versions.find(v => v.blueprintSha256 === h.blueprintSha256); assert.deepEqual(h.inputsPerMinute, v.inputsPerMinute); assert.equal(h.powerKW, v.powerKW); }
+  const html = await read('site/electric-smelter-pass-through/index.html');
+  assert.match(html, /<section id="versions"><h2>Eight tested versions: which to choose<\/h2>/);
+  assert.equal((html.match(/<td data-input-item="iron-ore">/g) || []).length, 8);
+  assert.equal((html.match(/<td data-power>/g) || []).length, 8);
+  assert.ok(html.includes('alternative version') && !html.includes('earlier version'));
 });

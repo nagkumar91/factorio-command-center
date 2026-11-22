@@ -135,6 +135,39 @@ try{
  await page.locator('.blueprint-version-picker').scrollIntoViewIfNeeded();
  await page.screenshot({path:'test-results/blueprint-versions-flight-robots-1440.png'});
  await page.locator('[data-action="close-modal"]').click();
+ // Electric smelter: eight module versions; the picker also shows ore in per minute and power for each.
+ const smelter=atlas.blueprints.find(b=>b.file==='sources/designed-blueprints/electric-smelter-pass-through/electric-smelter-pass-through.txt');
+ const [smelterManifest]=JSON.parse(await fs.readFile('blueprint-sources/electric-smelter-pass-through/manifest.json'));
+ await page.goto(url+'index.html');await page.goto(url+'index.html?inputs=all#blueprints');
+ await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ await page.locator('#blueprint-direction').selectOption('all');
+ await page.locator('#blueprint-search').fill('smelter ore through east');
+ await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${smelter.id}"]`).click();
+ const smelterOptions=await page.locator('#blueprint-version option').allInnerTexts();
+ assert.equal(smelterOptions.length,8,'eight module versions');
+ assert.match(smelterOptions[0],/Version 8 · No modules · Recommended · 30 × 20 tiles · Iron plate 900\/min$/);
+ const smelterCompare=page.locator('#modal .version-compare');
+ assert.equal(await smelterCompare.locator('thead th[data-input-item="iron-ore"]').count(),1,'an ore-in column');
+ assert.equal(await smelterCompare.locator('thead th',{hasText:'Power'}).count(),1,'a power column');
+ for(const [i,v] of smelterManifest.versions.entries()){
+  const row=smelterCompare.locator(`tbody tr[data-version="${8-i}"]`);
+  assert.equal((await row.locator('td[data-input-item="iron-ore"]').innerText()).trim(),new Intl.NumberFormat(undefined,{maximumFractionDigits:2}).format(v.inputsPerMinute['iron-ore']),v.label+' ore in');
+  assert.match(await row.locator('td[data-power]').innerText(),/^[\d,]+ kW$/,v.label+' power');
+ }
+ await page.locator('#blueprint-version').selectOption('4');
+ await page.waitForFunction(()=>document.querySelector('#blueprint-version')?.value==='4'&&!document.querySelector('#blueprint-version')?.disabled);
+ await page.locator('#modal [data-action="copy-blueprint"]').click();
+ assert.equal(await page.evaluate(()=>window.__copiedBlueprint),(await fs.readFile('blueprint-sources/electric-smelter-pass-through/'+smelterManifest.versions[4].file,'utf8')).trim(),'copy gives the productivity three string');
+ await page.locator('[data-action="close-modal"]').click();
+ // Families without recorded inputs or power keep the earlier table: no extra columns.
+ await page.goto(url+'index.html');await page.goto(url+'?collection=essentials#blueprints');
+ await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ await page.locator('#blueprint-direction').selectOption('all');
+ await page.locator('#blueprint-search').fill('essentials mall');
+ await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${mall.id}"]`).click();
+ assert.equal(await page.locator('#modal .version-compare [data-input-item], #modal .version-compare [data-power]').count(),0,'mall table unchanged');
+ assert.equal(await page.locator('#modal .blueprint-version-picker h4').innerText(),'Measured output per minute, by version');
+ await page.locator('[data-action="close-modal"]').click();
  await page.goto(url+'index.html'); // the next library visit loads a fresh page, not a same-URL hash change
 
  // Every versioned design shows each version's size, machines and output per minute, or "Not measured".

@@ -1,0 +1,2494 @@
+{
+ "id": "electric-smelter-pass-through",
+ "variant": "productivity-two",
+ "label": "Productivity modules, tier two",
+ "gameVersion": "2.1.24",
+ "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+ "blueprintSha256": "7db6d04bb5848dc839c157be5645a2ed94476d2e2d40549eee078d2e7a47b7dd",
+ "harnessSha256": "1bf941db3a84a05d6afafd5b70fa794f945a06ff5b2ad9ba6169f6c8c6d5c384",
+ "validatorSha256": "c7ab4b1363af72472ff1f508032708b82763abc9748ab021e5b13dd9f2a8f5f1",
+ "configurationSha256": "8cf3861b33d253f02291d431564e43d992f5a678169c9ef160e776fef319ac9c",
+ "protocolMinutes": {
+  "warmupMinutes": 10,
+  "measureMinutes": 10,
+  "blockedMinutes": 10,
+  "settleMinutes": 3,
+  "recoveryMinutes": 10
+ },
+ "createdAt": "2026-11-22T02:55:34.159Z",
+ "runRoot": ".cache/electric-smelter-pass-through/native-productivity-two-1795316122841",
+ "policies": {
+  "feed": "External belt of the scenario tier ending at the west entrance; its back tile refilled every tick on both lanes (saturated). Exits drained from the last tile of short external belts every tick.",
+  "research": "No research: inserter hand size 1 (force inserter_stack_size_bonus 0).",
+  "modules": "The modules the string requests (two per furnace, or none) inserted into every furnace by script; item-request proxies removed; module inventories read back at the end of the measured window.",
+  "power": "One electric energy interface north of copy 1 only. Power drawn is the electric network input statistics over the measured window of a single copy (furnaces, inserters and roboports)."
+ },
+ "passBar": {
+  "platesPerMinute": 790.2719999999999,
+  "expectedPlatesPerMinute": 806.4,
+  "expectedOrePerMinute": 720,
+  "furnaceShare": "every furnace within 2% of the mean crafts of its copy"
+ },
+ "footprint": {
+  "width": 30,
+  "height": 20
+ },
+ "construction": {
+  "electric-furnace": 24,
+  "fast-inserter": 10,
+  "fast-splitter": 2,
+  "fast-transport-belt": 33,
+  "fast-underground-belt": 26,
+  "inserter": 38,
+  "roboport": 2,
+  "splitter": 3,
+  "substation": 4,
+  "transport-belt": 64,
+  "underground-belt": 6
+ },
+ "entityCount": 212,
+ "modules": {
+  "module": "productivity-module-2",
+  "count": 48,
+  "perFurnace": 2,
+  "effect": {
+   "productivity": 0.06,
+   "consumption": 0.6,
+   "pollution": 0.07,
+   "speed": -0.1
+  }
+ },
+ "scenarios": [
+  {
+   "name": "single-iron-red-plates-blocked",
+   "copies": 1,
+   "feed": "red",
+   "ore": "iron-ore",
+   "east": "drained",
+   "blockCopy1PlatesDuringBlocked": true,
+   "modulesInserted": 48,
+   "modulesByName": {
+    "productivity-module-2": 48
+   },
+   "importedEntitiesPerCopy": 212,
+   "offsets": [
+    {
+     "x": -55,
+     "y": -10
+    }
+   ],
+   "powered": true,
+   "oneElectricNetwork": true,
+   "substations": 4,
+   "copperWiresBetweenCopies": 0,
+   "measure": {
+    "minutes": 10,
+    "drains": [
+     {
+      "kind": "plates",
+      "copy": 1,
+      "items": {
+       "iron-plate": 8064
+      },
+      "perMinute": {
+       "iron-plate": 806.4
+      }
+     },
+     {
+      "kind": "east",
+      "copy": 1,
+      "items": {
+       "iron-ore": 10800
+      },
+      "perMinute": {
+       "iron-ore": 1080
+      }
+     }
+    ],
+    "fedPerMinute": 1800,
+    "furnaces": [
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       }
+      ]
+     }
+    ],
+    "modulesInFurnaces": [
+     {
+      "productivity-module-2": 48
+     }
+    ],
+    "electricInputDelta": {
+     "inserter": 101835971.19873047,
+     "fast-inserter": 37617711.02371216,
+     "roboport": 59999998.53515625,
+     "electric-furnace": 5788800000
+    },
+    "electricInputSeconds": 600
+   },
+   "blocked": {
+    "minutes": 10,
+    "drains": [
+     {
+      "kind": "plates",
+      "copy": 1,
+      "items": {},
+      "perMinute": {}
+     },
+     {
+      "kind": "east",
+      "copy": 1,
+      "items": {
+       "iron-ore": 15394
+      },
+      "perMinute": {
+       "iron-ore": 1539.4
+      }
+     }
+    ],
+    "fedPerMinute": 1800,
+    "lastMinute": {
+     "minutes": 1,
+     "drains": [
+      {
+       "kind": "plates",
+       "copy": 1,
+       "items": {},
+       "perMinute": {}
+      },
+      {
+       "kind": "east",
+       "copy": 1,
+       "items": {
+        "iron-ore": 1800
+       },
+       "perMinute": {
+        "iron-ore": 1800
+       }
+      }
+     ],
+     "fedPerMinute": 0
+    },
+    "furnaces": [
+     {
+      "furnaces": 24,
+      "minCrafts": 104,
+      "maxCrafts": 147,
+      "meanCrafts": 117.58333333333333,
+      "totalCrafts": 2822,
+      "craftsPerMinute": 282.2,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 131,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 128,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 116,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 114,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 109,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 108,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 147,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 119,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 118,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 109,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 108,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 104,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 132,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 128,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 115,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 114,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 107,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 107,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 147,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 120,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 119,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 109,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 108,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 105,
+        "status": "full_output",
+        "recipe": "iron-plate"
+       }
+      ]
+     }
+    ],
+    "copy1PlateBeltHeld": 8,
+    "copy1CraftsInLastMinute": 0
+   },
+   "recovery": {
+    "minutes": 10,
+    "drains": [
+     {
+      "kind": "plates",
+      "copy": 1,
+      "items": {
+       "iron-plate": 9000
+      },
+      "perMinute": {
+       "iron-plate": 900
+      }
+     },
+     {
+      "kind": "east",
+      "copy": 1,
+      "items": {
+       "iron-ore": 11386
+      },
+      "perMinute": {
+       "iron-ore": 1138.6
+      }
+     }
+    ],
+    "fedPerMinute": 1800,
+    "furnaces": [
+     {
+      "furnaces": 24,
+      "minCrafts": 189,
+      "maxCrafts": 336,
+      "meanCrafts": 309.375,
+      "totalCrafts": 7425,
+      "craftsPerMinute": 742.5,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 229,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 292,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 315,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 189,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 230,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 292,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 313,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 189,
+        "status": "working",
+        "recipe": "iron-plate"
+       }
+      ]
+     }
+    ]
+   },
+   "finished": true,
+   "informational": false,
+   "powerKW": 9980.4,
+   "powerByEntityKW": {
+    "inserter": 169.7,
+    "fast-inserter": 62.7,
+    "roboport": 100,
+    "electric-furnace": 9648
+   },
+   "checks": {
+    "finished": true,
+    "powered": true,
+    "modulesAsRequested": true,
+    "fullRate": true,
+    "everyFurnaceEven": true,
+    "surplusOreEast": true,
+    "onlyPlatesOnPlateBelt": true,
+    "onlyOreOnEastExit": true,
+    "stoppedWhileBlocked": true,
+    "oreAllForwardedInLastBlockedMinute": true,
+    "recoversToFull": true
+   },
+   "passed": true
+  },
+  {
+   "name": "pair-iron-red",
+   "copies": 2,
+   "feed": "red",
+   "ore": "iron-ore",
+   "east": "drained",
+   "blockCopy1PlatesDuringBlocked": false,
+   "modulesInserted": 96,
+   "modulesByName": {
+    "productivity-module-2": 96
+   },
+   "importedEntitiesPerCopy": 212,
+   "offsets": [
+    {
+     "x": -55,
+     "y": -10
+    },
+    {
+     "x": -25,
+     "y": -10
+    }
+   ],
+   "powered": true,
+   "oneElectricNetwork": true,
+   "substations": 8,
+   "copperWiresBetweenCopies": 1,
+   "measure": {
+    "minutes": 10,
+    "drains": [
+     {
+      "kind": "plates",
+      "copy": 1,
+      "items": {
+       "iron-plate": 8064
+      },
+      "perMinute": {
+       "iron-plate": 806.4
+      }
+     },
+     {
+      "kind": "plates",
+      "copy": 2,
+      "items": {
+       "iron-plate": 8064
+      },
+      "perMinute": {
+       "iron-plate": 806.4
+      }
+     },
+     {
+      "kind": "east",
+      "copy": 2,
+      "items": {
+       "iron-ore": 3600
+      },
+      "perMinute": {
+       "iron-ore": 360
+      }
+     }
+    ],
+    "fedPerMinute": 1800,
+    "furnaces": [
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       }
+      ]
+     },
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       }
+      ]
+     }
+    ],
+    "modulesInFurnaces": [
+     {
+      "productivity-module-2": 48
+     },
+     {
+      "productivity-module-2": 48
+     }
+    ],
+    "electricInputDelta": {
+     "inserter": 203379492.9814453,
+     "fast-inserter": 75364652.49023438,
+     "roboport": 119999997.0703125,
+     "electric-furnace": 11577600000
+    },
+    "electricInputSeconds": 600
+   },
+   "blocked": {
+    "minutes": 10,
+    "drains": [
+     {
+      "kind": "plates",
+      "copy": 1,
+      "items": {
+       "iron-plate": 8064
+      },
+      "perMinute": {
+       "iron-plate": 806.4
+      }
+     },
+     {
+      "kind": "plates",
+      "copy": 2,
+      "items": {
+       "iron-plate": 8064
+      },
+      "perMinute": {
+       "iron-plate": 806.4
+      }
+     },
+     {
+      "kind": "east",
+      "copy": 2,
+      "items": {
+       "iron-ore": 3600
+      },
+      "perMinute": {
+       "iron-ore": 360
+      }
+     }
+    ],
+    "fedPerMinute": 1800,
+    "lastMinute": {
+     "minutes": 1,
+     "drains": [
+      {
+       "kind": "plates",
+       "copy": 1,
+       "items": {
+        "iron-plate": 811
+       },
+       "perMinute": {
+        "iron-plate": 811
+       }
+      },
+      {
+       "kind": "plates",
+       "copy": 2,
+       "items": {
+        "iron-plate": 807
+       },
+       "perMinute": {
+        "iron-plate": 807
+       }
+      },
+      {
+       "kind": "east",
+       "copy": 2,
+       "items": {
+        "iron-ore": 360
+       },
+       "perMinute": {
+        "iron-ore": 360
+       }
+      }
+     ],
+     "fedPerMinute": 0
+    },
+    "furnaces": [
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       }
+      ]
+     },
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       }
+      ]
+     }
+    ]
+   },
+   "recovery": {
+    "minutes": 10,
+    "drains": [
+     {
+      "kind": "plates",
+      "copy": 1,
+      "items": {
+       "iron-plate": 8064
+      },
+      "perMinute": {
+       "iron-plate": 806.4
+      }
+     },
+     {
+      "kind": "plates",
+      "copy": 2,
+      "items": {
+       "iron-plate": 8064
+      },
+      "perMinute": {
+       "iron-plate": 806.4
+      }
+     },
+     {
+      "kind": "east",
+      "copy": 2,
+      "items": {
+       "iron-ore": 3600
+      },
+      "perMinute": {
+       "iron-ore": 360
+      }
+     }
+    ],
+    "fedPerMinute": 1800,
+    "furnaces": [
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       }
+      ]
+     },
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "iron-plate"
+       }
+      ]
+     }
+    ]
+   },
+   "finished": true,
+   "informational": false,
+   "powerKW": 19960.6,
+   "powerByEntityKW": {
+    "inserter": 339,
+    "fast-inserter": 125.6,
+    "roboport": 200,
+    "electric-furnace": 19296
+   },
+   "checks": {
+    "finished": true,
+    "powered": true,
+    "modulesAsRequested": true,
+    "copy1FullRate": true,
+    "copy2GetsTheRest": true,
+    "everyFurnaceEven": true,
+    "oneNetworkAcrossCopies": true,
+    "onlyPlates": true,
+    "onlyOreEast": true
+   },
+   "passed": true
+  },
+  {
+   "name": "single-copper-red",
+   "copies": 1,
+   "feed": "red",
+   "ore": "copper-ore",
+   "east": "drained",
+   "blockCopy1PlatesDuringBlocked": false,
+   "modulesInserted": 48,
+   "modulesByName": {
+    "productivity-module-2": 48
+   },
+   "importedEntitiesPerCopy": 212,
+   "offsets": [
+    {
+     "x": -55,
+     "y": -10
+    }
+   ],
+   "powered": true,
+   "oneElectricNetwork": true,
+   "substations": 4,
+   "copperWiresBetweenCopies": 0,
+   "measure": {
+    "minutes": 10,
+    "drains": [
+     {
+      "kind": "plates",
+      "copy": 1,
+      "items": {
+       "copper-plate": 8064
+      },
+      "perMinute": {
+       "copper-plate": 806.4
+      }
+     },
+     {
+      "kind": "east",
+      "copy": 1,
+      "items": {
+       "copper-ore": 10800
+      },
+      "perMinute": {
+       "copper-ore": 1080
+      }
+     }
+    ],
+    "fedPerMinute": 1800,
+    "furnaces": [
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       }
+      ]
+     }
+    ],
+    "modulesInFurnaces": [
+     {
+      "productivity-module-2": 48
+     }
+    ],
+    "electricInputDelta": {
+     "inserter": 101835971.19873047,
+     "fast-inserter": 37617711.02371216,
+     "roboport": 59999998.53515625,
+     "electric-furnace": 5788800000
+    },
+    "electricInputSeconds": 600
+   },
+   "blocked": {
+    "minutes": 10,
+    "drains": [
+     {
+      "kind": "plates",
+      "copy": 1,
+      "items": {
+       "copper-plate": 8064
+      },
+      "perMinute": {
+       "copper-plate": 806.4
+      }
+     },
+     {
+      "kind": "east",
+      "copy": 1,
+      "items": {
+       "copper-ore": 10800
+      },
+      "perMinute": {
+       "copper-ore": 1080
+      }
+     }
+    ],
+    "fedPerMinute": 1800,
+    "lastMinute": {
+     "minutes": 1,
+     "drains": [
+      {
+       "kind": "plates",
+       "copy": 1,
+       "items": {
+        "copper-plate": 811
+       },
+       "perMinute": {
+        "copper-plate": 811
+       }
+      },
+      {
+       "kind": "east",
+       "copy": 1,
+       "items": {
+        "copper-ore": 1080
+       },
+       "perMinute": {
+        "copper-ore": 1080
+       }
+      }
+     ],
+     "fedPerMinute": 0
+    },
+    "furnaces": [
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       }
+      ]
+     }
+    ]
+   },
+   "recovery": {
+    "minutes": 10,
+    "drains": [
+     {
+      "kind": "plates",
+      "copy": 1,
+      "items": {
+       "copper-plate": 8064
+      },
+      "perMinute": {
+       "copper-plate": 806.4
+      }
+     },
+     {
+      "kind": "east",
+      "copy": 1,
+      "items": {
+       "copper-ore": 10800
+      },
+      "perMinute": {
+       "copper-ore": 1080
+      }
+     }
+    ],
+    "fedPerMinute": 1800,
+    "furnaces": [
+     {
+      "furnaces": 24,
+      "minCrafts": 336,
+      "maxCrafts": 336,
+      "meanCrafts": 336,
+      "totalCrafts": 8064,
+      "craftsPerMinute": 806.4,
+      "list": [
+       {
+        "entity": 34,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 35,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 38,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 39,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 42,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 43,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 46,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 51,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 52,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 57,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 58,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 63,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 72,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 73,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 76,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 77,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 80,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 81,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 84,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 90,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 91,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 96,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 97,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       },
+       {
+        "entity": 102,
+        "crafts": 336,
+        "status": "working",
+        "recipe": "copper-plate"
+       }
+      ]
+     }
+    ]
+   },
+   "finished": true,
+   "informational": false,
+   "powerKW": 9980.4,
+   "powerByEntityKW": {
+    "inserter": 169.7,
+    "fast-inserter": 62.7,
+    "roboport": 100,
+    "electric-furnace": 9648
+   },
+   "checks": {
+    "finished": true,
+    "powered": true,
+    "modulesAsRequested": true,
+    "fullRate": true,
+    "everyFurnaceEven": true,
+    "surplusOreEast": true,
+    "onlyPlatesOnPlateBelt": true,
+    "onlyOreOnEastExit": true,
+    "copperStillFullLater": true
+   },
+   "passed": true
+  }
+ ],
+ "builds": [
+  {
+   "id": "electric-smelter-pass-through",
+   "variant": "productivity-two",
+   "blueprintSha256": "7db6d04bb5848dc839c157be5645a2ed94476d2e2d40549eee078d2e7a47b7dd",
+   "passed": true,
+   "outputsPerMinute": {
+    "iron-plate": 806.4,
+    "copper-plate": 806.4
+   },
+   "recovery": {
+    "outputsPerMinute": {
+     "iron-plate": 900,
+     "copper-plate": 806.4
+    }
+   },
+   "inputsPerMinute": {
+    "iron-ore": 720,
+    "copper-ore": 720
+   },
+   "powerKW": 9980.4,
+   "summary": {
+    "ironPlatesPerMinute": 806.4,
+    "copperPlatesPerMinute": 806.4,
+    "ironOrePerMinute": 720,
+    "copperOrePerMinute": 720,
+    "forwardedFromFullRedBeltPerMinute": 1080,
+    "powerKW": 9980.4,
+    "powerByEntityKW": {
+     "inserter": 169.7,
+     "fast-inserter": 62.7,
+     "roboport": 100,
+     "electric-furnace": 9648
+    },
+    "secondCopyOnRedBeltPerMinute": 806.4,
+    "recoveryPerMinute": 900,
+    "scenariosPassed": 3,
+    "scenarios": 3
+   }
+  }
+ ],
+ "passed": true
+}

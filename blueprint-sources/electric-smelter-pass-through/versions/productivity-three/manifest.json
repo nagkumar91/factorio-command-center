@@ -1,0 +1,280 @@
+[
+  {
+    "id": "electric-smelter-pass-through",
+    "variant": "productivity-three",
+    "label": "Productivity modules, tier three",
+    "name": "Electric smelter · productivity modules, tier three",
+    "file": "electric-smelter-pass-through.txt",
+    "blueprintSha256": "bd4fa2d89ec6dc4e47956e6656cc59ab56726b46838be29a70c275484e4df520",
+    "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "class": "rate",
+    "status": "qualified",
+    "measured": {
+      "ironPlatesPerMinute": 755.5,
+      "copperPlatesPerMinute": 755.5,
+      "ironOrePerMinute": 630,
+      "copperOrePerMinute": 630,
+      "forwardedFromFullRedBeltPerMinute": 1170,
+      "powerKW": 11688,
+      "powerByEntityKW": {
+        "inserter": 156.4,
+        "fast-inserter": 55.6,
+        "roboport": 100,
+        "electric-furnace": 11376
+      },
+      "secondCopyOnRedBeltPerMinute": 756,
+      "recoveryPerMinute": 888.8,
+      "scenariosPassed": 3,
+      "scenarios": 3,
+      "reportCreatedAt": "2026-11-22T02:55:51.391Z"
+    },
+    "modules": {
+      "module": "productivity-module-3",
+      "count": 48,
+      "perFurnace": 2,
+      "effect": {
+        "productivity": 0.1,
+        "consumption": 0.8,
+        "pollution": 0.1,
+        "speed": -0.15
+      }
+    },
+    "computed": {
+      "speedMultiplier": 0.7,
+      "consumptionMultiplier": 2.6,
+      "productivity": 0.2,
+      "orePerMinute": 630,
+      "platesPerMinute": 756,
+      "furnacePowerKW": 11232,
+      "copiesPerRedBelt": 2.857
+    },
+    "expected": {
+      "orePerMinute": 630,
+      "platesPerMinute": 756
+    },
+    "source": {
+      "collection": "Autosaved",
+      "id": "autosaved-f3d991e31c13c301",
+      "name": "In-Out Electric Smelter",
+      "url": "https://autosaved.org/factorio/blueprints",
+      "file": "original/in-out-electric-smelter.txt",
+      "blueprintSha256": "3c702aa640dfad3ba28b3d1b80446c8a0a3879ac18fb516a3ad14c39f8310624",
+      "fileSha256": "0f5fc27107ad7e92b13f8231f440783af955ec23cbd9034818532c69e074874f",
+      "footprint": {
+        "width": 28,
+        "height": 20
+      },
+      "construction": {
+        "electric-furnace": 24,
+        "fast-inserter": 10,
+        "fast-underground-belt": 22,
+        "inserter": 38,
+        "roboport": 2,
+        "splitter": 3,
+        "substation": 4,
+        "transport-belt": 51,
+        "underground-belt": 8
+      },
+      "entityCount": 162,
+      "ports": "Ore in and plates out both on the west side; no ore leaves the station, so copies cannot share one ore line without extra belts."
+    },
+    "products": [
+      "iron-plate",
+      "copper-plate"
+    ],
+    "targets": {
+      "iron-plate": 756,
+      "copper-plate": 756
+    },
+    "inputs": [
+      {
+        "kind": "input",
+        "label": "Ore in",
+        "items": [
+          "iron-ore",
+          "copper-ore"
+        ],
+        "item": "iron-ore",
+        "entity": 142,
+        "position": {
+          "x": 0.5,
+          "y": 2
+        },
+        "tile": {
+          "x": 0,
+          "y": 1
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "transport": "red belt",
+        "perMinute": 630,
+        "note": "One red belt into the west face of the splitter on row 1. The station takes 630 ore per minute first; everything else continues east."
+      }
+    ],
+    "fluids": [],
+    "outputs": [
+      {
+        "kind": "output",
+        "label": "Plates out",
+        "items": [
+          "iron-plate",
+          "copper-plate"
+        ],
+        "item": "iron-plate",
+        "entity": 212,
+        "position": {
+          "x": 29.5,
+          "y": 19.5
+        },
+        "tile": {
+          "x": 29,
+          "y": 19
+        },
+        "externalSide": "south",
+        "direction": 8,
+        "transport": "yellow belt",
+        "perMinute": 756,
+        "note": "One yellow belt leaving the south edge in the last column, 756 plates per minute."
+      }
+    ],
+    "forward": [
+      {
+        "kind": "forward",
+        "label": "Ore out (forwarded)",
+        "items": [
+          "iron-ore",
+          "copper-ore"
+        ],
+        "item": "iron-ore",
+        "entity": 167,
+        "position": {
+          "x": 29.5,
+          "y": 1.5
+        },
+        "tile": {
+          "x": 29,
+          "y": 1
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "red belt",
+        "perMinute": 1170,
+        "note": "The same row as the entrance; 1,170 ore per minute from a full red belt. A copy placed 30 tiles east takes it with no extra belts; on the last copy it may stay unconnected."
+      }
+    ],
+    "ports": [
+      {
+        "kind": "input",
+        "label": "Ore in",
+        "items": [
+          "iron-ore",
+          "copper-ore"
+        ],
+        "item": "iron-ore",
+        "entity": 142,
+        "position": {
+          "x": 0.5,
+          "y": 2
+        },
+        "tile": {
+          "x": 0,
+          "y": 1
+        },
+        "externalSide": "west",
+        "direction": 4,
+        "transport": "red belt",
+        "perMinute": 630,
+        "note": "One red belt into the west face of the splitter on row 1. The station takes 630 ore per minute first; everything else continues east."
+      },
+      {
+        "kind": "forward",
+        "label": "Ore out (forwarded)",
+        "items": [
+          "iron-ore",
+          "copper-ore"
+        ],
+        "item": "iron-ore",
+        "entity": 167,
+        "position": {
+          "x": 29.5,
+          "y": 1.5
+        },
+        "tile": {
+          "x": 29,
+          "y": 1
+        },
+        "externalSide": "east",
+        "direction": 4,
+        "transport": "red belt",
+        "perMinute": 1170,
+        "note": "The same row as the entrance; 1,170 ore per minute from a full red belt. A copy placed 30 tiles east takes it with no extra belts; on the last copy it may stay unconnected."
+      },
+      {
+        "kind": "output",
+        "label": "Plates out",
+        "items": [
+          "iron-plate",
+          "copper-plate"
+        ],
+        "item": "iron-plate",
+        "entity": 212,
+        "position": {
+          "x": 29.5,
+          "y": 19.5
+        },
+        "tile": {
+          "x": 29,
+          "y": 19
+        },
+        "externalSide": "south",
+        "direction": 8,
+        "transport": "yellow belt",
+        "perMinute": 756,
+        "note": "One yellow belt leaving the south edge in the last column, 756 plates per minute."
+      },
+      {
+        "kind": "power",
+        "label": "External electricity",
+        "items": [],
+        "entity": 15
+      }
+    ],
+    "chaining": {
+      "pitch": 30,
+      "axis": "east",
+      "touching": true,
+      "copiesPerRedBelt": 2.857,
+      "note": "Place the next copy 30 tiles east (touching). One red belt (1,800 ore/min) feeds 2 copies at full rate and 540 ore per minute to the next one. The ore line inside each copy is red, so a faster belt is held to 1,800 per minute inside the first copy."
+    },
+    "footprint": {
+      "width": 30,
+      "height": 20
+    },
+    "construction": {
+      "electric-furnace": 24,
+      "fast-inserter": 10,
+      "fast-splitter": 2,
+      "fast-transport-belt": 33,
+      "fast-underground-belt": 26,
+      "inserter": 38,
+      "roboport": 2,
+      "splitter": 3,
+      "substation": 4,
+      "transport-belt": 64,
+      "underground-belt": 6
+    },
+    "entityCount": 212,
+    "protocol": {
+      "warmupMinutes": 10,
+      "measureMinutes": 10,
+      "blockedMinutes": 10,
+      "settleMinutes": 3,
+      "recoveryMinutes": 10
+    },
+    "setupNotes": [
+      "Official 2.1.24 Space Age. Productivity modules, tier three: 24 electric furnaces with 48 productivity module 3s (2 in each furnace), inserters and fast inserters, yellow belts with red underground belts, 4 substations, 2 roboports. Derived from the Autosaved \"In-Out Electric Smelter\" (autosaved-f3d991e31c13c301, https://autosaved.org/factorio/blueprints). WEST: ore in on one red belt, row 1 (second row). The station takes 630 ore per minute first; the rest leaves EAST on the same row, so copies placed 30 tiles apart chain along one ore line (one red belt feeds 2 copies and 540 ore per minute more). SOUTH: 756 plates per minute on one yellow belt in the last column. Iron or copper ore; a blocked plate exit or a full station never stops the ore line, and an unconnected east end does not stop the station. Supply electricity at any substation; copies placed side by side join one network.",
+      "Feed iron ore or copper ore, one kind per ore line. Each was tested on its own; mixed ore on one line was not tested.",
+      "Keep the splitter priorities: the entrance splitter sends ore to the station first (south output); the merge splitter sends plates to the exit column."
+    ]
+  }
+]
