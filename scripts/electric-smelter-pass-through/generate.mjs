@@ -129,7 +129,11 @@ for(const v of VARIANTS){
  const copies=Math.floor(r.copiesPerRedBelt+1e-9),rest=1800-copies*r.orePerMinute;
  const description=`Official 2.1.24 Space Age. ${v.label}: 24 electric furnaces with ${moduleText(v)}, ${v.fast?'fast inserters, red belts, red underground belts and red splitters':'inserters and fast inserters, yellow belts with red underground belts'}, 4 substations, 2 roboports. Derived from the Autosaved "In-Out Electric Smelter" (${SOURCE.id}, ${SOURCE.url}). WEST: ore in on one red belt, row 1 (second row). The station takes ${num(r.orePerMinute)} ore per minute first; the rest leaves EAST on the same row, so copies placed ${footprint.width} tiles apart chain along one ore line (one red belt feeds ${copies} cop${copies===1?'y':'ies'}${rest>1?` and ${num(rest)} ore per minute more`:''}). SOUTH: ${num(r.platesPerMinute)} plates per minute on one ${exitBelt} in the last column. Iron or copper ore; a blocked plate exit or a full station never stops the ore line, and an unconnected east end does not stop the station. Supply electricity at any substation; copies placed side by side join one network.`;
  const bp={item:'blueprint',version:562954249961472,label:'Electric smelter · '+v.label.toLowerCase(),description,icons:[{index:1,signal:{name:'electric-furnace'}},{index:2,signal:{name:'iron-ore'}},{index:3,signal:{name:'iron-plate'}}],entities:list,wires};
- const code=encodeBlueprint({blueprint:bp}),blueprintSha256=sha(code);
+ // zlib's compressed bytes differ between builds (the Linux CI runner and this Mac give different strings for the same JSON).
+ // Keep the committed string when it decodes to exactly this blueprint, so its SHA-256 and native report stay valid everywhere.
+ const committed=await fs.readFile('blueprint-sources/'+ID+'/'+rel+ID+'.txt','utf8').then(t=>t.trim(),()=>null);
+ const sameBlueprint=t=>{try{return JSON.stringify(decodeBlueprint(t))===JSON.stringify({blueprint:bp});}catch{return false;}};
+ const code=committed&&sameBlueprint(committed)?committed:encodeBlueprint({blueprint:bp}),blueprintSha256=sha(code);
  let report=await readReport(dir),status='unverified',measured;
  const rb=report?.builds?.find(b=>b.blueprintSha256===blueprintSha256);
  if(rb&&!report.short){status=rb.passed&&report.passed?'qualified':'not-qualified';measured={...rb.summary,reportCreatedAt:report.createdAt};}else report=undefined;
