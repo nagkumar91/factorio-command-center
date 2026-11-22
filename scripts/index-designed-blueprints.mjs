@@ -11,7 +11,7 @@ import {blueprintCoverage} from './blueprint-coverage.mjs';
 import {writeData} from './write-data.mjs';
 import '../site/lib/production.js';
 import {kitBillProblems} from './space-launch-pages.mjs';
-import {checkVersions,countMachines,passingBuild} from './blueprint-versions.mjs';
+import {checkVersions,countMachines,passingBuild,versionsAreAlternatives} from './blueprint-versions.mjs';
 const hash=s=>createHash('sha256').update(s.trim()).digest('hex');
 const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
 const [catalog,production,library,community,atlas]=await Promise.all(['catalog','production','library','community','atlas'].map(n=>read(`site/data/${n}.json`)));
@@ -92,7 +92,7 @@ async function versionPublication(entry,options){
   await fs.mkdir(path.dirname('site/'+url),{recursive:true});await fs.writeFile('site/'+url,JSON.stringify({...record,publication:{version:number,label:v.label}},null,1)+'\n');
   history.push({version:number,label:v.label,...(v.summary?{summary:v.summary}:{}),blueprintSha256:v.blueprintSha256,url,code:record.file,native:record.validation.report,footprint:{width:v.width,height:v.height},tiles:v.tiles,machines:v.machines,entityCount:record.entityCount,perMinute:keep(v.outputsPerMinute.steady),recoveryPerMinute:keep(v.outputsPerMinute.recovery),...operation(v)});
  }
- return {version:versions.length,label:current.label,...(current.summary?{summary:current.summary}:{}),snapshots:{code:entry.file},machines:current.machines,perMinute:keep(current.outputsPerMinute.steady),recoveryPerMinute:keep(current.outputsPerMinute.recovery),...operation(current),history:history.reverse()};
+ return {version:versions.length,...(versionsAreAlternatives(info)?{alternatives:true}:{}),label:current.label,...(current.summary?{summary:current.summary}:{}),snapshots:{code:entry.file},machines:current.machines,perMinute:keep(current.outputsPerMinute.steady),recoveryPerMinute:keep(current.outputsPerMinute.recovery),...operation(current),history:history.reverse()};
 }
 // Records versioned by the immutable publication (transport, early game, science, power) gain machine counts
 // for their version comparison: the current string and each archived string, counted the same way.
@@ -163,7 +163,11 @@ for(const [folder,category,purpose,expected,opts={}] of [
  ['white-pack-receiver','Space science · ground receiver','Science production',['space-science-pack'],{outputs:()=>['space-science-pack'],inputs:['space-science-pack'],recommend:[],coverageExcluded:true,rates:b=>({'space-science-pack':b.steady.collectedPerMinute}),setup:['Receives space science packs from the platform in orbit by cargo pod and delivers them to a passive provider chest; it crafts nothing. A planet allows one cargo landing pad: if one already exists, add the space science pack request to it and build only the arm, chest and substation.']}],
  // Electric smelter pass-through (22 November 2026), derived from the Autosaved "In-Out Electric Smelter"
  // (autosaved-f3d991e31c13c301): ore in west, unused ore out east on the same row, plates out south.
- ['electric-smelter-pass-through','Smelting · electric furnaces','Smelting',['iron-plate','copper-plate'],{inputs:['iron-ore','copper-ore'],sourceAuthor:'Autosaved (In-Out Electric Smelter, autosaved-f3d991e31c13c301); ports redesigned by Factorio Command Center',sourceURL:'https://autosaved.org/factorio/blueprints',setup:['Feed iron ore or copper ore on one red belt at the west entrance (row 1, the second row) and supply electricity at any substation. Plates leave south on one yellow belt; ore the station does not use leaves east on the same row, so the next copy placed 30 tiles east takes it with no extra belts. One red belt feeds two copies at 900 plates per minute each.']}]
+ ['electric-smelter-pass-through','Smelting · electric furnaces','Smelting',['iron-plate','copper-plate'],{inputs:['iron-ore','copper-ore'],sourceAuthor:'Autosaved (In-Out Electric Smelter, autosaved-f3d991e31c13c301); ports redesigned by Factorio Command Center',sourceURL:'https://autosaved.org/factorio/blueprints',setup:['Feed iron ore or copper ore on one red belt at the west entrance (row 1, the second row) and supply electricity at any substation. Plates leave south on one yellow belt; ore the station does not use leaves east on the same row, so the next copy placed 30 tiles east takes it with no extra belts. One red belt feeds two copies at 900 plates per minute each.']}],
+ // Circuit suppliers (22 November 2026): siblings of the green-circuit supplier, plates and plastic (and acid) in on the west, one red belt out east.
+ ['advanced-circuits','Circuits','Circuit production',['advanced-circuit']],
+ // Rocket supplies keeps its recommendation for processing units (a dedicated supplier does not displace it); the supplier is still found by output and input.
+ ['processing-units','Circuits','Circuit production',['processing-unit'],{recommend:[]}]
 ]){
  const dir='blueprint-sources/'+folder,manifest=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',report=await read(reportFile);
  if(manifest.length!==1)throw Error('Expected one current workshop: '+folder);

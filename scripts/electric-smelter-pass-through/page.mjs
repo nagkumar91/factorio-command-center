@@ -11,7 +11,7 @@ import sharp from 'sharp';
 import {decodeBlueprint} from '../blueprints.mjs';
 import {renderFlightPlanPage} from '../flight-plan-shell.mjs';
 import {groupPorts,preview,table,STYLE,SCRIPT,counts} from '../workshop-guides.mjs';
-import {checkVersions,versionsSection,VERSIONS_SCRIPT,VERSIONS_STYLE} from '../blueprint-versions.mjs';
+import {checkVersions,versionsAreAlternatives,versionsSection,VERSIONS_SCRIPT,VERSIONS_STYLE} from '../blueprint-versions.mjs';
 import {ID,SOURCE,SIZE,PROTOTYPE} from './shared.mjs';
 import '../../site/flight-plans.js';
 
@@ -64,7 +64,7 @@ export async function buildSmelterPage({root=ROOT}={}){
  // Module versions: each passed its own native report for its exact string (checked again here).
  const versions=await checkVersions(m,dir),versionFiles={};
  for(const v of versions.slice(1))for(const file of [v.file,v.manifest,v.report].filter(Boolean))versionFiles[file]=await fs.readFile(path.join(dir,file),'utf8');
- const versionHtml=versions.length>1?await versionsSection({versions,products:m.products,codes:versions.map((v,i)=>i?versionFiles[v.file].trim():code),chip,esc,name:pretty,alternatives:true}):'';
+ const versionHtml=versions.length>1?await versionsSection({versions,products:m.products,codes:versions.map((v,i)=>i?versionFiles[v.file].trim():code),chip,esc,name:pretty,alternatives:versionsAreAlternatives(m)}):'';
  const v1=x=>Number.isFinite(x)?num(x):'not measured';
  const variantRows=m.variants.map(x=>{const s=x.measured||{},cr=x.computed,full=Math.floor(cr.copiesPerRedBelt+1e-9),rest=1800-full*cr.orePerMinute;return `<tr><th>${esc(m.versions.find(v=>v.blueprintSha256===x.blueprintSha256)?.label||x.label)}</th><td>${x.modules.count?esc(x.modules.count+' × '+pretty(x.modules.module)):'none'}</td><td>${v1(s.ironOrePerMinute)}</td><td>${v1(s.ironPlatesPerMinute)}</td><td>${v1(s.forwardedFromFullRedBeltPerMinute)}</td><td>${full}${rest>1?` + ${num(rest)} ore/min`:''}</td><td>${Number.isFinite(s.powerKW)?num(s.powerKW)+' kW':'not measured'}</td><td>${num(cr.orePerMinute)} / ${num(cr.platesPerMinute)}</td><td>${x.included?'yes':'no: '+esc(x.leftOut)}</td></tr>`;});
  const eff=m.efficiencyHigherTiers;

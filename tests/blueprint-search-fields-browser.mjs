@@ -5,6 +5,8 @@ const browser=await chromium.launch({headless:true});const page=await browser.ne
 const url=pathToFileURL(process.cwd()+'/site/index.html').href;
 const titles=async()=>(await page.locator('.blueprint-card h3').evaluateAll(n=>n.map(e=>e.textContent.trim())));
 const search=async(direction,query)=>{await page.locator('#blueprint-direction').selectOption(direction);await page.locator('#blueprint-search').fill(query);return titles();};
+// Every result page of one search (broad inputs such as copper plate fill several pages of 24).
+const searchAll=async(direction,query)=>{const found=[...await search(direction,query)];const next=page.locator('[data-action="blueprint-page"][data-id="1"]');while(await next.count()&&await next.isEnabled()){await next.click();found.push(...await titles());}return found;};
 try{
  await page.goto(url+'?collection=flight-plans#blueprints');await page.reload();await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
  assert.equal(await page.locator('#blueprint-source').inputValue(),'Long game flight plans and strategies');
@@ -52,5 +54,11 @@ try{
  await page.goto(url+'?collection=flight-plans#blueprints');await page.reload();await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
  for(const [direction,query] of [['all','smelter'],['all','electric furnace'],['outputs','iron plate'],['outputs','copper plate'],['inputs','iron ore'],['inputs','copper ore']]){const found=await search(direction,query);assert.ok(found.includes(smelter),direction+': '+query+' gave '+found.length+' cards without the smelter');}
  assert.ok(!(await search('outputs','iron ore')).includes(smelter),'forwarded ore is not a product');
- assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials, the space launch builds and the electric smelter are findable by input and output.');
+ // Circuit suppliers: found by name, by product (output search) and by each operating input (input search).
+ const advanced='Advanced-circuit supplier · 187.5/min',processing='Processing-unit supplier · 27/min';
+ for(const [direction,query,want] of [['all','advanced circuit',[advanced]],['all','processing unit',[processing]],['outputs','advanced circuit',[advanced]],['outputs','processing unit',[processing]],['inputs','plastic bar',[advanced,processing]],['inputs','copper plate',[advanced,processing]],['inputs','iron plate',[advanced,processing]],['inputs','sulfuric acid',[processing]]]){const found=await searchAll(direction,query);for(const title of want)assert.ok(found.includes(title),direction+': '+query+' gave '+found.length+' cards without '+title);}
+ assert.ok(!(await search('inputs','sulfuric acid')).includes(advanced),'advanced circuits need no acid');
+ assert.ok(!(await search('inputs','advanced circuit')).includes(advanced),'the advanced-circuit supplier does not need advanced circuits');
+ assert.ok(!(await search('outputs','plastic bar')).includes(processing),'plastic is an input, not a product');
+ assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials, the space launch builds, the electric smelter and the circuit suppliers are findable by input and output.');
 }finally{await browser.close();}

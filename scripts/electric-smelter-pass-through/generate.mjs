@@ -172,7 +172,7 @@ const summaryOf=b=>{const m=b.manifest,s=m.measured;return s?`${m.modules.count?
 const versions=await familyVersions(out,built.filter(b=>b.include).map(b=>({label:b.v.label,summary:summaryOf(b)||undefined,file:b.rel+ID+'.txt',...(b.main?{width:footprint.width,height:footprint.height}:{manifest:b.rel+'manifest.json'}),report:b.rel+'native-report.json'})));
 const variantTable=built.map(b=>({variant:b.v.id,label:b.v.label,blueprintSha256:b.manifest.blueprintSha256,file:b.rel+ID+'.txt',modules:b.manifest.modules,fast:!!b.v.fast,computed:b.manifest.computed,status:b.manifest.status,...(b.manifest.measured?{measured:b.manifest.measured}:{}),included:b.include,...(b.leftOut?{leftOut:b.leftOut}:{})}));
 const m=mainBuild.manifest;
-const manifest={...m,versions,variants:variantTable,
+const manifest={...m,versions,versionsAlternatives:true,variants:variantTable,
  efficiencyHigherTiers:{computed:['efficiency-module-2','efficiency-module-3'].map(x=>({module:x,...computedRates(x)})),
   measured:mainBuild.manifest.measured?{efficiencyTwoPowerKW:mainBuild.manifest.measured.efficiencyTwoPowerKW,efficiencyThreePowerKW:mainBuild.manifest.measured.efficiencyThreePowerKW,efficiencyTwoPlatesPerMinute:mainBuild.manifest.measured.efficiencyTwoPlatesPerMinute,efficiencyThreePlatesPerMinute:mainBuild.manifest.measured.efficiencyThreePlatesPerMinute}:undefined},
  recipeAudit:{furnaces,furnaceCraftingSpeed:PROTOTYPE.furnaceCraftingSpeed,recipeSeconds:PROTOTYPE.recipeSeconds,perFurnacePerMinute:60*PROTOTYPE.furnaceCraftingSpeed/PROTOTYPE.recipeSeconds['iron-plate'],stationPerMinute:computedRates(null).platesPerMinute,

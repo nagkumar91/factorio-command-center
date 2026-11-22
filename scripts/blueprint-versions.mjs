@@ -17,6 +17,11 @@
 //   operating inputs per minute, and electric power drawn while working in kW). Families whose reports have
 //   neither get neither, and their pages and pickers render as before.
 //
+// Successive versions (the essentials mall, flight robots) are numbered in the library, oldest is Version 1.
+// A family whose versions are alternatives of one layout (the electric smelter's module variants) sets
+// "versionsAlternatives": true on that same manifest entry; the library picker and the guide page then name
+// each option by its label alone, with no "Version N" prefix, since the order is not a history.
+//
 // A family generator calls familyVersions() and stores the result; the indexer (index-designed-blueprints.mjs)
 // calls checkVersions() and fails the build if a stored entry no longer matches its files.
 import fs from 'node:fs/promises';
@@ -112,6 +117,9 @@ export async function checkVersions(info, familyDir) {
   }
   return versions;
 }
+
+/** True when the family's versions are alternatives of one layout rather than successive versions. */
+export const versionsAreAlternatives = info => info?.versionsAlternatives === true;
 
 /** Plain-words comparison of each version against the others, for guide pages ("which to choose"). */
 export function versionChoices(versions, products, name = id => id.replaceAll('-', ' ')) {

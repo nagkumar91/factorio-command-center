@@ -145,7 +145,10 @@ try{
  await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${smelter.id}"]`).click();
  const smelterOptions=await page.locator('#blueprint-version option').allInnerTexts();
  assert.equal(smelterOptions.length,8,'eight module versions');
- assert.match(smelterOptions[0],/Version 8 · No modules · Recommended · 30 × 20 tiles · Iron plate 900\/min$/);
+ // Alternatives, not successive versions: options are named by their label alone (no "Version N ·" prefix, which counted backwards).
+ assert.match(smelterOptions[0],/^No modules · Recommended · 30 × 20 tiles · Iron plate 900\/min$/);
+ assert.equal(smelterOptions[7].split(' · ')[0],'Speed modules, tier three');
+ assert.ok(smelterOptions.every(o=>!/^Version \d/.test(o)),'no reversed version numbers: '+smelterOptions.join(' | '));
  const smelterCompare=page.locator('#modal .version-compare');
  assert.equal(await smelterCompare.locator('thead th[data-input-item="iron-ore"]').count(),1,'an ore-in column');
  assert.equal(await smelterCompare.locator('thead th',{hasText:'Power'}).count(),1,'a power column');
@@ -154,10 +157,26 @@ try{
   assert.equal((await row.locator('td[data-input-item="iron-ore"]').innerText()).trim(),new Intl.NumberFormat(undefined,{maximumFractionDigits:2}).format(v.inputsPerMinute['iron-ore']),v.label+' ore in');
   assert.match(await row.locator('td[data-power]').innerText(),/^[\d,]+ kW$/,v.label+' power');
  }
+ assert.match((await smelterCompare.locator('tbody tr[data-version="8"] th').innerText()).trim(),/^No modules Recommended$/,'comparison rows carry the label alone');
+ assert.equal(await page.locator('#modal .version-downloads a').first().innerText(),'Download No modules');
  await page.locator('#blueprint-version').selectOption('4');
  await page.waitForFunction(()=>document.querySelector('#blueprint-version')?.value==='4'&&!document.querySelector('#blueprint-version')?.disabled);
  await page.locator('#modal [data-action="copy-blueprint"]').click();
  assert.equal(await page.evaluate(()=>window.__copiedBlueprint),(await fs.readFile('blueprint-sources/electric-smelter-pass-through/'+smelterManifest.versions[4].file,'utf8')).trim(),'copy gives the productivity three string');
+ await page.locator('[data-action="close-modal"]').click();
+ // Processing-unit supplier: two successive versions (the layout it replaced is kept), so the numbered names stay.
+ const unit=atlas.blueprints.find(b=>b.file==='sources/designed-blueprints/processing-units/processing-units.txt');
+ assert.ok(unit&&unit.publication.version===2&&!('alternatives' in unit.publication),'successive versions carry no alternatives flag');
+ await page.goto(url+'index.html');await page.goto(url+'index.html?inputs=all#blueprints');
+ await page.getByRole('heading',{name:'Blueprint library',exact:true}).waitFor();
+ await page.locator('#blueprint-direction').selectOption('all');
+ await page.locator('#blueprint-search').fill('processing unit supplier');
+ await page.locator(`.blueprint-actions [data-action="blueprint-details"][data-id="${unit.id}"]`).click();
+ const unitOptions=await page.locator('#blueprint-version option').allInnerTexts();
+ assert.equal(unitOptions.length,2);
+ assert.match(unitOptions[0],/^Version 2 · Shared channel · Recommended · 31 × 28 tiles · Processing unit 26\.83\/min$/);
+ assert.match(unitOptions[1],/^Version 1 · Twin rows · 31 × 29 tiles · Processing unit 26\.57\/min$/);
+ assert.match(await page.locator('#modal .version-downloads').innerText(),/Download v2 · Shared channel[\s\S]*Download v1 · Twin rows/);
  await page.locator('[data-action="close-modal"]').click();
  // Families without recorded inputs or power keep the earlier table: no extra columns.
  await page.goto(url+'index.html');await page.goto(url+'?collection=essentials#blueprints');

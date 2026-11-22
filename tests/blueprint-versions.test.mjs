@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {checkVersions, describeVersion, familyVersions, measuredRates, measuredOperation, versionChoices} from '../scripts/blueprint-versions.mjs';
+import {checkVersions, describeVersion, familyVersions, measuredRates, measuredOperation, versionChoices, versionsAreAlternatives} from '../scripts/blueprint-versions.mjs';
 
 const hash = s => createHash('sha256').update(s.trim()).digest('hex');
 const read = p => fs.readFile(p, 'utf8');
@@ -219,4 +219,40 @@ test('optional inputs and power: the electric smelter records them per version; 
   assert.equal((html.match(/<td data-input-item="iron-ore">/g) || []).length, 8);
   assert.equal((html.match(/<td data-power>/g) || []).length, 8);
   assert.ok(html.includes('alternative version') && !html.includes('earlier version'));
+});
+
+test('alternatives flag: only the smelter (module variants) sets it; successive-version families and the processing-unit supplier do not', async () => {
+  assert.equal(versionsAreAlternatives(undefined), false);
+  assert.equal(versionsAreAlternatives({}), false);
+  assert.equal(versionsAreAlternatives({versionsAlternatives: true}), true);
+  const families = await versionedFamilies();
+  const flagged = families.filter(f => versionsAreAlternatives(f.info)).map(f => f.family);
+  assert.deepEqual(flagged, ['electric-smelter-pass-through']);
+  for (const family of ['essentials-mall', 'flight-robots', 'processing-units']) assert.ok(families.some(f => f.family === family), family + ' lists versions');
+  for (const {family, info} of families) {
+    const record = atlas.blueprints.find(b => b.blueprintSha256 === info.blueprintSha256);
+    assert.ok(record?.publication, family + ' has a library record with versions');
+    // The library picker drops the "Version N" prefix only where the flag is set.
+    assert.equal('alternatives' in record.publication, versionsAreAlternatives(info), family);
+    if (versionsAreAlternatives(info)) assert.equal(record.publication.alternatives, true, family);
+    const html = await read(`site/${family}/index.html`);
+    assert.equal(html.includes('alternative version'), versionsAreAlternatives(info), family + ': guide card wording');
+    assert.equal(html.includes('earlier version'), !versionsAreAlternatives(info), family + ': guide card wording');
+  }
+  // The picker's naming itself is covered in a browser by tests/blueprint-versions-browser.mjs; here the source is checked once.
+  const explorer = await read('site/explorer.js');
+  assert.match(explorer, /publication\?\.alternatives && v\.label \? v\.label : `Version \$\{v\.version\}/);
+});
+
+test('processing units: the replaced 31 x 29 layout is the second, selectable version, complete with its own passing report', async () => {
+  const [m] = await json('blueprint-sources/processing-units/manifest.json');
+  assert.deepEqual(m.versions.map(v => [v.label, v.width, v.height]), [['Shared channel', 31, 28], ['Twin rows', 31, 29]]);
+  assert.equal(m.versions[0].blueprintSha256, m.blueprintSha256);
+  assert.equal(m.versions[1].blueprintSha256, 'abe14cdfcda0bf7a336bdc53ea1c535f444c809ddf38fa04f0834fff4023b512');
+  await checkVersions(m, 'blueprint-sources/processing-units');
+  assert.ok(m.versions[0].outputsPerMinute.steady['processing-unit'] > m.versions[1].outputsPerMinute.steady['processing-unit']);
+  const html = await read('site/processing-units/index.html');
+  assert.match(html, /<section id="versions"><h2>Two tested versions: which to choose<\/h2>/);
+  assert.ok(html.includes('href="history/twin-rows-abe14cdf/processing-units.txt"'));
+  await fs.access('site/processing-units/history/twin-rows-abe14cdf/native-report.json');
 });
