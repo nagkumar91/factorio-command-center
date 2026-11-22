@@ -72,5 +72,11 @@ try{
  assert.ok(!(await searchAll('outputs','green circuit')).includes(advanced),'green is not red');
  assert.equal((await searchAll('outputs','plastic')).filter(t=>t===plastic).length,1,'three sizes are one card');
  console.log('Produces this item: red circuit '+(await searchAll('outputs','red circuit')).length+' cards, blue circuit '+(await searchAll('outputs','blue circuit')).length+' cards, green circuit '+(await searchAll('outputs','green circuit')).length+' cards, plastic '+(await searchAll('outputs','plastic')).length+' cards');
+ // Oil products supplier: found by each of its five products (output search) and by its three inputs (input search).
+ const oil='Oil products supplier';
+ for(const [direction,query] of [['outputs','oil'],['outputs','petroleum gas'],['outputs','sulfuric acid'],['outputs','lubricant'],['outputs','light oil'],['outputs','sulfur'],['inputs','crude oil'],['inputs','water'],['inputs','iron plate'],['all','oil products']]){const found=await searchAll(direction,query);assert.ok(found.includes(oil),direction+': '+query+' gave '+found.length+' cards without the oil products supplier: '+found.slice(0,6).join(' | '));}
+ for(const [direction,query] of [['inputs','petroleum gas'],['inputs','light oil'],['inputs','lubricant'],['inputs','sulfuric acid'],['inputs','sulfur'],['outputs','crude oil'],['outputs','iron plate']]){assert.ok(!(await searchAll(direction,query)).includes(oil),direction+': '+query+' is not an oil products '+(direction==='inputs'?'input':'output'));}
+ // The plastic supplier takes the gas: petroleum gas as an output finds the oil supplier and as an input finds the plastic supplier.
+ assert.ok((await searchAll('inputs','petroleum gas')).includes(plastic)&&(await searchAll('outputs','petroleum gas')).includes(oil));
  assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials, the space launch builds, the electric smelter and the circuit suppliers are findable by input and output.');
 }finally{await browser.close();}

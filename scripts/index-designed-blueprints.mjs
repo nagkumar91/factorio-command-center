@@ -169,7 +169,10 @@ for(const [folder,category,purpose,expected,opts={}] of [
  // Rocket supplies keeps its recommendation for processing units (a dedicated supplier does not displace it); the supplier is still found by output and input.
  ['processing-units','Circuits','Circuit production',['processing-unit'],{recommend:[]}],
  // Plastic bar suppliers (22 November 2026): one entry, three sizes in its picker (the medium opens first); coal by belt and petroleum gas by pipe in, plastic bars out east.
- ['plastic-bars','Chemicals · plastic bars','Production',['plastic-bar'],{current:'plastic-bars-medium',title:'Plastic bar supplier · three sizes'}]
+ ['plastic-bars','Chemicals · plastic bars','Production',['plastic-bar'],{current:'plastic-bars-medium',title:'Plastic bar supplier · three sizes'}],
+ // Oil products supplier (22 November 2026): crude oil and water by pipe and iron plates by belt in; gas, acid and sulfur out east, lubricant and light oil out north.
+ // Its rates are the design run's measured draw at each outlet (the report's builds are scenarios, with no per-build output rate).
+ ['oil-products','Chemicals · oil products','Production',['petroleum-gas','sulfuric-acid','lubricant','sulfur','light-oil'],{recommendUnclaimed:true,rates:(b,info)=>Object.fromEntries(Object.entries(info.measured.scenarios.design.drawn).filter(([,n])=>n>0))}]
 ]){
  const dir='blueprint-sources/'+folder,allEntries=await read(dir+'/manifest.json');
  // A family of sizes (plastic bars) keeps one manifest record per size and one report per size; opts.current names the
@@ -191,11 +194,12 @@ for(const [folder,category,purpose,expected,opts={}] of [
   // Supplier copies for the space-launch consumers come from the manifest's supplierLinks.
   if(opts.supplierCopies)for(const l of info.supplierLinks||[])if(l.supplier)supply.push(`Needs supplied ${l.item.replaceAll('-',' ')}: ${l.perMinute} per minute at the panel figure; ${l.copies} ${supplierName[l.supplier]||l.supplier} cop${l.copies===1?'y':'ies'} cover${l.copies===1?'s':''} it.${l.note?' '+l.note:''}`);
   // Measured rates are the products' own; the rocket-fuel pass-through and the kit (no rate) report none.
-  const rates=opts.rates?opts.rates(proof):spaceLaunchFolders.has(folder)&&proof.outputsPerMinute?Object.fromEntries(Object.entries(proof.outputsPerMinute).filter(([id])=>outputs.includes(id))):proof.outputsPerMinute;
+  const rates=opts.rates?opts.rates(proof,info):spaceLaunchFolders.has(folder)&&proof.outputsPerMinute?Object.fromEntries(Object.entries(proof.outputsPerMinute).filter(([id])=>outputs.includes(id))):proof.outputsPerMinute;
   const platformPreview=folder==='white-platform'?await tiledPreview(decodeBlueprint(await fs.readFile(dir+'/'+info.file,'utf8')).blueprint,'designed-'+sha.slice(0,16)):undefined;
   await register({file:dir+'/'+info.file,info,category,purpose,page:folder+'/index.html',proof:{...proof,outputsPerMinute:rates},report:reportFile,outputs,...(opts.title?{title:opts.title}:{}),...(opts.inputs?{inputs:opts.inputs}:{}),...(opts.sourceAuthor?{sourceAuthor:opts.sourceAuthor,sourceURL:opts.sourceURL}:{}),coverageExcluded:opts.coverageExcluded,preview:platformPreview,version:report.gameVersion,setup:[...(opts.setup||['Supply every labeled operating input, including fluids where listed, and external electricity. Preserve stock controls, circuit wires and passive-provider chest limits. Intermediates are manufactured inside; construction materials are not operating inputs.']),...supply]});
   const entry=entries.at(-1);
-  promoteWorkshop(entries,entry,opts.recommend??outputs);entry.recommendation='Latest qualified '+folder.replaceAll('-',' ');
+  // recommendUnclaimed: only products no other record already recommends (a pinned recommendation stays as it is).
+  promoteWorkshop(entries,entry,opts.recommendUnclaimed?outputs.filter(p=>!entries.some(e=>e!==entry&&e.recommendedProducts?.includes(p))):opts.recommend??outputs);entry.recommendation='Latest qualified '+folder.replaceAll('-',' ');
  }
 }
 const space=await read('blueprint-sources/flight-space-science/manifest.json'),spaceReport='blueprint-sources/flight-space-science/validation/native-report.json',spaceProof=await read(spaceReport);

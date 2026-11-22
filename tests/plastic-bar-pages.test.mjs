@@ -69,6 +69,12 @@ test('guide page: three sizes side by side, ports with tiles, power, the README 
  for(const h of head)assert.ok(t.includes(h),h);
  for(const row of body)for(const c of row)assert.ok(t.includes(c.replace(/`/g,'')),'pairing cell: '+c);
  assert.ok(!t.includes('unpublished branch'));
+ // Where its gas comes from: the oil products supplier's gas outlet and the copies each size needs, from that family's manifest.
+ const [oil]=JSON.parse(await read('blueprint-sources/oil-products/manifest.json'));
+ const copies=id=>oil.pairing.find(p=>p.family==='plastic-supplier'&&p.id===id).copies,gasOut=oil.outputs.find(p=>p.item==='petroleum-gas');
+ assert.ok(html.includes('data-oil-source')&&html.includes('href="../oil-products/index.html"'));
+ assert.ok(t.includes(`makes it (${num(oil.targets['petroleum-gas'])} per minute from one copy), gas port to gas port: its outlet at (${gasOut.tile.x}, ${gasOut.tile.y}) to this supplier's gas inlet at (0, 0). One copy feeds a small or a medium size; ${copies('large')} copies feed a large.`),'oil source sentence');
+ assert.deepEqual([copies('small'),copies('medium'),copies('large')],[1,1,2]);
 });
 
 test('pairing table: parsed from the README section; a README without it is refused',()=>{

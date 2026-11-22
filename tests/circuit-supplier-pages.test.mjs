@@ -104,8 +104,8 @@ test('navigation: one entry each, every figure in its words is the family manife
  assert.equal(new Set(plans.map(p=>p.id)).size,plans.length);
 });
 
-test('"Suppliers" cross-link: the four guide pages link to one another, and each names itself without a link',async()=>{
- assert.deepEqual(SUPPLIERS.map(s=>s.id),['green-circuits','advanced-circuits','processing-units','plastic-bars']);
+test('"Suppliers" cross-link: the five guide pages link to one another, and each names itself without a link',async()=>{
+ assert.deepEqual(SUPPLIERS.map(s=>s.id),['green-circuits','advanced-circuits','processing-units','plastic-bars','oil-products']);
  for(const s of SUPPLIERS){
   const html=await read(`site/${s.id}/index.html`);
   assert.equal((html.match(/data-suppliers/g)||[]).length,1,s.id);
