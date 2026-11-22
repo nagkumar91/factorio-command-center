@@ -13,9 +13,10 @@
 //    what the station cannot take goes on east. A full or blocked station therefore never stops the ore line,
 //    and a blocked east end only sends everything into the station.
 //  - The station feed comes down a red belt in the west column into the original four-way split (its first
-//    splitter is a red splitter facing south; the other two are the original yellow splitters).
+//    splitter is a red splitter facing south; the other two are the original splitters, now red).
 //  - The two plate lanes flow EAST instead of west, leave under the last furnace pair, come down two columns
-//    on the east side and merge in a splitter into one yellow belt leaving the SOUTH edge in the last column.
+//    on the east side and merge in a splitter into one belt leaving the SOUTH edge in the last column.
+//  - Red belts only (22 November 2026): every belt, underground belt and splitter is red in every version.
 //
 // Pure Node and reproducible: no game data is read; the same source gives the same blueprint string.
 // Usage: node scripts/electric-smelter-pass-through/generate.mjs [--out dir]
@@ -101,11 +102,19 @@ const pos=e=>({x:e.position.x,y:e.position.y});
 const furnaces=final.filter(e=>e.name==='electric-furnace').length;
 assert.equal(furnaces,24);
 assert.equal(computedRates(null).platesPerMinute,PROTOTYPE.beltItemsPerSecond['transport-belt']*60,'no modules: one full yellow belt of plates');
+// What the red-belt build costs over the same layout in yellow: the yellow parts the layout would have, and the extra
+// gears and circuits to make them red.
+const yellowParts=Object.fromEntries(Object.keys(BELT_UPGRADE_NAMES()).map(n=>[n,final.filter(e=>e.name===n).length]));
+function BELT_UPGRADE_NAMES(){return {'transport-belt':1,'underground-belt':1,splitter:1};}
+const redCost={};for(const [n,count] of Object.entries(yellowParts))for(const [item,k] of Object.entries(PROTOTYPE.redUpgradeExtra[n]))redCost[item]=(redCost[item]||0)+count*k;
+redCost['iron-plate']=redCost['iron-gear-wheel']*PROTOTYPE.ironPlatesPerGear;
 const originalConstruction=Object.fromEntries([...new Set(original.entities.map(e=>e.name))].sort().map(n=>[n,original.entities.filter(e=>e.name===n).length]));
-// Speed variants: every yellow belt, underground belt and splitter becomes red and every basic inserter fast, on the same tiles.
-const UPGRADE={inserter:'fast-inserter','transport-belt':'fast-transport-belt','underground-belt':'fast-underground-belt',splitter:'fast-splitter'};
+// Every variant: every yellow belt, underground belt and splitter becomes red, on the same tiles (a red-belt build).
+// Speed variants also make every basic inserter fast.
+const BELT_UPGRADE={'transport-belt':'fast-transport-belt','underground-belt':'fast-underground-belt',splitter:'fast-splitter'};
+const UPGRADE={inserter:'fast-inserter',...BELT_UPGRADE};
 const moduleRequest=module=>[{id:{name:module},items:{in_inventory:[{inventory:4,stack:0},{inventory:4,stack:1}]}}];
-function variantEntities(v){return final.map(e=>{const x=structuredClone(e);if(v.fast&&UPGRADE[x.name])x.name=UPGRADE[x.name];if(x.name==='electric-furnace'){delete x.items;if(v.module)x.items=moduleRequest(v.module);}return x;});}
+function variantEntities(v){return final.map(e=>{const x=structuredClone(e);if((v.fast?UPGRADE:BELT_UPGRADE)[x.name])x.name=(v.fast?UPGRADE:BELT_UPGRADE)[x.name];if(x.name==='electric-furnace'){delete x.items;if(v.module)x.items=moduleRequest(v.module);}return x;});}
 const pretty=s=>s.replaceAll('-',' ');
 const moduleText=v=>v.module?`48 ${pretty(v.module)}s (2 in each furnace)`:'no modules';
 const num=x=>(Math.round(x*10)/10).toLocaleString('en-US');
@@ -114,7 +123,7 @@ const built=[];
 for(const v of VARIANTS){
  const main=v.id===MAIN_VARIANT,dir=main?out:out+'/versions/'+v.id,rel=main?'':'versions/'+v.id+'/';
  const r=computedRates(v.module),list=variantEntities(v);
- const exitBelt=v.fast?'red belt':'yellow belt';
+ const exitBelt='red belt';
  const ports=[
   {kind:'input',label:'Ore in',items:['iron-ore','copper-ore'],item:'iron-ore',entity:entrance.entity_number,position:pos(entrance),tile:{x:0,y:1},externalSide:'west',direction:E,transport:'red belt',perMinute:r.orePerMinute,
    note:`One red belt into the west face of the splitter on row 1. The station takes ${num(r.orePerMinute)} ore per minute first; everything else continues east.`},
@@ -127,7 +136,7 @@ for(const v of VARIANTS){
  for(const p of ports.filter(p=>p.tile))assert(occupiedTiles.has(key(p.tile.x,p.tile.y)),'port tile occupied by its entity');
  const construction=Object.fromEntries([...new Set(list.map(e=>e.name))].sort().map(n=>[n,list.filter(e=>e.name===n).length]));
  const copies=Math.floor(r.copiesPerRedBelt+1e-9),rest=1800-copies*r.orePerMinute;
- const description=`Official 2.1.24 Space Age. ${v.label}: 24 electric furnaces with ${moduleText(v)}, ${v.fast?'fast inserters, red belts, red underground belts and red splitters':'inserters and fast inserters, yellow belts with red underground belts'}, 4 substations, 2 roboports. Derived from the Autosaved "In-Out Electric Smelter" (${SOURCE.id}, ${SOURCE.url}). WEST: ore in on one red belt, row 1 (second row). The station takes ${num(r.orePerMinute)} ore per minute first; the rest leaves EAST on the same row, so copies placed ${footprint.width} tiles apart chain along one ore line (one red belt feeds ${copies} cop${copies===1?'y':'ies'}${rest>1?` and ${num(rest)} ore per minute more`:''}). SOUTH: ${num(r.platesPerMinute)} plates per minute on one ${exitBelt} in the last column. Iron or copper ore; a blocked plate exit or a full station never stops the ore line, and an unconnected east end does not stop the station. Supply electricity at any substation; copies placed side by side join one network.`;
+ const description=`Official 2.1.24 Space Age. ${v.label}: 24 electric furnaces with ${moduleText(v)}, ${v.fast?'fast inserters, red belts, red underground belts and red splitters':'inserters and fast inserters, red belts, red underground belts and red splitters'}, 4 substations, 2 roboports. Derived from the Autosaved "In-Out Electric Smelter" (${SOURCE.id}, ${SOURCE.url}). WEST: ore in on one red belt, row 1 (second row). The station takes ${num(r.orePerMinute)} ore per minute first; the rest leaves EAST on the same row, so copies placed ${footprint.width} tiles apart chain along one ore line (one red belt feeds ${copies} cop${copies===1?'y':'ies'}${rest>1?` and ${num(rest)} ore per minute more`:''}). SOUTH: ${num(r.platesPerMinute)} plates per minute on one ${exitBelt} in the last column. Iron or copper ore; a blocked plate exit or a full station never stops the ore line, and an unconnected east end does not stop the station. Supply electricity at any substation; copies placed side by side join one network.`;
  const bp={item:'blueprint',version:562954249961472,label:'Electric smelter · '+v.label.toLowerCase(),description,icons:[{index:1,signal:{name:'electric-furnace'}},{index:2,signal:{name:'iron-ore'}},{index:3,signal:{name:'iron-plate'}}],entities:list,wires};
  // zlib's compressed bytes differ between builds (the Linux CI runner and this Mac give different strings for the same JSON).
  // Keep the committed string when it decodes to exactly this blueprint, so its SHA-256 and native report stay valid everywhere.
@@ -184,7 +193,9 @@ const manifest={...m,versions,versionsAlternatives:true,variants:variantTable,
   'The first splitter of the ore split became a red splitter fed from above by a red belt; the other two splitters and all four ore lanes are unchanged.',
   `Same 24 furnaces, same 38 inserters and 10 fast inserters, same 4 substations and 2 roboports on the same tiles. ${footprint.width} x ${footprint.height} instead of 28 x 20: two columns more on the east side for the plate exit; the west side keeps its width (the entrance splitter stands where the old input belt was, the west plate merge is gone).`,
   'Module requests: the original asked for 2 efficiency modules in each furnace. The main string now has none; efficiency, productivity and speed versions are kept beside it.',
- ]};
+  `Red belts only: the original used yellow belts, yellow underground belts and yellow splitters (51, 8 and 3). This station is now a red-belt build in every version: ${yellowParts['transport-belt']} belts, ${yellowParts['underground-belt']} underground belts and ${yellowParts.splitter} splitters that were yellow became red, so it has ${mainBuild.manifest.construction['fast-transport-belt']} red belts, ${mainBuild.manifest.construction['fast-underground-belt']} red underground belts and ${mainBuild.manifest.construction['fast-splitter']} red splitters and no yellow belt parts. Extra cost over yellow: ${redCost['iron-gear-wheel']} iron gear wheels (${redCost['iron-plate']} iron plates) and ${redCost['electronic-circuit']} electronic circuits per copy. Inserters stay as they were (38 inserters, 10 fast inserters) except in the speed versions. The yellow-belt strings of the no-module, efficiency and productivity versions are kept in history/.`,
+ ],
+ redBeltBuild:{yellowPartsMadeRed:yellowParts,extraCostPerCopy:redCost,history:['no-modules','efficiency','productivity-one','productivity-two','productivity-three'].map(v=>'history/yellow-belts-'+v+'/')}};
 await fs.writeFile(out+'/manifest.json',JSON.stringify([manifest],null,2)+'\n');
 await fs.writeFile(out+'/README.md',readme(manifest,mainBuild.report,mainBuild.list,original.entities,built));
 console.log(JSON.stringify({id:ID,out,footprint,main:{sha:manifest.blueprintSha256,status:manifest.status},variants:variantTable.map(v=>[v.variant,v.blueprintSha256.slice(0,12),v.status,v.included,v.leftOut||''])}));
@@ -202,10 +213,10 @@ function readme(m,report,list,originalList,built){
  L(`# ${m.name}`);L('');
  L(report?`**${m.status==='qualified'?'Qualified':'Not qualified'}.** One headless native run of the exact published string (SHA-256 \`${m.blueprintSha256}\`, Factorio 2.1.24 Space Age) passed ${report.builds[0].summary.scenariosPassed} of ${report.builds[0].summary.scenarios} scenarios: **${n(report.builds[0].summary.ironPlatesPerMinute)} iron plates and ${n(report.builds[0].summary.copperPlatesPerMinute)} copper plates per minute** (target ${t}, ${pct(report.builds[0].summary.ironPlatesPerMinute)}), every furnace crafting the same share. This main string has **no modules**; the versions with efficiency, productivity and speed modules are listed below with their own measured inputs and outputs.`:'**Not yet qualified.** No native report for this exact string.');
  L('');
- L(`A 24-furnace electric smelting station for iron or copper ore. Ore comes in on the west side and the station takes ${t} ore per minute first; whatever it does not use carries straight on and leaves on the east side on the same row, so a second copy placed directly east receives it with no extra belts. Plates leave on the south side on one yellow belt (${t} per minute is one full yellow belt, 450 per lane).`);L('');
+ L(`A 24-furnace electric smelting station for iron or copper ore. Ore comes in on the west side and the station takes ${t} ore per minute first; whatever it does not use carries straight on and leaves on the east side on the same row, so a second copy placed directly east receives it with no extra belts. Plates leave on the south side on one red belt (${t} per minute: half a red belt, a full yellow belt\'s worth). Every belt, underground belt and splitter in the station is red.`);L('');
  L(`Derived from **"${SOURCE.name}"** in the Autosaved collection (id \`${SOURCE.id}\`, ${SOURCE.url}). The pasted original is kept unchanged in \`original/in-out-electric-smelter.txt\` (SHA-256 of the trimmed string \`${m.source.blueprintSha256}\`). The furnace block, its woven ore lanes, the substations and the roboports are the original's (the original requested 2 efficiency modules per furnace; that is the "Efficiency modules" version here).`);L('');
  L('## Versions: modules, inputs and outputs');L('');
- L('Same 30 x 20 layout and ports for every version; only the module requests differ (and, for speed modules, belt and inserter tier). Figures are per copy, per minute, measured from each version\'s own native report (iron ore; copper measured the same figures). "Forwarded" is what leaves east when a full red belt (1,800 ore/min) comes in. Power is the electric network input of one working copy (furnaces, inserters, roboports), measured. Computed: from the 2.1.24 prototype numbers. Speed versions put plates out on a red belt; one red belt of ore feeds the copies shown, the last one partly.');L('');
+ L('Same 30 x 20 layout and ports for every version; only the module requests differ (and, for speed modules, inserter tier; every version is red-belted). Figures are per copy, per minute, measured from each version\'s own native report (iron ore; copper measured the same figures). "Forwarded" is what leaves east when a full red belt (1,800 ore/min) comes in. Power is the electric network input of one working copy (furnaces, inserters, roboports), measured. Computed: from the 2.1.24 prototype numbers. Every version puts plates out on a red belt; one red belt of ore feeds the copies shown, the last one partly.');L('');
  L('| Version | Modules | Ore in | Plates out | Forwarded from a full red belt | Copies per red belt | Power (measured) | Computed ore in / plates out | Offered |');L('| --- | --- | ---: | ---: | ---: | --- | ---: | --- | --- |');
  for(const b of built){const x=b.manifest,s=x.measured,c=x.computed,full=Math.floor(c.copiesPerRedBelt+1e-9),rest=1800-full*c.orePerMinute;
   L(`| ${b.v.label} | ${x.modules.count?x.modules.count+' × '+x.modules.module.replaceAll('-',' '):'none'} | ${s?n(s.ironOrePerMinute):'not measured'} | ${s?n(s.ironPlatesPerMinute):'not measured'} | ${s?n(s.forwardedFromFullRedBeltPerMinute):'not measured'} | ${full}${rest>1?` + ${n(rest)} ore/min`:''} | ${s?n(s.powerKW)+' kW':'not measured'} | ${n(c.orePerMinute)} / ${n(c.platesPerMinute)} | ${b.include?'yes':'no: '+b.leftOut} |`);}
@@ -214,7 +225,7 @@ function readme(m,report,list,originalList,built){
  L(`Efficiency modules 2 and 3 are not separate versions: they give the same rates as no modules and lower power. Computed from the prototype numbers, the 24 furnaces' working power is ${eff.computed.map(e=>n(e.furnacePowerKW)+' kW with '+e.module.replaceAll('-',' ')).join(' and ')} (consumption cannot fall below 20%, so tier 3 is no better than tier 2), against ${n(computedRates('efficiency-module').furnacePowerKW)} kW with efficiency modules and ${n(computedRates(null).furnacePowerKW)} kW with none; the furnaces' idle drain (measured 144 kW for 24 furnaces in every version, unchanged by modules) comes on top.${eff.measured?` Measured in the main run with the modules swapped in by script: ${n(eff.measured.efficiencyTwoPowerKW)} kW and ${n(eff.measured.efficiencyThreePowerKW)} kW for the whole copy, at ${n(eff.measured.efficiencyTwoPlatesPerMinute)} and ${n(eff.measured.efficiencyThreePlatesPerMinute)} plates per minute.`:''} Quality modules are not offered.`);
  L('');
  L('Each version\'s string, manifest and native report: the main one in this folder, the others in `versions/<name>/`.');L('');
- L('Ports of the main (no-module) string; the versions differ only in the rates and, for speed modules, a red plate belt.');L('');
+ L('Ports of the main (no-module) string; the versions differ only in the rates (and, for speed modules, fast inserters).');L('');
  L('| Port | Side | Tile (x, y) | Belt | What |');L('| --- | --- | --- | --- | --- |');
  for(const p of [m.inputs[0],m.forward[0],m.outputs[0]])L(`| ${p.label} | ${p.externalSide} | (${p.tile.x}, ${p.tile.y}) | ${p.transport} | ${p.note} |`);
  L('');L(`Tiles count from the top-left tile (0, 0) of the ${m.footprint.width} x ${m.footprint.height} rectangle. Row 1 is the second row from the top. Electricity: any of the four substations.`);L('');
@@ -252,11 +263,11 @@ function readme(m,report,list,originalList,built){
  L('## What changed from the original');L('');
  L(`- Original ports: ${m.source.ports}`);
  for(const c of m.changes)L('- '+c);
- L('- Tiers (no-module, efficiency and productivity versions) are unchanged except for two red (fast) splitters, the tier of the red belts and underground belts the original already used: the entrance splitter has to pass a red belt, and the first split splitter takes the full 900 ore per minute. No beacons, no bulk or stack inserters, no circuit wires, no higher-tier machines. The speed versions use the same tiles with every belt, underground belt and splitter red and every inserter fast.');
+ L('- Belt tier: red everywhere (the original mixed yellow belts, yellow splitters and yellow and red undergrounds). Inserters are the original\'s in the no-module, efficiency and productivity versions; the speed versions make every inserter fast. No beacons, no bulk or stack inserters, no circuit wires, no higher-tier machines.');
  L('');
  L('## Layout');L('');
  L('```');L(ascii(list));L('```');L('');
- L('`F` electric furnace, `S` substation, `R` roboport, `i` inserter, `f` fast inserter, `> v < ^` yellow belts, `} V { A` red belts, `U`/`O` red underground entry/exit, `u`/`o` yellow underground entry/exit, `Q` red splitter, `P` yellow splitter. Ore enters at (0,1), leaves at (29,1); plates leave at (29,19).');
+ L('`F` electric furnace, `S` substation, `R` roboport, `i` inserter, `f` fast inserter, `> v < ^` yellow belts, `} V { A` red belts, `U`/`O` red underground entry/exit, `u`/`o` yellow underground entry/exit, `Q` red splitter, `P` yellow splitter (the station map has only red parts; the yellow symbols appear in the original). Ore enters at (0,1), leaves at (29,1); plates leave at (29,19).');
  L('');L('The original, for comparison (ore in at the west on row 13, plates out at the west on row 9):');L('');
  L('```');L(ascii(originalList));L('```');L('');
  L('## Reproduce');L('');

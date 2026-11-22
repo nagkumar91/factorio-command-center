@@ -13,6 +13,10 @@ export const PROTOTYPE={
  efficiencyModuleEffect:{consumption:-0.3},
  furnaceEnergyUsageKW:180,
  moduleSlots:2,
+ // What turning one yellow part into its red kind costs (2.1.24 recipes: fast belt = 1 belt + 5 gears; 2 fast
+ // undergrounds = 2 undergrounds + 40 gears; fast splitter = 1 splitter + 10 gears + 10 electronic circuits).
+ redUpgradeExtra:{'transport-belt':{'iron-gear-wheel':5},'underground-belt':{'iron-gear-wheel':20},splitter:{'iron-gear-wheel':10,'electronic-circuit':10}},
+ ironPlatesPerGear:2,
  moduleEffects:{
   'efficiency-module':{consumption:-0.3},'efficiency-module-2':{consumption:-0.4},'efficiency-module-3':{consumption:-0.5},
   'productivity-module':{productivity:0.04,consumption:0.4,pollution:0.05,speed:-0.05},
@@ -22,8 +26,9 @@ export const PROTOTYPE={
  },
 };
 // The module variants: the same 30 x 20 layout and ports, two modules of one kind requested in every furnace
-// (or none). Speed variants also use red belts, red underground belts, red splitters and fast inserters everywhere,
-// because the plate rate passes one yellow belt and what a basic inserter moves.
+// (or none). Every variant uses red belts, red underground belts and red splitters only (user request, 22 November
+// 2026); speed variants also use fast inserters everywhere, because their plate rate passes what a basic inserter
+// moves.
 export const VARIANTS=[
  {id:'no-modules',label:'No modules',module:null},
  {id:'efficiency',label:'Efficiency modules',module:'efficiency-module'},

@@ -44,6 +44,7 @@ test('only the original tiers: no beacons, bulk or stack inserters, circuit wire
  for(const e of entities)assert.ok(allowed.has(e.name),'unexpected entity '+e.name);
  assert.ok((bp.wires||[]).every(w=>w[1]===5&&w[3]===5),'copper power wires only');
  assert.deepEqual({inserter:m.construction.inserter,fast:m.construction['fast-inserter'],sub:m.construction.substation,robo:m.construction.roboport},{inserter:38,fast:10,sub:4,robo:2});
+ assert.deepEqual([m.construction['fast-transport-belt'],m.construction['fast-underground-belt'],m.construction['fast-splitter']],[97,32,5],'red belts, undergrounds and splitters');
 });
 
 test('ports: ore in west and forwarded east on the same row, plates out south in the last column',()=>{
@@ -56,10 +57,10 @@ test('ports: ore in west and forwarded east on the same row, plates out south in
  assert.equal(split.name,'fast-splitter');assert.equal(split.direction,E);assert.equal(split.output_priority,'right','priority to the south output: the station');
  assert.equal(at(entrance.tile.x,entrance.tile.y),split);
  const last=at(forward.tile.x,forward.tile.y);assert.equal(last.name,'fast-transport-belt');assert.equal(last.direction,E);
- const plates=at(exit.tile.x,exit.tile.y);assert.equal(plates.name,'transport-belt');assert.equal(plates.direction,8);
+ const plates=at(exit.tile.x,exit.tile.y);assert.equal(plates.name,'fast-transport-belt');assert.equal(plates.direction,8);
  // The ore row is red all the way across: belts, one red underground pair, nothing else.
  for(let x=1;x<m.footprint.width;x++){const e=at(x,entrance.tile.y);if(e?.name==='roboport')continue;assert.ok(/^fast-(transport|underground)-belt$/.test(e?.name),'ore row tile '+x);assert.equal(e.direction,E);}
- const merge=entities.find(e=>e.name==='splitter'&&e.direction===8&&e.position.y===m.footprint.height-1.5);
+ const merge=entities.find(e=>e.name==='fast-splitter'&&e.direction===8&&e.position.y===m.footprint.height-1.5);
  assert.ok(merge,'plate merge splitter above the exit');assert.equal(merge.output_priority,'left','left of a south-facing splitter is the exit column (east)');
 });
 
@@ -169,4 +170,28 @@ test('module versions: same layout, two modules of one kind per furnace, each wi
   if(v.fast)assert.equal(row.included,build.outputsPerMinute['iron-plate']>m.measured.ironPlatesPerMinute,'a speed version is offered only when it beats no modules');
   if(listed){assert.deepEqual(listed.inputsPerMinute,build.inputsPerMinute);assert.equal(listed.powerKW,build.powerKW);}
  }
+});
+
+test('red belts only: no yellow belt, underground belt or splitter in any offered version; yellow strings kept in history',async()=>{
+ const yellow=new Set(['transport-belt','underground-belt','splitter']);
+ for(const v of m.versions){const vb=decodeBlueprint((await read(dir+v.file)).toString()).blueprint;assert.ok(vb.entities.every(e=>!yellow.has(e.name)),v.label);}
+ assert.deepEqual(m.redBeltBuild.yellowPartsMadeRed,{'transport-belt':64,'underground-belt':6,splitter:3});
+ assert.deepEqual(m.redBeltBuild.extraCostPerCopy,{'iron-gear-wheel':470,'electronic-circuit':30,'iron-plate':940});
+ for(const h of m.redBeltBuild.history){
+  const [hm]=JSON.parse(await read(dir+h+'manifest.json')),hcode=(await read(dir+h+hm.file)).toString().trim();
+  assert.equal(hash(hcode),hm.blueprintSha256);assert.ok(decodeBlueprint(hcode).blueprint.entities.some(e=>yellow.has(e.name)),h+' is the yellow string');
+  assert.ok(!m.versions.some(v=>v.blueprintSha256===hm.blueprintSha256),h+' is not offered');
+  assert.equal(JSON.parse(await read(dir+h+'native-report.json')).passed,true);await read(dir+h+'NOTE.md');
+ }
+ // The speed strings did not change with the red-belt round.
+ const speed={'speed-one':'56b17478ff1699ff4dbc57c5c9d8ac8167d220873ab4e362adc83f7008cdce18','speed-two':'a4eb07abac1f80a6938e46d77c6f1ceca10b9035c2c229b848299f08f006f3e6','speed-three':'bcfe2ab13244575f2ca2e4315a40d4f2bf8ac295a97700d68eb9b1e98a188be6'};
+ for(const [id,sha] of Object.entries(speed))assert.equal(hash((await read(dir+'versions/'+id+'/'+m.file)).toString().trim()),sha,id);
+});
+
+test('red upgrade costs match the official 2.1.24 recipes',{skip:!readable(rawPath)&&'prototype dump not installed'},async()=>{
+ const raw=JSON.parse(await fs.readFile(rawPath));
+ for(const [yellow,extra] of Object.entries(PROTOTYPE.redUpgradeExtra)){const r=raw.recipe['fast-'+yellow],made=r.results[0].amount;
+  const per=Object.fromEntries(r.ingredients.filter(i=>i.name!==yellow).map(i=>[i.name,i.amount/made]));assert.deepEqual(per,extra,yellow);
+  assert.equal(r.ingredients.find(i=>i.name===yellow).amount/made,1,yellow+': one yellow part per red part');}
+ assert.equal(raw.recipe['iron-gear-wheel'].ingredients[0].amount,PROTOTYPE.ironPlatesPerGear);
 });
