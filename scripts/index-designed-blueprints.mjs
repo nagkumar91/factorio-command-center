@@ -146,6 +146,8 @@ const supplierName={'green-circuits':'green-circuit supplier','concrete-supplier
 for(const [folder,category,purpose,expected,opts={}] of [
  ['robot-logistics-workshop','Robots and logistics','Robot production',['construction-robot','logistic-robot','roboport','passive-provider-chest','storage-chest']],
  ['inserter-workshop','Inserters','Production',['inserter','long-handed-inserter','fast-inserter','bulk-inserter']],
+ // Belt workshop (22 November 2026): the inserter workshop's on-demand ring for belts. Not part of the 17 November group; takes only recommendations nobody holds.
+ ['belt-workshop','Belts','Production',['fast-transport-belt','fast-underground-belt','fast-splitter','transport-belt','underground-belt','splitter'],{recommendUnclaimed:true}],
  // Essentials round, promoted in this order so each leads coverage for its own products.
  ['green-circuits','Circuits','Circuit production',['electronic-circuit']],
  ['essentials-mall','Building essentials','Production',['assembling-machine-2','fast-transport-belt','fast-underground-belt','fast-splitter','fast-inserter','bulk-inserter','electric-furnace','electric-mining-drill']],

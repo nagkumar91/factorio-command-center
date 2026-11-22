@@ -59,10 +59,10 @@ function create(ui) {
   const tokens = (ids, limit = Infinity, clickable = false) => ids.slice(0, limit).map(id => `<${clickable ? 'button' : 'span'} class="product-token" title="${esc(name(id))}"${clickable ? ` data-action="product-path" data-id="${esc(id)}"` : ''}>${image(id)}<span>${esc(name(id))}</span></${clickable ? 'button' : 'span'}>`).join('') + (ids.length > limit ? `<span class="more-token">+${ids.length - limit}</span>` : '');
   const options = (values, selected) => values.map(value => `<option value="${esc(value)}" ${value === selected ? 'selected' : ''}>${esc(value)}</option>`).join('');
   const matchesWords = (text, query) => query.toLowerCase().replace(/\bbots?\b/g, 'robot').split(/[^a-z0-9]+/).filter(Boolean).every(word => text.toLowerCase().replaceAll('-', ' ').includes(word) || (word.endsWith('s') && text.toLowerCase().includes(word.slice(0, -1))));
-  // Circuit colours are the players' names for three items: green = electronic circuit, red = advanced circuit,
-  // blue = processing unit (and purple = production science pack). A colour query matches what it matched before and, in addition, the item it names;
-  // every other query is untouched.
-  const CIRCUIT_COLOURS = [[/\bgreen circuits?\b/g, 'electronic circuit'], [/\bred circuits?\b/g, 'advanced circuit'], [/\bblue circuits?\b/g, 'processing unit'], [/\bpurple(?: science)?(?: packs?)?\b/g, 'production science pack']];
+  // Colours are the players' names for items: green circuit = electronic circuit, red circuit = advanced circuit, blue circuit =
+  // processing unit, purple = production science pack, red belt = fast transport belt, yellow belt = transport belt. A colour
+  // query matches what it matched before and, in addition, the item it names; every other query is untouched.
+  const CIRCUIT_COLOURS = [[/\bgreen circuits?\b/g, 'electronic circuit'], [/\bred circuits?\b/g, 'advanced circuit'], [/\bblue circuits?\b/g, 'processing unit'], [/\bpurple(?: science)?(?: packs?)?\b/g, 'production science pack'], [/\bred belts?\b/g, 'fast transport belt'], [/\byellow belts?\b/g, 'transport belt']];
   const matches = (text, query) => {
     if (matchesWords(text, query)) return true;
     const named = CIRCUIT_COLOURS.reduce((q, [colour, item]) => q.replace(colour, item), query.toLowerCase());

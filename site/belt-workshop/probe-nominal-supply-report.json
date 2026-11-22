@@ -1,0 +1,1195 @@
+{
+  "builds": [
+    {
+      "id": "belt-workshop",
+      "outputsPerMinute": {
+        "fast-transport-belt": 31.6,
+        "fast-underground-belt": 3.4,
+        "fast-splitter": 4.1,
+        "transport-belt": 8.3,
+        "underground-belt": 6,
+        "splitter": 1.2
+      },
+      "consumptionPerMinute": {
+        "iron-plate": 800.2,
+        "copper-plate": 104.8
+      },
+      "inputs": [
+        {
+          "item": "iron-plate",
+          "entity": 97,
+          "acceptedDuringMeasurement": 7991,
+          "productiveRoute": [
+            97,
+            98,
+            99,
+            103,
+            79
+          ]
+        },
+        {
+          "item": "copper-plate",
+          "entity": 129,
+          "acceptedDuringMeasurement": 1050,
+          "productiveRoute": [
+            129,
+            130,
+            41,
+            42,
+            43,
+            1,
+            2,
+            63
+          ]
+        }
+      ],
+      "outputPorts": [
+        {
+          "item": "fast-transport-belt",
+          "entity": 136,
+          "collectedDuringMeasurement": 316
+        },
+        {
+          "item": "fast-underground-belt",
+          "entity": 138,
+          "collectedDuringMeasurement": 34
+        },
+        {
+          "item": "fast-splitter",
+          "entity": 140,
+          "collectedDuringMeasurement": 41
+        },
+        {
+          "item": "transport-belt",
+          "entity": 142,
+          "collectedDuringMeasurement": 83
+        },
+        {
+          "item": "underground-belt",
+          "entity": 144,
+          "collectedDuringMeasurement": 60
+        },
+        {
+          "item": "splitter",
+          "entity": 146,
+          "collectedDuringMeasurement": 12
+        }
+      ],
+      "machines": [
+        {
+          "entity": 44,
+          "recipe": "iron-gear-wheel",
+          "actualRecipe": "iron-gear-wheel",
+          "measuredCrafts": 900,
+          "status": "working",
+          "statusSamples": {
+            "working": 600
+          },
+          "missingIngredientSamples": {},
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "entity": 48,
+          "recipe": "underground-belt",
+          "actualRecipe": "underground-belt",
+          "measuredCrafts": 46,
+          "status": "working",
+          "statusSamples": {
+            "item_ingredient_shortage": 542,
+            "working": 58
+          },
+          "missingIngredientSamples": {
+            "transport-belt": 542,
+            "iron-plate": 21
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 10
+            }
+          ]
+        },
+        {
+          "entity": 52,
+          "recipe": "splitter",
+          "actualRecipe": "splitter",
+          "measuredCrafts": 53,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 533,
+            "working": 67
+          },
+          "missingIngredientSamples": {
+            "transport-belt": 504,
+            "electronic-circuit": 112,
+            "iron-plate": 15
+          },
+          "inventory": [
+            {
+              "name": "transport-belt",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 11
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 10
+            }
+          ]
+        },
+        {
+          "entity": 56,
+          "recipe": "fast-splitter",
+          "actualRecipe": "fast-splitter",
+          "measuredCrafts": 41,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 489,
+            "working": 111
+          },
+          "missingIngredientSamples": {
+            "splitter": 263,
+            "electronic-circuit": 322,
+            "iron-gear-wheel": 13
+          },
+          "inventory": [
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 21
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "entity": 60,
+          "recipe": "fast-underground-belt",
+          "actualRecipe": "fast-underground-belt",
+          "measuredCrafts": 17,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "working": 45,
+            "item_ingredient_shortage": 555
+          },
+          "missingIngredientSamples": {
+            "iron-gear-wheel": 555,
+            "underground-belt": 21
+          },
+          "inventory": [
+            {
+              "name": "underground-belt",
+              "quality": "normal",
+              "count": 3
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 15
+            }
+          ]
+        },
+        {
+          "entity": 63,
+          "recipe": "copper-cable",
+          "actualRecipe": "copper-cable",
+          "measuredCrafts": 864,
+          "status": "full_output",
+          "statusSamples": {
+            "working": 576,
+            "full_output": 22,
+            "item_ingredient_shortage": 2
+          },
+          "missingIngredientSamples": {
+            "copper-plate": 2
+          },
+          "inventory": {}
+        },
+        {
+          "entity": 67,
+          "recipe": "electronic-circuit",
+          "actualRecipe": "electronic-circuit",
+          "measuredCrafts": 693,
+          "status": "full_output",
+          "statusSamples": {
+            "item_ingredient_shortage": 110,
+            "working": 465,
+            "full_output": 25
+          },
+          "missingIngredientSamples": {
+            "copper-cable": 100,
+            "iron-plate": 16
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 3
+            },
+            {
+              "name": "copper-cable",
+              "quality": "normal",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "entity": 70,
+          "recipe": "copper-cable",
+          "actualRecipe": "copper-cable",
+          "measuredCrafts": 185,
+          "status": "full_output",
+          "statusSamples": {
+            "working": 116,
+            "item_ingredient_shortage": 472,
+            "full_output": 12
+          },
+          "missingIngredientSamples": {
+            "copper-plate": 472
+          },
+          "inventory": {}
+        },
+        {
+          "entity": 74,
+          "recipe": "iron-gear-wheel",
+          "actualRecipe": "iron-gear-wheel",
+          "measuredCrafts": 594,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "working": 392,
+            "item_ingredient_shortage": 208
+          },
+          "missingIngredientSamples": {
+            "iron-plate": 208
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "entity": 79,
+          "recipe": "iron-gear-wheel",
+          "actualRecipe": "iron-gear-wheel",
+          "measuredCrafts": 900,
+          "status": "working",
+          "statusSamples": {
+            "working": 600
+          },
+          "missingIngredientSamples": {},
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "entity": 82,
+          "recipe": "fast-transport-belt",
+          "actualRecipe": "fast-transport-belt",
+          "measuredCrafts": 316,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "item_ingredient_shortage": 386,
+            "working": 214
+          },
+          "missingIngredientSamples": {
+            "iron-gear-wheel": 372,
+            "transport-belt": 20
+          },
+          "inventory": [
+            {
+              "name": "transport-belt",
+              "quality": "normal",
+              "count": 4
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "entity": 88,
+          "recipe": "iron-gear-wheel",
+          "actualRecipe": "iron-gear-wheel",
+          "measuredCrafts": 681,
+          "status": "working",
+          "statusSamples": {
+            "item_ingredient_shortage": 152,
+            "working": 448
+          },
+          "missingIngredientSamples": {
+            "iron-plate": 152
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "entity": 91,
+          "recipe": "transport-belt",
+          "actualRecipe": "transport-belt",
+          "measuredCrafts": 426,
+          "status": "working",
+          "statusSamples": {
+            "working": 272,
+            "item_ingredient_shortage": 322,
+            "full_output": 6
+          },
+          "missingIngredientSamples": {
+            "iron-gear-wheel": 293,
+            "iron-plate": 39
+          },
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 3
+            }
+          ]
+        }
+      ],
+      "powered": true,
+      "importedEntities": 153,
+      "loopSamples": {
+        "belt-workshop": {
+          "maxStock": 169,
+          "capacity": 344,
+          "lastSignals": [
+            {
+              "signal": {
+                "name": "transport-belt"
+              },
+              "count": 17
+            },
+            {
+              "signal": {
+                "name": "fast-transport-belt"
+              },
+              "count": 8
+            },
+            {
+              "signal": {
+                "name": "underground-belt"
+              },
+              "count": 8
+            },
+            {
+              "signal": {
+                "name": "fast-underground-belt"
+              },
+              "count": 4
+            },
+            {
+              "signal": {
+                "name": "splitter"
+              },
+              "count": 4
+            },
+            {
+              "signal": {
+                "name": "fast-splitter"
+              },
+              "count": 4
+            },
+            {
+              "signal": {
+                "name": "iron-plate"
+              },
+              "count": 40
+            },
+            {
+              "signal": {
+                "name": "copper-plate"
+              },
+              "count": 17
+            },
+            {
+              "signal": {
+                "name": "iron-gear-wheel"
+              },
+              "count": 35
+            },
+            {
+              "signal": {
+                "name": "electronic-circuit"
+              },
+              "count": 17
+            },
+            {
+              "signal": {
+                "type": "virtual",
+                "name": "signal-P"
+              },
+              "count": 11
+            }
+          ],
+          "measuredSeconds": 600,
+          "phaseSeconds": {
+            "0": 40,
+            "1": 60,
+            "2": 40,
+            "3": 60,
+            "4": 40,
+            "5": 60,
+            "6": 40,
+            "7": 60,
+            "8": 40,
+            "9": 60,
+            "10": 40,
+            "11": 60
+          },
+          "meanStock": {
+            "transport-belt": 9.2,
+            "fast-transport-belt": 3.9,
+            "underground-belt": 0.5,
+            "iron-plate": 15.1,
+            "copper-plate": 2.8,
+            "iron-gear-wheel": 4.4,
+            "electronic-circuit": 8.7,
+            "signal-P": 5.6,
+            "fast-splitter": 0.1,
+            "splitter": 0.1,
+            "fast-underground-belt": 0
+          }
+        }
+      },
+      "exactRecipeChecks": 15613,
+      "externalApproachesClear": true,
+      "stockGateChecks": 19,
+      "inserterCapacityResearch": {
+        "fast": 0,
+        "bulkUnlockBonus": 1,
+        "technology": "bulk-inserter unlock-equivalent baseline only; no later capacity upgrades",
+        "appliedBy": "explicit force capacity properties"
+      },
+      "bulkInserters": [
+        {
+          "entity": 45,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 552,
+            "working": 48
+          }
+        },
+        {
+          "entity": 46,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 558,
+            "working": 41,
+            "waiting_for_source_items": 1
+          }
+        },
+        {
+          "entity": 47,
+          "observedMaxHand": 1,
+          "statusSamples": {
+            "waiting_for_source_items": 290,
+            "waiting_for_space_in_destination": 52,
+            "working": 258
+          }
+        },
+        {
+          "entity": 49,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "disabled_by_control_behavior": 400,
+            "waiting_for_source_items": 86,
+            "working": 114
+          }
+        },
+        {
+          "entity": 50,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "disabled_by_control_behavior": 400,
+            "waiting_for_source_items": 117,
+            "working": 83
+          }
+        },
+        {
+          "entity": 51,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 571,
+            "working": 26,
+            "waiting_for_space_in_destination": 3
+          }
+        },
+        {
+          "entity": 53,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 104,
+            "working": 196,
+            "disabled_by_control_behavior": 300
+          }
+        },
+        {
+          "entity": 54,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 179,
+            "working": 121,
+            "disabled_by_control_behavior": 300
+          }
+        },
+        {
+          "entity": 55,
+          "observedMaxHand": 1,
+          "statusSamples": {
+            "waiting_for_source_items": 574,
+            "working": 25,
+            "waiting_for_space_in_destination": 1
+          }
+        },
+        {
+          "entity": 57,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 393,
+            "waiting_for_source_items": 207
+          }
+        },
+        {
+          "entity": 58,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 357,
+            "working": 243
+          }
+        },
+        {
+          "entity": 59,
+          "observedMaxHand": 1,
+          "statusSamples": {
+            "waiting_for_source_items": 585,
+            "working": 15
+          }
+        },
+        {
+          "entity": 61,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 311,
+            "working": 289
+          }
+        },
+        {
+          "entity": 62,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 594,
+            "working": 6
+          }
+        },
+        {
+          "entity": 64,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 188,
+            "waiting_for_source_items": 93,
+            "waiting_for_space_in_destination": 319
+          }
+        },
+        {
+          "entity": 65,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 248,
+            "waiting_for_space_in_destination": 319,
+            "waiting_for_source_items": 33
+          }
+        },
+        {
+          "entity": 66,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 544,
+            "waiting_for_source_items": 6,
+            "waiting_for_space_in_destination": 50
+          }
+        },
+        {
+          "entity": 68,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 179,
+            "waiting_for_source_items": 370,
+            "waiting_for_space_in_destination": 51
+          }
+        },
+        {
+          "entity": 69,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 241,
+            "waiting_for_source_items": 312,
+            "disabled_by_control_behavior": 47
+          }
+        },
+        {
+          "entity": 71,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 469,
+            "working": 115,
+            "waiting_for_space_in_destination": 16
+          }
+        },
+        {
+          "entity": 72,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 583,
+            "waiting_for_space_in_destination": 16,
+            "working": 1
+          }
+        },
+        {
+          "entity": 73,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 486,
+            "working": 63,
+            "waiting_for_space_in_destination": 51
+          }
+        },
+        {
+          "entity": 75,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 318,
+            "working": 256,
+            "waiting_for_space_in_destination": 26
+          }
+        },
+        {
+          "entity": 76,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 459,
+            "working": 115,
+            "waiting_for_space_in_destination": 26
+          }
+        },
+        {
+          "entity": 77,
+          "observedMaxHand": 1,
+          "statusSamples": {
+            "waiting_for_source_items": 481,
+            "working": 119
+          }
+        },
+        {
+          "entity": 80,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 418,
+            "working": 172,
+            "waiting_for_source_items": 10
+          }
+        },
+        {
+          "entity": 81,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 397,
+            "waiting_for_source_items": 17,
+            "working": 186
+          }
+        },
+        {
+          "entity": 83,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 301,
+            "working": 299
+          }
+        },
+        {
+          "entity": 84,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 327,
+            "working": 273
+          }
+        },
+        {
+          "entity": 85,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 582,
+            "working": 18
+          }
+        },
+        {
+          "entity": 86,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 544,
+            "working": 56
+          }
+        },
+        {
+          "entity": 87,
+          "observedMaxHand": 1,
+          "statusSamples": {
+            "waiting_for_source_items": 419,
+            "working": 181
+          }
+        },
+        {
+          "entity": 89,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 100,
+            "waiting_for_source_items": 496,
+            "waiting_for_space_in_destination": 4
+          }
+        },
+        {
+          "entity": 90,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 148,
+            "working": 448,
+            "waiting_for_space_in_destination": 4
+          }
+        },
+        {
+          "entity": 92,
+          "observedMaxHand": 1,
+          "statusSamples": {
+            "waiting_for_source_items": 589,
+            "working": 3,
+            "waiting_for_space_in_destination": 8
+          }
+        },
+        {
+          "entity": 93,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 376,
+            "working": 216,
+            "waiting_for_space_in_destination": 8
+          }
+        },
+        {
+          "entity": 94,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 360,
+            "working": 232,
+            "waiting_for_space_in_destination": 8
+          }
+        },
+        {
+          "entity": 95,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 498,
+            "working": 94,
+            "waiting_for_space_in_destination": 8
+          }
+        },
+        {
+          "entity": 96,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 340,
+            "working": 187,
+            "disabled_by_control_behavior": 68,
+            "waiting_for_space_in_destination": 5
+          }
+        },
+        {
+          "entity": 100,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_space_in_destination": 138,
+            "working": 462
+          }
+        },
+        {
+          "entity": 101,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 523,
+            "waiting_for_space_in_destination": 77
+          }
+        },
+        {
+          "entity": 128,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 592,
+            "working": 8
+          }
+        },
+        {
+          "entity": 132,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 450,
+            "waiting_for_source_items": 149,
+            "waiting_for_space_in_destination": 1
+          }
+        },
+        {
+          "entity": 133,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "working": 375,
+            "waiting_for_source_items": 225
+          }
+        },
+        {
+          "entity": 135,
+          "observedMaxHand": 1,
+          "statusSamples": {
+            "waiting_for_source_items": 345,
+            "working": 255
+          }
+        },
+        {
+          "entity": 137,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 592,
+            "working": 8
+          }
+        },
+        {
+          "entity": 139,
+          "observedMaxHand": 1,
+          "statusSamples": {
+            "waiting_for_source_items": 566,
+            "working": 34
+          }
+        },
+        {
+          "entity": 141,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 382,
+            "working": 18,
+            "disabled_by_control_behavior": 200
+          }
+        },
+        {
+          "entity": 143,
+          "observedMaxHand": 2,
+          "statusSamples": {
+            "waiting_for_source_items": 582,
+            "working": 18
+          }
+        },
+        {
+          "entity": 145,
+          "observedMaxHand": 1,
+          "statusSamples": {
+            "waiting_for_source_items": 589,
+            "working": 11
+          }
+        }
+      ],
+      "fluids": [],
+      "arms": {},
+      "recovery": {
+        "blockedMinutes": 5,
+        "settlingMinutes": 5,
+        "measurementMinutes": 5,
+        "outputsPerMinute": {
+          "fast-transport-belt": 36,
+          "fast-underground-belt": 4,
+          "fast-splitter": 5,
+          "transport-belt": 11,
+          "underground-belt": 7.8,
+          "splitter": 2.4
+        },
+        "pauseMode": "final-product-chests-filled-and-collection-paused",
+        "collectionPauseStock": [
+          {
+            "item": "fast-transport-belt",
+            "entity": 136,
+            "count": 100,
+            "capacity": 100
+          },
+          {
+            "item": "fast-underground-belt",
+            "entity": 138,
+            "count": 50,
+            "capacity": 50
+          },
+          {
+            "item": "fast-splitter",
+            "entity": 140,
+            "count": 50,
+            "capacity": 50
+          },
+          {
+            "item": "transport-belt",
+            "entity": 142,
+            "count": 100,
+            "capacity": 100
+          },
+          {
+            "item": "underground-belt",
+            "entity": 144,
+            "count": 50,
+            "capacity": 50
+          },
+          {
+            "item": "splitter",
+            "entity": 146,
+            "count": 50,
+            "capacity": 50
+          }
+        ],
+        "restAtPause": {
+          "machines": [
+            {
+              "entity": 44,
+              "recipe": "iron-gear-wheel",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 48,
+              "recipe": "underground-belt",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 52,
+              "recipe": "splitter",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 56,
+              "recipe": "fast-splitter",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 60,
+              "recipe": "fast-underground-belt",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 63,
+              "recipe": "copper-cable",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 67,
+              "recipe": "electronic-circuit",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 70,
+              "recipe": "copper-cable",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 74,
+              "recipe": "iron-gear-wheel",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 79,
+              "recipe": "iron-gear-wheel",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 82,
+              "recipe": "fast-transport-belt",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 88,
+              "recipe": "iron-gear-wheel",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            },
+            {
+              "entity": 91,
+              "recipe": "transport-belt",
+              "status": "full_output",
+              "craftsInLastMinute": 0
+            }
+          ],
+          "ringStock": {
+            "transport-belt": 16,
+            "fast-transport-belt": 8,
+            "underground-belt": 8,
+            "fast-underground-belt": 4,
+            "splitter": 4,
+            "fast-splitter": 4,
+            "iron-plate": 43,
+            "copper-plate": 17,
+            "iron-gear-wheel": 33,
+            "electronic-circuit": 16
+          },
+          "overCap": []
+        },
+        "blockedOutputFilled": [
+          {
+            "entity": 136,
+            "item": "fast-transport-belt",
+            "inserted": 100
+          },
+          {
+            "entity": 138,
+            "item": "fast-underground-belt",
+            "inserted": 50
+          },
+          {
+            "entity": 140,
+            "item": "fast-splitter",
+            "inserted": 50
+          },
+          {
+            "entity": 142,
+            "item": "transport-belt",
+            "inserted": 100
+          },
+          {
+            "entity": 144,
+            "item": "underground-belt",
+            "inserted": 50
+          },
+          {
+            "entity": 146,
+            "item": "splitter",
+            "inserted": 50
+          }
+        ]
+      },
+      "stockReplenishment": [
+        {
+          "item": "fast-transport-belt",
+          "withdrawn": 50,
+          "restored": 100,
+          "cap": 100,
+          "newCrafts": 56,
+          "minutes": 5,
+          "otherProvidersStayedFull": true
+        },
+        {
+          "item": "fast-underground-belt",
+          "withdrawn": 25,
+          "restored": 50,
+          "cap": 50,
+          "newCrafts": 13,
+          "minutes": 5,
+          "otherProvidersStayedFull": true
+        },
+        {
+          "item": "fast-splitter",
+          "withdrawn": 25,
+          "restored": 50,
+          "cap": 50,
+          "newCrafts": 25,
+          "minutes": 5,
+          "otherProvidersStayedFull": true
+        },
+        {
+          "item": "transport-belt",
+          "withdrawn": 50,
+          "restored": 100,
+          "cap": 100,
+          "newCrafts": 25,
+          "minutes": 5,
+          "otherProvidersStayedFull": true
+        },
+        {
+          "item": "underground-belt",
+          "withdrawn": 25,
+          "restored": 50,
+          "cap": 50,
+          "newCrafts": 12,
+          "minutes": 5,
+          "otherProvidersStayedFull": true
+        },
+        {
+          "item": "splitter",
+          "withdrawn": 25,
+          "restored": 50,
+          "cap": 50,
+          "newCrafts": 25,
+          "minutes": 5,
+          "otherProvidersStayedFull": true
+        }
+      ],
+      "blueprintSha256": "d15f44ab586c2fef639c19e1f7e4d5ffc86df06731cab61825fe4b76328b282b",
+      "checks": {
+        "refills": true,
+        "bulkHand": true,
+        "everyMachineCrafted": true,
+        "powerAndApproaches": true,
+        "inputsProductive": true,
+        "steady": false,
+        "recovery": true,
+        "everyChestCollected": true,
+        "chestsAtCapWhileHeld": true,
+        "restWhileHeld": true
+      },
+      "passed": false
+    }
+  ],
+  "supplyPerMinute": {
+    "iron-plate": 799.125,
+    "copper-plate": 105
+  },
+  "feedPolicy": "Probe: each declared exterior belt is offered exactly its stated rate; collect products only from declared east passive-provider chests every second",
+  "researchPolicy": "All recipes enabled; optional explicit five-pack research probe only, no science injection, fast inserter stack bonus zero; bulk unlock-equivalent capacity bonus +1 only",
+  "gameVersion": "2.1.24",
+  "relativeTargetTolerance": 0.05,
+  "nativeCommand": "node scripts/belt-workshop/validate.mjs",
+  "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+  "harnessSha256": "2c9b6b1733250c4c678e4888174ead51f5116f265e7a846763655c585edbb57f",
+  "validatorSha256": "a5ffac96b54bef77bee19aa94ff1c405717862fc191335d7e16ffbb1d0089ecf",
+  "configurationSha256": "dd889aac0338bc554538dfff1eff0a7a7234db831a618d96578a3d4bd9f63771",
+  "warmupMinutes": 10,
+  "measurementMinutes": 10,
+  "createdAt": "2026-11-22T10:33:14.448Z",
+  "passed": false,
+  "protocol": "probe"
+}

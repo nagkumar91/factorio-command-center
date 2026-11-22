@@ -7,6 +7,7 @@ execFileSync('node', ['scripts/compact-expansion-workshop/preview.mjs'], {stdio:
 execFileSync('node', ['scripts/rgby-science/build-page.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/five-science/build-page.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/workshop-guides.mjs'], {stdio:'inherit'});
+execFileSync('node', ['scripts/belt-workshop-page.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/index-designed-blueprints.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/todays-flight-builds.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/essentials-pages.mjs'], {stdio:'inherit'});

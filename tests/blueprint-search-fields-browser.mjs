@@ -83,5 +83,16 @@ try{
  const purple='Production science, small · 12.9/min';
  for(const [direction,query] of [['all','purple'],['all','purple science'],['outputs','purple'],['outputs','purple pack'],['outputs','production science pack'],['all','production science'],['inputs','steel plate'],['inputs','stone brick'],['inputs','stone'],['inputs','iron plate'],['inputs','electronic circuit'],['inputs','advanced circuit'],['inputs','green circuit'],['inputs','red circuit']]){const found=await searchAll(direction,query);assert.ok(found.includes(purple),direction+': '+query+' gave '+found.length+' cards without the small production science: '+found.slice(0,6).join(' | '));}
  for(const [direction,query] of [['inputs','rail'],['inputs','productivity module'],['inputs','electric furnace'],['outputs','rail'],['outputs','steel plate']]){assert.ok(!(await searchAll(direction,query)).includes(purple),direction+': '+query+' does not find the small production science');}
+ // Belt workshop (the inserter workshop's ring for belts): found by name, by each belt product and by both plates. The colour
+ // aliases red belt(s) = fast transport belt and yellow belt(s) = transport belt only add results.
+ const belts='On-demand belt workshop · red and yellow',inserters='On-demand inserter workshop · four arms';
+ for(const [direction,query] of [['all','belt workshop'],['outputs','fast transport belt'],['outputs','red belt'],['outputs','red belts'],['outputs','Red Belt'],['outputs','yellow belt'],['outputs','yellow belts'],['outputs','fast splitter'],['outputs','splitter'],['outputs','underground belt'],['outputs','fast underground belt'],['inputs','iron plate'],['inputs','copper plate']]){const found=await searchAll(direction,query);assert.ok(found.includes(belts),direction+': '+query+' gave '+found.length+' cards without the belt workshop: '+found.slice(0,6).join(' | '));}
+ assert.ok(!(await searchAll('inputs','plastic bar')).includes(belts),'the belt workshop needs no plastic');
+ assert.ok(!(await searchAll('outputs','inserter')).includes(belts)&&(await searchAll('outputs','inserter')).includes(inserters),'belts are not inserters');
+ assert.ok(!(await searchAll('outputs','red belt')).includes(inserters),'red belt does not find the inserter workshop');
+ // A colour phrase adds the named item and changes nothing else: "red belt" finds at least what "fast transport belt" finds, and a query without a colour is as before.
+ {const named=new Set(await searchAll('outputs','fast transport belt')),coloured=new Set(await searchAll('outputs','red belt'));for(const t of named)assert.ok(coloured.has(t),'red belt lacks '+t);}
+ {const plain=await searchAll('outputs','belt'),again=await searchAll('outputs','belt');assert.deepEqual(plain,again);}
+ console.log('Produces this item: red belt '+(await searchAll('outputs','red belt')).length+' cards, yellow belt '+(await searchAll('outputs','yellow belt')).length+' cards, fast transport belt '+(await searchAll('outputs','fast transport belt')).length+' cards');
  assert.deepEqual(errors,[]);console.log('Blueprint search fields: lab-connected science and forestry builds are findable by output search; the essentials, the space launch builds, the electric smelter and the circuit suppliers are findable by input and output.');
 }finally{await browser.close();}
