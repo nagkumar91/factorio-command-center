@@ -55,7 +55,7 @@ async function register(options){
  if(!versionOf&&seen.has(sha)&&sourceCollection!=='Autosaved · optimized v2'){seen.get(sha).alternateSources.push(file.replace(/^blueprint-sources\//,''));return;}
  const b=object.blueprint,analysis=FactorioProduction.analyzeBlueprint(object,production);
  const productIds=unique(outputs??info.products??info.outputs?.map(p=>p.item)??analysis.outputs);
- const inputIds=unique(inputs??[...(info.inputs||[]),...(info.fluids||[])].map(p=>p.item));
+ const inputIds=unique(inputs??[...(info.inputs||[]),...(info.fluids||[])].map(p=>p.item??p.fluid));
  const verified=proof?.blueprintSha256===sha&&(proof.passed===true||proof.boundaryAudit?.passed===true||((proof.perMinute||proof.outputsPerMinute)&&proof.unpowered===0&&proof.allRecipeMachinesCrafted===true));
  const recordId=versionOf?.id||info.catalogueId||'designed-'+sha.slice(0,16),localSource=file.startsWith('site/')?file.slice(5):await copySource(file);
  let reportURL=report?(report.startsWith('site/')?report.slice(5):await copySource(report)):null;

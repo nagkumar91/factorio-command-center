@@ -1,0 +1,252 @@
+[
+  {
+    "id": "processing-unit-supply",
+    "file": "processing-unit-supply.txt",
+    "name": "processing-unit-supply · 40/min",
+    "products": [
+      "processing-unit"
+    ],
+    "targetPerMinute": 40,
+    "blueprintSha256": "cf842c990d71c25fa7d799a7bf365e3d7c4724e9de83fc81d87e99198da9ecca",
+    "prototypeSha256": "33912441b13d155b13734523406bbc9aa81fc0f2992344b56106b3aa5c52d19f",
+    "gameVersion": "2.1.24",
+    "variant": "one-row",
+    "ports": [
+      {
+        "kind": "input",
+        "label": "advanced-circuit",
+        "items": [
+          "advanced-circuit"
+        ],
+        "entity": 4,
+        "x": -2.5,
+        "y": 1.5,
+        "direction": 4,
+        "externalSide": "west",
+        "perMinute": 80,
+        "displayEntity": 148
+      },
+      {
+        "kind": "input",
+        "label": "electronic-circuit",
+        "items": [
+          "electronic-circuit"
+        ],
+        "entity": 5,
+        "x": -2.5,
+        "y": 3.5,
+        "direction": 4,
+        "externalSide": "west",
+        "perMinute": 800,
+        "displayEntity": 149
+      },
+      {
+        "kind": "fluid",
+        "label": "sulfuric-acid",
+        "items": [
+          "sulfuric-acid"
+        ],
+        "entity": 10,
+        "x": -2.5,
+        "y": 6.5,
+        "externalSide": "west",
+        "perMinute": 200,
+        "displayEntity": 150
+      },
+      {
+        "kind": "output",
+        "label": "processing-unit",
+        "items": [
+          "processing-unit"
+        ],
+        "entity": 136,
+        "x": 32.5,
+        "y": 6.5,
+        "externalSide": "east",
+        "perMinute": 40,
+        "displayEntity": 151
+      },
+      {
+        "kind": "power",
+        "label": "External electricity",
+        "items": [],
+        "entity": 141,
+        "x": -2,
+        "y": 5
+      }
+    ],
+    "inputs": [
+      {
+        "item": "advanced-circuit",
+        "entity": 4,
+        "position": {
+          "x": -2.5,
+          "y": 1.5
+        },
+        "direction": 4,
+        "perMinute": 80
+      },
+      {
+        "item": "electronic-circuit",
+        "entity": 5,
+        "position": {
+          "x": -2.5,
+          "y": 3.5
+        },
+        "direction": 4,
+        "perMinute": 800
+      }
+    ],
+    "fluids": [
+      {
+        "item": "sulfuric-acid",
+        "entity": 10,
+        "position": {
+          "x": -2.5,
+          "y": 6.5
+        },
+        "perMinute": 200
+      }
+    ],
+    "outputs": [
+      {
+        "item": "processing-unit",
+        "entity": 136,
+        "position": {
+          "x": 32.5,
+          "y": 6.5
+        },
+        "perMinute": 40
+      }
+    ],
+    "machineCounts": {
+      "processing-unit": 9
+    },
+    "footprint": {
+      "left": -3,
+      "top": 0,
+      "right": 33,
+      "bottom": 7,
+      "width": 36,
+      "height": 7
+    },
+    "construction": {
+      "assembling-machine-2": 9,
+      "big-electric-pole": 1,
+      "display-panel": 4,
+      "fast-inserter": 28,
+      "fast-transport-belt": 71,
+      "medium-electric-pole": 6,
+      "pipe": 19,
+      "pipe-to-ground": 8,
+      "steel-chest": 1
+    },
+    "recipeDerivation": {
+      "laneCapacityPerMinute": 900,
+      "recipe": {
+        "energyRequired": 10,
+        "ingredients": [
+          {
+            "type": "item",
+            "name": "electronic-circuit",
+            "amount": 20
+          },
+          {
+            "type": "item",
+            "name": "advanced-circuit",
+            "amount": 2
+          },
+          {
+            "type": "fluid",
+            "name": "sulfuric-acid",
+            "amount": 5
+          }
+        ],
+        "results": [
+          {
+            "type": "item",
+            "name": "processing-unit",
+            "amount": 1
+          }
+        ],
+        "categories": [
+          "crafting-with-fluid",
+          "electromagnetics"
+        ]
+      },
+      "assemblingMachine2CraftingSpeed": 0.75,
+      "perMachinePerMinute": 4.5,
+      "machinesExact": 8.88888888888889,
+      "machines": 9,
+      "machineCapacityPerMinute": 40.5,
+      "targetPerMinute": 40,
+      "inletsPerMinute": {
+        "electronic-circuit": 800,
+        "advanced-circuit": 80,
+        "sulfuric-acid": 200
+      }
+    },
+    "loopControl": [],
+    "armRoles": {
+      "feed": [
+        46,
+        47,
+        49,
+        50,
+        52,
+        53,
+        55,
+        56,
+        58,
+        59,
+        61,
+        62,
+        64,
+        65,
+        67,
+        68,
+        70,
+        71
+      ],
+      "output": [
+        48,
+        51,
+        54,
+        57,
+        60,
+        63,
+        66,
+        69,
+        72
+      ],
+      "outlet": [
+        135
+      ]
+    },
+    "setupNotes": [
+      "One inlet per material on the left: electronic circuits 800/min, advanced circuits 80/min (belts, either lane), sulfuric acid 200/min (pipe). Collect 40 processing units/min from the chest on the right. 9 AM2, fast inserters, red belts, pipes and pipes-to-ground; no modules, no robots. Keep the machines' facing (acid enters from the gap between each pair) and the pipe-to-ground pairs. Electricity at the big pole."
+    ],
+    "status": "native-verified",
+    "measured": {
+      "steadyPerMinute": 40,
+      "recoveryPerMinute": 40,
+      "inletsPerMinute": {
+        "advanced-circuit": 80,
+        "electronic-circuit": 800,
+        "sulfuric-acid": 200
+      }
+    },
+    "nativeEvidence": {
+      "file": "native-report.json",
+      "blueprintSha256": "cf842c990d71c25fa7d799a7bf365e3d7c4724e9de83fc81d87e99198da9ecca",
+      "harnessSha256": "e8620255d07ef3ea99ecac2ad2a66c9f92f4d7c5ddaa652d7d89fbe757c37c92",
+      "warmupMinutes": 15,
+      "measurementMinutes": 30,
+      "recovery": {
+        "collectionPauseMinutes": 5,
+        "settlingMinutes": 2,
+        "measurementMinutes": 3
+      }
+    }
+  }
+]

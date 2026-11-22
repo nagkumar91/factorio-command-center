@@ -22,8 +22,10 @@ The input figures on the science tiers' panels are recipe arithmetic for exactly
 | Electric furnaces | Steel plates 200; stone bricks 200; advanced circuits 100 | 20.00 | 15 × 7 | 3 |
 | Productivity modules | Advanced circuits 100; electronic circuits 100 | 20.00 | 25 × 7 | 7 |
 | Low-density structures | Steel plates 120; plastic bars 300; copper plates 1,200 | 60.00 | 34 × 13 | 20 |
+| Processing units | Advanced circuits 80; electronic circuits 800; sulfuric acid 200 (pipe) | 40.00 | 36 × 7 | 9 |
+| Flying robot frames | Iron plates 120; copper plates 40; steel plates 40; electronic circuits 100; lubricant 300 (pipe); sulfuric acid 800 (pipe) | 20.03 | 31 × 15 | 24 (21 assemblers, 3 battery chemical plants) |
 
-The last three rows are the compact tier's south entrance supplies (the purple and yellow block's heavy ingredients), each in `heavy-supplies/<name>/` with its own manifest, native report and README, qualified on the family's flight-21 profile. Processing units and flying robot frames, the other two south entrances, are in progress.
+The last five rows are the compact tier's five south entrance supplies (the purple and yellow block's heavy ingredients), each in `heavy-supplies/<name>/` with its own manifest, native report and README, qualified on the family's flight-21 profile at its panel figures. The flying-robot-frame factory's run at 80% of the feed (15.97 steady, 15.00 in its three-minute recovery window against a proportional 16) is reported in its README and is not a pass bar.
 
 Both green and red circuit factories insert wire directly into green-circuit assemblers. Red circuits make their own greens and wire. Engine gears and pipes are internal. Every feeder has exactly one inlet per material, all on the left, and one collection chest on the right. Normal AM2s, fast inserters and red belts; no modules, robots or inserter-capacity research.
 
