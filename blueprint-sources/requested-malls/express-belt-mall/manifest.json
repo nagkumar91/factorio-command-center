@@ -1,0 +1,745 @@
+{
+  "schema": 1,
+  "id": "express-belt-mall",
+  "revision": 1,
+  "candidateSha256": "de3e615d694a8c34f097944a8f8f68e81c3b4e84c4b0988c08fba89424268351",
+  "requiredGameVersion": "2.1.25",
+  "prototypeSha256": "50f39dd182e63ed3f328773aafae2a34471b329a89161dc2bfcd0230cde239ff",
+  "intendedUse": "on-demand express belt, underground and splitter from plates, plastic and lubricant; each product fills its own one-stack passive provider chest",
+  "products": [
+    "express-transport-belt",
+    "express-underground-belt",
+    "express-splitter"
+  ],
+  "outputCaps": {
+    "express-transport-belt": 100,
+    "express-underground-belt": 50,
+    "express-splitter": 50
+  },
+  "ringCaps": {
+    "iron-plate": 16,
+    "copper-plate": 8,
+    "plastic-bar": 8,
+    "iron-gear-wheel": 24,
+    "electronic-circuit": 16,
+    "advanced-circuit": 10,
+    "transport-belt": 12,
+    "underground-belt": 6,
+    "splitter": 3,
+    "fast-transport-belt": 3,
+    "fast-underground-belt": 2,
+    "fast-splitter": 2,
+    "express-transport-belt": 3,
+    "express-underground-belt": 3,
+    "express-splitter": 3
+  },
+  "ringLimits": {
+    "tiles": 62,
+    "turnTiles": 4,
+    "laneCapacity": 232,
+    "bound": 174,
+    "adders": {
+      "iron-gear-wheel": 1,
+      "fast-underground-belt": 1,
+      "express-underground-belt": 1,
+      "express-splitter": 1,
+      "express-transport-belt": 1,
+      "fast-transport-belt": 1,
+      "electronic-circuit": 1,
+      "advanced-circuit": 1,
+      "transport-belt": 1,
+      "underground-belt": 1,
+      "splitter": 1,
+      "fast-splitter": 1,
+      "copper-plate": 1,
+      "plastic-bar": 1,
+      "iron-plate": 1
+    }
+  },
+  "gearReserve": 12,
+  "gatedArms": [
+    97
+  ],
+  "equipment": {
+    "machine": "assembling-machine-2",
+    "inserter": "fast-inserter",
+    "transport": "fast-transport-belt",
+    "undergroundPolicy": "One red underground pair on the iron belt, over the lubricant inlet; the ring has none",
+    "modules": 0,
+    "beacons": 0,
+    "quality": "normal"
+  },
+  "footprint": {
+    "bounds": {
+      "left": -2,
+      "top": -4,
+      "right": 31,
+      "bottom": 8
+    },
+    "width": 33,
+    "height": 12,
+    "area": 396,
+    "includes": "all entities, panels, poles, belts, fluid inlet and the three output chests; external supply excluded",
+    "counts": {
+      "assembling-machine-2": 15,
+      "display-panel": 8,
+      "fast-inserter": 48,
+      "fast-transport-belt": 97,
+      "fast-underground-belt": 2,
+      "medium-electric-pole": 11,
+      "passive-provider-chest": 3,
+      "pipe": 8
+    },
+    "entities": 192
+  },
+  "inputPorts": [
+    {
+      "id": "IN-1",
+      "item": "iron-plate",
+      "kind": "item",
+      "mode": "belt",
+      "side": "west",
+      "flow": "east",
+      "entrance": {
+        "x": -1.5,
+        "y": 3.5
+      },
+      "position": {
+        "x": -1.5,
+        "y": 3.5
+      },
+      "externalContact": {
+        "x": -2.5,
+        "y": 3.5
+      },
+      "entranceBelt": 111,
+      "panel": 170,
+      "label": "IN: iron-plate",
+      "loopCap": 16,
+      "ringArm": 169,
+      "feedsGearMachinesDirectly": true
+    },
+    {
+      "id": "IN-2",
+      "item": "copper-plate",
+      "kind": "item",
+      "mode": "belt",
+      "side": "west",
+      "flow": "east",
+      "entrance": {
+        "x": -1.5,
+        "y": 0.5
+      },
+      "position": {
+        "x": -1.5,
+        "y": 0.5
+      },
+      "externalContact": {
+        "x": -2.5,
+        "y": 0.5
+      },
+      "entranceBelt": 163,
+      "panel": 166,
+      "label": "IN: copper-plate",
+      "loopCap": 8,
+      "ringArm": 165
+    },
+    {
+      "id": "IN-3",
+      "item": "plastic-bar",
+      "kind": "item",
+      "mode": "belt",
+      "side": "west",
+      "flow": "east",
+      "entrance": {
+        "x": -1.5,
+        "y": 1.5
+      },
+      "position": {
+        "x": -1.5,
+        "y": 1.5
+      },
+      "externalContact": {
+        "x": -2.5,
+        "y": 1.5
+      },
+      "entranceBelt": 164,
+      "panel": 168,
+      "label": "IN: plastic-bar",
+      "loopCap": 8,
+      "ringArm": 167
+    },
+    {
+      "id": "IN-4",
+      "item": "lubricant",
+      "kind": "fluid",
+      "mode": "pipe",
+      "side": "south",
+      "flow": "north",
+      "position": {
+        "x": 13.5,
+        "y": 7.5
+      },
+      "externalContact": {
+        "x": 13.5,
+        "y": 8.5
+      },
+      "pipe": 146,
+      "panel": 171,
+      "label": "IN: lubricant",
+      "consumers": [
+        "express-transport-belt",
+        "express-underground-belt",
+        "express-splitter"
+      ]
+    }
+  ],
+  "cells": [
+    {
+      "recipe": "fast-underground-belt",
+      "machine": 63,
+      "ringInputArms": [
+        93
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 94,
+      "directInputs": [
+        {
+          "item": "iron-gear-wheel",
+          "source": 64,
+          "destination": 63,
+          "inserter": 78
+        }
+      ]
+    },
+    {
+      "recipe": "express-underground-belt",
+      "machine": 65,
+      "ringInputArms": [
+        95,
+        97
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 96,
+      "directInputs": [
+        {
+          "item": "iron-gear-wheel",
+          "source": 64,
+          "destination": 65,
+          "inserter": 79
+        }
+      ]
+    },
+    {
+      "recipe": "express-splitter",
+      "machine": 66,
+      "ringInputArms": [
+        98
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 99,
+      "directInputs": []
+    },
+    {
+      "recipe": "express-transport-belt",
+      "machine": 67,
+      "ringInputArms": [
+        100
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 101,
+      "directInputs": [
+        {
+          "item": "iron-gear-wheel",
+          "source": 68,
+          "destination": 67,
+          "inserter": 80
+        }
+      ]
+    },
+    {
+      "recipe": "fast-transport-belt",
+      "machine": 69,
+      "ringInputArms": [
+        102
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 103,
+      "directInputs": [
+        {
+          "item": "iron-gear-wheel",
+          "source": 68,
+          "destination": 69,
+          "inserter": 81
+        },
+        {
+          "item": "iron-gear-wheel",
+          "source": 70,
+          "destination": 69,
+          "inserter": 82
+        }
+      ]
+    },
+    {
+      "recipe": "iron-gear-wheel",
+      "tag": "B",
+      "machine": 64,
+      "ringInputArms": [],
+      "beltInputArms": [
+        83,
+        84,
+        85
+      ],
+      "ringOutputArm": null,
+      "directInputs": []
+    },
+    {
+      "recipe": "iron-gear-wheel",
+      "tag": "A",
+      "machine": 68,
+      "ringInputArms": [],
+      "beltInputArms": [
+        86,
+        87,
+        88
+      ],
+      "ringOutputArm": null,
+      "directInputs": []
+    },
+    {
+      "recipe": "iron-gear-wheel",
+      "tag": "C",
+      "machine": 70,
+      "ringInputArms": [],
+      "beltInputArms": [
+        89,
+        90,
+        91
+      ],
+      "ringOutputArm": 92,
+      "directInputs": []
+    },
+    {
+      "recipe": "electronic-circuit",
+      "machine": 71,
+      "ringInputArms": [
+        150
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 151,
+      "directInputs": [
+        {
+          "item": "copper-cable",
+          "source": 72,
+          "destination": 71,
+          "inserter": 147
+        },
+        {
+          "item": "copper-cable",
+          "source": 72,
+          "destination": 71,
+          "inserter": 148
+        }
+      ]
+    },
+    {
+      "recipe": "copper-cable",
+      "machine": 72,
+      "ringInputArms": [
+        152
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": null,
+      "directInputs": []
+    },
+    {
+      "recipe": "advanced-circuit",
+      "machine": 73,
+      "ringInputArms": [
+        153
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 154,
+      "directInputs": [
+        {
+          "item": "copper-cable",
+          "source": 72,
+          "destination": 73,
+          "inserter": 149
+        }
+      ]
+    },
+    {
+      "recipe": "transport-belt",
+      "machine": 74,
+      "ringInputArms": [
+        155
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 156,
+      "directInputs": []
+    },
+    {
+      "recipe": "underground-belt",
+      "machine": 75,
+      "ringInputArms": [
+        157
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 158,
+      "directInputs": []
+    },
+    {
+      "recipe": "splitter",
+      "machine": 76,
+      "ringInputArms": [
+        159
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 160,
+      "directInputs": []
+    },
+    {
+      "recipe": "fast-splitter",
+      "machine": 77,
+      "ringInputArms": [
+        161
+      ],
+      "beltInputArms": [],
+      "ringOutputArm": 162,
+      "directInputs": []
+    }
+  ],
+  "directTransfers": [
+    {
+      "item": "iron-gear-wheel",
+      "source": 64,
+      "destination": 63,
+      "inserter": 78
+    },
+    {
+      "item": "iron-gear-wheel",
+      "source": 64,
+      "destination": 65,
+      "inserter": 79
+    },
+    {
+      "item": "iron-gear-wheel",
+      "source": 68,
+      "destination": 67,
+      "inserter": 80
+    },
+    {
+      "item": "iron-gear-wheel",
+      "source": 68,
+      "destination": 69,
+      "inserter": 81
+    },
+    {
+      "item": "iron-gear-wheel",
+      "source": 70,
+      "destination": 69,
+      "inserter": 82
+    },
+    {
+      "item": "copper-cable",
+      "source": 72,
+      "destination": 71,
+      "inserter": 147
+    },
+    {
+      "item": "copper-cable",
+      "source": 72,
+      "destination": 71,
+      "inserter": 148
+    },
+    {
+      "item": "copper-cable",
+      "source": 72,
+      "destination": 73,
+      "inserter": 149
+    }
+  ],
+  "loop": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62
+  ],
+  "ironBelt": [
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145
+  ],
+  "reader": 57,
+  "pipes": [
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    146
+  ],
+  "outputs": [
+    {
+      "id": "OUT-1",
+      "item": "express-transport-belt",
+      "chest": 172,
+      "collector": 173,
+      "panel": 174,
+      "label": "OUT: express-transport-belt",
+      "position": {
+        "x": 25.5,
+        "y": -1.5
+      },
+      "cap": 100,
+      "slots": 1
+    },
+    {
+      "id": "OUT-2",
+      "item": "express-underground-belt",
+      "chest": 175,
+      "collector": 176,
+      "panel": 177,
+      "label": "OUT: express-underground-belt",
+      "position": {
+        "x": 26.5,
+        "y": -1.5
+      },
+      "cap": 50,
+      "slots": 1
+    },
+    {
+      "id": "OUT-3",
+      "item": "express-splitter",
+      "chest": 178,
+      "collector": 179,
+      "panel": 180,
+      "label": "OUT: express-splitter",
+      "position": {
+        "x": 27.5,
+        "y": -1.5
+      },
+      "cap": 50,
+      "slots": 1
+    }
+  ],
+  "power": {
+    "entryPole": 181,
+    "panel": 182,
+    "label": "POWER: connect medium pole",
+    "externalPolePosition": {
+      "x": -3.5,
+      "y": -0.5
+    },
+    "poles": [
+      181,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192
+    ]
+  },
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "automation",
+    "steel-processing",
+    "logistic-science-pack",
+    "automation-2",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "plastics",
+    "advanced-circuit",
+    "modules",
+    "productivity-module",
+    "advanced-material-processing",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "advanced-material-processing-2",
+    "logistics",
+    "logistics-2",
+    "railway",
+    "production-science-pack",
+    "advanced-oil-processing",
+    "lubricant",
+    "logistics-3"
+  ],
+  "nativeProtocol": {
+    "seed": 21024,
+    "stockFillTicks": 324000,
+    "refillTicks": 324000,
+    "outageTicks": 18000,
+    "recoveryTicks": 324000,
+    "warmupTicks": 54000,
+    "measureTicks": 108000,
+    "externalPowerWatts": 10000000,
+    "samplingTicks": 3600,
+    "collectEveryTicks": 60,
+    "targetRate": null,
+    "acceptance": "All three express products reach one full stack in their own passive provider chest from empty, refill after complete collection, recover after a five-minute input outage, and keep being made while all three chests are emptied every second; imported blueprint unchanged."
+  },
+  "status": {
+    "static": "static-audit.json",
+    "native": "native-report.json; qualified only when that report passed for candidateSha256"
+  },
+  "measured": {
+    "windowMinutes": 30,
+    "outputsPerMinute": {
+      "express-transport-belt": 7.233333333333333,
+      "express-underground-belt": 2.2666666666666666,
+      "express-splitter": 0.7333333333333333
+    },
+    "inputsPerMinute": {
+      "iron-plate": 589.7,
+      "copper-plate": 54.9,
+      "plastic-bar": 15,
+      "lubricant": 250
+    },
+    "acceptedOntoEntrancesPerMinute": {
+      "iron-plate": 589.6333333333333,
+      "copper-plate": 54.96666666666667,
+      "plastic-bar": 14.966666666666667,
+      "lubricant": 250
+    },
+    "perFiveMinuteSlice": {
+      "express-transport-belt": [
+        36,
+        36,
+        36,
+        37,
+        36,
+        36
+      ],
+      "express-underground-belt": [
+        12,
+        10,
+        12,
+        12,
+        12,
+        10
+      ],
+      "express-splitter": [
+        3,
+        4,
+        4,
+        4,
+        3,
+        4
+      ]
+    },
+    "note": "inputsPerMinute is what the machines consumed in the window (production statistics), the draw each entrance has to meet; accepted is what the entrance belts and the pipe took."
+  },
+  "requiredInputsPerMinute": {
+    "iron-plate": 589.7,
+    "copper-plate": 54.9,
+    "plastic-bar": 15,
+    "lubricant": 250
+  },
+  "outputsPerMinute": {
+    "express-transport-belt": 7.233333333333333,
+    "express-underground-belt": 2.2666666666666666,
+    "express-splitter": 0.7333333333333333
+  }
+}

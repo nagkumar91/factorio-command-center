@@ -251,6 +251,25 @@ for(const info of await read('blueprint-sources/recovered-workshops/manifest.jso
  await register({file:dir+'/'+info.file,info,category:info.category,purpose:info.purpose,page:info.category==='Forestry'?'flight-forest/index.html':undefined,proof,report:reportFile,inputs:info.inputs.map(p=>p.item),outputs:info.products,sourceAuthor:info.id.startsWith('luna-')?'Factorio Command Center; supervised Luna compact trials':'Factorio Command Center',setup:info.id.startsWith('luna-')?['Inputs are finished iron and copper plates. Cable/gears are made inside. No modules. Supply external power; mining and smelting are external.']:[]});
 }
 
+// Express belt mall (25 November 2026), a requested mall surfaced like the blue-tier mall: three express products, each in its own
+// one-stack passive provider chest, from iron, copper and plastic belts and a lubricant pipe. Registered only with a passing native
+// report for the exact string; the figures shown are that report's measured ones.
+{
+ const dir='blueprint-sources/requested-malls/express-belt-mall',m=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',proof=await read(reportFile).catch(()=>null);
+ if(!proof||proof.passed!==true||proof.blueprintSha256!==m.candidateSha256)console.warn('Not registered (no exact-hash passing native report): express-belt-mall');
+ else{
+  const drawn=proof.measured.inputsPerMinute,rate=n=>Number(drawn[n].toFixed(0));
+  await register({file:dir+'/blueprint.txt',info:{name:'Express belt mall · three express belts on demand',blueprintSha256:m.candidateSha256,
+   inputs:m.inputPorts.map(p=>({item:p.item,entity:p.entranceBelt||p.pipe,side:p.side,perMinute:Number(drawn[p.item].toFixed(1))})),
+   outputs:m.outputs.map(o=>({item:o.item,entity:o.chest,cap:o.cap})),footprint:proof.footprint},
+   category:'Malls · belts and inserters',purpose:'Mall production',sourceCollection:collection,inputs:m.inputPorts.map(p=>p.item),outputs:m.products,
+   proof:{...proof,outputsPerMinute:proof.measured.outputsPerMinute},report:reportFile,version:proof.gameVersion,
+   setup:['On demand: three express products (belt, underground belt, splitter) each fill their own passive provider chest, limited to one stack (100, 50, 50), and are made again when taken. Gears, cable, green and red circuits and the yellow and red belt tier are made inside.',
+    `Inputs: iron, copper and plastic on three belts at the west edge (one labelled entrance each) and lubricant by pipe at the south edge; plastic is not smelted and lubricant is a fluid. Measured draw with every chest emptied at once: iron ${rate('iron-plate')}, copper ${rate('copper-plate')}, plastic ${rate('plastic-bar')} and lubricant ${rate('lubricant')} a minute; with mostly full chests the draw is lower.`,
+    'Native test: stack fill from empty, refill after a complete collection, a five-minute input outage and recovery, then a rate phase with all three chests emptied every second.']});
+ }
+}
+
 // This exporter checks every ledger/code/native SHA and passive-provider output before registration.
 const optimizedContext={};vm.createContext(optimizedContext);vm.runInContext(await fs.readFile('site/autosaved-derivatives/data.js','utf8'),optimizedContext);
 for(const f of optimizedContext.AutosavedDerivatives.entries){
