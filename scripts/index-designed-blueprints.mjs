@@ -270,6 +270,21 @@ for(const info of await read('blueprint-sources/recovered-workshops/manifest.jso
  }
 }
 
+// Vulcanus supplies (25 November 2026), user-requested supply blueprints for the foundry on Vulcanus: plastic bars and lubricant from coal, and
+// tungsten carbide. Each is registered only with a passing native report for the exact string; the figures shown are that report's measured ones.
+for(const id of ['coal-plastic-lubricant','tungsten-carbide']){
+ const dir='blueprint-sources/vulcanus-supplies/'+id,m=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',proof=await read(reportFile).catch(()=>null);
+ if(!proof||proof.passed!==true||proof.blueprintSha256!==m.candidateSha256){console.warn('Not registered (no exact-hash passing native report): '+id);continue;}
+ const th=proof.measured.steady.throttled,ge=proof.measured.steady.generous,n=v=>Number(v.toFixed(1)),name={'coal-plastic-lubricant':'Coal to plastic bars and lubricant · 60 and 300 a minute','tungsten-carbide':'Tungsten carbide supply · 60 a minute'}[id];
+ await register({file:dir+'/blueprint.txt',info:{name,blueprintSha256:m.candidateSha256,
+  inputs:m.inputPorts.map(p=>({item:p.item,entity:p.entity,side:p.side,perMinute:n(th.inputsPerMinute[p.item])})),
+  outputs:m.outputPorts.map(o=>({item:o.item,entity:o.entity,side:o.side,perMinute:n(th.outputsPerMinute[o.item])})),footprint:proof.footprint},
+  category:'Supplies · Vulcanus',purpose:'Supply production',sourceCollection:collection,inputs:m.inputPorts.map(p=>p.item),outputs:m.products,
+  proof:{...proof,outputsPerMinute:proof.measured.outputsPerMinute},report:reportFile,version:proof.gameVersion,
+  setup:[id==='tungsten-carbide'?`Makes tungsten carbide on one belt exit from tungsten ore and coal (two belts, west edge) and sulfuric acid (pipe); carbon is made inside. Measured over 30 minutes with every input offered exactly its panel figure: ${n(th.outputsPerMinute['tungsten-carbide'])} tungsten carbide a minute from ${m.inputPorts.map(p=>p.item+' '+n(th.inputsPerMinute[p.item])+'/min').join(', ')}.`:`Makes plastic bars (belt exit) and lubricant (pipe exit) at the same time from coal and calcite (two belts, west edge), sulfuric acid and water (pipes) by simple coal liquefaction, no circuits. Measured over 30 minutes with every input offered exactly its panel figure: ${m.outputPorts.map(o=>o.item+' '+n(th.outputsPerMinute[o.item])+'/min').join(', ')} from ${m.inputPorts.map(p=>p.item+' '+n(th.inputsPerMinute[p.item])+'/min').join(', ')}; with every input offered more the draw was ${m.inputPorts.map(p=>p.item+' '+n(ge.inputsPerMinute[p.item])).join(', ')}.`,
+   'Native test on a Vulcanus surface with only the technology closure researched: rates with the exits drained, exit blocks and release, a five-minute outage of every input and recovery, one fluid per pipe network checked once a second. Power by substations; connect the outside network to the labelled entry substation.']});
+}
+
 // This exporter checks every ledger/code/native SHA and passive-provider output before registration.
 const optimizedContext={};vm.createContext(optimizedContext);vm.runInContext(await fs.readFile('site/autosaved-derivatives/data.js','utf8'),optimizedContext);
 for(const f of optimizedContext.AutosavedDerivatives.entries){

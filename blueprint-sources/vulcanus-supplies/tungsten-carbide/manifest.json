@@ -1,0 +1,761 @@
+{
+  "schema": 1,
+  "id": "tungsten-carbide",
+  "revision": 1,
+  "candidateSha256": "306d24436400fad190b8f17bd6ff4dc9f22f7e6e3ec3e264a7c17dc81b1c9d36",
+  "requiredGameVersion": "2.1.25",
+  "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+  "fluidSlotsSha256": "31e11b1740a63e84996b36575f20c9d9dcccfd26f764a1a7b32a07f783cf5198",
+  "intendedUse": "tungsten carbide on a belt from tungsten ore, coal and sulfuric acid; carbon is made inside",
+  "products": [
+    "tungsten-carbide"
+  ],
+  "targets": {
+    "tungsten-carbide": 60
+  },
+  "equipment": {
+    "machines": [
+      "chemical-plant",
+      "assembling-machine-3"
+    ],
+    "inserter": "fast-inserter",
+    "transport": "fast-transport-belt",
+    "power": "substation",
+    "modules": 0,
+    "beacons": 0,
+    "quality": "normal"
+  },
+  "footprint": {
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 12,
+      "bottom": 7
+    },
+    "width": 12,
+    "height": 7,
+    "area": 84,
+    "includes": "all entities, panels, substation, belts and the acid pipe; external supply excluded",
+    "counts": {
+      "assembling-machine-3": 1,
+      "chemical-plant": 1,
+      "display-panel": 5,
+      "fast-inserter": 6,
+      "fast-transport-belt": 13,
+      "pipe": 9,
+      "substation": 1
+    },
+    "entities": 36
+  },
+  "inputPorts": [
+    {
+      "id": "IN-1",
+      "item": "coal",
+      "kind": "belt",
+      "side": "west",
+      "flow": "east",
+      "entity": 12,
+      "tile": {
+        "x": 0,
+        "y": 4
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 4
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -1,
+          "y": 4
+        },
+        {
+          "x": -2,
+          "y": 4
+        },
+        {
+          "x": -3,
+          "y": 4
+        }
+      ],
+      "panel": 32,
+      "label": "IN: coal 120/min",
+      "perMinute": 120
+    },
+    {
+      "id": "IN-2",
+      "item": "tungsten-ore",
+      "kind": "belt",
+      "side": "west",
+      "flow": "east",
+      "entity": 14,
+      "tile": {
+        "x": 0,
+        "y": 6
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 6
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -1,
+          "y": 6
+        },
+        {
+          "x": -2,
+          "y": 6
+        },
+        {
+          "x": -3,
+          "y": 6
+        }
+      ],
+      "panel": 33,
+      "label": "IN: tungsten-ore 120/min",
+      "perMinute": 120
+    },
+    {
+      "id": "IN-3",
+      "item": "sulfuric-acid",
+      "kind": "pipe",
+      "side": "west",
+      "flow": "east",
+      "entity": 3,
+      "tile": {
+        "x": 0,
+        "y": 0
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 0
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -2,
+          "y": 0
+        },
+        {
+          "x": -3,
+          "y": 0
+        },
+        {
+          "x": -4,
+          "y": 0
+        }
+      ],
+      "panel": 34,
+      "label": "IN: sulfuric-acid 1800/min",
+      "perMinute": 1800
+    }
+  ],
+  "outputPorts": [
+    {
+      "id": "OUT-1",
+      "item": "tungsten-carbide",
+      "kind": "belt",
+      "side": "east",
+      "flow": "east",
+      "entity": 29,
+      "tile": {
+        "x": 11,
+        "y": 2
+      },
+      "externalContact": {
+        "x": 12,
+        "y": 2
+      },
+      "vector": [
+        1,
+        0
+      ],
+      "approach": [
+        {
+          "x": 12,
+          "y": 2
+        },
+        {
+          "x": 13,
+          "y": 2
+        },
+        {
+          "x": 14,
+          "y": 2
+        }
+      ],
+      "panel": 35,
+      "label": "OUT: tungsten-carbide 60/min",
+      "perMinute": 60
+    }
+  ],
+  "power": {
+    "entry": 31,
+    "panel": 36,
+    "label": "POWER: connect substation",
+    "externalPole": {
+      "x": 15,
+      "y": 5
+    },
+    "poles": [
+      31
+    ]
+  },
+  "machines": [
+    {
+      "entity": 1,
+      "name": "chemical-plant",
+      "recipe": "carbon",
+      "role": "carbon",
+      "tile": {
+        "x": 3,
+        "y": 1
+      },
+      "direction": 0,
+      "mirror": false
+    },
+    {
+      "entity": 2,
+      "name": "assembling-machine-3",
+      "recipe": "tungsten-carbide",
+      "role": "tungsten-carbide",
+      "tile": {
+        "x": 7,
+        "y": 1
+      },
+      "direction": 0,
+      "mirror": false
+    }
+  ],
+  "roles": {
+    "1": "carbon",
+    "2": "tungsten-carbide"
+  },
+  "routes": [
+    {
+      "inserter": 24,
+      "label": "coal belt -> carbon plant (arm at 3,4)",
+      "sourceBelts": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "destEntity": 1
+    },
+    {
+      "inserter": 25,
+      "label": "coal belt -> carbon plant (arm at 4,4)",
+      "sourceBelts": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "destEntity": 1
+    },
+    {
+      "inserter": 26,
+      "label": "tungsten ore belt -> assembler (arm at 7,4)",
+      "sourceBelts": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "destEntity": 2
+    },
+    {
+      "inserter": 27,
+      "label": "tungsten ore belt -> assembler (arm at 8,4)",
+      "sourceBelts": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "destEntity": 2
+    },
+    {
+      "inserter": 28,
+      "label": "carbon plant -> assembler (carbon)",
+      "sourceEntity": 1,
+      "destEntity": 2
+    },
+    {
+      "inserter": 30,
+      "label": "assembler -> exit belt (tungsten carbide)",
+      "sourceEntity": 2,
+      "destBelts": [
+        29
+      ]
+    }
+  ],
+  "machineBoxes": {
+    "1": [
+      {
+        "fluid": "sulfuric-acid",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            -2
+          ]
+        ]
+      }
+    ],
+    "2": [
+      {
+        "fluid": "sulfuric-acid",
+        "flow": "input",
+        "targets": [
+          [
+            0,
+            -2
+          ]
+        ]
+      }
+    ]
+  },
+  "machineFluids": {
+    "1": [
+      "sulfuric-acid"
+    ],
+    "2": [
+      "sulfuric-acid"
+    ]
+  },
+  "fluidOf": {
+    "3": "sulfuric-acid",
+    "4": "sulfuric-acid",
+    "5": "sulfuric-acid",
+    "6": "sulfuric-acid",
+    "7": "sulfuric-acid",
+    "8": "sulfuric-acid",
+    "9": "sulfuric-acid",
+    "10": "sulfuric-acid",
+    "11": "sulfuric-acid"
+  },
+  "fluidComponents": [
+    {
+      "id": 1,
+      "fluid": "sulfuric-acid",
+      "entities": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 0,
+          "fluid": "sulfuric-acid",
+          "flow": "input"
+        },
+        {
+          "entity": 2,
+          "box": 0,
+          "fluid": "sulfuric-acid",
+          "flow": "input"
+        }
+      ]
+    }
+  ],
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "steel-processing",
+    "logistic-science-pack",
+    "advanced-material-processing",
+    "automation",
+    "automation-2",
+    "concrete",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "flammables",
+    "plastics",
+    "advanced-circuit",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "advanced-oil-processing",
+    "rocket-fuel",
+    "processing-unit",
+    "lubricant",
+    "electric-engine",
+    "battery",
+    "robotics",
+    "logistic-robotics",
+    "low-density-structure",
+    "advanced-material-processing-2",
+    "rocket-silo",
+    "space-platform",
+    "space-science-pack",
+    "space-platform-thruster",
+    "planet-discovery-vulcanus",
+    "tungsten-carbide",
+    "modules",
+    "speed-module",
+    "productivity-module",
+    "logistics",
+    "logistics-2",
+    "railway",
+    "production-science-pack",
+    "automation-3",
+    "fast-inserter",
+    "electric-energy-distribution-1",
+    "electric-energy-distribution-2",
+    "circuit-network"
+  ],
+  "requirements": [
+    {
+      "recipe": "tungsten-carbide",
+      "technology": "tungsten-carbide"
+    },
+    {
+      "recipe": "chemical-plant",
+      "technology": "oil-processing"
+    },
+    {
+      "recipe": "assembling-machine-3",
+      "technology": "automation-3"
+    },
+    {
+      "recipe": "pipe",
+      "technology": "steam-power"
+    },
+    {
+      "recipe": "fast-transport-belt",
+      "technology": "logistics-2"
+    },
+    {
+      "recipe": "fast-inserter",
+      "technology": "fast-inserter"
+    },
+    {
+      "recipe": "substation",
+      "technology": "electric-energy-distribution-2"
+    },
+    {
+      "recipe": "display-panel",
+      "technology": "circuit-network"
+    },
+    {
+      "recipe": "carbon",
+      "technology": "tungsten-carbide"
+    }
+  ],
+  "sizing": {
+    "carbonCraftsPerMinute": 60,
+    "tcCraftsPerMinute": 75,
+    "targetPerMinute": 60,
+    "perMinute": {
+      "tungsten-ore": 120,
+      "coal": 120,
+      "sulfuric-acid": 1800
+    },
+    "requiredCraftsPerMinute": {
+      "carbon": 60,
+      "tungsten-carbide": 60
+    },
+    "laneMerge": {
+      "tile": 16,
+      "feeders": 2,
+      "length": 8
+    }
+  },
+  "status": {
+    "static": "static-audit.json",
+    "native": "native-report.json; qualified only when that report passed for candidateSha256"
+  },
+  "measured": {
+    "phases": {
+      "generous": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "tungsten-carbide": 59.8
+          },
+          "inputsPerMinute": {
+            "coal": 123.5,
+            "tungsten-ore": 123.3,
+            "sulfuric-acid": 1872
+          },
+          "consumedPerMinute": {
+            "coal": 119.9,
+            "tungsten-ore": 119.7,
+            "sulfuric-acid": 1797.3
+          }
+        },
+        "steady": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "tungsten-ore": 0,
+            "sulfuric-acid": 0
+          },
+          "consumedPerMinute": {
+            "coal": 1.5,
+            "tungsten-ore": 0.8,
+            "sulfuric-acid": 18.7
+          }
+        },
+        "release": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 119.9,
+            "tungsten-ore": 120.5,
+            "sulfuric-acid": 1801.3
+          },
+          "recoverySeconds": {
+            "tungsten-carbide": 60
+          }
+        },
+        "input outage": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "tungsten-carbide": 4.2
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "tungsten-ore": 0,
+            "sulfuric-acid": 0
+          },
+          "consumedPerMinute": {
+            "coal": 7.6,
+            "tungsten-ore": 8,
+            "sulfuric-acid": 116
+          }
+        },
+        "recovery": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 119.9,
+            "tungsten-ore": 119.7,
+            "sulfuric-acid": 1797.3
+          },
+          "recoverySeconds": {
+            "tungsten-carbide": 60
+          }
+        }
+      },
+      "throttled": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "tungsten-carbide": 59.53
+          },
+          "inputsPerMinute": {
+            "coal": 119.9,
+            "tungsten-ore": 119.9,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 119.7,
+            "tungsten-ore": 119.2,
+            "sulfuric-acid": 1793.3
+          }
+        },
+        "steady": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 119.9,
+            "sulfuric-acid": 1799.7
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "tungsten-ore": 0,
+            "sulfuric-acid": 0
+          },
+          "consumedPerMinute": {
+            "coal": 1.2,
+            "tungsten-ore": 1.1,
+            "sulfuric-acid": 17.3
+          }
+        },
+        "release": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 119.7,
+            "tungsten-ore": 120.1,
+            "sulfuric-acid": 1798
+          },
+          "recoverySeconds": {
+            "tungsten-carbide": 60
+          }
+        },
+        "input outage": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "tungsten-carbide": 4
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "tungsten-ore": 0,
+            "sulfuric-acid": 0
+          },
+          "consumedPerMinute": {
+            "coal": 7.2,
+            "tungsten-ore": 7.6,
+            "sulfuric-acid": 110
+          }
+        },
+        "recovery": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 119.7,
+            "sulfuric-acid": 1798.7
+          },
+          "recoverySeconds": {
+            "tungsten-carbide": 60
+          }
+        }
+      }
+    },
+    "steady": {
+      "generous": {
+        "outputsPerMinute": {
+          "tungsten-carbide": 60
+        },
+        "inputsPerMinute": {
+          "coal": 120,
+          "tungsten-ore": 120,
+          "sulfuric-acid": 1800
+        }
+      },
+      "throttled": {
+        "outputsPerMinute": {
+          "tungsten-carbide": 60
+        },
+        "inputsPerMinute": {
+          "coal": 120,
+          "tungsten-ore": 120,
+          "sulfuric-acid": 1800
+        }
+      }
+    },
+    "outputsPerMinute": {
+      "tungsten-carbide": 60
+    },
+    "inputsPerMinute": {
+      "coal": 120,
+      "tungsten-ore": 120,
+      "sulfuric-acid": 1800
+    }
+  },
+  "outputsPerMinute": {
+    "tungsten-carbide": 60
+  },
+  "inputsPerMinute": {
+    "coal": 120,
+    "tungsten-ore": 120,
+    "sulfuric-acid": 1800
+  }
+}

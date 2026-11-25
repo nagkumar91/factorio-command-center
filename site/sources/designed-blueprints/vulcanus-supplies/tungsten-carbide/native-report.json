@@ -1,0 +1,4001 @@
+{
+  "schema": 2,
+  "passed": true,
+  "failures": {
+    "generous": {},
+    "throttled": {}
+  },
+  "blueprintSha256": "306d24436400fad190b8f17bd6ff4dc9f22f7e6e3ec3e264a7c17dc81b1c9d36",
+  "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+  "fluidSlotsSha256": "31e11b1740a63e84996b36575f20c9d9dcccfd26f764a1a7b32a07f783cf5198",
+  "gameVersion": "2.1.25",
+  "activeMods": {
+    "base": "2.1.25",
+    "elevated-rails": "2.1.25",
+    "quality": "2.1.25",
+    "recycler": "2.1.25",
+    "space-age": "2.1.25"
+  },
+  "nativeControlSha256": "53b031f1c3590c40c1c756e260ff244e573ce8655b0ae210087838e37b9cd887",
+  "runnerSha256": "31c6fcf9bcf4fc2ab690d63367d6be057c570db07048888b092cbc99c23a0224",
+  "scenarioSha256": "0476b9a359fbf9a5cef082503e80eed3a250b98b8791ec1a0d81cb7000fb8f21",
+  "nativeCommand": "node scripts/vulcanus-supplies/validate.mjs tungsten-carbide",
+  "protocol": {
+    "seed": 21025,
+    "externalPowerWatts": 10000000,
+    "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+    "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+    "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+    "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+  },
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "steel-processing",
+    "logistic-science-pack",
+    "advanced-material-processing",
+    "automation",
+    "automation-2",
+    "concrete",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "flammables",
+    "plastics",
+    "advanced-circuit",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "advanced-oil-processing",
+    "rocket-fuel",
+    "processing-unit",
+    "lubricant",
+    "electric-engine",
+    "battery",
+    "robotics",
+    "logistic-robotics",
+    "low-density-structure",
+    "advanced-material-processing-2",
+    "rocket-silo",
+    "space-platform",
+    "space-science-pack",
+    "space-platform-thruster",
+    "planet-discovery-vulcanus",
+    "tungsten-carbide",
+    "modules",
+    "speed-module",
+    "productivity-module",
+    "logistics",
+    "logistics-2",
+    "railway",
+    "production-science-pack",
+    "automation-3",
+    "fast-inserter",
+    "electric-energy-distribution-1",
+    "electric-energy-distribution-2",
+    "circuit-network"
+  ],
+  "footprint": {
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 12,
+      "bottom": 7
+    },
+    "width": 12,
+    "height": 7,
+    "area": 84,
+    "includes": "all entities, panels, substation, belts and the acid pipe; external supply excluded",
+    "counts": {
+      "assembling-machine-3": 1,
+      "chemical-plant": 1,
+      "display-panel": 5,
+      "fast-inserter": 6,
+      "fast-transport-belt": 13,
+      "pipe": 9,
+      "substation": 1
+    },
+    "entities": 36
+  },
+  "runs": {
+    "generous": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000,
+            "gravity": 40
+          }
+        },
+        {
+          "name": "display panel visible #32",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #33",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #34",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #35",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #36",
+          "passed": true
+        },
+        {
+          "name": "every entity imported at its exact position, direction, mirroring and type",
+          "passed": true,
+          "detail": {
+            "entities": 36
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 36
+          }
+        },
+        {
+          "name": "recipe preserved #1 carbon",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone carbon",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin carbon",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin carbon",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin carbon",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #1",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #1",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #2 tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #2",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #2",
+          "passed": true,
+          "detail": {
+            "speed": 1.25
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> carbon plant (arm at 3,4)",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> carbon plant (arm at 4,4)",
+          "passed": true
+        },
+        {
+          "name": "tungsten ore belt -> assembler (arm at 7,4)",
+          "passed": true
+        },
+        {
+          "name": "tungsten ore belt -> assembler (arm at 8,4)",
+          "passed": true
+        },
+        {
+          "name": "carbon plant -> assembler (carbon)",
+          "passed": true
+        },
+        {
+          "name": "assembler -> exit belt (tungsten carbide)",
+          "passed": true
+        },
+        {
+          "name": "every machine fluid box has exactly the connection tiles of the static model",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "clear approach IN-1",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-2",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-3",
+          "passed": true
+        },
+        {
+          "name": "clear approach OUT-1",
+          "passed": true
+        },
+        {
+          "name": "all machines and arms have actual native power connections on the one network of the power connection",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "the substations form one copper network",
+          "passed": true
+        },
+        {
+          "name": "the pipes, undergrounds and machine boxes form exactly the static fluid networks, one fluid each",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "every outside fixture pipe joins the segment of its entrance or exit pipe",
+          "passed": true
+        },
+        {
+          "name": "warm-up: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "warm-up: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: OUT-1 at least 59.4 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 59.4
+          }
+        },
+        {
+          "name": "steady: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: every machine crafted",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: OUT-1 at most 0 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 0,
+            "ceiling": 0
+          }
+        },
+        {
+          "name": "exit blocked: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no machine crafted in the last 5 minutes",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no machine working at the end",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: OUT-1 at least 59.4 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 59.4
+          }
+        },
+        {
+          "name": "release: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: OUT-1 back to 95% of 60 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        },
+        {
+          "name": "input outage: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "input outage: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "recovery: OUT-1 at least 59.4 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 59.4
+          }
+        },
+        {
+          "name": "recovery: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "recovery: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "recovery: OUT-1 back to 95% of 60 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "recycler": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "306d24436400fad190b8f17bd6ff4dc9f22f7e6e3ec3e264a7c17dc81b1c9d36",
+      "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+      "configurationSha256": "432400598505543d25460838fe83b9abd6025a3813be53a284b51486f5443107",
+      "nativeControlSha256": "53b031f1c3590c40c1c756e260ff244e573ce8655b0ae210087838e37b9cd887",
+      "actualTicks": 342000,
+      "scenario": {
+        "name": "generous",
+        "description": "every entrance offered more than the blueprint can use"
+      },
+      "protocol": {
+        "seed": 21025,
+        "externalPowerWatts": 10000000,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+        "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+      },
+      "phases": [
+        {
+          "name": "warm-up",
+          "minutes": 15,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 15,
+          "feed": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 123.46666666666667,
+              "measured": 123.46666666666667
+            },
+            "IN-2": {
+              "phase": 123.33333333333333,
+              "measured": 123.33333333333333
+            },
+            "IN-3": {
+              "phase": 1872,
+              "measured": 1872
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 59.8,
+              "measured": 59.8
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 119.86666666666666,
+            "IN-2": 119.73333333333333,
+            "IN-3": 1797.3333333333333
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 172,
+                "IN-2": 170,
+                "IN-3": 2880
+              },
+              "drawn": {
+                "OUT-1": 57
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 898,
+              "productsPerMinute": 59.86666666666667,
+              "productsInLastMinutes": 898,
+              "statusSamples": {
+                "item_ingredient_shortage": 1,
+                "working": 899
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 897,
+              "productsPerMinute": 59.8,
+              "productsInLastMinutes": 897,
+              "statusSamples": {
+                "item_ingredient_shortage": 2,
+                "working": 898
+              },
+              "statusAtEnd": "working"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "steady",
+          "minutes": 30,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 30,
+          "feed": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 120,
+              "measured": 120
+            },
+            "IN-2": {
+              "phase": 120,
+              "measured": 120
+            },
+            "IN-3": {
+              "phase": 1800,
+              "measured": 1800
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 60,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 120,
+            "IN-2": 120,
+            "IN-3": 1800
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 1800,
+              "productsPerMinute": 60,
+              "productsInLastMinutes": 1800,
+              "statusSamples": {
+                "working": 1800
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 1800,
+              "productsPerMinute": 60,
+              "productsInLastMinutes": 1800,
+              "statusSamples": {
+                "working": 1800
+              },
+              "statusAtEnd": "working"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "exit blocked",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "draw": {
+            "OUT-1": "none"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 1.0666666666666667,
+              "measured": 0
+            },
+            "IN-2": {
+              "phase": 0.8,
+              "measured": 0
+            },
+            "IN-3": {
+              "phase": 18.666666666666668,
+              "measured": 0
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 0,
+              "measured": 0
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 1.4666666666666666,
+            "IN-2": 0.8,
+            "IN-3": 18.666666666666668
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 16,
+                "IN-2": 12,
+                "IN-3": 280
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 12,
+              "productsPerMinute": 0.8,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "working": 11,
+                "full_output": 889
+              },
+              "statusAtEnd": "full_output"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 7,
+              "productsPerMinute": 0.4666666666666667,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "working": 6,
+                "full_output": 894
+              },
+              "statusAtEnd": "full_output"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "tailFed_IN-1": 0,
+          "tailFed_IN-2": 0,
+          "tailFed_IN-3": 0
+        },
+        {
+          "name": "release",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 120.26666666666667,
+              "measured": 120
+            },
+            "IN-2": {
+              "phase": 120.46666666666667,
+              "measured": 120
+            },
+            "IN-3": {
+              "phase": 1801.3333333333333,
+              "measured": 1800
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 60.666666666666664,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 119.86666666666666,
+            "IN-2": 120.53333333333333,
+            "IN-3": 1801.3333333333333
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 124,
+                "IN-2": 127,
+                "IN-3": 1820
+              },
+              "drawn": {
+                "OUT-1": 70
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 898,
+              "productsPerMinute": 59.86666666666667,
+              "productsInLastMinutes": 898,
+              "statusSamples": {
+                "full_output": 1,
+                "working": 899
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 903,
+              "productsPerMinute": 60.2,
+              "productsInLastMinutes": 903,
+              "statusSamples": {
+                "working": 900
+              },
+              "statusAtEnd": "working"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 60,
+              "share": 0.95,
+              "secondsToReach": 60
+            }
+          }
+        },
+        {
+          "name": "input outage",
+          "minutes": 5,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 5,
+          "feed": {
+            "IN-1": "none",
+            "IN-2": "none",
+            "IN-3": "none"
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 0,
+              "measured": 0
+            },
+            "IN-2": {
+              "phase": 0,
+              "measured": 0
+            },
+            "IN-3": {
+              "phase": 0,
+              "measured": 0
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 4.2,
+              "measured": 4.2
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 7.6,
+            "IN-2": 8,
+            "IN-3": 116
+          },
+          "perMinute": [
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 21
+              }
+            },
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 0
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 20,
+              "productsPerMinute": 4,
+              "productsInLastMinutes": 20,
+              "statusSamples": {
+                "working": 19,
+                "item_ingredient_shortage": 281
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 21,
+              "productsPerMinute": 4.2,
+              "productsInLastMinutes": 21,
+              "statusSamples": {
+                "working": 20,
+                "item_ingredient_shortage": 280
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "recovery",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 122.4,
+              "measured": 120
+            },
+            "IN-2": {
+              "phase": 122.46666666666667,
+              "measured": 120
+            },
+            "IN-3": {
+              "phase": 1836,
+              "measured": 1800
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 59.8,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 119.86666666666666,
+            "IN-2": 119.73333333333333,
+            "IN-3": 1797.3333333333333
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 156,
+                "IN-2": 157,
+                "IN-3": 2340
+              },
+              "drawn": {
+                "OUT-1": 57
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 898,
+              "productsPerMinute": 59.86666666666667,
+              "productsInLastMinutes": 898,
+              "statusSamples": {
+                "item_ingredient_shortage": 1,
+                "working": 899
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 897,
+              "productsPerMinute": 59.8,
+              "productsInLastMinutes": 897,
+              "statusSamples": {
+                "item_ingredient_shortage": 2,
+                "working": 898
+              },
+              "statusAtEnd": "working"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 60,
+              "share": 0.95,
+              "secondsToReach": 60
+            }
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "coal belt -> carbon plant (arm at 3,4)",
+          "inserter": 24,
+          "pickup": {
+            "y": 2.5,
+            "x": -2.5
+          },
+          "drop": {
+            "y": 0.30078125,
+            "x": -2.5
+          }
+        },
+        {
+          "label": "coal belt -> carbon plant (arm at 4,4)",
+          "inserter": 25,
+          "pickup": {
+            "y": 2.5,
+            "x": -1.5
+          },
+          "drop": {
+            "y": 0.30078125,
+            "x": -1.5
+          }
+        },
+        {
+          "label": "tungsten ore belt -> assembler (arm at 7,4)",
+          "inserter": 26,
+          "pickup": {
+            "y": 2.5,
+            "x": 1.5
+          },
+          "drop": {
+            "y": 0.30078125,
+            "x": 1.5
+          }
+        },
+        {
+          "label": "tungsten ore belt -> assembler (arm at 8,4)",
+          "inserter": 27,
+          "pickup": {
+            "y": 2.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": 0.30078125,
+            "x": 2.5
+          }
+        },
+        {
+          "label": "carbon plant -> assembler (carbon)",
+          "inserter": 28,
+          "pickup": {
+            "y": -0.5,
+            "x": -0.5
+          },
+          "drop": {
+            "y": -0.5,
+            "x": 1.69921875
+          }
+        },
+        {
+          "label": "assembler -> exit belt (tungsten carbide)",
+          "inserter": 30,
+          "pickup": {
+            "y": -0.5,
+            "x": 3.5
+          },
+          "drop": {
+            "y": -0.5,
+            "x": 5.69921875
+          }
+        }
+      ],
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000,
+        "gravity": 40
+      },
+      "blueprintEntityCount": 36,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 12,
+          "bottom": 7
+        },
+        "width": 12,
+        "height": 7,
+        "area": 84,
+        "includes": "all entities, panels, substation, belts and the acid pipe; external supply excluded",
+        "counts": {
+          "assembling-machine-3": 1,
+          "chemical-plant": 1,
+          "display-panel": 5,
+          "fast-inserter": 6,
+          "fast-transport-belt": 13,
+          "pipe": 9,
+          "substation": 1
+        },
+        "entities": 36
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "steel-processing",
+        "logistic-science-pack",
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "concrete",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "flammables",
+        "plastics",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-oil-processing",
+        "rocket-fuel",
+        "processing-unit",
+        "lubricant",
+        "electric-engine",
+        "battery",
+        "robotics",
+        "logistic-robotics",
+        "low-density-structure",
+        "advanced-material-processing-2",
+        "rocket-silo",
+        "space-platform",
+        "space-science-pack",
+        "space-platform-thruster",
+        "planet-discovery-vulcanus",
+        "tungsten-carbide",
+        "modules",
+        "speed-module",
+        "productivity-module",
+        "logistics",
+        "logistics-2",
+        "railway",
+        "production-science-pack",
+        "automation-3",
+        "fast-inserter",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 0.975,
+        "benchmark": 129.151
+      }
+    },
+    "throttled": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000,
+            "gravity": 40
+          }
+        },
+        {
+          "name": "display panel visible #32",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #33",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #34",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #35",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #36",
+          "passed": true
+        },
+        {
+          "name": "every entity imported at its exact position, direction, mirroring and type",
+          "passed": true,
+          "detail": {
+            "entities": 36
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 36
+          }
+        },
+        {
+          "name": "recipe preserved #1 carbon",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone carbon",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin carbon",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin carbon",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin carbon",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #1",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #1",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #2 tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin tungsten-carbide",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #2",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #2",
+          "passed": true,
+          "detail": {
+            "speed": 1.25
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> carbon plant (arm at 3,4)",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> carbon plant (arm at 4,4)",
+          "passed": true
+        },
+        {
+          "name": "tungsten ore belt -> assembler (arm at 7,4)",
+          "passed": true
+        },
+        {
+          "name": "tungsten ore belt -> assembler (arm at 8,4)",
+          "passed": true
+        },
+        {
+          "name": "carbon plant -> assembler (carbon)",
+          "passed": true
+        },
+        {
+          "name": "assembler -> exit belt (tungsten carbide)",
+          "passed": true
+        },
+        {
+          "name": "every machine fluid box has exactly the connection tiles of the static model",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "clear approach IN-1",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-2",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-3",
+          "passed": true
+        },
+        {
+          "name": "clear approach OUT-1",
+          "passed": true
+        },
+        {
+          "name": "all machines and arms have actual native power connections on the one network of the power connection",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "the substations form one copper network",
+          "passed": true
+        },
+        {
+          "name": "the pipes, undergrounds and machine boxes form exactly the static fluid networks, one fluid each",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "every outside fixture pipe joins the segment of its entrance or exit pipe",
+          "passed": true
+        },
+        {
+          "name": "warm-up: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "warm-up: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: OUT-1 at least 59.4 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 59.4
+          }
+        },
+        {
+          "name": "steady: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: every machine crafted",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: OUT-1 at most 0 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 0,
+            "ceiling": 0
+          }
+        },
+        {
+          "name": "exit blocked: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no machine crafted in the last 5 minutes",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no machine working at the end",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: OUT-1 at least 59.4 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 59.4
+          }
+        },
+        {
+          "name": "release: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: OUT-1 back to 95% of 60 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        },
+        {
+          "name": "input outage: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "input outage: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "recovery: OUT-1 at least 59.4 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 59.4
+          }
+        },
+        {
+          "name": "recovery: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "recovery: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "recovery: OUT-1 back to 95% of 60 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "recycler": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "306d24436400fad190b8f17bd6ff4dc9f22f7e6e3ec3e264a7c17dc81b1c9d36",
+      "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+      "configurationSha256": "98e31054b3374502d75ca38a84258aa944b4c57fa7198e1ca628085b90736540",
+      "nativeControlSha256": "53b031f1c3590c40c1c756e260ff244e573ce8655b0ae210087838e37b9cd887",
+      "actualTicks": 342000,
+      "scenario": {
+        "name": "throttled",
+        "description": "every entrance offered exactly the figure on its panel"
+      },
+      "protocol": {
+        "seed": 21025,
+        "externalPowerWatts": 10000000,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+        "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+      },
+      "phases": [
+        {
+          "name": "warm-up",
+          "minutes": 15,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 15,
+          "feed": {
+            "IN-1": 120,
+            "IN-2": 120,
+            "IN-3": 1800
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 119.93333333333334,
+              "measured": 119.93333333333334
+            },
+            "IN-2": {
+              "phase": 119.93333333333334,
+              "measured": 119.93333333333334
+            },
+            "IN-3": {
+              "phase": 1800,
+              "measured": 1800
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 59.53333333333333,
+              "measured": 59.53333333333333
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 119.73333333333333,
+            "IN-2": 119.2,
+            "IN-3": 1793.3333333333333
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 119,
+                "IN-2": 119,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 53
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 897,
+              "productsPerMinute": 59.8,
+              "productsInLastMinutes": 897,
+              "statusSamples": {
+                "item_ingredient_shortage": 2,
+                "working": 898
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 894,
+              "productsPerMinute": 59.6,
+              "productsInLastMinutes": 894,
+              "statusSamples": {
+                "item_ingredient_shortage": 3,
+                "working": 894,
+                "fluid_ingredient_shortage": 3
+              },
+              "statusAtEnd": "working"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "steady",
+          "minutes": 30,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 30,
+          "feed": {
+            "IN-1": 120,
+            "IN-2": 120,
+            "IN-3": 1800
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 120,
+              "measured": 120
+            },
+            "IN-2": {
+              "phase": 120,
+              "measured": 120
+            },
+            "IN-3": {
+              "phase": 1800,
+              "measured": 1800
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 60,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 120,
+            "IN-2": 119.93333333333334,
+            "IN-3": 1799.6666666666667
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 1799,
+              "productsPerMinute": 59.96666666666667,
+              "productsInLastMinutes": 1799,
+              "statusSamples": {
+                "working": 1800
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 1800,
+              "productsPerMinute": 60,
+              "productsInLastMinutes": 1800,
+              "statusSamples": {
+                "working": 1800
+              },
+              "statusAtEnd": "working"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "exit blocked",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": 120,
+            "IN-2": 120,
+            "IN-3": 1800
+          },
+          "draw": {
+            "OUT-1": "none"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 4.133333333333334,
+              "measured": 0
+            },
+            "IN-2": {
+              "phase": 3.6,
+              "measured": 0
+            },
+            "IN-3": {
+              "phase": 86,
+              "measured": 0
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 0,
+              "measured": 0
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 1.2,
+            "IN-2": 1.0666666666666667,
+            "IN-3": 17.333333333333332
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 62,
+                "IN-2": 54,
+                "IN-3": 1290
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {}
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 9,
+              "productsPerMinute": 0.6,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "working": 9,
+                "full_output": 891
+              },
+              "statusAtEnd": "full_output"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 9,
+              "productsPerMinute": 0.6,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "working": 5,
+                "full_output": 895
+              },
+              "statusAtEnd": "full_output"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "tailFed_IN-1": 0,
+          "tailFed_IN-2": 0,
+          "tailFed_IN-3": 0
+        },
+        {
+          "name": "release",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": 120,
+            "IN-2": 120,
+            "IN-3": 1800
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 120.13333333333334,
+              "measured": 120
+            },
+            "IN-2": {
+              "phase": 120.26666666666667,
+              "measured": 120
+            },
+            "IN-3": {
+              "phase": 1798,
+              "measured": 1800
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 60.666666666666664,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 119.73333333333333,
+            "IN-2": 120.13333333333334,
+            "IN-3": 1798
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 122,
+                "IN-2": 124,
+                "IN-3": 1770
+              },
+              "drawn": {
+                "OUT-1": 70
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 897,
+              "productsPerMinute": 59.8,
+              "productsInLastMinutes": 897,
+              "statusSamples": {
+                "full_output": 1,
+                "item_ingredient_shortage": 1,
+                "working": 898
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 900,
+              "productsPerMinute": 60,
+              "productsInLastMinutes": 900,
+              "statusSamples": {
+                "full_output": 1,
+                "working": 899
+              },
+              "statusAtEnd": "working"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 60,
+              "share": 0.95,
+              "secondsToReach": 60
+            }
+          }
+        },
+        {
+          "name": "input outage",
+          "minutes": 5,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 5,
+          "feed": {
+            "IN-1": "none",
+            "IN-2": "none",
+            "IN-3": "none"
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 0,
+              "measured": 0
+            },
+            "IN-2": {
+              "phase": 0,
+              "measured": 0
+            },
+            "IN-3": {
+              "phase": 0,
+              "measured": 0
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 4,
+              "measured": 4
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 7.2,
+            "IN-2": 7.6,
+            "IN-3": 110
+          },
+          "perMinute": [
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 20
+              }
+            },
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {},
+              "drawn": {
+                "OUT-1": 0
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 19,
+              "productsPerMinute": 3.8,
+              "productsInLastMinutes": 19,
+              "statusSamples": {
+                "working": 18,
+                "item_ingredient_shortage": 282
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 20,
+              "productsPerMinute": 4,
+              "productsInLastMinutes": 20,
+              "statusSamples": {
+                "working": 19,
+                "item_ingredient_shortage": 281
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "recovery",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": 120,
+            "IN-2": 120,
+            "IN-3": 1800
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 120.13333333333334,
+              "measured": 120
+            },
+            "IN-2": {
+              "phase": 120,
+              "measured": 120
+            },
+            "IN-3": {
+              "phase": 1800.5,
+              "measured": 1800
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 59.8,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 120,
+            "IN-2": 119.73333333333333,
+            "IN-3": 1798.6666666666667
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 122,
+                "IN-2": 120,
+                "IN-3": 1807.5
+              },
+              "drawn": {
+                "OUT-1": 57
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 120,
+                "IN-2": 120,
+                "IN-3": 1800
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "carbon",
+              "recipe": "carbon",
+              "products": 899,
+              "productsPerMinute": 59.93333333333333,
+              "productsInLastMinutes": 899,
+              "statusSamples": {
+                "item_ingredient_shortage": 1,
+                "working": 899
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "tungsten-carbide",
+              "recipe": "tungsten-carbide",
+              "products": 898,
+              "productsPerMinute": 59.86666666666667,
+              "productsInLastMinutes": 898,
+              "statusSamples": {
+                "item_ingredient_shortage": 900
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 60,
+              "share": 0.95,
+              "secondsToReach": 60
+            }
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "coal belt -> carbon plant (arm at 3,4)",
+          "inserter": 24,
+          "pickup": {
+            "y": 2.5,
+            "x": -2.5
+          },
+          "drop": {
+            "y": 0.30078125,
+            "x": -2.5
+          }
+        },
+        {
+          "label": "coal belt -> carbon plant (arm at 4,4)",
+          "inserter": 25,
+          "pickup": {
+            "y": 2.5,
+            "x": -1.5
+          },
+          "drop": {
+            "y": 0.30078125,
+            "x": -1.5
+          }
+        },
+        {
+          "label": "tungsten ore belt -> assembler (arm at 7,4)",
+          "inserter": 26,
+          "pickup": {
+            "y": 2.5,
+            "x": 1.5
+          },
+          "drop": {
+            "y": 0.30078125,
+            "x": 1.5
+          }
+        },
+        {
+          "label": "tungsten ore belt -> assembler (arm at 8,4)",
+          "inserter": 27,
+          "pickup": {
+            "y": 2.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": 0.30078125,
+            "x": 2.5
+          }
+        },
+        {
+          "label": "carbon plant -> assembler (carbon)",
+          "inserter": 28,
+          "pickup": {
+            "y": -0.5,
+            "x": -0.5
+          },
+          "drop": {
+            "y": -0.5,
+            "x": 1.69921875
+          }
+        },
+        {
+          "label": "assembler -> exit belt (tungsten carbide)",
+          "inserter": 30,
+          "pickup": {
+            "y": -0.5,
+            "x": 3.5
+          },
+          "drop": {
+            "y": -0.5,
+            "x": 5.69921875
+          }
+        }
+      ],
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000,
+        "gravity": 40
+      },
+      "blueprintEntityCount": 36,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 12,
+          "bottom": 7
+        },
+        "width": 12,
+        "height": 7,
+        "area": 84,
+        "includes": "all entities, panels, substation, belts and the acid pipe; external supply excluded",
+        "counts": {
+          "assembling-machine-3": 1,
+          "chemical-plant": 1,
+          "display-panel": 5,
+          "fast-inserter": 6,
+          "fast-transport-belt": 13,
+          "pipe": 9,
+          "substation": 1
+        },
+        "entities": 36
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "steel-processing",
+        "logistic-science-pack",
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "concrete",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "flammables",
+        "plastics",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-oil-processing",
+        "rocket-fuel",
+        "processing-unit",
+        "lubricant",
+        "electric-engine",
+        "battery",
+        "robotics",
+        "logistic-robotics",
+        "low-density-structure",
+        "advanced-material-processing-2",
+        "rocket-silo",
+        "space-platform",
+        "space-science-pack",
+        "space-platform-thruster",
+        "planet-discovery-vulcanus",
+        "tungsten-carbide",
+        "modules",
+        "speed-module",
+        "productivity-module",
+        "logistics",
+        "logistics-2",
+        "railway",
+        "production-science-pack",
+        "automation-3",
+        "fast-inserter",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 0.97,
+        "benchmark": 126.96
+      }
+    }
+  },
+  "measured": {
+    "phases": {
+      "generous": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "tungsten-carbide": 59.8
+          },
+          "inputsPerMinute": {
+            "coal": 123.5,
+            "tungsten-ore": 123.3,
+            "sulfuric-acid": 1872
+          },
+          "consumedPerMinute": {
+            "coal": 119.9,
+            "tungsten-ore": 119.7,
+            "sulfuric-acid": 1797.3
+          }
+        },
+        "steady": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "tungsten-ore": 0,
+            "sulfuric-acid": 0
+          },
+          "consumedPerMinute": {
+            "coal": 1.5,
+            "tungsten-ore": 0.8,
+            "sulfuric-acid": 18.7
+          }
+        },
+        "release": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 119.9,
+            "tungsten-ore": 120.5,
+            "sulfuric-acid": 1801.3
+          },
+          "recoverySeconds": {
+            "tungsten-carbide": 60
+          }
+        },
+        "input outage": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "tungsten-carbide": 4.2
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "tungsten-ore": 0,
+            "sulfuric-acid": 0
+          },
+          "consumedPerMinute": {
+            "coal": 7.6,
+            "tungsten-ore": 8,
+            "sulfuric-acid": 116
+          }
+        },
+        "recovery": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 119.9,
+            "tungsten-ore": 119.7,
+            "sulfuric-acid": 1797.3
+          },
+          "recoverySeconds": {
+            "tungsten-carbide": 60
+          }
+        }
+      },
+      "throttled": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "tungsten-carbide": 59.53
+          },
+          "inputsPerMinute": {
+            "coal": 119.9,
+            "tungsten-ore": 119.9,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 119.7,
+            "tungsten-ore": 119.2,
+            "sulfuric-acid": 1793.3
+          }
+        },
+        "steady": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 119.9,
+            "sulfuric-acid": 1799.7
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "tungsten-ore": 0,
+            "sulfuric-acid": 0
+          },
+          "consumedPerMinute": {
+            "coal": 1.2,
+            "tungsten-ore": 1.1,
+            "sulfuric-acid": 17.3
+          }
+        },
+        "release": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 119.7,
+            "tungsten-ore": 120.1,
+            "sulfuric-acid": 1798
+          },
+          "recoverySeconds": {
+            "tungsten-carbide": 60
+          }
+        },
+        "input outage": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "tungsten-carbide": 4
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "tungsten-ore": 0,
+            "sulfuric-acid": 0
+          },
+          "consumedPerMinute": {
+            "coal": 7.2,
+            "tungsten-ore": 7.6,
+            "sulfuric-acid": 110
+          }
+        },
+        "recovery": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "tungsten-carbide": 60
+          },
+          "inputsPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 120,
+            "sulfuric-acid": 1800
+          },
+          "consumedPerMinute": {
+            "coal": 120,
+            "tungsten-ore": 119.7,
+            "sulfuric-acid": 1798.7
+          },
+          "recoverySeconds": {
+            "tungsten-carbide": 60
+          }
+        }
+      }
+    },
+    "steady": {
+      "generous": {
+        "outputsPerMinute": {
+          "tungsten-carbide": 60
+        },
+        "inputsPerMinute": {
+          "coal": 120,
+          "tungsten-ore": 120,
+          "sulfuric-acid": 1800
+        }
+      },
+      "throttled": {
+        "outputsPerMinute": {
+          "tungsten-carbide": 60
+        },
+        "inputsPerMinute": {
+          "coal": 120,
+          "tungsten-ore": 120,
+          "sulfuric-acid": 1800
+        }
+      }
+    },
+    "outputsPerMinute": {
+      "tungsten-carbide": 60
+    },
+    "inputsPerMinute": {
+      "coal": 120,
+      "tungsten-ore": 120,
+      "sulfuric-acid": 1800
+    }
+  }
+}
