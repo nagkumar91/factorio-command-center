@@ -41,12 +41,12 @@ if (!explore) assert.deepEqual(manifest.nativeProtocol, JSON.parse(JSON.stringif
 
 // ---- caps: the published caps, and the reduced set most scenarios run at (a tenth, at least 2, never above the cap)
 const reduce = cap => cap <= 2 ? cap : Math.max(2, Math.ceil(cap / protocol.reducedDivisor));
-const FULL = { ...manifest.caps, 'signal-K': manifest.kitShare };
+const FULL = { ...manifest.caps };
 const REDUCED = Object.fromEntries(Object.entries(FULL).map(([k, v]) => [k, reduce(v)]));
 const capSets = { full: FULL, reduced: REDUCED };
 // Which products need which outside input (from the pinned recipes).
-const needs = Object.fromEntries(manifest.products.map(v => [v.item, Object.keys(expand(p, { [v.item]: 1 }).outside)]));
-const dependents = input => manifest.products.filter(v => needs[v.item].includes(input)).map(v => v.item);
+const needs = Object.fromEntries(manifest.products.map(v => [v.key, Object.keys(expand(p, { [v.item]: 1 }).outside)]));
+const dependents = input => manifest.products.filter(v => needs[v.key].includes(input)).map(v => v.key);
 const QUIET = Object.fromEntries(['U1', 'U2', 'rocket-silo', 'assembling-machine-3', 'assembling-machine-2', 'assembling-machine-1', 'space-platform-foundation', 'processing-unit', 'speed-module', 'electric-engine-unit', 'engine-unit', 'battery'].map(r => [r, true]));
 const SETTLE = protocol.settleSeconds;
 const fill = (name, extra = {}) => ({ name, mode: 'until_caps', limit: protocol.fillLimitTicks, expect: 'caps', settleSeconds: SETTLE, ...extra });
@@ -78,7 +78,7 @@ function scenario(name) {
     fill('caps raised', { setCaps: edited(REDUCED, v => Math.ceil(v * 1.5) + 1) }),
     fill('caps lowered, those products collected', { setCaps: edited(REDUCED, v => Math.max(1, Math.floor(v / 2))), collectAtStart: protocol.capEditItems }),
     fill('caps restored', { setCaps: edited(REDUCED, v => v) }) ] };
-  if (name === 'single') return { caps: 'reduced', phases: [fill('fill from empty'), ...protocol.singleRefills.map(item => fill('single refill: ' + item, { collectAtStart: [item], measure: true }))] };
+  if (name === 'single') return { caps: 'reduced', phases: [fill('fill from empty'), ...protocol.singleRefills.map(item => fill('single refill: ' + item, { collectAtStart: [item], measure: true, untouched: true }))] };
   if (name.startsWith('skip:')) {
     const input = name.slice(5), dep = dependents(input), all = dep.length === manifest.products.length;
     return { caps: 'reduced', phases: [

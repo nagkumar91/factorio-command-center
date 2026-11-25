@@ -33,7 +33,8 @@ local function signal_value(net, kind, name)
 end
 local function stock(t)
   local counts = {}
-  for _, o in ipairs(M.outputs) do for _, name in ipairs(o.items) do counts[name] = t.entities[o.chest].get_item_count(name) end end
+  -- one count per stock, each in its own chest (fast inserters are two stocks: the kit chest's and the inserter chest's)
+  for _, s in ipairs(M.stock) do counts[s.key] = t.entities[s.chest].get_item_count(s.item) end
   return counts
 end
 local function foreign(t)
@@ -44,18 +45,18 @@ local function foreign(t)
 end
 local function collect(t, only)
   local taken = {}
-  for _, o in ipairs(M.outputs) do for _, name in ipairs(o.items) do if not only or only[name] then
-    local chest = t.entities[o.chest]
-    local n = chest.get_item_count(name)
-    if n > 0 then chest.remove_item{name=name, count=n} taken[name] = n end
-  end end end
+  for _, s in ipairs(M.stock) do if not only or only[s.key] then
+    local chest = t.entities[s.chest]
+    local n = chest.get_item_count(s.item)
+    if n > 0 then chest.remove_item{name=s.item, count=n} taken[s.key] = n end
+  end end
   return taken
 end
 local function set_cap(t, name, value)
   local section = t.entities[M.capsCombinator.entity].get_control_behavior().get_section(1)
   for i = 1, section.filters_count do
     local slot = section.get_slot(i)
-    if slot.value and slot.value.name == name then section.set_slot(i, {value=slot.value, min=value}) if name ~= 'signal-K' then t.caps[name] = value end return true end
+    if slot.value and slot.value.name == M.capSignals[name] then section.set_slot(i, {value=slot.value, min=value}) t.caps[name] = value return true end
   end
   return false
 end
@@ -190,7 +191,7 @@ script.on_init(function()
   -- caps combinator
   local section = t.entities[M.capsCombinator.entity].get_control_behavior().get_section(1)
   local capsOk = true
-  for name, cap in pairs(M.caps) do local found = false for i = 1, section.filters_count do local s = section.get_slot(i) if s.value and s.value.name == name and s.min == cap then found = true end end if not found then capsOk = false end end
+  for name, cap in pairs(M.caps) do local found = false for i = 1, section.filters_count do local s = section.get_slot(i) if s.value and s.value.name == M.capSignals[name] and s.min == cap then found = true end end if not found then capsOk = false end end
   record(t, 'the caps combinator holds every cap', capsOk)
   -- chests
   record(t, 'exactly ' .. #M.outputs .. ' passive provider chests', #surface.find_entities_filtered{name='passive-provider-chest', force=force} == #M.outputs)
@@ -220,7 +221,6 @@ script.on_init(function()
   t.power.power_production = T.externalPowerWatts / 60 t.power.electric_buffer_size = T.externalPowerWatts t.power.energy = T.externalPowerWatts
   -- the scenario's starting caps, written into the caps combinator exactly as a player would edit it
   for name, value in pairs(T.startCaps) do if not set_cap(t, name, value) then fail('no cap slot ' .. name) end end
-  t.caps['signal-K'] = nil t.kitShare = T.startCaps['signal-K']
   t.switching = {}
   for _, m in ipairs(M.machines) do if m.switching then t.switching[#t.switching + 1] = {role=m.role, entity=t.entities[m.entity]} end end
   t.gatedArms = {}
@@ -292,6 +292,14 @@ local function end_phase(t, tick, why)
     record(t, label .. ': every product that does not need the withheld input is at its cap', all, ph.stock)
     ph.dependentsBelowCap = blocked
     record(t, label .. ': no product that needs the withheld input reached its cap', blocked, ph.stock)
+  end
+  if spec.untouched then
+    -- only the collected stock may have moved: every other count is what it was when the phase began
+    local moved = {}
+    for name, n in pairs(ph.stockAtStart) do if not (ph.collectedAtStart and ph.collectedAtStart[name]) and ph.stock[name] ~= n then moved[#moved + 1] = name end end
+    record(t, label .. ': no other stock moved', #moved == 0, moved)
+  end
+  if spec.expect == 'never' then
   elseif spec.expect == 'nothing' then
     local none = true for _, n in pairs(ph.stock) do if n > 0 then none = false end end
     record(t, label .. ': nothing was made', none, ph.stock)

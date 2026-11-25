@@ -114,13 +114,14 @@ export function auditBlueprint(object, m, p) {
   check('Power is four substations in one copper chain, nothing else', subs.length === 4 && copper.length === 3 && copper.every(w => distance(get(w[0]), get(w[2])) <= p.entities.substation.maximum_wire_distance) && !es.some(e => /pole/.test(e.name)));
 
   // ---- control program
-  const products = m.products.map(v => v.item);
-  check('Every product has a rule or flag at its group level', m.products.every(v => m.rules.some(r => r.recipe === v.item && r.level === m.groups[v.group - 1].level)), products.filter(n => !m.rules.some(r => r.recipe === n)));
+  const products = m.products.map(v => v.key);
+  check('Every product has a rule or flag at its group level', m.products.every(v => m.rules.some(r => r.recipe === v.item && r.level === m.groups[v.group - 1].level)), m.products.filter(v => !m.rules.some(r => r.recipe === v.item)).map(v => v.key));
   check('Every level weight sits in its level band', m.rules.filter(r => r.level).every(r => Math.floor(r.weight / 100000) === r.level));
   check('Each switching machine has a parking recipe: an idle rule (casting foundries) or a park decider (U1, U2)', ['caster-S', 'caster-D', 'caster-G'].every(n => m.rules.some(r => r.machine === n && r.idle)) && Object.values(m.controllers).every(c => c.park && c.idleRecipe));
   const capsFilters = get(m.capsCombinator.entity).control_behavior.sections.sections[0].filters;
-  check('The caps combinator holds every cap and the kit share of the fast inserters', products.every(n => capsFilters.find(f => f.name === n)?.count === m.caps[n]) && capsFilters.find(f => f.name === 'signal-K')?.count === m.kitShare && capsFilters.length === products.length + 1);
-  check('Every product is declared for exactly one chest', products.every(n => m.outputs.filter(o => o.items.includes(n)).length === 1) && m.outputs.flatMap(o => o.items).length === products.length);
+  check('The caps combinator holds every cap, the kit chest\'s fast inserters as signal K', products.every(n => capsFilters.find(f => f.name === m.capSignals[n])?.count === m.caps[n]) && m.capSignals['fast-inserter (kit)'] === 'signal-K' && capsFilters.length === products.length);
+  check('Every stock has exactly one chest; only fast inserters are in two (kit chest and inserter chest)', m.stock.length === products.length && m.stock.every(s => m.outputs.find(o => o.id === s.output)?.chest === s.chest && m.outputs.find(o => o.id === s.output).items.includes(s.item)) && m.outputs.flatMap(o => o.items).length === products.length && JSON.stringify(m.stock.filter(s => s.item === 'fast-inserter').map(s => s.output)) === '["OUT-2","OUT-4"]');
+  check('The kit chest reaches the control net only through its pass (fast inserters masked) and its own count Q', netOf.get(`${m.outputs[1].chest}:2`) === 'KIT-CHEST' && netOf.get(`${m.kitChest.pass}:2`) === 'KIT-CHEST' && netOf.get(`${m.kitChest.pass}:4`) === 'GREEN' && netOf.get(`${m.kitChest.need}:2`) === 'KIT-CHEST' && netOf.get(`${m.kitChest.need}:4`) === 'GREEN' && get(m.kitChest.mask).control_behavior.sections.sections[0].filters.map(f => f.name).join() === 'fast-inserter');
   check('Every chest list names exactly its declared products', m.outputs.filter(o => o.list).every(o => JSON.stringify(get(o.list).control_behavior.sections.sections[0].filters.map(f => f.name).sort()) === JSON.stringify([...o.items].sort())));
   check('Output chests are passive providers; the only other chest is the brick stock', m.outputs.every(o => get(o.chest).name === 'passive-provider-chest') && count('passive-provider-chest') === m.outputs.length && count('steel-chest') === 1 && get(m.brickChest.entity).bar === m.brickChest.stacks);
 

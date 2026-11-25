@@ -297,8 +297,8 @@ for(const id of ['coal-plastic-lubricant','tungsten-carbide']){
   const fill=proof.scenarios.fill.phases[0],ports=m.ports.filter(p=>!p.exit);
   await register({file:dir+'/blueprint.txt',info:{name:'Foundry mall · lava and calcite to AM3, platform kit, express belts, inserters, drills, foundries',blueprintSha256:m.candidateSha256,
    inputs:ports.map(p=>({item:p.item,entity:p.entity,side:p.label.match(/(west|east|south|north)/)?.[1],perMinute:Number((drawn[p.item]||0).toFixed(1))})),
-   outputs:m.outputs.flatMap(o=>o.items.map(item=>({item,entity:o.chest,cap:m.caps[item]}))),footprint:m.footprint},
-   category:'Malls · belts and inserters',purpose:'Mall production',sourceCollection:collection,inputs:ports.map(p=>p.item),outputs:m.products.map(v=>v.item),
+   outputs:m.stock.map(s=>({item:s.item,entity:s.chest,cap:m.caps[s.key]})),footprint:m.footprint},
+   category:'Malls · belts and inserters',purpose:'Mall production',sourceCollection:collection,inputs:ports.map(p=>p.item),outputs:[...new Set(m.products.map(v=>v.item))],
    proof:{passed:proof.passed,blueprintSha256:proof.blueprintSha256,gameVersion:proof.gameVersion,outputsPerMinute:made,footprint:m.footprint,scenarios:Object.fromEntries(Object.entries(proof.scenarios).map(([n,s])=>[n,{passed:s.passed,caps:s.capsName,ticks:s.actualTicks}]))},report:reportFile,version:proof.gameVersion,
    setup:['Vulcanus, on demand, in list order: assembling machine 3, the white-pack platform kit (silo, landing pad, starter pack and every platform and receiver item), express belt, underground belt and splitter, fast and bulk inserters, electric mining drills and foundries, each kept at its cap in five passive provider chests. A lower group waits while a higher one has something it can make; a product whose outside input is missing is skipped until the input returns.',
     `Inputs: lava by pipe and calcite by belt (north-west); plastic and tungsten carbide belts and lubricant by pipe (south); water and sulfuric acid by pipe (east). Surplus stone leaves on a belt in the north-west and must be taken away. Power by substations. Caps are edited in one constant combinator.`,

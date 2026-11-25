@@ -17,13 +17,15 @@ export const STOCK = [
   { group: 5, item: 'electric-mining-drill' },
   { group: 6, item: 'foundry' },
 ];
-// The products with their group and cap. Fast inserters are one stock with two priorities: the kit's share at the
-// kit's priority (kitShare), the rest of the stack at the inserter group's priority.
+// The products with their group and cap. Fast inserters are two separate stocks: the kit's own in the kit chest at
+// the kit's priority (key 'fast-inserter (kit)', cap signal K) and a full stack in the inserter chest at the inserter
+// group's priority. `key` names a stock; it is the item name everywhere else.
+export const KIT_FAST_INSERTERS = 'fast-inserter (kit)';
 export function products(p, kit) {
   const list = [];
-  for (const s of STOCK.filter(v => v.group === 1)) list.push({ ...s, cap: p.items[s.item].stack_size });
-  for (const k of kit) if (k.item !== 'fast-inserter') list.push({ group: 2, item: k.item, cap: k.cap });
-  for (const s of STOCK.filter(v => v.group > 1)) list.push({ ...s, cap: p.items[s.item].stack_size, ...(s.item === 'fast-inserter' ? { kitShare: kit.find(k => k.item === 'fast-inserter').cap } : {}) });
+  for (const s of STOCK.filter(v => v.group === 1)) list.push({ ...s, key: s.item, cap: p.items[s.item].stack_size });
+  for (const k of kit) list.push({ group: 2, item: k.item, key: k.item === 'fast-inserter' ? KIT_FAST_INSERTERS : k.item, cap: k.cap });
+  for (const s of STOCK.filter(v => v.group > 1)) list.push({ ...s, key: s.item, cap: p.items[s.item].stack_size });
   return list;
 }
 
@@ -74,10 +76,11 @@ export async function fullBill(p) {
   const kit = await loadKit(), list = products(p, kit);
   const round = v => Math.round(v * 100) / 100;
   const tidy = e => ({ lava: round(e.outside.lava || 0), calcite: round(e.outside.calcite || 0), 'plastic-bar': round(e.outside['plastic-bar'] || 0), 'tungsten-carbide': round(e.outside['tungsten-carbide'] || 0), 'sulfuric-acid': round(e.outside['sulfuric-acid'] || 0), lubricant: round(e.outside.lubricant || 0), water: round(e.outside.water || 0), moltenIron: round(e.moltenIron), moltenCopper: round(e.moltenCopper), stoneMade: round(e.stoneMade), stoneUsed: round(e.stoneUsed), stoneSurplus: round(e.stoneSurplus) });
-  const perItem = Object.fromEntries(list.map(v => [v.item, tidy(expand(p, { [v.item]: 1 }))]));
+  const perItem = Object.fromEntries(list.map(v => [v.key, tidy(expand(p, { [v.item]: 1 }))]));
   const perGroup = {};
-  for (const g of [1, 2, 3, 4, 5, 6]) { const d = {}; for (const v of list.filter(v => v.group === g)) d[v.item] = v.cap; if (g === 2) d['fast-inserter'] = (d['fast-inserter'] || 0); perGroup[g] = tidy(expand(p, d)); }
-  const all = {}; for (const v of list) all[v.item] = v.cap;
+  const demand = rows => { const d = {}; for (const v of rows) d[v.item] = (d[v.item] || 0) + v.cap; return d; };
+  for (const g of [1, 2, 3, 4, 5, 6]) perGroup[g] = tidy(expand(p, demand(list.filter(v => v.group === g))));
+  const all = demand(list);
   const total = expand(p, all);
   return { kit, products: list, perItem, perGroup, fullFill: { ...tidy(total), crafts: Object.fromEntries(Object.entries(total.crafts).map(([k, v]) => [k, round(v)])), machineMinutes: Object.fromEntries(Object.entries(total.machineSeconds).map(([k, v]) => [k, round(v / 60)])), intermediates: Object.fromEntries(Object.entries(total.intermediates).map(([k, v]) => [k, round(v)])) } };
 }

@@ -18,7 +18,7 @@
 //              machine, the plastic and tungsten carbide entrances, processing unit machine, battery plant
 import assert from 'node:assert/strict';
 import { sha, encodeKeeping, distance, envelope, technologyClosure, box, intersects, blueprintVersion } from './lib.mjs';
-import { products as productList, route, GROUP_NAMES } from './bill.mjs';
+import { products as productList, route, GROUP_NAMES, KIT_FAST_INSERTERS } from './bill.mjs';
 
 const N = 0, E = 4, S = 8, W = 12;
 export const LEVEL = { 1: 6, 2: 5, 3: 4, 4: 3, 5: 2, 6: 1 };  // priority group -> level signal (higher runs first)
@@ -53,8 +53,10 @@ const whitelist = names => ({ use_filters: true, filter_mode: 'whitelist', filte
 export function design(p, kit, options = {}) {
   assert(/^2\.1\.\d+$/.test(p.gameVersion));
   const PRODUCTS = productList(p, kit);
-  const CAPS = Object.fromEntries(PRODUCTS.map(v => [v.item, v.cap]));
-  const KIT_SHARE = PRODUCTS.find(v => v.item === 'fast-inserter').kitShare;
+  const CAPS = Object.fromEntries(PRODUCTS.map(v => [v.key, v.cap]));
+  const KIT_SHARE = PRODUCTS.find(v => v.key === KIT_FAST_INSERTERS).cap;
+  // the signal that carries a stock's cap in the caps combinator: the item itself, K for the kit's fast inserters
+  const capSignal = v => (v.key === KIT_FAST_INSERTERS ? { type: 'virtual', name: 'signal-K' } : { name: v.item });
   const armCaps = { ...RING_ARM_CAPS, ...(options.armCaps || {}) }, ruleCaps = { ...RING_RULE_CAPS, ...(options.ruleCaps || {}) };
   const entities = [], occupied = new Map(), M = { machines: [], arms: [], rules: [], panels: [], relays: [] };
   const sizeOf = (name, direction) => COMBINATORS.includes(name) || name === 'pump' ? ((direction || 0) % 8 === 0 ? [1, 2] : [2, 1]) : [SIZE[name] || 1, SIZE[name] || 1];
@@ -228,13 +230,14 @@ export function design(p, kit, options = {}) {
   // output chests: AM3, kit, [silo], express, inserters, drill + foundry
   const CHESTS = [
     { id: 'OUT-1', x: 12, label: 'OUT: assembling machine 3', icon: 'assembling-machine-3', items: ['assembling-machine-3'] },
-    { id: 'OUT-2', x: 13, label: 'OUT: platform kit (15 items)', icon: 'rocket-silo', items: kit.map(k => k.item).filter(n => n !== 'fast-inserter') },
+    { id: 'OUT-2', x: 13, label: 'OUT: platform kit (16 items)', icon: 'rocket-silo', items: kit.map(k => k.item) },
     { id: 'OUT-3', x: 19, label: 'OUT: express belt, underground, splitter', icon: 'express-transport-belt', items: ['express-transport-belt', 'express-underground-belt', 'express-splitter'] },
     { id: 'OUT-4', x: 20, label: 'OUT: fast + bulk inserter', icon: 'bulk-inserter', items: ['fast-inserter', 'bulk-inserter'] },
     { id: 'OUT-5', x: 21, label: 'OUT: mining drill + foundry', icon: 'electric-mining-drill', items: ['electric-mining-drill', 'foundry'] },
   ];
   for (const c of CHESTS) {
-    c.chest = add('passive-provider-chest', c.x, 12); join('GREEN', GREEN, c.chest);
+    // the kit chest reaches GREEN through a copy that leaves its fast inserters out (they have their own count, signal Q)
+    c.chest = add('passive-provider-chest', c.x, 12); join(c.id === 'OUT-2' ? 'KIT-CHEST' : 'GREEN', GREEN, c.chest);
     c.panel = panel(c.x, 13, c.label, c.icon);
     c.arm = c.items.length === 1 ? arm('fast-inserter', c.x, 11, N, 'chest', { items: c.items, deficit: c.items[0] }) : arm('fast-inserter', c.x, 11, N, 'chest', { setFilters: true, hand: 'HANDS' });
   }
@@ -263,7 +266,7 @@ export function design(p, kit, options = {}) {
   const self = r => atom(recipe(r), 'G', '>', 0);
   const water = atom(fluid('water'), 'G', '≥', TANK_READY), lub = atom(fluid('lubricant'), 'G', '≥', TANK_READY);
   const levelAtMost = k => atom(virtual('signal-L'), 'G', '≤', k);
-  const J = virtual('signal-J');
+  const Q = virtual('signal-Q');   // fast inserters the kit chest still lacks (K minus what it holds)
   const half = n => Math.ceil(ruleCaps[n] / 2);
   const ALWAYS = atom(virtual('signal-L'), 'G', '≥', 0);
   // A recipe-switching machine that reads its own contents must never be left without a recipe signal: with none, the
@@ -283,9 +286,12 @@ export function design(p, kit, options = {}) {
   // an intermediate i made by recipe i in batches: start below lo, keep going (its own signal on GREEN) up to hi
   const batch = (i, lo, hi, o = {}) => cross(o.alt || [[]], alt => [...twoPhase(i, [...alt, below(i, lo)], [...alt, below(i, lo)], o.have || []), ...twoPhase(i, [...alt, self(i), below(i, hi)], [...alt, self(i), below(i, hi)], o.have || [])]);
   const cast = (r, i, base = []) => [[...base, below(i, half(i))], [...base, self(r), below(i)]];
-  const kitInserters = atom(item('fast-inserter'), 'RG', '<', J, 'G');                       // fast inserters below the kit's share
-  const stockInserters = [atom(item('fast-inserter'), 'RG', '≥', J, 'G'), wanted('fast-inserter')]; // above the share, below the stack
-  const forBulk = [atom(item('fast-inserter'), 'RG', '≥', 0), wanted('bulk-inserter'), have('advanced-circuit', 1)];
+  // Two fast-inserter stocks. The kit's: fewer in sight (ring, U1, hands) than the kit chest still lacks. The inserter
+  // group's: the kit chest has its own, and the inserter chest plus what is in sight is below its cap.
+  const kitInserters = atom(item('fast-inserter'), 'R', '<', Q, 'G');
+  const kitFull = atom(Q, 'G', '≤', 0);
+  const stockInserters = [kitFull, wanted('fast-inserter')];
+  const forBulk = [kitFull, atom(item('fast-inserter'), 'RG', '≥', 0), wanted('bulk-inserter'), have('advanced-circuit', 1)];
   const EB = 'express-transport-belt', EUG = 'express-underground-belt', ES = 'express-splitter';
   // Every rule: the machine it belongs to, the recipe it selects, its group, rank within the group and its condition.
   const RULES = [
@@ -306,7 +312,7 @@ export function design(p, kit, options = {}) {
     { m: 'U1', r: 'passive-provider-chest', g: 2, k: 68, t: final('passive-provider-chest', { have: [['advanced-circuit', 1], ['steel-chest', 1]] }) },
     { m: 'U1', r: 'substation', g: 2, k: 66, t: final('substation', { have: [['advanced-circuit', 5]] }) },
     { m: 'U1', r: 'inserter', g: 4, k: 61, t: batch('inserter', 1, ruleCaps.inserter, { alt: [stockInserters, forBulk] }) },
-    { m: 'U1', r: 'fast-inserter', g: 4, k: 60, t: [...final('fast-inserter', { first: stockInserters, second: [stockInserters[0], wantedTwo('fast-inserter')], have: [['inserter', 1]] }), ...batch('fast-inserter', 1, ruleCaps['fast-inserter'], { alt: [forBulk], have: [['inserter', 1]] })] },
+    { m: 'U1', r: 'fast-inserter', g: 4, k: 60, t: [...final('fast-inserter', { first: stockInserters, second: [kitFull, wantedTwo('fast-inserter')], have: [['inserter', 1]] }), ...batch('fast-inserter', 1, ruleCaps['fast-inserter'], { alt: [forBulk], have: [['inserter', 1]] })] },
     { m: 'U1', r: 'bulk-inserter', g: 4, k: 58, t: final('bulk-inserter', { extra: [atom(item('fast-inserter'), 'RG', '≥', 0)], have: [['advanced-circuit', 1], ['fast-inserter', 1]] }) },
     { m: 'U1', r: 'electric-mining-drill', g: 5, k: 50, t: final('electric-mining-drill') },
     { m: 'U1', r: 'refined-concrete', g: 6, k: 40, t: [[wanted('foundry'), water, below('refined-concrete')]] },
@@ -451,21 +457,33 @@ export function design(p, kit, options = {}) {
 
   // south band controllers: fixed cells on rows 15..16
   const SOUTH = { negate: [12, 15, true], share: [13, 15, true], 'OUT-2': [14, 15, true], siloFilter: [15, 15, true], siloTimer: [16, 15, true], siloFlag: [19, 15, true], 'OUT-3': [20, 15, true], 'OUT-4': [21, 15, true], 'OUT-5': [24, 16, false] };
-  // caps: one constant combinator (positive numbers), negated onto GREEN; signal-K is the kit's share of the fast inserters
-  const capsCombinator = constant(12, 14, [...PRODUCTS.map(v => [item(v.item), v.cap]), [virtual('signal-K'), KIT_SHARE]]);
-  const capsPanel = panel(14, 14, 'CAPS: edit a number here (K = kit fast inserters)', 'constant-combinator');
+  // caps: one constant combinator (positive numbers), negated onto GREEN; signal-K is the cap of the kit chest's fast inserters
+  const capsCombinator = constant(12, 14, PRODUCTS.map(v => [capSignal(v), v.cap]));
+  const capsPanel = panel(14, 14, 'CAPS: edit a number here (K = fast inserters in the kit chest)', 'constant-combinator');
   const negate = comb('arithmetic-combinator', ...SOUTH.negate, { arithmetic_conditions: { first_signal: EACH, second_constant: -1, operation: '*', output_signal: EACH } });
-  const share = comb('arithmetic-combinator', ...SOUTH.share, { arithmetic_conditions: { first_signal: virtual('signal-K'), second_signal: item('fast-inserter'), operation: '-', output_signal: J } });
+  // The kit chest's own fast inserters: Q = K (red: the caps) minus the chest's count (green: the chest), on GREEN.
+  const share = comb('arithmetic-combinator', ...SOUTH.share, { arithmetic_conditions: { first_signal: virtual('signal-K'), first_signal_networks: networks('R'), second_signal: item('fast-inserter'), second_signal_networks: networks('G'), operation: '-', output_signal: Q } });
   for (const [e, side] of [[capsCombinator, 'io'], [negate, 'in'], [share, 'in']]) join('CAPS', RED, e, side);
-  join('GREEN', GREEN, negate, 'out'); join('GREEN', GREEN, share, 'out');
+  join('GREEN', GREEN, negate, 'out'); join('GREEN', GREEN, share, 'out'); join('KIT-CHEST', GREEN, share, 'in');
+  // Everything else in the kit chest goes onto GREEN as usual (one tick late, like Q), the fast inserters masked out,
+  // so GREEN's fast-inserter signal is the inserter chest's alone and neither chest's count can stand in for the other.
+  const kitMask = constant(18, 8, [[item('fast-inserter'), 1]]);
+  const kitPass = decider(16, 8, false, [[atom(EACH, 'G', '>', 0), atom(EACH, 'R', '=', 0)]], pass('G'));
+  join('KIT-CHEST', GREEN, kitPass, 'in'); join('KIT-MASK', RED, kitMask); join('KIT-MASK', RED, kitPass, 'in'); join('GREEN', GREEN, kitPass, 'out');
   // multi-product chests: the arm's filter is the set of declared items the chest is short of
   for (const ch of CHESTS.filter(v => v.items.length > 1)) {
     // An arm has five filter slots. A chest with more products than that also needs the item to be on the ring right
     // now (its list is worth 1000 an item and a copy of the ring is added to it), so a product that cannot be made
     // never keeps a slot from one that is passing by.
     const wide = ch.items.length > 5;
-    const d = decider(...SOUTH[ch.id], [[atom(EACH, 'G', '<', 0), atom(EACH, 'R', '>', wide ? 1000 : 0), ...(ch.id === 'OUT-2' ? [levelAtMost(5)] : [])]], [{ signal: EACH, copy_count_from_input: false, constant: 1 }]);
-    const list = constant(ch.x, 14, ch.items.map(n => [item(n), wide ? 1000 : 1]));
+    // Fast inserters are listed apart (3000 in the kit list, 2 in the inserter list): the kit chest takes them while it
+    // lacks some (Q above 0), the inserter chest only once the kit chest has its own (Q not above 0).
+    const fast = n => n === 'fast-inserter' && (ch.id === 'OUT-2' || ch.id === 'OUT-4');
+    const terms = ch.id === 'OUT-2' ? [[atom(EACH, 'G', '<', 0), atom(EACH, 'R', '>', 1000), atom(EACH, 'R', '<', 3000), levelAtMost(5)], [atom(EACH, 'R', '>', 3000), atom(Q, 'G', '>', 0), levelAtMost(5)]]
+      : ch.id === 'OUT-4' ? [[atom(EACH, 'G', '<', 0), atom(EACH, 'R', '=', 1)], [atom(EACH, 'G', '<', 0), atom(EACH, 'R', '=', 2), atom(Q, 'G', '≤', 0)]]
+      : [[atom(EACH, 'G', '<', 0), atom(EACH, 'R', '>', wide ? 1000 : 0)]];
+    const d = decider(...SOUTH[ch.id], terms, [{ signal: EACH, copy_count_from_input: false, constant: 1 }]);
+    const list = constant(ch.x, 14, ch.items.map(n => [item(n), ch.id === 'OUT-2' ? (fast(n) ? 3000 : 1000) : fast(n) ? 2 : 1]));
     join('LIST-' + ch.id, RED, list); join('LIST-' + ch.id, RED, d, 'in'); join('GREEN', GREEN, d, 'in');
     if (wide) {
       const ringSeen = comb('arithmetic-combinator', 15, 9, false, { arithmetic_conditions: { first_signal: EACH, second_constant: 1, operation: '*', output_signal: EACH } });
@@ -556,8 +574,10 @@ export function design(p, kit, options = {}) {
   const manifest = {
     schema: 1, id: 'foundry-mall', revision: 1, candidateSha256: hash, requiredGameVersion: p.gameVersion, prototypeSha256: options.prototypeSha256, surface: 'vulcanus',
     intendedUse: 'on-demand mall on Vulcanus from lava and calcite: assembling machine 3, the white-pack platform kit, express belts, fast and bulk inserters, electric mining drills and foundries, each kept at its cap in passive provider chests, made in that order',
-    groups: GROUP_NAMES.map((name, i) => ({ group: i + 1, name, level: LEVEL[i + 1], products: PRODUCTS.filter(v => v.group === i + 1).map(v => v.item) })),
-    products: PRODUCTS, caps: CAPS, kitShare: KIT_SHARE, capsCombinator: { entity: capsCombinator.entity_number, panel: capsPanel.entity_number, position: capsCombinator.position, negate: negate.entity_number, share: share.entity_number },
+    groups: GROUP_NAMES.map((name, i) => ({ group: i + 1, name, level: LEVEL[i + 1], products: PRODUCTS.filter(v => v.group === i + 1).map(v => v.key) })),
+    products: PRODUCTS, caps: CAPS, kitShare: KIT_SHARE, capSignals: Object.fromEntries(PRODUCTS.map(v => [v.key, capSignal(v).name])),
+    stock: PRODUCTS.map(v => ({ key: v.key, item: v.item, output: CHESTS.find(c => v.key === KIT_FAST_INSERTERS ? c.id === 'OUT-2' : v.item === 'fast-inserter' ? c.id === 'OUT-4' : c.items.includes(v.item)).id, chest: CHESTS.find(c => v.key === KIT_FAST_INSERTERS ? c.id === 'OUT-2' : v.item === 'fast-inserter' ? c.id === 'OUT-4' : c.items.includes(v.item)).chest.entity_number })),
+    kitChest: { need: share.entity_number, pass: kitPass.entity_number, mask: kitMask.entity_number }, capsCombinator: { entity: capsCombinator.entity_number, panel: capsPanel.entity_number, position: capsCombinator.position, negate: negate.entity_number, share: share.entity_number },
     ringArmCaps: armCaps, ringRuleCaps: ruleCaps, tankReady: TANK_READY,
     equipment: { inserters: HAND, transport: 'fast-transport-belt', power: 'substation', modules: 0, beacons: 0, quality: 'normal' },
     footprint, ports, power: { entry: subs.nw.entity_number, panel: powerPanel.entity_number, label: 'POWER: connect this substation', externalPolePosition: { x: -3, y: -8 }, substations: Object.values(subs).map(e => e.entity_number) },

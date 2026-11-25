@@ -1,6 +1,6 @@
 # Foundry mall · lava and calcite in, six groups of products out, in list order
 
-Status: **qualified** (full native protocol, `native-report.json`). Blueprint SHA-256 `ac47881a85bbdb33d2dd0c05a6b099749d261a2a9e4feae351da598c8a4c0f81`. Factorio 2.1.25 Space Age, Vulcanus, vanilla, normal quality, no modules, no beacons.
+Status: **qualified** (full native protocol, `native-report.json`). Blueprint SHA-256 `7977ee595dd543c191177381ddd3ad0867650e1227e8562379da6a043aa188ed`. Factorio 2.1.25 Space Age, Vulcanus, vanilla, normal quality, no modules, no beacons.
 
 One blueprint for Vulcanus. Foundries turn lava and calcite into molten iron and molten copper and cast plates, steel, gears, pipes, sticks, cable, low density structures and concrete; assembling machines 3 make the rest. Everything is kept at a cap in five passive provider chests on the south edge, and made **in the order of the list**: a group lower on the list waits while a group above it has something it can make.
 
@@ -19,6 +19,7 @@ Rocket parts (the 50 processing units, 50 low density structures and 50 rocket f
 | 2 | white-pack platform kit | crusher | 1 | OUT-2 |
 | 2 | white-pack platform kit | assembling-machine-2 | 4 | OUT-2 |
 | 2 | white-pack platform kit | electric-furnace | 1 | OUT-2 |
+| 2 | white-pack platform kit | fast-inserter (kit) | 19 (signal K) | OUT-2 |
 | 2 | white-pack platform kit | solar-panel | 6 | OUT-2 |
 | 2 | white-pack platform kit | accumulator | 4 | OUT-2 |
 | 2 | white-pack platform kit | constant-combinator | 1 | OUT-2 |
@@ -29,12 +30,12 @@ Rocket parts (the 50 processing units, 50 low density structures and 50 rocket f
 | 3 | express belts | express-transport-belt | 100 | OUT-3 |
 | 3 | express belts | express-underground-belt | 50 | OUT-3 |
 | 3 | express belts | express-splitter | 50 | OUT-3 |
-| 4 | inserters | fast-inserter | 50 (the first 19 at the kit's priority) | OUT-4 |
+| 4 | inserters | fast-inserter | 50 | OUT-4 |
 | 4 | inserters | bulk-inserter | 50 | OUT-4 |
 | 5 | electric mining drill | electric-mining-drill | 50 | OUT-5 |
 | 6 | foundry | foundry | 20 | OUT-5 |
 
-The kit is exactly the bill in `scripts/launch-kit/bill.json` (count + spare). Fast inserters are one stock with two priorities: the kit's 19 are made at the kit's priority, the rest of the stack at the inserter group's. They sit in the inserter chest (OUT-4), not in the kit chest.
+The kit is exactly the bill in `scripts/launch-kit/bill.json` (count + spare). Fast inserters are two separate stocks: the kit's 19 go into the kit chest (OUT-2) at the kit's priority, and a full stack of 50 goes into the inserter chest (OUT-4) at the inserter group's priority, 69 in all. Each chest is counted against its own cap only; the inserter chest takes fast inserters only while the kit chest has all of its own.
 
 ## Entrances, exit, power
 
@@ -42,14 +43,14 @@ Tiles are counted from the blueprint's top-left tile (column, row).
 
 | Port | What | Kind | Tile | Side | For one full fill (recipes) | Used in the measured full fill |
 | --- | --- | --- | --- | --- | ---: | ---: |
-| IN-1 | lava | pipe | (0, 2) | west | 506600 | 955500 |
-| IN-2 | calcite | belt | (0, 0) | west | 1013 | 1911 |
-| OUT-STONE | stone | belt | (0, 1) | west | 16049 | 28891 |
-| IN-3 | water | pipe | (29, 4) | east | 14222 | 17200 |
-| IN-4 | lubricant | pipe | (6, 32) | south | 8563 | 9445 |
+| IN-1 | lava | pipe | (0, 2) | west | 508163 | 950000 |
+| IN-2 | calcite | belt | (0, 0) | west | 1016 | 1900 |
+| OUT-STONE | stone | belt | (0, 1) | west | 16101 | 28747 |
+| IN-3 | water | pipe | (29, 4) | east | 14222 | 16800 |
+| IN-4 | lubricant | pipe | (6, 32) | south | 8563 | 9425 |
 | IN-5 | sulfuric-acid | pipe | (29, 31) | east | 1650 | 1970 |
-| IN-6 | plastic-bar | belt | (19, 32) | south | 4122 | 4826 |
-| IN-7 | tungsten-carbide | belt | (23, 32) | south | 667 | 900 |
+| IN-6 | plastic-bar | belt | (19, 32) | south | 4122 | 4824 |
+| IN-7 | tungsten-carbide | belt | (23, 32) | south | 667 | 850 |
 
 - **Power**: connect the substation at tile (3, 8) (panel "POWER: connect this substation"). Four substations power everything. Idle draw is small; with all foundries working it reaches about 25 MW.
 - **Stone** is a by-product of every lava craft. The bricks the bill needs are made inside (a five-stack brick stock); the rest leaves on the belt of OUT-STONE and must be taken away (run that belt to an inserter over lava). If the exit backs up, the two lava foundries stop and so does everything else. About 93% of the stone is surplus: there is nothing in this bill to spend it on.
@@ -61,12 +62,12 @@ Tiles are counted from the blueprint's top-left tile (column, row).
 | Chest | Tile | Holds |
 | --- | --- | --- |
 | OUT-1 | (13, 28) | assembling-machine-3 |
-| OUT-2 | (14, 28) | rocket-silo, cargo-landing-pad, space-platform-starter-pack, space-platform-foundation, asteroid-collector, crusher, assembling-machine-2, electric-furnace, solar-panel, accumulator, constant-combinator, arithmetic-combinator, decider-combinator, passive-provider-chest, substation |
+| OUT-2 | (14, 28) | rocket-silo, cargo-landing-pad, space-platform-starter-pack, space-platform-foundation, asteroid-collector, crusher, assembling-machine-2, electric-furnace, fast-inserter, solar-panel, accumulator, constant-combinator, arithmetic-combinator, decider-combinator, passive-provider-chest, substation |
 | OUT-3 | (20, 28) | express-transport-belt, express-underground-belt, express-splitter |
 | OUT-4 | (21, 28) | fast-inserter, bulk-inserter |
 | OUT-5 | (22, 28) | electric-mining-drill, foundry |
 
-**Caps** live in one constant combinator at tile (13, 30) (panel "CAPS"), one positive number per product, plus signal K = the kit's share of the fast inserters. Edit a number and the stock follows. Nothing else holds a cap.
+**Caps** live in one constant combinator at tile (13, 30) (panel "CAPS"), one positive number per product, plus signal K = the fast inserters kept in the kit chest. Edit a number and the stock follows. Nothing else holds a cap.
 
 ## How it works
 
@@ -85,11 +86,11 @@ Limits of the rule, stated plainly: (1) a universal machine finishes the one cra
 
 ## Size and parts
 
-Footprint **32 × 33 = 1056 tiles**, 441 entities.
+Footprint **32 × 33 = 1056 tiles**, 443 entities.
 
-Machines: 7 foundries, 19 assembling machines 3 (two of them shadows that never craft), 1 chemical plant, 1 electric furnace. Control: 75 decider, 21 arithmetic, 6 selector and 14 constant combinators.
+Machines: 7 foundries, 19 assembling machines 3 (two of them shadows that never craft), 1 chemical plant, 1 electric furnace. Control: 76 decider, 21 arithmetic, 6 selector and 15 constant combinators.
 
-Bill of materials: 21 arithmetic-combinator, 19 assembling-machine-3, 43 bulk-inserter, 1 chemical-plant, 14 constant-combinator, 75 decider-combinator, 15 display-panel, 1 electric-furnace, 34 fast-inserter, 135 fast-transport-belt, 7 foundry, 2 long-handed-inserter, 5 passive-provider-chest, 41 pipe, 14 pipe-to-ground, 1 pump, 6 selector-combinator, 1 steel-chest, 2 storage-tank, 4 substation. Red belts and fast, bulk and long-handed inserters only; hand sizes are pinned (fast 1, bulk 2), so the mall behaves the same whatever inserter capacity is researched.
+Bill of materials: 21 arithmetic-combinator, 19 assembling-machine-3, 43 bulk-inserter, 1 chemical-plant, 15 constant-combinator, 76 decider-combinator, 15 display-panel, 1 electric-furnace, 34 fast-inserter, 135 fast-transport-belt, 7 foundry, 2 long-handed-inserter, 5 passive-provider-chest, 41 pipe, 14 pipe-to-ground, 1 pump, 6 selector-combinator, 1 steel-chest, 2 storage-tank, 4 substation. Red belts and fast, bulk and long-handed inserters only; hand sizes are pinned (fast 1, bulk 2), so the mall behaves the same whatever inserter capacity is researched.
 
 Research needed (55 technologies in the closure), among them: foundry, automation 3, logistics 3, bulk inserter, rocket silo, space platform (the asteroid collector and crusher recipes), advanced combinators (the selector combinator), electric energy distribution 2.
 
@@ -118,7 +119,7 @@ Research needed (55 technologies in the closure), among them: foundry, automatio
    5 ^dddddddd.cdddddd...i.ddddaa.v^v
    6 ^.AAAAAAdddAAAAAAdddAAAddddadv^v
    7 ^.AAAAAASSdAAAAAAdddAAASSddadv^v
-   8 ^.AAAAAASScAAAAAA...AAASScdd.v^v
+   8 ^.AAAAAASScAAAAAAddcAAASScdd.v^v
    9 ^.bbii.iaa.i.iaaaaaabciaaaaaa>^v
   10 ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   11 i.i.....bbbbbii.bbbiiiiib.ii.i..
@@ -135,12 +136,13 @@ F foundry · A assembling machine 3 · C chemical plant · K furnace · T tank �
 
 Every figure below is from `native-report.json` (12 scenarios, each its own headless game on a Vulcanus surface from a fresh import of this string). **Full caps**: the fill from empty and the rate scenario. **Reduced caps** (a tenth of each cap, at least 2; the silo, pad and starter pack stay at 1): refill, outage and recovery, hold, cap edits, single refills and the seven withheld-input scenarios. A reduced-cap time is not a full-stack time.
 
-### Fill from empty at the published caps: 333.9 minutes
+### Fill from empty at the published caps: 334.9 minutes
 
 | Product | Group | Cap | At its cap after (min) |
 | --- | ---: | ---: | ---: |
 | assembling-machine-3 | 1 | 50 | 50.3 |
 | assembling-machine-2 | 2 | 4 | 52.7 |
+| fast-inserter (kit) | 2 | 19 | 59.5 |
 | electric-furnace | 2 | 1 | 60.1 |
 | solar-panel | 2 | 6 | 62.4 |
 | constant-combinator | 2 | 1 | 63.7 |
@@ -158,14 +160,14 @@ Every figure below is from `native-report.json` (12 scenarios, each its own head
 | express-transport-belt | 3 | 100 | 177.6 |
 | express-underground-belt | 3 | 50 | 209.2 |
 | express-splitter | 3 | 50 | 236.7 |
-| fast-inserter | 4 | 50 | 246.3 |
-| bulk-inserter | 4 | 50 | 293.5 |
-| electric-mining-drill | 5 | 50 | 308.2 |
-| foundry | 6 | 20 | 333.8 |
+| fast-inserter (inserter group) | 4 | 50 | 252.9 |
+| bulk-inserter | 4 | 50 | 296.6 |
+| electric-mining-drill | 5 | 50 | 310.0 |
+| foundry | 6 | 20 | 334.8 |
 
-Minutes each level was in force: assembling machine 3 52.3, white-pack platform kit 100.6, express belts 85.2, inserters 57.2, electric mining drill 14.7, foundry 23.9. Level-gated arms enabled against the level: 0 ticks.
-Used: lava 955500, calcite 1911, plastic-bar 4826, tungsten-carbide 900, sulfuric-acid 1970, lubricant 9445, water 17200; molten iron 573250, molten copper 143250; stone made 31525, used 2632, left by the exit 28891.
-Left on the ring when the last chest filled (finished products not in a chest): 2 express-underground-belt, 5 fast-inserter, 4 assembling-machine-2, 2 assembling-machine-3, 8 space-platform-foundation.
+Minutes each level was in force: assembling machine 3 52.3, white-pack platform kit 100.6, express belts 85.2, inserters 60.3, electric mining drill 13.4, foundry 23.1. Level-gated arms enabled against the level: 0 ticks.
+Used: lava 950000, calcite 1900, plastic-bar 4824, tungsten-carbide 850, sulfuric-acid 1970, lubricant 9425, water 16800; molten iron 569250, molten copper 143250; stone made 31365, used 2616, left by the exit 28747.
+Left on the ring when the last chest filled (finished products not in a chest): 2 express-underground-belt, 3 fast-inserter, 4 assembling-machine-2, 2 assembling-machine-3, 8 space-platform-foundation.
 
 ### Rates (full caps)
 
@@ -173,12 +175,12 @@ After a full fill, one group at a time has its products taken out of its chest e
 
 | Measured window | Products per minute | lava | calcite | plastic-bar | tungsten-carbide | sulfuric-acid | lubricant | water | stone out |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| every chest emptied | assembling machine 3 1 | 2233.3 | 4.5 | 39.4 | 0 | 0 | 0 | 0 | 79.7 |
-| group 2 (white-pack platform kit) | assembling machine 2 3.6, electric furnace 0.67, solar panel 1.5, platform foundation 1.1 | 7116.7 | 14.2 | 19.1 | 0 | 15.8 | 63 | 196.7 | 202.4 |
-| group 3 (express belts) | express transport belt 5 | 800 | 1.6 | 0 | 0 | 0 | 68 | 0 | 23.7 |
-| group 4 (inserters) | fast inserter 3.17 | 350 | 0.7 | 0 | 0 | 0 | 0 | 0 | 11 |
-| group 5 (electric mining drill) | electric mining drill 3.73 | 850 | 1.7 | 0 | 0 | 0 | 0 | 0 | 26.8 |
-| group 6 (foundry) | foundry 0.87 | 3350 | 6.7 | 0 | 38.3 | 0 | 15.3 | 370 | 82 |
+| every chest emptied | assembling machine 3 1 | 2266.7 | 4.5 | 41.3 | 0 | 0 | 0 | 0 | 81.2 |
+| group 2 (white-pack platform kit) | assembling machine 2 3.5, fast inserter (kit) 2.37, electric furnace 0.63, platform foundation 1.3 | 6733.3 | 13.5 | 20.1 | 0 | 17.2 | 65.5 | 196.7 | 186.2 |
+| group 3 (express belts) | express transport belt 5.43 | 900 | 1.8 | 0 | 0 | 0 | 73.3 | 0 | 26.3 |
+| group 4 (inserters) | fast inserter 3.47 | 350 | 0.7 | 0 | 0 | 0 | 0 | 0 | 11.7 |
+| group 5 (electric mining drill) | electric mining drill 3.63 | 833.3 | 1.7 | 0 | 0 | 0 | 0 | 0 | 25.8 |
+| group 6 (foundry) | foundry 0.9 | 3366.7 | 6.7 | 0 | 36.7 | 0 | 14.7 | 366.7 | 81.2 |
 
 Inputs are what the machines consumed per minute in the window (production statistics): the draw each entrance has to meet.
 
@@ -186,13 +188,15 @@ Inputs are what the machines consumed per minute in the window (production stati
 
 | Product | Taken | Back at cap after (min) | lava | calcite | plastic | carbide | acid | lubricant | water |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| assembling-machine-3 | 5 | 1.1 | 0 | 0 | 30 | 0 | 0 | 0 | 0 |
-| express-transport-belt | 10 | 4.7 | 10000 | 20 | 174 | 0 | 0 | 140 | 0 |
-| express-underground-belt | 5 | 1.6 | 1500 | 3 | 0 | 0 | 0 | 40 | 0 |
-| express-splitter | 5 | 2.1 | 4500 | 9 | 70 | 0 | 0 | 320 | 0 |
-| bulk-inserter | 5 | 3.0 | 3000 | 6 | 14 | 0 | 0 | 0 | 0 |
-| electric-mining-drill | 5 | 3.6 | 1500 | 3 | 0 | 0 | 0 | 0 | 0 |
-| foundry | 2 | 4.4 | 8500 | 17 | 0 | 100 | 0 | 40 | 700 |
+| assembling-machine-3 | 5 | 1.0 | 500 | 1 | 30 | 0 | 0 | 0 | 0 |
+| fast-inserter (kit) | 2 | 2.3 | 8000 | 16 | 96 | 0 | 0 | 0 | 0 |
+| fast-inserter | 5 | 3.8 | 2500 | 5 | 82 | 0 | 0 | 0 | 0 |
+| express-transport-belt | 10 | 2.7 | 1500 | 3 | 0 | 0 | 0 | 160 | 0 |
+| express-underground-belt | 5 | 1.8 | 2500 | 5 | 0 | 0 | 0 | 40 | 0 |
+| express-splitter | 5 | 3.0 | 4000 | 8 | 78 | 0 | 0 | 320 | 0 |
+| bulk-inserter | 5 | 4.5 | 2000 | 4 | 8 | 0 | 0 | 0 | 0 |
+| electric-mining-drill | 5 | 3.2 | 1500 | 3 | 0 | 0 | 0 | 0 | 0 |
+| foundry | 2 | 4.2 | 9000 | 18 | 0 | 100 | 0 | 40 | 1100 |
 
 Draw is the total consumed during that refill; it includes topping the ring back up.
 
@@ -200,34 +204,34 @@ Draw is the total consumed during that refill; it includes topping the ring back
 
 | Scenario | Phase | Minutes | Ended by |
 | --- | --- | ---: | --- |
-| fill | fill from empty | 333.9 | every cap reached |
-| fill | refill after complete collection | 96.9 | every cap reached |
+| fill | fill from empty | 334.9 | every cap reached |
+| fill | refill after complete collection | 115.2 | every cap reached |
 | fill | five-minute outage of every input | 5.0 | fixed length |
-| fill | recovery after the outage | 107.0 | every cap reached |
-| hold | fill from empty | 135.6 | every cap reached |
+| fill | recovery after the outage | 110.7 | every cap reached |
+| hold | fill from empty | 134.8 | every cap reached |
 | hold | settle at full stock | 10.0 | fixed length |
 | hold | one-hour hold at full stock | 60.0 | fixed length |
-| hold | refill after collection | 96.1 | every cap reached |
-| caps | fill from empty | 135.6 | every cap reached |
-| caps | caps raised | 6.5 | every cap reached |
-| caps | caps lowered, those products collected | 3.6 | every cap reached |
-| caps | caps restored | 8.3 | every cap reached |
+| hold | refill after collection | 109.4 | every cap reached |
+| caps | fill from empty | 134.8 | every cap reached |
+| caps | caps raised | 6.9 | every cap reached |
+| caps | caps lowered, those products collected | 4.6 | every cap reached |
+| caps | caps restored | 3.8 | every cap reached |
 
 Hold: for one hour at full stock no chest changed and the final machines crafted 0 times.
 
-Cap edits (written into the caps combinator by script, as a player would): raised to {"assembling-machine-3":9,"express-transport-belt":16,"space-platform-foundation":25} → every chest at the new caps in 6.5 min; lowered to {"assembling-machine-3":2,"express-transport-belt":5,"space-platform-foundation":8} with those chests emptied → refilled to exactly the lower caps in 3.6 min; restored in 8.3 min.
+Cap edits (written into the caps combinator by script, as a player would): raised to {"assembling-machine-3":9,"express-transport-belt":16,"space-platform-foundation":25} → every chest at the new caps in 6.9 min; lowered to {"assembling-machine-3":2,"express-transport-belt":5,"space-platform-foundation":8} with those chests emptied → refilled to exactly the lower caps in 4.6 min; restored in 3.8 min.
 
 ### Skip and return, one outside input withheld from a cold start (reduced caps)
 
 | Withheld | Products that need it | Everything else at its cap after (min) | After it returned: all at cap after (min) |
 | --- | --- | ---: | ---: |
-| lava | all | nothing can be made (15.0 min, nothing made) | 136.6 |
-| calcite | all | nothing can be made (15.0 min, nothing made) | 146.1 |
-| plastic-bar | assembling machine 3, rocket silo, cargo landing pad, platform starter pack, asteroid collector, crusher, electric furnace, passive provider chest, substation, express splitter, bulk inserter | 78.3 | 98.1 |
-| tungsten-carbide | foundry | 136.0 | 3.7 |
-| sulfuric-acid | rocket silo, cargo landing pad, platform starter pack, asteroid collector, accumulator | 107.9 | 71.8 |
-| lubricant | rocket silo, asteroid collector, crusher, express transport belt, express underground belt, express splitter, foundry | 115.8 | 54.0 |
-| water | rocket silo, cargo landing pad, foundry | 128.9 | 29.7 |
+| lava | all | nothing can be made (15.0 min, nothing made) | 135.8 |
+| calcite | all | nothing can be made (15.0 min, nothing made) | 145.5 |
+| plastic-bar | assembling machine 3, rocket silo, cargo landing pad, platform starter pack, asteroid collector, crusher, electric furnace, passive provider chest, substation, express splitter, bulk inserter | 78.3 | 99.5 |
+| tungsten-carbide | foundry | 133.9 | 3.6 |
+| sulfuric-acid | rocket silo, cargo landing pad, platform starter pack, asteroid collector, accumulator | 107.9 | 73.1 |
+| lubricant | rocket silo, asteroid collector, crusher, express transport belt, express underground belt, express splitter, foundry | 114.4 | 55.6 |
+| water | rocket silo, cargo landing pad, foundry | 131.2 | 31.4 |
 
 In the withheld phase the mall must hold every cap that does not need the input for two minutes while the dependent products stay short; then the input returns and every cap must be reached.
 
@@ -236,36 +240,36 @@ In the withheld phase the mall must hold every cap that does not need the input 
 - Import: every entity at its position and direction, every recipe or circuit recipe control, every arm's hand size, filters and conditions, every combinator's parameters, every circuit net as one network with no two nets joined, one electric network.
 - Chests: no chest ever held an item it does not declare (held in all).
 - Pipes: every pipe, underground pipe and tank carried only its own fluid, sampled every ten seconds (held in all).
-- Ring: peak 400 items against a bound of 540 (75% of both lanes); static lane limits inner 334, outer 84 of 360 per lane.
+- Ring: peak 397 items against a bound of 540 (75% of both lanes); static lane limits inner 334, outer 84 of 360 per lane.
 - Level gate: 0 ticks with a gated arm enabled against the level, over all scenarios.
 
 ### Switching machines in the full fill
 
 | Machine | Recipe changes | Time per recipe (min) |
 | --- | ---: | --- |
-| caster-S | 666 | iron-ore-melting 290.9, casting-steel 36.8, casting-low-density-structure 5.8, changing 0.4 |
-| caster-D | 1316 | changing 252.3, casting-copper-cable 81.2, casting-copper 0.4 |
-| caster-G | 1987 | iron-ore-melting 244.8, casting-steel 27.5, concrete-from-molten-iron 21.7, casting-iron-gear-wheel 19.0, changing 18.7, casting-pipe 1.9, casting-iron-stick 0.3 |
-| U1 | 138 | wooden-chest 200.1, bulk-inserter 30.7, refined-concrete 23.2, space-platform-starter-pack 22.1, fast-inserter 18.1, inserter 13.7, electric-mining-drill 12.7, cargo-landing-pad 4.3, solar-panel 2.3, asteroid-collector 2.1, accumulator 1.8, changing 0.8, crusher 0.5, electric-furnace 0.4, passive-provider-chest 0.3, decider-combinator 0.3, steel-chest 0.2, substation 0.1, arithmetic-combinator 0.1, constant-combinator 0.1 |
-| U2 | 207 | iron-ore-melting 232.6, express-underground-belt 20.7, foundry 18.1, express-transport-belt 13.1, express-splitter 12.0, fast-underground-belt 8.6, fast-splitter 7.9, splitter 5.6, fast-transport-belt 5.6, transport-belt 4.1, underground-belt 3.8, changing 1.8 |
+| caster-S | 655 | iron-ore-melting 292.3, casting-steel 36.5, casting-low-density-structure 5.8, changing 0.3 |
+| caster-D | 1310 | changing 253.2, casting-copper-cable 81.3, casting-copper 0.4 |
+| caster-G | 1978 | iron-ore-melting 245.9, casting-steel 27.3, concrete-from-molten-iron 21.8, casting-iron-gear-wheel 19.1, changing 18.7, casting-pipe 1.9, casting-iron-stick 0.2 |
+| U1 | 140 | wooden-chest 200.4, bulk-inserter 30.3, space-platform-starter-pack 22.1, refined-concrete 22.0, fast-inserter 19.3, inserter 16.0, electric-mining-drill 11.4, cargo-landing-pad 4.3, solar-panel 2.3, asteroid-collector 2.1, accumulator 1.8, changing 0.8, crusher 0.5, electric-furnace 0.4, passive-provider-chest 0.3, decider-combinator 0.3, steel-chest 0.2, substation 0.1, arithmetic-combinator 0.1, constant-combinator 0.1 |
+| U2 | 203 | iron-ore-melting 234.0, express-underground-belt 20.7, foundry 17.7, express-transport-belt 13.1, express-splitter 12.0, fast-underground-belt 8.6, fast-splitter 7.9, splitter 5.6, fast-transport-belt 5.6, transport-belt 4.1, underground-belt 3.8, changing 1.8 |
 
 "iron-ore-melting" and "wooden-chest" are the parking recipes: recipes the machine can never start, held while it has nothing to make.
 
 ### Harness speed
 
-Scenarios ran side by side at 558, 558, 562, 566, 566, 567, 569, 571, 574, 577, 580, 580 times real time; 243 s of wall time in all for 57.6 game hours.
+Scenarios ran side by side at 533, 535, 535, 542, 547, 548, 553, 556, 557, 558, 563, 586 times real time; 254 s of wall time in all for 58.3 game hours.
 
 ## Bill from the recipes (expected values, productivity counted)
 
 | Group | lava | calcite | plastic | carbide | acid | lubricant | water | molten iron | molten copper | stone made | stone used |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1 assembling machine 3 | 87111 | 174 | 2000 | 0 | 0 | 0 | 0 | 40667 | 24667 | 3107 | 0 |
-| 2 white-pack platform kit | 306591 | 613 | 1355 | 0 | 1650 | 3630 | 8000 | 169160 | 60783 | 10413 | 820 |
+| 2 white-pack platform kit | 308153 | 616 | 1355 | 0 | 1650 | 3630 | 8000 | 170047 | 61068 | 10466 | 820 |
 | 3 express belts | 48735 | 97 | 667 | 0 | 0 | 4667 | 0 | 29514 | 7037 | 1603 | 0 |
 | 4 inserters | 28556 | 57 | 100 | 0 | 0 | 0 | 0 | 15333 | 6083 | 978 | 0 |
 | 5 electric mining drill | 9000 | 18 | 0 | 0 | 0 | 0 | 0 | 6000 | 750 | 285 | 0 |
 | 6 foundry | 26607 | 53 | 0 | 667 | 0 | 267 | 6222 | 17956 | 2000 | 838 | 356 |
-| **one full fill** | 506600 | 1013 | 4122 | 667 | 1650 | 8563 | 14222 | 278630 | 101320 | 17224 | 1176 |
+| **one full fill** | 508163 | 1016 | 4122 | 667 | 1650 | 8563 | 14222 | 279517 | 101605 | 17277 | 1176 |
 
 The measured fill uses more than this: the ring, the machines' input buffers and the brick stock are filled as well, and both lava recipes run whenever either metal is short.
 
@@ -299,5 +303,5 @@ node scripts/requested-malls/foundry-mall/audit.mjs         # static audit
 node scripts/requested-malls/foundry-mall/validate.mjs      # full native protocol (needs the game), about three minutes
 ```
 
-Static audit: passed, 47 checks. Prototypes pinned from a private `--dump-data` of Factorio 2.1.25 (`scripts/requested-malls/foundry-mall/prototypes.json`).
+Static audit: passed, 48 checks. Prototypes pinned from a private `--dump-data` of Factorio 2.1.25 (`scripts/requested-malls/foundry-mall/prototypes.json`).
 

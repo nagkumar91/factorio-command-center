@@ -26,7 +26,7 @@ export const PROTOCOL = Object.freeze({
   seed: 21024, reducedDivisor: 10, settleSeconds: 5, skipSettleSeconds: 120, fillLimitTicks: 1728000, skipLimitTicks: 1728000, skipDeadTicks: 54000,
   outageTicks: 18000, settleTicks: 36000, holdTicks: 216000, rateWarmupTicks: 54000, rateMeasureTicks: 108000, externalPowerWatts: 200000000, samplingTicks: 54000,
   capEditItems: ['assembling-machine-3', 'express-transport-belt', 'space-platform-foundation'],
-  singleRefills: ['assembling-machine-3', 'express-transport-belt', 'express-underground-belt', 'express-splitter', 'bulk-inserter', 'electric-mining-drill', 'foundry'],
+  singleRefills: ['assembling-machine-3', 'fast-inserter (kit)', 'fast-inserter', 'express-transport-belt', 'express-underground-belt', 'express-splitter', 'bulk-inserter', 'electric-mining-drill', 'foundry'],
   withheldInputs: ['plastic-bar', 'tungsten-carbide', 'sulfuric-acid', 'lubricant', 'water', 'calcite', 'lava'],
   fullCapScenarios: ['fill (its first phase)', 'rate'],
   targetRate: null,

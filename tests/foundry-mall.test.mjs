@@ -31,12 +31,15 @@ test('pinned prototypes: Factorio 2.1.25, the foundry and the recipes the mall r
 test('products: the request in list order, the kit from the launch-kit bill, one stack for every stock product', async () => {
   const list = products(p, kit), bill = await readJson(path.join(HERE, '../../launch-kit/bill.json'));
   assert.deepEqual(list.filter(v => v.group === 1).map(v => v.item), ['assembling-machine-3']);
-  assert.deepEqual(list.filter(v => v.group === 2).map(v => [v.item, v.cap]), bill.items.filter(v => v.item !== 'fast-inserter').map(v => [v.item, v.count + v.spare]));
+  assert.deepEqual(list.filter(v => v.group === 2).map(v => [v.item, v.cap]), bill.items.map(v => [v.item, v.count + v.spare]));
   assert.deepEqual(list.filter(v => v.group === 3).map(v => v.item), ['express-transport-belt', 'express-underground-belt', 'express-splitter']);
   assert.deepEqual(list.filter(v => v.group === 4).map(v => v.item), ['fast-inserter', 'bulk-inserter']);
   assert.deepEqual(list.filter(v => v.group > 4).map(v => v.item), ['electric-mining-drill', 'foundry']);
   for (const v of list.filter(v => v.group !== 2)) assert.equal(v.cap, p.items[v.item].stack_size, v.item);
-  assert.equal(list.find(v => v.item === 'fast-inserter').kitShare, 19);
+  // two fast-inserter stocks: the kit's 19 (group 2, kit chest) and a full stack (group 4, inserter chest)
+  assert.deepEqual(list.filter(v => v.item === 'fast-inserter').map(v => [v.key, v.group, v.cap]), [['fast-inserter (kit)', 2, 19], ['fast-inserter', 4, 50]]);
+  assert.equal(new Set(list.map(v => v.key)).size, list.length);
+  assert.deepEqual(manifest.stock.filter(v => v.item === 'fast-inserter').map(v => v.output), ['OUT-2', 'OUT-4']);
   assert.deepEqual(manifest.products, list);
 });
 
@@ -71,9 +74,10 @@ test('static audit passes for the committed blueprint and matches the stored aud
 
 test('caps: one combinator, positive numbers, every product once; chests declare every product once', () => {
   const es = decode(committed).blueprint.entities, caps = es[manifest.capsCombinator.entity - 1].control_behavior.sections.sections[0].filters;
-  assert.equal(caps.length, manifest.products.length + 1);
-  for (const v of manifest.products) assert.equal(caps.find(f => f.name === v.item).count, v.cap);
+  assert.equal(caps.length, manifest.products.length);
+  for (const v of manifest.products) assert.equal(caps.find(f => f.name === manifest.capSignals[v.key]).count, v.cap, v.key);
   assert.equal(caps.find(f => f.name === 'signal-K').count, 19);
+  assert.equal(caps.find(f => f.name === 'fast-inserter').count, 50);
   assert.deepEqual(manifest.outputs.flatMap(o => o.items).sort(), manifest.products.map(v => v.item).sort());
   assert.equal(es.filter(e => e.name === 'passive-provider-chest').length, 5);
 });
@@ -110,7 +114,7 @@ test('stored native report: for exactly this string, every scenario passed, list
   assert.equal(fill.endedBy, 'caps');
   // list order: every product of a group reached its cap before any product of the next group did
   for (let g = 1; g < 6; g++) {
-    const last = Math.max(...manifest.products.filter(v => v.group === g).map(v => fill.reached[v.item])), first = Math.min(...manifest.products.filter(v => v.group === g + 1).map(v => fill.reached[v.item]));
+    const last = Math.max(...manifest.products.filter(v => v.group === g).map(v => fill.reached[v.key])), first = Math.min(...manifest.products.filter(v => v.group === g + 1).map(v => fill.reached[v.key]));
     assert(last <= first, `group ${g} was full (${last}) before a product of group ${g + 1} was (${first})`);
   }
   for (const s of Object.values(report.scenarios)) { assert(s.ringPeakTotal <= manifest.ring.bound); for (const ph of s.phases) assert.equal(ph.gatedActive, 0, ph.name); }
@@ -118,6 +122,15 @@ test('stored native report: for exactly this string, every scenario passed, list
     const [withheld, returned] = report.scenarios['skip:' + input].phases;
     assert.equal(withheld.endedBy, 'caps', input); assert.equal(returned.endedBy, 'caps', input);
     for (const item of report.dependents[input]) assert(withheld.stock[item] < withheld.caps[item], `${item} cannot be at its cap without ${input}`);
+  }
+  // the two fast-inserter stocks: each chest at its own cap, and refilling one never moves the other
+  assert.equal(fill.stock['fast-inserter (kit)'], 19); assert.equal(fill.stock['fast-inserter'], 50);
+  assert(fill.reached['fast-inserter (kit)'] < fill.reached['fast-inserter']);
+  for (const key of ['fast-inserter (kit)', 'fast-inserter']) {
+    const ph = report.scenarios.single.phases.find(v => v.name === 'single refill: ' + key);
+    assert(ph.collectedAtStart[key] > 0 && Object.keys(ph.collectedAtStart).length === 1 && ph.endedBy === 'caps', key);
+    assert.equal(ph.stock[key], ph.caps[key]);
+    assert.equal(report.scenarios.single.checks.find(c => c.name === `single refill: ${key}: no other stock moved`).passed, true);
   }
   const status = await readJson(path.join(PUBLISHED, 'native-status.json'));
   assert.equal(status.candidateSha256, manifest.candidateSha256);

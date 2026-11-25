@@ -28,8 +28,8 @@ export async function render(d, audit, proven, p, report, out) {
 
   // ---- products
   L.push('## What it makes', '', '| Priority | Group | Product | Cap | Chest |', '| ---: | --- | --- | ---: | --- |');
-  for (const g of m.groups) for (const item of g.products) { const o = m.outputs.find(v => v.items.includes(item)); L.push(`| ${g.group} | ${g.name} | ${item} | ${m.caps[item]}${item === 'fast-inserter' ? ` (the first ${m.kitShare} at the kit's priority)` : ''} | ${o.id} |`); }
-  L.push('', `The kit is exactly the bill in \`scripts/launch-kit/bill.json\` (count + spare). Fast inserters are one stock with two priorities: the kit's ${m.kitShare} are made at the kit's priority, the rest of the stack at the inserter group's. They sit in the inserter chest (OUT-4), not in the kit chest.`, '');
+  for (const g of m.groups) for (const key of g.products) L.push(`| ${g.group} | ${g.name} | ${key} | ${m.caps[key]}${m.capSignals[key] === 'signal-K' ? ' (signal K)' : ''} | ${m.stock.find(v => v.key === key).output} |`);
+  L.push('', `The kit is exactly the bill in \`scripts/launch-kit/bill.json\` (count + spare). Fast inserters are two separate stocks: the kit's ${m.kitShare} go into the kit chest (OUT-2) at the kit's priority, and a full stack of ${m.caps['fast-inserter']} goes into the inserter chest (OUT-4) at the inserter group's priority, ${m.kitShare + m.caps['fast-inserter']} in all. Each chest is counted against its own cap only; the inserter chest takes fast inserters only while the kit chest has all of its own.`, '');
 
   // ---- ports
   const rate = report?.scenarios?.rate, fillPhase = report?.scenarios?.fill?.phases?.[0];
@@ -45,7 +45,7 @@ export async function render(d, audit, proven, p, report, out) {
     `- **Other inputs needed** besides lava and calcite: plastic bar, tungsten carbide (foundries only), sulfuric acid (processing units, batteries), lubricant (electric engines, express belts, foundries), water (concrete, refined concrete). No oil or tungsten chain is inside.`, '');
   L.push('## Output chests and caps', '', '| Chest | Tile | Holds |', '| --- | --- | --- |');
   for (const o of m.outputs) L.push(`| ${o.id} | ${tile(o.position)} | ${o.items.join(', ')} |`);
-  L.push('', `**Caps** live in one constant combinator at tile ${tile(m.capsCombinator.position)} (panel "CAPS"), one positive number per product, plus signal K = the kit's share of the fast inserters. Edit a number and the stock follows. Nothing else holds a cap.`, '');
+  L.push('', `**Caps** live in one constant combinator at tile ${tile(m.capsCombinator.position)} (panel "CAPS"), one positive number per product, plus signal K = the fast inserters kept in the kit chest. Edit a number and the stock follows. Nothing else holds a cap.`, '');
 
   // ---- how
   L.push('## How it works', '',
@@ -75,7 +75,7 @@ export async function render(d, audit, proven, p, report, out) {
     L.push('## Measured natively', '', `Every figure below is from \`native-report.json\` (${Object.keys(S).length} scenarios, each its own headless game on a Vulcanus surface from a fresh import of this string). **Full caps**: the fill from empty and the rate scenario. **Reduced caps** (a tenth of each cap, at least 2; the silo, pad and starter pack stay at 1): refill, outage and recovery, hold, cap edits, single refills and the seven withheld-input scenarios. A reduced-cap time is not a full-stack time.`, '');
     if (fillPhase) {
       L.push(`### Fill from empty at the published caps: ${min(fillPhase.ticks)} minutes`, '', '| Product | Group | Cap | At its cap after (min) |', '| --- | ---: | ---: | ---: |');
-      for (const v of [...m.products].sort((x, y) => (fillPhase.reached[x.item] ?? 1e12) - (fillPhase.reached[y.item] ?? 1e12))) L.push(`| ${v.item} | ${v.group} | ${v.cap} | ${min(fillPhase.reached[v.item])} |`);
+      for (const v of [...m.products].sort((x, y) => (fillPhase.reached[x.key] ?? 1e12) - (fillPhase.reached[y.key] ?? 1e12))) L.push(`| ${v.key === 'fast-inserter' ? 'fast-inserter (inserter group)' : v.key} | ${v.group} | ${v.cap} | ${min(fillPhase.reached[v.key])} |`);
       const lv = fillPhase.levelTicks;
       L.push('', `Minutes each level was in force: ${m.groups.map(g => `${g.name} ${min(lv[String(g.level)] || 0)}`).join(', ')}. Level-gated arms enabled against the level: ${fillPhase.gatedActive} ticks.`,
         `Used: ${INPUT_ORDER.map(n => `${n} ${num(fillPhase.consumed[n], 0)}`).join(', ')}; molten iron ${num(fillPhase.consumed['molten-iron'], 0)}, molten copper ${num(fillPhase.consumed['molten-copper'], 0)}; stone made ${num(fillPhase.consumed['stone made'], 0)}, used ${num(fillPhase.consumed['stone used'], 0)}, left by the exit ${num(fillPhase.stoneOut, 0)}.`,
