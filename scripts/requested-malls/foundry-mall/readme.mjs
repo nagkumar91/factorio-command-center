@@ -1,0 +1,158 @@
+// README and layout picture of the foundry mall, written by generate.mjs from the manifest, the static audit and
+// (only when it is for exactly this string) the native report. Nothing here is typed in by hand as a result.
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { box } from './lib.mjs';
+import { asciiMap, LEVEL_HOLD, STALL, BRICK_STACKS, TANK_READY } from './design.mjs';
+
+const min = t => (t === undefined || t === null ? 'never' : (t / 3600).toFixed(1));
+const num = (v, d = 1) => (v === undefined || v === null ? '–' : (Math.round(v * 10 ** d) / 10 ** d).toString());
+const short = n => n.replace('space-platform-', 'platform ').replaceAll('-', ' ');
+const INPUT_ORDER = ['lava', 'calcite', 'plastic-bar', 'tungsten-carbide', 'sulfuric-acid', 'lubricant', 'water'];
+
+export async function loadExplorations(out) {
+  const files = (await fs.readdir(out).catch(() => [])).filter(f => /^exploration-.*-report\.json$/.test(f)).sort();
+  return Promise.all(files.map(async f => ({ file: f, report: JSON.parse(await fs.readFile(path.join(out, f), 'utf8')) })));
+}
+
+export async function render(d, audit, proven, p, report, out) {
+  const m = d.manifest, b = m.footprint.bounds, bill = m.bill;
+  const tile = pos => `(${Math.floor(pos.x) - b.left}, ${Math.floor(pos.y) - b.top})`;
+  const explorations = await loadExplorations(out);
+  const L = [];
+  const status = proven ? `**qualified** (full native protocol, \`native-report.json\`)` : report ? '**not qualified**: the native report for this string did not pass' : '**not qualified**: no native report for this string yet';
+  L.push(`# Foundry mall · lava and calcite in, six groups of products out, in list order`, '',
+    `Status: ${status}. Blueprint SHA-256 \`${d.hash}\`. Factorio ${p.gameVersion} Space Age, Vulcanus, vanilla, normal quality, no modules, no beacons.`, '',
+    `One blueprint for Vulcanus. Foundries turn lava and calcite into molten iron and molten copper and cast plates, steel, gears, pipes, sticks, cable, low density structures and concrete; assembling machines 3 make the rest. Everything is kept at a cap in five passive provider chests on the south edge, and made **in the order of the list**: a group lower on the list waits while a group above it has something it can make.`, '',
+    `Rocket parts (the 50 processing units, 50 low density structures and 50 rocket fuel per launch) are **not** part of this blueprint.`, '');
+
+  // ---- products
+  L.push('## What it makes', '', '| Priority | Group | Product | Cap | Chest |', '| ---: | --- | --- | ---: | --- |');
+  for (const g of m.groups) for (const item of g.products) { const o = m.outputs.find(v => v.items.includes(item)); L.push(`| ${g.group} | ${g.name} | ${item} | ${m.caps[item]}${item === 'fast-inserter' ? ` (the first ${m.kitShare} at the kit's priority)` : ''} | ${o.id} |`); }
+  L.push('', `The kit is exactly the bill in \`scripts/launch-kit/bill.json\` (count + spare). Fast inserters are one stock with two priorities: the kit's ${m.kitShare} are made at the kit's priority, the rest of the stack at the inserter group's. They sit in the inserter chest (OUT-4), not in the kit chest.`, '');
+
+  // ---- ports
+  const rate = report?.scenarios?.rate, fillPhase = report?.scenarios?.fill?.phases?.[0];
+  L.push('## Entrances, exit, power', '', 'Tiles are counted from the blueprint\'s top-left tile (column, row).', '', '| Port | What | Kind | Tile | Side | For one full fill (recipes) | Used in the measured full fill |', '| --- | --- | --- | --- | --- | ---: | ---: |');
+  for (const port of m.ports) {
+    const expected = port.exit ? bill.fullFill.stoneSurplus : bill.fullFill[port.item];
+    const measured = fillPhase ? (port.exit ? fillPhase.stoneOut : fillPhase.consumed[port.item]) : null;
+    L.push(`| ${port.id} | ${port.item} | ${port.kind === 'fluid' ? 'pipe' : 'belt'} | ${tile(port.position)} | ${port.label.match(/(west|east|south|north)/)?.[1] || ''} | ${num(expected, 0)} | ${num(measured, 0)} |`);
+  }
+  L.push('', `- **Power**: connect the substation at tile ${tile(d.blueprint.blueprint.entities[m.power.entry - 1].position)} (panel "${m.power.label}"). Four substations power everything. Idle draw is small; with all foundries working it reaches about 25 MW.`,
+    `- **Stone** is a by-product of every lava craft. The bricks the bill needs are made inside (a five-stack brick stock); the rest leaves on the belt of OUT-STONE and must be taken away (run that belt to an inserter over lava). If the exit backs up, the two lava foundries stop and so does everything else. About 93% of the stone is surplus: there is nothing in this bill to spend it on.`,
+    `- **Water and lubricant** each pass a storage tank the control reads; a fluid counts as present above ${TANK_READY}. The tanks take 25,000 each when first connected.`,
+    `- **Other inputs needed** besides lava and calcite: plastic bar, tungsten carbide (foundries only), sulfuric acid (processing units, batteries), lubricant (electric engines, express belts, foundries), water (concrete, refined concrete). No oil or tungsten chain is inside.`, '');
+  L.push('## Output chests and caps', '', '| Chest | Tile | Holds |', '| --- | --- | --- |');
+  for (const o of m.outputs) L.push(`| ${o.id} | ${tile(o.position)} | ${o.items.join(', ')} |`);
+  L.push('', `**Caps** live in one constant combinator at tile ${tile(m.capsCombinator.position)} (panel "CAPS"), one positive number per product, plus signal K = the kit's share of the fast inserters. Edit a number and the stock follows. Nothing else holds a cap.`, '');
+
+  // ---- how
+  L.push('## How it works', '',
+    `- **Casting core.** Two foundries make molten copper and molten iron from lava and calcite; pipes carry both to four casting foundries next to the ring. One casts iron plate. One casts steel or low density structures. One casts cable (handed straight to the two circuit machines) or copper plate. One casts gears, pipes, sticks, concrete or steel. The last three take their recipe from the circuit network.`,
+    `- **One ring** of ${m.ring.tiles} red belt tiles carries every intermediate and finished item. An arm that adds an item works only while the ring holds fewer than that item's limit; a recipe-switching machine is told to make an item only while the stock in sight is below its limit.`,
+    `- **Two universal machines.** U1 (assembling machine 3) makes ${m.rules.filter(r => r.machine === 'U1').map(r => r.recipe).filter((v, i, a) => a.indexOf(v) === i).length} recipes: the small kit items, inserters, drills and refined concrete. U2 (a foundry, lubricant on its fluid box) makes the three belt tiers and the foundry, with the foundry's +50% on each. One decider per recipe ("rule") says when that recipe is wanted and makeable; a selector picks the highest; the machine takes the recipe from the circuit. A never-fed shadow machine reads out the recipe's ingredients so the input arms load exactly one craft. A recipe is changed only on the tick a craft finishes or while the machine is parked.`,
+    `- **Dedicated machines** for the high-volume chain: 2 electronic circuit, 4 advanced circuit, 2 speed module, processing unit, engine, electric engine, foundation, the assembling machine 1 → 2 → 3 line, the rocket silo (loads exactly one craft), a battery plant and the brick furnace.`,
+    `- **List order.** Every rule and every dedicated final shows a weight on one network; the highest weight in force sets the level (6 = assembling machine 3 … 1 = foundry). Machines and recipes of a lower level are held while a higher level is in force. The level rises at once and falls only after ${LEVEL_HOLD / 60} s without a makeable product at that level.`,
+    `- **Skip and return.** A rule is true only while its product is short *and* one craft's worth of every scarce ingredient is in sight (ring + the machine), and fluid recipes also need their tank above ${TANK_READY}. A product whose outside input is missing therefore drops out of the level by itself, and comes back when the input does. The two dedicated finals use a timer instead: assembling machine 3 gives up its level after ${STALL['assembling-machine-3'] / 60} s without a craft, the rocket silo after ${STALL['rocket-silo'] / 60} s without a delivery.`, '');
+  L.push('### The priority rule, as built and as tested', '',
+    `Built: **strict sequencing by group**, not sharing. While a group has a product below its cap that can be made, no lower group loads anything: the input arms of the lower dedicated machines are switched off and the universal machines are not given lower recipes. Chosen over sharing by reserve because it can be checked exactly and needs no tuning; the cost is that a full fill is the sum of the groups, not the longest of them.`,
+    `Tested natively, every tick: no level-gated arm may be enabled for more than five ticks while a higher level is in force. Reported per phase: the minutes each level was in force, the time each product reached its cap, and what each machine crafted at which level.`,
+    `Limits of the rule, stated plainly: (1) a universal machine finishes the one craft it has started before it obeys a higher level; (2) inside the kit the order is the bill's order per machine, and the silo, foundation and the small items run side by side; (3) the casting foundries and the circuit machines are shared and keep the ring at its limits at every level; (4) "makeable" is read from stock in sight, so a group can lose its turn for a while if an intermediate it needs takes longer than ${LEVEL_HOLD / 60} s to come round.`, '');
+
+  // ---- size
+  const c = m.footprint.counts;
+  L.push('## Size and parts', '', `Footprint **${m.footprint.width} × ${m.footprint.height} = ${m.footprint.area} tiles**, ${m.footprint.entities} entities.`, '',
+    `Machines: ${c.foundry} foundries, ${c['assembling-machine-3']} assembling machines 3 (two of them shadows that never craft), 1 chemical plant, 1 electric furnace. Control: ${c['decider-combinator']} decider, ${c['arithmetic-combinator']} arithmetic, ${c['selector-combinator']} selector and ${c['constant-combinator']} constant combinators.`, '',
+    `Bill of materials: ${Object.entries(c).map(([n, k]) => `${k} ${n}`).join(', ')}. Red belts and fast, bulk and long-handed inserters only; hand sizes are pinned (fast 1, bulk 2), so the mall behaves the same whatever inserter capacity is researched.`, '',
+    `Research needed (${m.technologyClosure.length} technologies in the closure), among them: foundry, automation 3, logistics 3, bulk inserter, rocket silo, space platform (the asteroid collector and crusher recipes), advanced combinators (the selector combinator), electric energy distribution 2.`, '',
+    '```', asciiMap(d, p), '```', '',
+    'F foundry · A assembling machine 3 · C chemical plant · K furnace · T tank · p pump · S substation · P provider chest · B brick chest · > < ^ v belt · = pipe · u underground pipe · i fast · b bulk · l long-handed inserter · d a s c combinators · ! panel', '');
+
+  // ---- measured
+  if (report?.scenarios) {
+    const S = report.scenarios, capsOf = n => S[n] ? `${S[n].capsName} caps` : '';
+    L.push('## Measured natively', '', `Every figure below is from \`native-report.json\` (${Object.keys(S).length} scenarios, each its own headless game on a Vulcanus surface from a fresh import of this string). **Full caps**: the fill from empty and the rate scenario. **Reduced caps** (a tenth of each cap, at least 2; the silo, pad and starter pack stay at 1): refill, outage and recovery, hold, cap edits, single refills and the seven withheld-input scenarios. A reduced-cap time is not a full-stack time.`, '');
+    if (fillPhase) {
+      L.push(`### Fill from empty at the published caps: ${min(fillPhase.ticks)} minutes`, '', '| Product | Group | Cap | At its cap after (min) |', '| --- | ---: | ---: | ---: |');
+      for (const v of [...m.products].sort((x, y) => (fillPhase.reached[x.item] ?? 1e12) - (fillPhase.reached[y.item] ?? 1e12))) L.push(`| ${v.item} | ${v.group} | ${v.cap} | ${min(fillPhase.reached[v.item])} |`);
+      const lv = fillPhase.levelTicks;
+      L.push('', `Minutes each level was in force: ${m.groups.map(g => `${g.name} ${min(lv[String(g.level)] || 0)}`).join(', ')}. Level-gated arms enabled against the level: ${fillPhase.gatedActive} ticks.`,
+        `Used: ${INPUT_ORDER.map(n => `${n} ${num(fillPhase.consumed[n], 0)}`).join(', ')}; molten iron ${num(fillPhase.consumed['molten-iron'], 0)}, molten copper ${num(fillPhase.consumed['molten-copper'], 0)}; stone made ${num(fillPhase.consumed['stone made'], 0)}, used ${num(fillPhase.consumed['stone used'], 0)}, left by the exit ${num(fillPhase.stoneOut, 0)}.`,
+        `Left on the ring when the last chest filled (finished products not in a chest): ${Object.entries(fillPhase.ringAtEnd).filter(([k]) => k in m.caps).map(([k, v]) => `${v} ${k}`).join(', ') || 'none'}.`, '');
+    }
+    if (rate) {
+      L.push('### Rates (full caps)', '', 'After a full fill, one group at a time has its products taken out of its chest every second (15 minutes warm-up, 30 measured) while the groups above it stay full. The first row empties every chest at once: with strict list order that only ever shows group 1.', '',
+        `| Measured window | Products per minute | ${INPUT_ORDER.join(' | ')} | stone out |`, `| --- | --- | ${INPUT_ORDER.map(() => '---:').join(' | ')} | ---: |`);
+      for (const ph of rate.phases.filter(v => v.perMinute)) L.push(`| ${ph.name.replace('rate: ', '')} | ${Object.entries(ph.perMinute.collected).filter(([, v]) => v > 0).map(([k, v]) => `${short(k)} ${num(v, 2)}`).join(', ') || 'none'} | ${INPUT_ORDER.map(n => num(ph.perMinute.consumed[n], 1)).join(' | ')} | ${num(ph.perMinute.stoneOut, 1)} |`);
+      L.push('', 'Inputs are what the machines consumed per minute in the window (production statistics): the draw each entrance has to meet.', '');
+    }
+    if (S.single) {
+      L.push(`### Refilling one collected product (${capsOf('single')})`, '', '| Product | Taken | Back at cap after (min) | lava | calcite | plastic | carbide | acid | lubricant | water |', '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |');
+      for (const ph of S.single.phases.filter(v => v.name.startsWith('single refill'))) { const item = ph.name.split(': ')[1]; L.push(`| ${item} | ${ph.collectedAtStart?.[item] ?? 0} | ${min(ph.ticks)} | ${INPUT_ORDER.map(n => num(ph.consumed[n], 0)).join(' | ')} |`); }
+      L.push('', 'Draw is the total consumed during that refill; it includes topping the ring back up.', '');
+    }
+    const table = (title, names) => { L.push(title, '', '| Scenario | Phase | Minutes | Ended by |', '| --- | --- | ---: | --- |'); for (const n of names) if (S[n]) for (const ph of S[n].phases) L.push(`| ${n} | ${ph.name} | ${min(ph.ticks)} | ${ph.endedBy === 'caps' ? 'every cap reached' : ph.endedBy === 'ticks' ? 'fixed length' : 'LIMIT'} |`); L.push(''); };
+    table(`### Refill, outage, hold, cap edits (${capsOf('hold')})`, ['fill', 'hold', 'caps']);
+    if (S.hold) { const h = S.hold.phases.find(v => v.name.startsWith('one-hour')); L.push(`Hold: for one hour at full stock no chest changed and the final machines crafted ${h.finalCrafts} times.`, ''); }
+    if (S.caps) { const ph = S.caps.phases; L.push(`Cap edits (written into the caps combinator by script, as a player would): raised to ${JSON.stringify(ph[1].setCaps)} → every chest at the new caps in ${min(ph[1].ticks)} min; lowered to ${JSON.stringify(ph[2].setCaps)} with those chests emptied → refilled to exactly the lower caps in ${min(ph[2].ticks)} min; restored in ${min(ph[3].ticks)} min.`, ''); }
+    L.push(`### Skip and return, one outside input withheld from a cold start (reduced caps)`, '', '| Withheld | Products that need it | Everything else at its cap after (min) | After it returned: all at cap after (min) |', '| --- | --- | ---: | ---: |');
+    for (const input of INPUT_ORDER) { const s = S['skip:' + input]; if (!s) continue; const [a, r] = s.phases; L.push(`| ${input} | ${report.dependents[input].length === m.products.length ? 'all' : report.dependents[input].map(short).join(', ')} | ${a.mode === 'ticks' ? `nothing can be made (${min(a.ticks)} min, nothing made)` : min(a.ticks)} | ${min(r.ticks)} |`); }
+    L.push('', `In the withheld phase the mall must hold every cap that does not need the input for two minutes while the dependent products stay short; then the input returns and every cap must be reached.`, '');
+    const all = Object.values(S);
+    L.push('### Checks in every scenario', '',
+      `- Import: every entity at its position and direction, every recipe or circuit recipe control, every arm's hand size, filters and conditions, every combinator's parameters, every circuit net as one network with no two nets joined, one electric network.`,
+      `- Chests: no chest ever held an item it does not declare (${all.every(s => s.checks.find(v => v.name === 'no chest ever held a foreign item')?.passed) ? 'held in all' : 'FAILED'}).`,
+      `- Pipes: every pipe, underground pipe and tank carried only its own fluid, sampled every ten seconds (${all.every(s => s.checks.find(v => v.name.startsWith('every pipe and tank'))?.passed) ? 'held in all' : 'FAILED'}).`,
+      `- Ring: peak ${Math.max(...all.map(s => s.ringPeakTotal))} items against a bound of ${m.ring.bound} (75% of both lanes); static lane limits inner ${m.ring.laneLimits.inner}, outer ${m.ring.laneLimits.outer} of ${m.ring.laneCapacity} per lane.`,
+      `- Level gate: ${all.reduce((n, s) => n + s.phases.reduce((k, ph) => k + ph.gatedActive, 0), 0)} ticks with a gated arm enabled against the level, over all scenarios.`, '');
+    if (fillPhase) {
+      L.push('### Switching machines in the full fill', '', '| Machine | Recipe changes | Time per recipe (min) |', '| --- | ---: | --- |');
+      for (const [k, v] of Object.entries(fillPhase.recipeTicks)) L.push(`| ${k} | ${fillPhase.switches[k]} | ${Object.entries(v).sort((x, y) => y[1] - x[1]).map(([n, t]) => `${n === 'none' ? 'changing' : n} ${min(t)}`).join(', ')} |`);
+      L.push('', '"iron-ore-melting" and "wooden-chest" are the parking recipes: recipes the machine can never start, held while it has nothing to make.', '');
+    }
+    L.push('### Harness speed', '', `Scenarios ran side by side at ${all.map(s => s.timesRealTime).filter(Boolean).map(v => Math.round(v)).sort((x, y) => x - y).join(', ')} times real time; ${num(report.wallSecondsTotal, 0)} s of wall time in all for ${num(all.reduce((n, s) => n + s.actualTicks, 0) / 216000, 1)} game hours.`, '');
+  }
+
+  // ---- bill
+  L.push('## Bill from the recipes (expected values, productivity counted)', '', '| Group | lava | calcite | plastic | carbide | acid | lubricant | water | molten iron | molten copper | stone made | stone used |', '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |');
+  for (const g of m.groups) { const v = bill.perGroup[g.group]; L.push(`| ${g.group} ${g.name} | ${[v.lava, v.calcite, v['plastic-bar'], v['tungsten-carbide'], v['sulfuric-acid'], v.lubricant, v.water, v.moltenIron, v.moltenCopper, v.stoneMade, v.stoneUsed].map(x => num(x, 0)).join(' | ')} |`); }
+  const f = bill.fullFill;
+  L.push(`| **one full fill** | ${[f.lava, f.calcite, f['plastic-bar'], f['tungsten-carbide'], f['sulfuric-acid'], f.lubricant, f.water, f.moltenIron, f.moltenCopper, f.stoneMade, f.stoneUsed].map(x => num(x, 0)).join(' | ')} |`, '',
+    'The measured fill uses more than this: the ring, the machines\' input buffers and the brick stock are filled as well, and both lava recipes run whenever either metal is short.', '');
+
+  // ---- behaviours and limits
+  L.push('## Things to know', '',
+    `- The asteroid collector and crusher recipes exist only once a space platform has been created. On Vulcanus that is always the case.`,
+    `- A universal machine that has started loading a recipe keeps it until the craft is done; if the input it is waiting for never comes, it gives the recipe up after ${STALL.U1 / 3600} minutes (U1) or ${STALL.U2 / 3600} minutes (U2) and hands the loaded items back to the ring.`,
+    `- Tiny recipes can run one craft over their cap (an arm's second item is a full set). The extra rides the ring, counts as stock and goes into the chest after the next collection.`,
+    `- Kit items enter the kit chest only while no assembling machine 3 is wanted.`,
+    `- Collecting from a chest reopens that product's level; lower groups pause until it is full again.`,
+    `- The brick stock (${BRICK_STACKS} stacks) is filled from surplus stone whenever metal is cast, so concrete can be made later when little stone is flowing.`, '');
+  L.push('## Tried and rejected (native exploration, not kept as strings)', '',
+    '- **One recipe signal per machine without a parking recipe**: a machine that reads its own contents takes the item signals of what it still holds as recipe signals once the real signal is gone, and keeps crafting (gears to 150 on the ring).',
+    '- **Recipe following the pick at once**: an arm carrying an ingredient when the recipe changes holds it for good; the machine also flipped between two recipes hundreds of times while a product changed hands.',
+    '- **Counting what a switching machine has loaded as ring stock** for the casting rules: the caster stopped at the limit while the landing pad still waited for 180 concrete.',
+    '- **A 78-tile ring**: the inner lane filled at about 300 items and everything stopped; the ring is folded twice at its east end for 20 more tiles.',
+    '- **The water pipe straight into the gear foundry**: when that foundry changes recipe, its leftover molten iron flows out into any connected pipe that will take it; with water not yet connected it filled the water tank with molten iron, and water could never enter. A pump now stands between the tank and the foundry.',
+    '- **Casting copper plate in the steel foundry**: with empty pipes the game gave the molten copper the first fluid box, which is plumbed for iron; molten copper ended in the iron pipes.',
+    '- **A level that falls at once**: lower groups slipped in during the seconds a kit item waited for processing units.',
+    '- **Sharing by reserve instead of strict order**, and **dedicated machines for every recipe** (about 55 machines): not built; estimated only.', '');
+  if (explorations.length) L.push('Kept exploration reports: ' + explorations.map(e => `\`${e.file}\``).join(', ') + '.', '');
+  L.push('## Reproduce', '', '```', 'node scripts/requested-malls/foundry-mall/generate.mjs      # writes this folder from the pinned prototypes', 'node scripts/requested-malls/foundry-mall/audit.mjs         # static audit', 'node scripts/requested-malls/foundry-mall/validate.mjs      # full native protocol (needs the game), about three minutes', '```', '',
+    `Static audit: ${audit.passed ? `passed, ${audit.checksTotal} checks` : 'FAILED: ' + audit.errors.join('; ')}. Prototypes pinned from a private \`--dump-data\` of Factorio ${p.gameVersion} (\`scripts/requested-malls/foundry-mall/prototypes.json\`).`, '');
+
+  // ---- picture
+  const scale = 18, left = 30, top = 60, esc = s => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  const colors = { foundry: '#c6703a', 'assembling-machine-3': '#477196', 'chemical-plant': '#6a9a5b', 'electric-furnace': '#8a6f5a', 'storage-tank': '#5d8f8f', pump: '#3f7f9f', substation: '#e0af60', 'fast-transport-belt': '#b74c41', pipe: '#75bd95', 'pipe-to-ground': '#4f9a72', 'fast-inserter': '#41a9d2', 'bulk-inserter': '#58b05a', 'long-handed-inserter': '#d25a5a', 'passive-provider-chest': '#d78352', 'steel-chest': '#9aa3ad', 'display-panel': '#dac77a', 'constant-combinator': '#7d6fb3', 'decider-combinator': '#8d7fd0', 'arithmetic-combinator': '#6d8fd0', 'selector-combinator': '#b07fd0' };
+  let shapes = '';
+  for (const e of d.blueprint.blueprint.entities) {
+    const bb = box(e, p, 'selection_box'), x = left + (bb.left - b.left) * scale, y = top + (Math.max(bb.top, e.position.y - 0.5 - (bb.bottom - bb.top > 1 ? (bb.bottom - bb.top) / 2 - 0.5 : 0)) - b.top) * scale;
+    const role = m.machines.find(v => v.entity === e.entity_number)?.role;
+    shapes += `<rect x="${x.toFixed(1)}" y="${(top + (bb.top - b.top) * scale).toFixed(1)}" width="${((bb.right - bb.left) * scale).toFixed(1)}" height="${((bb.bottom - bb.top) * scale).toFixed(1)}" rx="2" fill="${colors[e.name] || '#888'}" stroke="#101b29"><title>#${e.entity_number} ${esc(role || e.text || e.name)}</title></rect>`;
+    if (role && !role.includes('shadow')) shapes += `<text x="${(left + (e.position.x - b.left) * scale).toFixed(1)}" y="${(top + (e.position.y - b.top) * scale + 3).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="8">${esc(role.replace('electronic-circuit', 'EC').replace('advanced-circuit', 'AC').replace('assembling-machine-', 'AM').replace('space-platform-foundation', 'foundation').replace('electric-engine-unit', 'e-engine').replace('processing-unit', 'PU').replace('molten-', 'molten ').replace('speed-module', 'SM').replace('rocket-silo', 'silo'))}</text>`;
+  }
+  const width = left * 2 + m.footprint.width * scale, height = top + m.footprint.height * scale + 40;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><rect width="100%" height="100%" fill="#101b29"/><g font-family="Arial,sans-serif"><text x="${left}" y="26" fill="#f2f6fc" font-size="20">Foundry mall</text><text x="${left}" y="46" fill="#a8bed4" font-size="12">${m.footprint.width} × ${m.footprint.height} tiles · ${c.foundry} foundries · ${c['assembling-machine-3']} AM3 · 5 provider chests · schematic</text>${shapes}<text x="${left}" y="${height - 14}" fill="#a8bed4" font-size="11">North-west: lava, calcite, stone exit · East: water, sulfuric acid · South: lubricant, plastic, tungsten carbide, the five chests and the caps combinator</text></g></svg>\n`;
+  return { 'README.md': L.join('\n') + '\n', 'layout.svg': svg };
+}

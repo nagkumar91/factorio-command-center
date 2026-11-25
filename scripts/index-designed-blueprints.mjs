@@ -285,6 +285,27 @@ for(const id of ['coal-plastic-lubricant','tungsten-carbide']){
    'Native test on a Vulcanus surface with only the technology closure researched: rates with the exits drained, exit blocks and release, a five-minute outage of every input and recovery, one fluid per pipe network checked once a second. Power by substations; connect the outside network to the labelled entry substation.']});
 }
 
+// Foundry mall (Vulcanus): lava and calcite in, six groups of products kept at their caps in five passive provider chests,
+// made in list order. Registered only with a passing native report for the exact string; the rates shown are that report's
+// measured ones (each group collected alone at full caps, the groups above it full).
+{
+ const dir='blueprint-sources/requested-malls/foundry-mall',m=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',proof=await read(reportFile).catch(()=>null);
+ if(!proof||proof.passed!==true||proof.blueprintSha256!==m.candidateSha256)console.warn('Not registered (no exact-hash passing native report): foundry-mall');
+ else{
+  const windows=proof.scenarios.rate.phases.filter(ph=>ph.perMinute),made={},drawn={};
+  for(const ph of windows){for(const [item,v] of Object.entries(ph.perMinute.collected))if(v>0)made[item]=Number(v.toFixed(2));for(const [item,v] of Object.entries(ph.perMinute.consumed))drawn[item]=Math.max(drawn[item]||0,v);}
+  const fill=proof.scenarios.fill.phases[0],ports=m.ports.filter(p=>!p.exit);
+  await register({file:dir+'/blueprint.txt',info:{name:'Foundry mall · lava and calcite to AM3, platform kit, express belts, inserters, drills, foundries',blueprintSha256:m.candidateSha256,
+   inputs:ports.map(p=>({item:p.item,entity:p.entity,side:p.label.match(/(west|east|south|north)/)?.[1],perMinute:Number((drawn[p.item]||0).toFixed(1))})),
+   outputs:m.outputs.flatMap(o=>o.items.map(item=>({item,entity:o.chest,cap:m.caps[item]}))),footprint:m.footprint},
+   category:'Malls · belts and inserters',purpose:'Mall production',sourceCollection:collection,inputs:ports.map(p=>p.item),outputs:m.products.map(v=>v.item),
+   proof:{passed:proof.passed,blueprintSha256:proof.blueprintSha256,gameVersion:proof.gameVersion,outputsPerMinute:made,footprint:m.footprint,scenarios:Object.fromEntries(Object.entries(proof.scenarios).map(([n,s])=>[n,{passed:s.passed,caps:s.capsName,ticks:s.actualTicks}]))},report:reportFile,version:proof.gameVersion,
+   setup:['Vulcanus, on demand, in list order: assembling machine 3, the white-pack platform kit (silo, landing pad, starter pack and every platform and receiver item), express belt, underground belt and splitter, fast and bulk inserters, electric mining drills and foundries, each kept at its cap in five passive provider chests. A lower group waits while a higher one has something it can make; a product whose outside input is missing is skipped until the input returns.',
+    `Inputs: lava by pipe and calcite by belt (north-west); plastic and tungsten carbide belts and lubricant by pipe (south); water and sulfuric acid by pipe (east). Surplus stone leaves on a belt in the north-west and must be taken away. Power by substations. Caps are edited in one constant combinator.`,
+    `Native test on a Vulcanus surface: fill from empty at the published caps in ${(fill.ticks/3600).toFixed(0)} minutes in list order, rate per group, and at reduced caps refill, a five-minute outage of every input, a one-hour hold, cap edits and one cold start per withheld input.`]});
+ }
+}
+
 // This exporter checks every ledger/code/native SHA and passive-provider output before registration.
 const optimizedContext={};vm.createContext(optimizedContext);vm.runInContext(await fs.readFile('site/autosaved-derivatives/data.js','utf8'),optimizedContext);
 for(const f of optimizedContext.AutosavedDerivatives.entries){
