@@ -2,6 +2,7 @@
 (function () {
   const title = 'Long game flight plans and strategies';
   const plans = [
+    {id:'vulcanus-foundry-builds',href:'vulcanus-foundry-builds/index.html',label:'Vulcanus foundry builds',detail:'The foundry mall with its coal and tungsten carbide supplies, and the assembling machine 3 and express belt malls: strings, layouts, entrances and measured draws on one page.',icon:'foundry'},
     {id:'today',href:'index.html?collection=today#blueprints',label:"Today's flight builds",detail:'All nine imports from the 16–17 November session, with the full library filters.',icon:'blueprint-book'},
     {id:'today-overview',href:'todays-flight-builds/index.html',label:'Today · import overview',detail:'Materials, outputs, footprints, guides and exact native evidence for nine imports.',icon:'blueprint'},
     {id:'essentials',href:'essentials/index.html',label:'Essentials · four builds',detail:'Green-circuit supplier, building-essentials mall, smaller robot workshop and six-pack science, with a pairing table and one book.',icon:'electronic-circuit'},

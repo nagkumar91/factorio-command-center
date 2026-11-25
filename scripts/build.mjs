@@ -11,6 +11,7 @@ execFileSync('node', ['scripts/belt-workshop-page.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/index-designed-blueprints.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/south-entrance-supplies.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/todays-flight-builds.mjs'], {stdio:'inherit'});
+execFileSync('node', ['scripts/vulcanus-foundry-builds.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/essentials-pages.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/space-launch-pages.mjs'], {stdio:'inherit'});
 execFileSync('node', ['scripts/circuit-supplier-pages.mjs'], {stdio:'inherit'});
