@@ -1,5 +1,6 @@
-/** One page for the five Vulcanus blueprints built on 25 November 2026: the foundry mall, its two supplies (coal to plastic bars
- * and lubricant, tungsten carbide) and the two plate-fed malls (assembling machine 3, express belts): site/vulcanus-foundry-builds/
+/** One page for the Vulcanus blueprints: the foundry mall, its two supplies (coal to plastic bars and lubricant, tungsten carbide),
+ * the science blueprint that makes production and utility packs from lava, and the two plate-fed malls (assembling machine 3,
+ * express belts): site/vulcanus-foundry-builds/
  * (index.html, vulcanus.css, one string and one layout picture per blueprint). Every figure is read from the committed manifest,
  * ports and native report of each blueprint folder when this runs, never typed here, so the page follows the data when a
  * blueprint is re-released (a new string, new caps, new draws). The prose of the caveats is read from each README.
@@ -18,10 +19,11 @@ export const ID='vulcanus-foundry-builds';
 export const TITLE='Vulcanus foundry builds';
 export const BUILT='25 November 2026';
 
-/** The five blueprints, in page order. Only folders, groups and which README passages to quote live here; no figures. */
+/** The blueprints, in page order. Only folders, groups and which README passages to quote live here; no figures. */
 export const GROUPS={
  foundry:{label:'The foundry mall',lead:'The one blueprint that does the work: lava and calcite in, the finished items out in five chests.'},
  supplies:{label:'Supplies that feed the foundry mall',lead:'One copy of each covers the foundry mall (see the table above). Build them first, or at the same time.'},
+ science:{label:'Science from lava',lead:'Production and utility science packs made from lava and calcite in one blueprint. It takes plastic and lubricant from the coal supply above and its own sulfuric acid; the card says how many copies of the supply it needs.'},
  rockets:{label:'Rocket supplies (not an input of the foundry mall)',lead:'This one does not feed the foundry mall. It makes rocket fuel for rocket launches, from the same four inputs as the coal-to-plastic supply. Its own needs are in its card.'},
  plates:{label:'Plate-fed malls (not on the foundry chain)',lead:'These two run from smelted plates that you bring yourself. They use neither the foundry mall nor its supplies.'}
 };
@@ -32,6 +34,8 @@ export const BUILDS=[
   {section:'What to preserve'},{section:'Power'},{section:'How it balances itself (no circuits)',only:/Taking more than/}]},
  {key:'tungsten-carbide',dir:'vulcanus-supplies/tungsten-carbide',kind:'supply',group:'supplies',caveats:[
   {section:'What to preserve'},{section:'Power'}]},
+ {key:'production-utility-science',dir:'vulcanus-science/production-utility-science',kind:'science',group:'science',caveats:[
+  {section:'Supplies it needs'},{section:'Ports',only:/^- \*\*(Lava|Stone)/},{section:'Good to know'}]},
  {key:'rocket-fuel',dir:'vulcanus-supplies/rocket-fuel',kind:'supply',group:'rockets',caveats:[
   {section:'',only:/^A rocket needs/},{section:'Known limits',skip:/hand size|mirror images|Not tested standing/},{section:'Beside the coal-to-plastic supply',only:/^- \*\*Leave at least/},{section:'What to preserve'},{section:'Power'}]},
  {key:'assembler-3-mall',dir:'requested-malls/assembler-3-mall',kind:'assembler',group:'plates',caveats:[
@@ -107,7 +111,7 @@ const side=p=>p.side??p.label?.match(/\b(west|east|south|north)\b/)?.[1];
 const tile=(p,fp)=>{const q=p.tile??p.position??p.entrance;return q?{col:Math.floor(q.x-fp.bounds.left),row:Math.floor(q.y-fp.bounds.top)}:null;};
 const where=(p,fp)=>{const t=tile(p,fp);return `${side(p)?side(p)+' edge':'—'}${t?`, tile (${t.col}, ${t.row})`:''}`;};
 
-/** The figures of one build, in one shape for all five kinds of report. */
+/** The figures of one build, in one shape for every kind of report. */
 export function describe(b,names){
  const {spec,m,ports,report}=b,fp=m.footprint,name=id=>names.get(id)||id.replaceAll('-',' ').replace(/^./,c=>c.toUpperCase());
  const itemLabel=id=>{const q=id.match(/^(.*?)\s*\((.*)\)$/);return q?`${name(q[1])} (${q[2]})`:name(id);};
@@ -122,6 +126,9 @@ export function describe(b,names){
   v.fillMinutes=report.scenarios.fill.phases[0].ticks/3600;
  }else if(spec.kind==='supply'){
   const th=report.measured.steady.throttled;needs=th.inputsPerMinute;outputRate=th.outputsPerMinute;
+ }else if(spec.kind==='science'){
+  // measured with every port held to exactly its panel figure; the stone that leaves is in the same block
+  needs=report.measured.ports.throttled;outputRate=report.measured.rates.throttled;stone=needs.stone;
  }else if(spec.kind==='assembler'){
   const w=report.windows['rate-am3'];needs=w.inputsPerMinute;outputRate=w.removedPerMinute;v.fillMinutes=report.fillTimes['fill from empty'].both/3600;
  }else{
@@ -130,8 +137,8 @@ export function describe(b,names){
  v.needs=needs;v.outputRate=outputRate;
  v.inputs=ports.inputs.map(p=>({item:p.item,mode:fluidOrBelt(p),where:where(p,fp),label:p.label,perMinute:needs[p.item],peak:peakWindow[p.item]}));
  // exits that are belts or pipes: the foundry mall's surplus stone, the supplies' products
- const exitPorts=spec.kind==='foundry'?ports.exits:spec.kind==='supply'?ports.outputs:[];
- v.exits=exitPorts.map(p=>({item:p.item,mode:fluidOrBelt(p),where:where(p,fp),label:p.label,perMinute:spec.kind==='foundry'?stone:outputRate[p.item]}));
+ const exitPorts=spec.kind==='foundry'||spec.kind==='science'?ports.exits:spec.kind==='supply'?ports.outputs:[];
+ v.exits=exitPorts.map(p=>({item:p.item,mode:fluidOrBelt(p),where:where(p,fp),label:p.label,perMinute:spec.kind==='foundry'||spec.kind==='science'?stone:outputRate[p.item]}));
  v.power=ports.power?.label;
  // what it makes
  const chests=(ports.outputs||[]).filter(o=>o.chest!==undefined).map(o=>({label:o.label,where:(()=>{const t=tile(o,fp);return t?`tile (${t.col}, ${t.row})`:'—';})(),items:o.items??[o.item],cap:o.cap}));
@@ -151,6 +158,9 @@ export function describe(b,names){
   v.makesGroups=groups;
  }else if(spec.kind==='supply'){
   v.makesRates=m.outputPorts.map(o=>({item:o.item,label:name(o.item),perMinute:outputRate[o.item],target:m.targets?.[o.item]}));
+ }else if(spec.kind==='science'){
+  v.makesRates=m.outputs.map(o=>({item:o.item,label:name(o.item),perMinute:outputRate[o.item],target:m.targets[o.item]}));
+  v.chestNote=`Each pack has its own passive provider chest that holds ${fmt(m.outputs[0].capacity)} packs: ${m.outputs.map(o=>`${name(o.item)} at tile (${o.tile.x}, ${o.tile.y})`).join(', ')}.`;
  }else{
   v.makesGroups=chests.map(c=>({order:null,name:null,chest:c,items:c.items.map(i=>row(i))}));
  }
@@ -163,7 +173,7 @@ const table=(head,body,cls='')=>`<div class="table-scroll"><table class="vulcanu
 const hasRates=g=>g.some(x=>x.items.some(i=>i.perMinute!==undefined));
 
 function makesHtml(v){
- if(v.makesRates)return `<h3>What it makes</h3>${table(['Product','Per minute (measured)'].concat(v.makesRates.some(r=>r.target!==undefined)?['Target']:[]),v.makesRates.map(r=>`<tr><td>${esc(r.label)}</td><td class="num">${fmt(r.perMinute)}</td>${v.makesRates.some(x=>x.target!==undefined)?`<td class="num">${fmt(r.target)}</td>`:''}</tr>`).join(''))}`;
+  if(v.makesRates)return `<h3>What it makes</h3>${v.chestNote?`<p>${esc(v.chestNote)}</p>`:''}${table(['Product','Per minute (measured)'].concat(v.makesRates.some(r=>r.target!==undefined)?['Target']:[]),v.makesRates.map(r=>`<tr><td>${esc(r.label)}</td><td class="num">${fmt(r.perMinute)}</td>${v.makesRates.some(x=>x.target!==undefined)?`<td class="num">${fmt(r.target)}</td>`:''}</tr>`).join(''))}`;
  const showGroup=v.makesGroups.some(g=>g.name),rated=hasRates(v.makesGroups);
  const head=[...(showGroup?['Order','Group']:[]),'Item','Stock kept (cap)',...(rated?['Measured per minute']:[]),'Chest'];
  const body=v.makesGroups.map(g=>g.items.map((i,n)=>`<tr>${showGroup&&n===0?`<td class="num" rowspan="${g.items.length}">${esc(g.order??'—')}</td><td rowspan="${g.items.length}">${esc(g.name)}</td>`:''}<td>${esc(i.label)}</td><td class="num">${fmt(i.cap)}</td>${rated?`<td class="num">${i.perMinute===undefined?'—':fmt(i.perMinute)}</td>`:''}${n===0?`<td rowspan="${g.items.length}">${g.chest?`${esc(g.chest.label)}<br><span class="muted">${esc(g.chest.where)}</span>`:'—'}</td>`:''}</tr>`).join('')).join('');
@@ -172,7 +182,7 @@ function makesHtml(v){
 function portsHtml(v){
  const rows=[...v.inputs.map(p=>['In',p]),...v.exits.map(p=>['Out',p])];
  const body=rows.map(([dir,p])=>`<tr><td>${dir}</td><td>${esc(v.nameOf(p.item))}</td><td>${esc(p.mode)}</td><td>${esc(p.where)}<br><span class="muted">${esc(p.label)}</span></td><td class="num">${p.perMinute===undefined?'—':fmt(p.perMinute)}${p.peak?`<br><span class="muted">peak while collecting: ${esc(p.peak)}</span>`:''}</td></tr>`).join('');
- const head=v.kind==='foundry'?'Per minute (peak)':v.kind==='supply'?'Per minute (measured)':'Per minute (measured draw)';
+ const head=v.kind==='foundry'?'Per minute (peak)':v.kind==='supply'||v.kind==='science'?'Per minute (measured)':'Per minute (measured draw)';
  return `<h3>Entrances and exits</h3><p class="muted">Tiles are counted from the top-left corner of the blueprint (column, row).</p>${table(['','Item','Belt or pipe','Where',head],body)}${v.power?`<p><strong>Power:</strong> connect the labelled substation or pole (panel text <code>${esc(v.power)}</code>).</p>`:''}`;
 }
 function facts(v){

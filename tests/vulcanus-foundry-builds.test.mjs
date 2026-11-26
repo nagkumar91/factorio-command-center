@@ -43,14 +43,15 @@ test('the page exists, is the first entry of the left menu with an existing icon
  assert.equal(ID.match(/\d/),null,'no letter-number codes in the page id');
 });
 
-test('order: foundry mall first, its two supplies under a heading that says they feed it, then the rocket fuel supply under its own heading, then the two plate-fed malls as their own group',()=>{
+test('order: foundry mall first, its two supplies under a heading that says they feed it, then science from lava, then the rocket fuel supply under its own heading, then the two plate-fed malls as their own group',()=>{
  const at=k=>html.indexOf(`id="${k}"`),g=k=>html.indexOf(`id="g-${k}"`);
- assert.deepEqual(BUILDS.map(b=>b.key),['foundry-mall','coal-plastic-lubricant','tungsten-carbide','rocket-fuel','assembler-3-mall','express-belt-mall']);
- assert.ok(at('foundry-mall')<at('coal-plastic-lubricant')&&at('coal-plastic-lubricant')<at('tungsten-carbide')&&at('tungsten-carbide')<at('rocket-fuel')&&at('rocket-fuel')<at('assembler-3-mall')&&at('assembler-3-mall')<at('express-belt-mall'));
- assert.ok(g('foundry')<at('foundry-mall')&&at('foundry-mall')<g('supplies')&&g('supplies')<at('coal-plastic-lubricant')&&at('tungsten-carbide')<g('rockets')&&g('rockets')<at('rocket-fuel')&&at('rocket-fuel')<g('plates')&&g('plates')<at('assembler-3-mall'));
- assert.match(GROUPS.rockets.label,/Rocket supplies/);assert.equal(Object.keys(GROUPS).join(),'foundry,supplies,rockets,plates');
+ assert.deepEqual(BUILDS.map(b=>b.key),['foundry-mall','coal-plastic-lubricant','tungsten-carbide','production-utility-science','rocket-fuel','assembler-3-mall','express-belt-mall']);
+ assert.deepEqual(Object.keys(GROUPS),['foundry','supplies','science','rockets','plates']);
+ assert.ok(at('foundry-mall')<at('coal-plastic-lubricant')&&at('coal-plastic-lubricant')<at('tungsten-carbide')&&at('tungsten-carbide')<at('production-utility-science')&&at('production-utility-science')<at('rocket-fuel')&&at('rocket-fuel')<at('assembler-3-mall')&&at('assembler-3-mall')<at('express-belt-mall'));
+ assert.ok(g('foundry')<at('foundry-mall')&&at('foundry-mall')<g('supplies')&&g('supplies')<at('coal-plastic-lubricant')&&at('tungsten-carbide')<g('science')&&g('science')<at('production-utility-science')&&at('production-utility-science')<g('rockets')&&g('rockets')<at('rocket-fuel')&&at('rocket-fuel')<g('plates')&&g('plates')<at('assembler-3-mall'));
+ assert.match(GROUPS.science.label,/Science from lava/);assert.match(GROUPS.rockets.label,/Rocket supplies/);
  assert.equal(SUPPLIED_BY['rocket-fuel'],undefined,'rocket fuel is not a foundry mall input');
- const links=html.split('<ul class="toc">')[1].split('</ul>')[0];assert.ok(links.includes('Rocket supplies')&&links.includes('href="#rocket-fuel"'),'the list of links at the top');
+ const links=html.split('<ul class="toc">')[1].split('</ul>')[0];assert.ok(links.includes('Rocket supplies')&&links.includes('href="#rocket-fuel"')&&links.includes('Science from lava')&&links.includes('href="#production-utility-science"'),'the list of links at the top');
  assert.ok(text(html).includes(`${BUILDS.length} blueprints for Vulcanus`),'the intro count follows the data');
  assert.match(GROUPS.supplies.label,/feed the foundry mall/);assert.match(GROUPS.plates.label,/not on the foundry chain/);
  assert.ok(html.indexOf('id="how-they-connect"')<g('foundry'),'the connection table is near the top, before the builds');
@@ -58,6 +59,7 @@ test('order: foundry mall first, its two supplies under a heading that says they
 
 test('every string shown equals the committed blueprint.txt, every hash shown equals the manifest and the string; layouts are the committed pictures',async()=>{
  assert.equal((html.match(/<textarea /g)||[]).length,BUILDS.length);assert.equal((html.match(/data-copy="/g)||[]).length,BUILDS.length);
+ assert.equal(BUILDS.length,7);
  for(const b of builds){
   const dir=`blueprint-sources/${b.spec.dir}`,code=(await read(`${dir}/blueprint.txt`)).trim(),card=section(html,b.spec.key);
   assert.equal(b.code,code);assert.equal(b.hash,b.m.candidateSha256);assert.equal(sha(code),b.m.candidateSha256);
@@ -179,6 +181,25 @@ test('supplies and plate-fed malls: products, caps, draws, entrances and exits a
  for(const o of ex.m.outputs){const r=t4.find(x=>x[0]===names.get(o.item));assert.deepEqual(r.slice(1,3),[fmt(o.cap),fmt(ex.report.measured.outputsPerMinute[o.item])],o.item);}
  for(const p of ex.ports.inputs){const r=t4.find(x=>x[0]==='In'&&x[1]===names.get(p.item));assert.equal(r[4],fmt(ex.report.measured.inputsPerMinute[p.item]),p.item);}
  for(const b of builds)assert.ok(describe(b,names).caveats.length>=2,b.spec.key+' has caveats from its README');
+});
+
+test('science from lava: rates, targets, draws, port tiles, the stone that leaves and the supply copies are the report, manifest and README figures',()=>{
+ const b=by('production-utility-science'),card=section(html,'production-utility-science'),t=rows(card),th=b.report.measured.ports.throttled,rate=b.report.measured.rates.throttled;
+ assert.equal(b.m.outputs.length,2);
+ for(const o of b.m.outputs){const r=t.find(x=>x[0]===names.get(o.item));assert.deepEqual(r.slice(1,3),[fmt(rate[o.item]),fmt(b.m.targets[o.item])],o.item);assert.ok(rate[o.item]>=b.m.passFloor);assert.ok(text(card).includes(`tile (${o.tile.x}, ${o.tile.y})`),o.item+' chest tile');}
+ assert.ok(text(card).includes(fmt(b.m.outputs[0].capacity)+' packs'));
+ assert.equal(b.ports.inputs.length,5);
+ for(const p of b.ports.inputs){const r=t.find(x=>x[0]==='In'&&x[1]===names.get(p.item));assert.ok(r,p.item);assert.ok(r[3].startsWith(`${p.side} edge, tile (${p.tile.x}, ${p.tile.y})`)&&r[3].includes(p.label),p.item+': '+r[3]);assert.equal(r[4],fmt(th[p.item]),p.item);assert.ok(th[p.item]<=p.perMinute+0.05,p.item+' within its panel figure');}
+ const stone=b.ports.exits[0],sr=t.find(x=>x[0]==='Out'&&x[1]===names.get('stone'));assert.equal(b.ports.exits.length,1);assert.ok(sr[3].startsWith(`${stone.side} edge, tile (${stone.tile.x}, ${stone.tile.y})`));assert.equal(sr[4],fmt(th.stone));
+ // the copies of the coal supply, from that supply's own measured plastic
+ const supply=by('coal-plastic-lubricant').report.measured.steady.throttled.outputsPerMinute,copies=Math.ceil(b.m.bill.outside['plastic-bar']/supply['plastic-bar']-1e-9);
+ assert.ok(copies>1);assert.ok(text(card).includes(`${copies} copies`),'copies of the plastic supply');
+ assert.ok(text(card).includes(`${fmt(b.m.footprint.width)} × ${fmt(b.m.footprint.height)} tiles`));
+ assert.ok(Object.keys(b.report.scenarios).length>=27);for(const sc of Object.values(b.report.scenarios)){assert.equal(sc.passed,true);assert.equal(sc.fluidFaultCount,0);}
+ // a re-release changes the card with the data
+ const live=structuredClone(builds),f=live.find(x=>x.spec.key==='production-utility-science');f.report.measured.rates.throttled['utility-science-pack']=58.25;f.report.measured.ports.throttled.lava=61234.5;
+ const again=rows(section(renderPage(live.map(x=>describe(x,names)),nav()),'production-utility-science'));
+ assert.equal(again.find(x=>x[0]===names.get('utility-science-pack'))[1],fmt(58.25));assert.equal(again.find(x=>x[0]==='In'&&x[1]===names.get('lava'))[4],fmt(61234.5));
 });
 
 for(const shape of ['kit stock inside the kit group (the released shape)','kit stock only a key of caps (earlier shape)'])test('a re-release changes the page with the data: new caps, a separate kit stock, a new peak, a second copy of a supply, a new string; '+shape,async()=>{

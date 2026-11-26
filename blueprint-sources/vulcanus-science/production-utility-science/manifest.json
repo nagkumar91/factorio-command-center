@@ -1,0 +1,1869 @@
+{
+  "schema": 1,
+  "id": "production-utility-science",
+  "revision": 1,
+  "candidateSha256": "5a7706d13895ae4af78dc66a42c259cabed44a974bd45b086629d2db36442022",
+  "requiredGameVersion": "2.1.25",
+  "prototypeSha256": "6420bb0c945824a82ee1123cfdf90756a751e7166464726a0f85ba5a1563b1cf",
+  "fluidSlotsSha256": "70d28db766a7dca81e22634a908350208a19bdc511f2ff7bebd307e7efa57e35",
+  "surface": "vulcanus",
+  "intendedUse": "Production and utility science packs on Vulcanus from lava and calcite; plastic, sulfuric acid and lubricant supplied.",
+  "targets": {
+    "production-science-pack": 60,
+    "utility-science-pack": 60
+  },
+  "passFloor": 57,
+  "equipment": {
+    "inserters": {
+      "fast-inserter": 1,
+      "bulk-inserter": 2,
+      "long-handed-inserter": 1
+    },
+    "belts": [
+      "fast-transport-belt",
+      "express-transport-belt"
+    ],
+    "power": "substation",
+    "modules": 0,
+    "beacons": 0,
+    "quality": "normal"
+  },
+  "footprint": {
+    "width": 91,
+    "height": 103,
+    "area": 9373,
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 91,
+      "bottom": 103
+    },
+    "includes": "every entity of the blueprint",
+    "entities": 3178,
+    "counts": {
+      "arithmetic-combinator": 4,
+      "assembling-machine-3": 75,
+      "bulk-inserter": 130,
+      "chemical-plant": 3,
+      "constant-combinator": 2,
+      "decider-combinator": 2,
+      "display-panel": 9,
+      "electric-furnace": 6,
+      "express-splitter": 4,
+      "express-transport-belt": 688,
+      "express-underground-belt": 42,
+      "fast-inserter": 136,
+      "fast-splitter": 2,
+      "fast-transport-belt": 1086,
+      "fast-underground-belt": 30,
+      "foundry": 41,
+      "long-handed-inserter": 90,
+      "passive-provider-chest": 2,
+      "pipe": 714,
+      "pipe-to-ground": 78,
+      "substation": 34
+    }
+  },
+  "ports": [
+    {
+      "id": "IN-1",
+      "item": "lava",
+      "kind": "pipe",
+      "side": "west",
+      "exit": false,
+      "entity": 593,
+      "tile": {
+        "x": 0,
+        "y": 0
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 0
+      },
+      "perMinute": 62000,
+      "panel": 3138,
+      "label": "IN: lava 62000/min"
+    },
+    {
+      "id": "IN-2",
+      "item": "calcite",
+      "kind": "belt",
+      "side": "west",
+      "exit": false,
+      "entity": 397,
+      "tile": {
+        "x": 0,
+        "y": 8
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 8
+      },
+      "perMinute": 124,
+      "panel": 3139,
+      "label": "IN: calcite 124/min"
+    },
+    {
+      "id": "IN-3",
+      "item": "plastic-bar",
+      "kind": "belt",
+      "side": "north",
+      "exit": false,
+      "entity": 2228,
+      "tile": {
+        "x": 68,
+        "y": 0
+      },
+      "externalContact": {
+        "x": 68,
+        "y": -1
+      },
+      "perMinute": 760,
+      "panel": 3140,
+      "label": "IN: plastic-bar 760/min"
+    },
+    {
+      "id": "IN-4",
+      "item": "sulfuric-acid",
+      "kind": "pipe",
+      "side": "south",
+      "exit": false,
+      "entity": 3116,
+      "tile": {
+        "x": 47,
+        "y": 102
+      },
+      "externalContact": {
+        "x": 47,
+        "y": 103
+      },
+      "perMinute": 1000,
+      "panel": 3141,
+      "label": "IN: sulfuric-acid 1000/min"
+    },
+    {
+      "id": "IN-5",
+      "item": "lubricant",
+      "kind": "pipe",
+      "side": "south",
+      "exit": false,
+      "entity": 3123,
+      "tile": {
+        "x": 17,
+        "y": 102
+      },
+      "externalContact": {
+        "x": 17,
+        "y": 103
+      },
+      "perMinute": 300,
+      "panel": 3142,
+      "label": "IN: lubricant 300/min"
+    },
+    {
+      "id": "OUT-STONE",
+      "item": "stone",
+      "kind": "belt",
+      "side": "west",
+      "exit": true,
+      "entity": 314,
+      "tile": {
+        "x": 0,
+        "y": 43
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 43
+      },
+      "perMinute": 1544,
+      "panel": 3143,
+      "label": "OUT: stone 1544/min surplus, take it away"
+    }
+  ],
+  "outputs": [
+    {
+      "item": "production-science-pack",
+      "chest": 3125,
+      "arm": 3124,
+      "tile": {
+        "x": 60,
+        "y": 16
+      },
+      "bar": 5,
+      "capacity": 1000,
+      "panel": 3130,
+      "governor": {
+        "constant": 3126,
+        "counter": 3127,
+        "memory": 3128,
+        "subtractor": 3129
+      }
+    },
+    {
+      "item": "utility-science-pack",
+      "chest": 3132,
+      "arm": 3131,
+      "tile": {
+        "x": 83,
+        "y": 80
+      },
+      "bar": 5,
+      "capacity": 1000,
+      "panel": 3137,
+      "governor": {
+        "constant": 3133,
+        "counter": 3134,
+        "memory": 3135,
+        "subtractor": 3136
+      }
+    }
+  ],
+  "governor": {
+    "period": 60,
+    "bias": 1000,
+    "banked": 10,
+    "startDelay": 36000,
+    "perMinute": 60,
+    "enableAt": 37060
+  },
+  "power": {
+    "entry": 3162,
+    "panel": 3178,
+    "label": "POWER: connect this substation",
+    "tile": {
+      "x": 5,
+      "y": 33
+    },
+    "externalPole": {
+      "x": -3,
+      "y": 34
+    },
+    "substations": [
+      3144,
+      3145,
+      3146,
+      3147,
+      3148,
+      3149,
+      3150,
+      3151,
+      3152,
+      3153,
+      3154,
+      3155,
+      3156,
+      3157,
+      3158,
+      3159,
+      3160,
+      3161,
+      3162,
+      3163,
+      3164,
+      3165,
+      3166,
+      3167,
+      3168,
+      3169,
+      3170,
+      3171,
+      3172,
+      3173,
+      3174,
+      3175,
+      3176,
+      3177
+    ]
+  },
+  "machines": [
+    {
+      "entity": 1,
+      "name": "foundry",
+      "recipe": "molten-iron-from-lava",
+      "role": "molten-iron-from-lava",
+      "tile": {
+        "x": 8,
+        "y": 1
+      }
+    },
+    {
+      "entity": 7,
+      "name": "foundry",
+      "recipe": "molten-iron-from-lava",
+      "role": "molten-iron-from-lava",
+      "tile": {
+        "x": 13,
+        "y": 1
+      }
+    },
+    {
+      "entity": 13,
+      "name": "foundry",
+      "recipe": "molten-iron-from-lava",
+      "role": "molten-iron-from-lava",
+      "tile": {
+        "x": 18,
+        "y": 1
+      }
+    },
+    {
+      "entity": 19,
+      "name": "foundry",
+      "recipe": "molten-iron-from-lava",
+      "role": "molten-iron-from-lava",
+      "tile": {
+        "x": 23,
+        "y": 1
+      }
+    },
+    {
+      "entity": 25,
+      "name": "foundry",
+      "recipe": "molten-iron-from-lava",
+      "role": "molten-iron-from-lava",
+      "tile": {
+        "x": 28,
+        "y": 1
+      }
+    },
+    {
+      "entity": 31,
+      "name": "foundry",
+      "recipe": "molten-copper-from-lava",
+      "role": "molten-copper-from-lava",
+      "tile": {
+        "x": 33,
+        "y": 1
+      }
+    },
+    {
+      "entity": 37,
+      "name": "foundry",
+      "recipe": "molten-copper-from-lava",
+      "role": "molten-copper-from-lava",
+      "tile": {
+        "x": 38,
+        "y": 1
+      }
+    },
+    {
+      "entity": 43,
+      "name": "foundry",
+      "recipe": "molten-copper-from-lava",
+      "role": "molten-copper-from-lava",
+      "tile": {
+        "x": 43,
+        "y": 1
+      }
+    },
+    {
+      "entity": 49,
+      "name": "foundry",
+      "recipe": "molten-copper-from-lava",
+      "role": "molten-copper-from-lava",
+      "tile": {
+        "x": 48,
+        "y": 1
+      }
+    },
+    {
+      "entity": 802,
+      "name": "foundry",
+      "recipe": "casting-steel",
+      "role": "steel for rails",
+      "tile": {
+        "x": 8,
+        "y": 15
+      }
+    },
+    {
+      "entity": 804,
+      "name": "foundry",
+      "recipe": "casting-steel",
+      "role": "steel for rails",
+      "tile": {
+        "x": 13,
+        "y": 15
+      }
+    },
+    {
+      "entity": 806,
+      "name": "foundry",
+      "recipe": "casting-steel",
+      "role": "steel for rails",
+      "tile": {
+        "x": 18,
+        "y": 15
+      }
+    },
+    {
+      "entity": 808,
+      "name": "foundry",
+      "recipe": "casting-iron-stick",
+      "role": "casting-iron-stick",
+      "tile": {
+        "x": 13,
+        "y": 23
+      }
+    },
+    {
+      "entity": 824,
+      "name": "assembling-machine-3",
+      "recipe": "production-science-pack",
+      "role": "production-science-pack",
+      "tile": {
+        "x": 27,
+        "y": 23
+      }
+    },
+    {
+      "entity": 827,
+      "name": "assembling-machine-3",
+      "recipe": "production-science-pack",
+      "role": "production-science-pack",
+      "tile": {
+        "x": 35,
+        "y": 23
+      }
+    },
+    {
+      "entity": 830,
+      "name": "assembling-machine-3",
+      "recipe": "rail",
+      "role": "rail",
+      "tile": {
+        "x": 31,
+        "y": 23
+      }
+    },
+    {
+      "entity": 836,
+      "name": "assembling-machine-3",
+      "recipe": "production-science-pack",
+      "role": "production-science-pack",
+      "tile": {
+        "x": 38,
+        "y": 23
+      }
+    },
+    {
+      "entity": 839,
+      "name": "assembling-machine-3",
+      "recipe": "production-science-pack",
+      "role": "production-science-pack",
+      "tile": {
+        "x": 46,
+        "y": 23
+      }
+    },
+    {
+      "entity": 842,
+      "name": "assembling-machine-3",
+      "recipe": "rail",
+      "role": "rail",
+      "tile": {
+        "x": 42,
+        "y": 23
+      }
+    },
+    {
+      "entity": 848,
+      "name": "assembling-machine-3",
+      "recipe": "production-science-pack",
+      "role": "production-science-pack",
+      "tile": {
+        "x": 49,
+        "y": 23
+      }
+    },
+    {
+      "entity": 851,
+      "name": "assembling-machine-3",
+      "recipe": "production-science-pack",
+      "role": "production-science-pack",
+      "tile": {
+        "x": 57,
+        "y": 23
+      }
+    },
+    {
+      "entity": 854,
+      "name": "assembling-machine-3",
+      "recipe": "rail",
+      "role": "rail",
+      "tile": {
+        "x": 53,
+        "y": 23
+      }
+    },
+    {
+      "entity": 930,
+      "name": "foundry",
+      "recipe": "casting-steel",
+      "role": "steel for furnaces",
+      "tile": {
+        "x": 8,
+        "y": 31
+      }
+    },
+    {
+      "entity": 932,
+      "name": "foundry",
+      "recipe": "casting-steel",
+      "role": "steel for furnaces",
+      "tile": {
+        "x": 13,
+        "y": 31
+      }
+    },
+    {
+      "entity": 934,
+      "name": "foundry",
+      "recipe": "casting-steel",
+      "role": "steel for furnaces",
+      "tile": {
+        "x": 18,
+        "y": 31
+      }
+    },
+    {
+      "entity": 937,
+      "name": "electric-furnace",
+      "recipe": "stone-brick",
+      "role": "stone-brick",
+      "tile": {
+        "x": 8,
+        "y": 39
+      }
+    },
+    {
+      "entity": 940,
+      "name": "electric-furnace",
+      "recipe": "stone-brick",
+      "role": "stone-brick",
+      "tile": {
+        "x": 11,
+        "y": 39
+      }
+    },
+    {
+      "entity": 943,
+      "name": "electric-furnace",
+      "recipe": "stone-brick",
+      "role": "stone-brick",
+      "tile": {
+        "x": 14,
+        "y": 39
+      }
+    },
+    {
+      "entity": 946,
+      "name": "electric-furnace",
+      "recipe": "stone-brick",
+      "role": "stone-brick",
+      "tile": {
+        "x": 17,
+        "y": 39
+      }
+    },
+    {
+      "entity": 949,
+      "name": "electric-furnace",
+      "recipe": "stone-brick",
+      "role": "stone-brick",
+      "tile": {
+        "x": 20,
+        "y": 39
+      }
+    },
+    {
+      "entity": 952,
+      "name": "electric-furnace",
+      "recipe": "stone-brick",
+      "role": "stone-brick",
+      "tile": {
+        "x": 23,
+        "y": 39
+      }
+    },
+    {
+      "entity": 955,
+      "name": "assembling-machine-3",
+      "recipe": "electric-furnace",
+      "role": "electric-furnace",
+      "tile": {
+        "x": 29,
+        "y": 39
+      }
+    },
+    {
+      "entity": 960,
+      "name": "assembling-machine-3",
+      "recipe": "electric-furnace",
+      "role": "electric-furnace",
+      "tile": {
+        "x": 32,
+        "y": 39
+      }
+    },
+    {
+      "entity": 965,
+      "name": "assembling-machine-3",
+      "recipe": "productivity-module",
+      "role": "productivity-module",
+      "tile": {
+        "x": 29,
+        "y": 46
+      }
+    },
+    {
+      "entity": 969,
+      "name": "assembling-machine-3",
+      "recipe": "productivity-module",
+      "role": "productivity-module",
+      "tile": {
+        "x": 32,
+        "y": 46
+      }
+    },
+    {
+      "entity": 973,
+      "name": "assembling-machine-3",
+      "recipe": "productivity-module",
+      "role": "productivity-module",
+      "tile": {
+        "x": 35,
+        "y": 46
+      }
+    },
+    {
+      "entity": 977,
+      "name": "assembling-machine-3",
+      "recipe": "productivity-module",
+      "role": "productivity-module",
+      "tile": {
+        "x": 38,
+        "y": 46
+      }
+    },
+    {
+      "entity": 1121,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for advanced circuits",
+      "tile": {
+        "x": 19,
+        "y": 54
+      }
+    },
+    {
+      "entity": 1122,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for advanced circuits",
+      "tile": {
+        "x": 19,
+        "y": 62
+      }
+    },
+    {
+      "entity": 1129,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 25,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1130,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 25,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1139,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 28,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1140,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 28,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1149,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 31,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1150,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 31,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1159,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 36,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1160,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 36,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1169,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 39,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1170,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 39,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1179,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 42,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1180,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 42,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1189,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 45,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1190,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 45,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1199,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 48,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1200,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 48,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1209,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 53,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1210,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 53,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1219,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 56,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1220,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 56,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1229,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 59,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1230,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 59,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1239,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 62,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1240,
+      "name": "assembling-machine-3",
+      "recipe": "advanced-circuit",
+      "role": "advanced-circuit",
+      "tile": {
+        "x": 62,
+        "y": 63
+      }
+    },
+    {
+      "entity": 1295,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "plates for circuits",
+      "tile": {
+        "x": 83,
+        "y": 1
+      }
+    },
+    {
+      "entity": 1296,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "plates for circuits",
+      "tile": {
+        "x": 75,
+        "y": 1
+      }
+    },
+    {
+      "entity": 1301,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "plates for circuits",
+      "tile": {
+        "x": 83,
+        "y": 6
+      }
+    },
+    {
+      "entity": 1302,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "plates for circuits",
+      "tile": {
+        "x": 75,
+        "y": 6
+      }
+    },
+    {
+      "entity": 1307,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "plates for circuits",
+      "tile": {
+        "x": 83,
+        "y": 11
+      }
+    },
+    {
+      "entity": 1308,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "plates for circuits",
+      "tile": {
+        "x": 75,
+        "y": 11
+      }
+    },
+    {
+      "entity": 1313,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "plates for circuits",
+      "tile": {
+        "x": 83,
+        "y": 16
+      }
+    },
+    {
+      "entity": 1314,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "plates for circuits",
+      "tile": {
+        "x": 75,
+        "y": 16
+      }
+    },
+    {
+      "entity": 1319,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for circuits",
+      "tile": {
+        "x": 82,
+        "y": 26
+      }
+    },
+    {
+      "entity": 1321,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for circuits",
+      "tile": {
+        "x": 82,
+        "y": 36
+      }
+    },
+    {
+      "entity": 1323,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 83,
+        "y": 22
+      }
+    },
+    {
+      "entity": 1326,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 83,
+        "y": 32
+      }
+    },
+    {
+      "entity": 1329,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 83,
+        "y": 42
+      }
+    },
+    {
+      "entity": 1340,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for circuits",
+      "tile": {
+        "x": 76,
+        "y": 26
+      }
+    },
+    {
+      "entity": 1342,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for circuits",
+      "tile": {
+        "x": 76,
+        "y": 36
+      }
+    },
+    {
+      "entity": 1344,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 77,
+        "y": 22
+      }
+    },
+    {
+      "entity": 1347,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 77,
+        "y": 32
+      }
+    },
+    {
+      "entity": 1350,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 77,
+        "y": 42
+      }
+    },
+    {
+      "entity": 1361,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for circuits",
+      "tile": {
+        "x": 82,
+        "y": 49
+      }
+    },
+    {
+      "entity": 1363,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for circuits",
+      "tile": {
+        "x": 82,
+        "y": 59
+      }
+    },
+    {
+      "entity": 1365,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 83,
+        "y": 45
+      }
+    },
+    {
+      "entity": 1368,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 83,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1371,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 83,
+        "y": 65
+      }
+    },
+    {
+      "entity": 1382,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for circuits",
+      "tile": {
+        "x": 76,
+        "y": 49
+      }
+    },
+    {
+      "entity": 1384,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "cable for circuits",
+      "tile": {
+        "x": 76,
+        "y": 59
+      }
+    },
+    {
+      "entity": 1386,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 77,
+        "y": 45
+      }
+    },
+    {
+      "entity": 1389,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 77,
+        "y": 55
+      }
+    },
+    {
+      "entity": 1392,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "electronic-circuit",
+      "tile": {
+        "x": 77,
+        "y": 65
+      }
+    },
+    {
+      "entity": 1791,
+      "name": "foundry",
+      "recipe": "casting-iron-gear-wheel",
+      "role": "casting-iron-gear-wheel",
+      "tile": {
+        "x": 8,
+        "y": 74
+      }
+    },
+    {
+      "entity": 1794,
+      "name": "foundry",
+      "recipe": "casting-pipe",
+      "role": "casting-pipe",
+      "tile": {
+        "x": 8,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1829,
+      "name": "assembling-machine-3",
+      "recipe": "engine-unit",
+      "role": "engine-unit",
+      "tile": {
+        "x": 13,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1833,
+      "name": "assembling-machine-3",
+      "recipe": "electric-engine-unit",
+      "role": "electric-engine-unit",
+      "tile": {
+        "x": 13,
+        "y": 88
+      }
+    },
+    {
+      "entity": 1838,
+      "name": "assembling-machine-3",
+      "recipe": "engine-unit",
+      "role": "engine-unit",
+      "tile": {
+        "x": 16,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1842,
+      "name": "assembling-machine-3",
+      "recipe": "electric-engine-unit",
+      "role": "electric-engine-unit",
+      "tile": {
+        "x": 16,
+        "y": 88
+      }
+    },
+    {
+      "entity": 1847,
+      "name": "assembling-machine-3",
+      "recipe": "engine-unit",
+      "role": "engine-unit",
+      "tile": {
+        "x": 19,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1851,
+      "name": "assembling-machine-3",
+      "recipe": "electric-engine-unit",
+      "role": "electric-engine-unit",
+      "tile": {
+        "x": 19,
+        "y": 88
+      }
+    },
+    {
+      "entity": 1863,
+      "name": "foundry",
+      "recipe": "casting-low-density-structure",
+      "role": "casting-low-density-structure",
+      "tile": {
+        "x": 25,
+        "y": 74
+      }
+    },
+    {
+      "entity": 1869,
+      "name": "foundry",
+      "recipe": "casting-low-density-structure",
+      "role": "casting-low-density-structure",
+      "tile": {
+        "x": 30,
+        "y": 74
+      }
+    },
+    {
+      "entity": 1875,
+      "name": "foundry",
+      "recipe": "casting-low-density-structure",
+      "role": "casting-low-density-structure",
+      "tile": {
+        "x": 35,
+        "y": 74
+      }
+    },
+    {
+      "entity": 1881,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "plates for batteries",
+      "tile": {
+        "x": 42,
+        "y": 74
+      }
+    },
+    {
+      "entity": 1884,
+      "name": "foundry",
+      "recipe": "casting-copper",
+      "role": "plates for batteries",
+      "tile": {
+        "x": 42,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1916,
+      "name": "chemical-plant",
+      "recipe": "battery",
+      "role": "battery",
+      "tile": {
+        "x": 48,
+        "y": 76
+      }
+    },
+    {
+      "entity": 1919,
+      "name": "chemical-plant",
+      "recipe": "battery",
+      "role": "battery",
+      "tile": {
+        "x": 51,
+        "y": 76
+      }
+    },
+    {
+      "entity": 1922,
+      "name": "chemical-plant",
+      "recipe": "battery",
+      "role": "battery",
+      "tile": {
+        "x": 54,
+        "y": 76
+      }
+    },
+    {
+      "entity": 1925,
+      "name": "assembling-machine-3",
+      "recipe": "processing-unit",
+      "role": "processing-unit",
+      "tile": {
+        "x": 61,
+        "y": 76
+      }
+    },
+    {
+      "entity": 1931,
+      "name": "assembling-machine-3",
+      "recipe": "utility-science-pack",
+      "role": "utility-science-pack",
+      "tile": {
+        "x": 61,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1935,
+      "name": "assembling-machine-3",
+      "recipe": "flying-robot-frame",
+      "role": "flying-robot-frame",
+      "tile": {
+        "x": 61,
+        "y": 88
+      }
+    },
+    {
+      "entity": 1939,
+      "name": "assembling-machine-3",
+      "recipe": "processing-unit",
+      "role": "processing-unit",
+      "tile": {
+        "x": 64,
+        "y": 76
+      }
+    },
+    {
+      "entity": 1945,
+      "name": "assembling-machine-3",
+      "recipe": "utility-science-pack",
+      "role": "utility-science-pack",
+      "tile": {
+        "x": 64,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1949,
+      "name": "assembling-machine-3",
+      "recipe": "flying-robot-frame",
+      "role": "flying-robot-frame",
+      "tile": {
+        "x": 64,
+        "y": 88
+      }
+    },
+    {
+      "entity": 1953,
+      "name": "assembling-machine-3",
+      "recipe": "processing-unit",
+      "role": "processing-unit",
+      "tile": {
+        "x": 67,
+        "y": 76
+      }
+    },
+    {
+      "entity": 1959,
+      "name": "assembling-machine-3",
+      "recipe": "utility-science-pack",
+      "role": "utility-science-pack",
+      "tile": {
+        "x": 67,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1963,
+      "name": "assembling-machine-3",
+      "recipe": "flying-robot-frame",
+      "role": "flying-robot-frame",
+      "tile": {
+        "x": 67,
+        "y": 88
+      }
+    },
+    {
+      "entity": 1967,
+      "name": "assembling-machine-3",
+      "recipe": "processing-unit",
+      "role": "processing-unit",
+      "tile": {
+        "x": 72,
+        "y": 76
+      }
+    },
+    {
+      "entity": 1973,
+      "name": "assembling-machine-3",
+      "recipe": "utility-science-pack",
+      "role": "utility-science-pack",
+      "tile": {
+        "x": 72,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1977,
+      "name": "assembling-machine-3",
+      "recipe": "flying-robot-frame",
+      "role": "flying-robot-frame",
+      "tile": {
+        "x": 72,
+        "y": 88
+      }
+    },
+    {
+      "entity": 1981,
+      "name": "assembling-machine-3",
+      "recipe": "processing-unit",
+      "role": "processing-unit",
+      "tile": {
+        "x": 75,
+        "y": 76
+      }
+    },
+    {
+      "entity": 1987,
+      "name": "assembling-machine-3",
+      "recipe": "utility-science-pack",
+      "role": "utility-science-pack",
+      "tile": {
+        "x": 75,
+        "y": 82
+      }
+    },
+    {
+      "entity": 1991,
+      "name": "assembling-machine-3",
+      "recipe": "flying-robot-frame",
+      "role": "flying-robot-frame",
+      "tile": {
+        "x": 75,
+        "y": 88
+      }
+    },
+    {
+      "entity": 1995,
+      "name": "assembling-machine-3",
+      "recipe": "processing-unit",
+      "role": "processing-unit",
+      "tile": {
+        "x": 78,
+        "y": 76
+      }
+    },
+    {
+      "entity": 2001,
+      "name": "assembling-machine-3",
+      "recipe": "utility-science-pack",
+      "role": "utility-science-pack",
+      "tile": {
+        "x": 78,
+        "y": 82
+      }
+    },
+    {
+      "entity": 2005,
+      "name": "assembling-machine-3",
+      "recipe": "flying-robot-frame",
+      "role": "flying-robot-frame",
+      "tile": {
+        "x": 78,
+        "y": 88
+      }
+    }
+  ],
+  "machinesBuilt": {
+    "molten-iron-from-lava": 5,
+    "molten-copper-from-lava": 4,
+    "casting-steel": 6,
+    "casting-iron-stick": 1,
+    "production-science-pack": 6,
+    "rail": 3,
+    "stone-brick": 6,
+    "electric-furnace": 2,
+    "productivity-module": 4,
+    "casting-copper-cable": 10,
+    "advanced-circuit": 24,
+    "casting-iron": 9,
+    "electronic-circuit": 12,
+    "casting-iron-gear-wheel": 1,
+    "casting-pipe": 1,
+    "engine-unit": 3,
+    "electric-engine-unit": 3,
+    "casting-low-density-structure": 3,
+    "casting-copper": 1,
+    "battery": 3,
+    "processing-unit": 6,
+    "utility-science-pack": 6,
+    "flying-robot-frame": 6
+  },
+  "bill": {
+    "perMinute": 60,
+    "crafts": {
+      "production-science-pack": 20,
+      "electric-furnace": 20,
+      "casting-steel": 360,
+      "molten-iron-from-lava": 69.86666666666665,
+      "advanced-circuit": 280,
+      "electronic-circuit": 1560,
+      "casting-iron": 533.3333333333334,
+      "casting-copper-cable": 1933.3333333333335,
+      "molten-copper-from-lava": 53.15555555555555,
+      "stone-brick": 200,
+      "productivity-module": 20,
+      "rail": 300,
+      "casting-iron-stick": 50,
+      "utility-science-pack": 20,
+      "casting-low-density-structure": 40,
+      "processing-unit": 40,
+      "flying-robot-frame": 20,
+      "electric-engine-unit": 20,
+      "engine-unit": 20,
+      "casting-iron-gear-wheel": 13.333333333333334,
+      "casting-pipe": 40,
+      "battery": 40,
+      "casting-copper": 13.333333333333334
+    },
+    "machines": {
+      "production-science-pack": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 20,
+        "perMachine": 3.5714285714285716,
+        "exact": 5.6,
+        "whole": 6
+      },
+      "electric-furnace": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 20,
+        "perMachine": 15,
+        "exact": 1.3333333333333333,
+        "whole": 2
+      },
+      "casting-steel": {
+        "machine": "foundry",
+        "craftsPerMinute": 360,
+        "perMachine": 75,
+        "exact": 4.8,
+        "whole": 5
+      },
+      "molten-iron-from-lava": {
+        "machine": "foundry",
+        "craftsPerMinute": 69.86666666666665,
+        "perMachine": 15,
+        "exact": 4.657777777777777,
+        "whole": 5
+      },
+      "advanced-circuit": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 280,
+        "perMachine": 12.5,
+        "exact": 22.4,
+        "whole": 23
+      },
+      "electronic-circuit": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 1560,
+        "perMachine": 150,
+        "exact": 10.4,
+        "whole": 11
+      },
+      "casting-iron": {
+        "machine": "foundry",
+        "craftsPerMinute": 533.3333333333334,
+        "perMachine": 75,
+        "exact": 7.111111111111112,
+        "whole": 8
+      },
+      "casting-copper-cable": {
+        "machine": "foundry",
+        "craftsPerMinute": 1933.3333333333335,
+        "perMachine": 240,
+        "exact": 8.055555555555555,
+        "whole": 9
+      },
+      "molten-copper-from-lava": {
+        "machine": "foundry",
+        "craftsPerMinute": 53.15555555555555,
+        "perMachine": 15,
+        "exact": 3.5437037037037036,
+        "whole": 4
+      },
+      "stone-brick": {
+        "machine": "electric-furnace",
+        "craftsPerMinute": 200,
+        "perMachine": 37.5,
+        "exact": 5.333333333333333,
+        "whole": 6
+      },
+      "productivity-module": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 20,
+        "perMachine": 5,
+        "exact": 4,
+        "whole": 4
+      },
+      "rail": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 300,
+        "perMachine": 150,
+        "exact": 2,
+        "whole": 2
+      },
+      "casting-iron-stick": {
+        "machine": "foundry",
+        "craftsPerMinute": 50,
+        "perMachine": 240,
+        "exact": 0.20833333333333334,
+        "whole": 1
+      },
+      "utility-science-pack": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 20,
+        "perMachine": 3.5714285714285716,
+        "exact": 5.6,
+        "whole": 6
+      },
+      "casting-low-density-structure": {
+        "machine": "foundry",
+        "craftsPerMinute": 40,
+        "perMachine": 16,
+        "exact": 2.5,
+        "whole": 3
+      },
+      "processing-unit": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 40,
+        "perMachine": 7.5,
+        "exact": 5.333333333333333,
+        "whole": 6
+      },
+      "flying-robot-frame": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 20,
+        "perMachine": 3.75,
+        "exact": 5.333333333333333,
+        "whole": 6
+      },
+      "electric-engine-unit": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 20,
+        "perMachine": 7.5,
+        "exact": 2.6666666666666665,
+        "whole": 3
+      },
+      "engine-unit": {
+        "machine": "assembling-machine-3",
+        "craftsPerMinute": 20,
+        "perMachine": 7.5,
+        "exact": 2.6666666666666665,
+        "whole": 3
+      },
+      "casting-iron-gear-wheel": {
+        "machine": "foundry",
+        "craftsPerMinute": 13.333333333333334,
+        "perMachine": 240,
+        "exact": 0.05555555555555556,
+        "whole": 1
+      },
+      "casting-pipe": {
+        "machine": "foundry",
+        "craftsPerMinute": 40,
+        "perMachine": 240,
+        "exact": 0.16666666666666666,
+        "whole": 1
+      },
+      "battery": {
+        "machine": "chemical-plant",
+        "craftsPerMinute": 40,
+        "perMachine": 15,
+        "exact": 2.6666666666666665,
+        "whole": 3
+      },
+      "casting-copper": {
+        "machine": "foundry",
+        "craftsPerMinute": 13.333333333333334,
+        "perMachine": 75,
+        "exact": 0.17777777777777778,
+        "whole": 1
+      }
+    },
+    "outside": {
+      "lava": 61511.11111111112,
+      "calcite": 123.02222222222221,
+      "plastic-bar": 760,
+      "sulfuric-acid": 1000,
+      "lubricant": 300
+    },
+    "stone": {
+      "made": 2244,
+      "used": 700,
+      "surplus": 1544
+    }
+  },
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "automation",
+    "steel-processing",
+    "logistic-science-pack",
+    "automation-2",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "plastics",
+    "advanced-circuit",
+    "modules",
+    "productivity-module",
+    "advanced-material-processing",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "advanced-material-processing-2",
+    "logistics",
+    "logistics-2",
+    "railway",
+    "production-science-pack",
+    "advanced-oil-processing",
+    "lubricant",
+    "electric-engine",
+    "battery",
+    "robotics",
+    "processing-unit",
+    "low-density-structure",
+    "utility-science-pack",
+    "concrete",
+    "flammables",
+    "rocket-fuel",
+    "logistic-robotics",
+    "rocket-silo",
+    "space-platform",
+    "space-science-pack",
+    "space-platform-thruster",
+    "planet-discovery-vulcanus",
+    "calcite-processing",
+    "tungsten-carbide",
+    "foundry",
+    "fast-inserter",
+    "bulk-inserter",
+    "logistics-3",
+    "speed-module",
+    "automation-3",
+    "construction-robotics",
+    "circuit-network",
+    "electric-energy-distribution-1",
+    "electric-energy-distribution-2"
+  ],
+  "status": {
+    "static": "static-audit.json",
+    "native": "native-report.json; qualified only when that report passed for candidateSha256"
+  },
+  "nativeProtocol": {
+    "seed": 21026,
+    "externalPowerWatts": 1000000000,
+    "passFloor": 57,
+    "warmupMinutes": 15,
+    "steadyMinutes": 30,
+    "holdMinutes": 10,
+    "outageMinutes": 5,
+    "withheldMinutes": 20,
+    "shortWarmupMinutes": 25,
+    "shortMeasureMinutes": 10,
+    "recoveryLimitMinutes": 120,
+    "stagedBuild": {
+      "perStep": 3,
+      "everyTicks": 6
+    },
+    "lateSupplyTicks": 3600,
+    "fluidWatchEveryTicks": 5,
+    "feed": "belts: generous = one item on each lane every tick (more than a fast belt carries); throttled = perMinute/3600 a tick, alternating lanes. pipes: generous = the outside pipe kept full; throttled = perMinute/3600 a tick plus what was refused, at most one second saved",
+    "take": "packs: everything in the two chests once a second; stone: everything on the exit tile every four ticks",
+    "buildOrders": [
+      "shuffle-1",
+      "shuffle-2",
+      "shuffle-3",
+      "pipes-first",
+      "machines-first",
+      "foundries-last"
+    ],
+    "orientations": [
+      "east",
+      "south",
+      "west",
+      "flip-horizontal",
+      "flip-vertical"
+    ],
+    "withheld": [
+      "lava",
+      "calcite",
+      "plastic-bar",
+      "sulfuric-acid",
+      "lubricant"
+    ],
+    "single": [
+      "production-science-pack",
+      "utility-science-pack"
+    ],
+    "governor": {
+      "period": 60,
+      "bias": 1000,
+      "banked": 10,
+      "startDelay": 36000
+    }
+  }
+}

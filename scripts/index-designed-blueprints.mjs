@@ -311,6 +311,25 @@ for(const id of ['coal-plastic-lubricant','tungsten-carbide','rocket-fuel']){
  }
 }
 
+// Vulcanus science (26 November 2026): production and utility science packs, 60 a minute each, from lava and calcite in one blueprint.
+// Registered only with a passing native report for the exact string; the figures shown are that report's measured ones (every port
+// held to exactly its panel figure).
+{
+ const dir='blueprint-sources/vulcanus-science/production-utility-science',m=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',proof=await read(reportFile).catch(()=>null);
+ if(!proof||proof.passed!==true||proof.blueprintSha256!==m.candidateSha256)console.warn('Not registered (no exact-hash passing native report): production-utility-science');
+ else{
+  const th=proof.measured.ports.throttled,ge=proof.measured.ports.generous,rates=proof.measured.rates.throttled,ports=m.ports.filter(p=>!p.exit),n=v=>Number(v.toFixed(1));
+  await register({file:dir+'/blueprint.txt',info:{name:'Vulcanus science · production and utility packs, 60 a minute each, from lava and calcite',blueprintSha256:m.candidateSha256,
+   inputs:ports.map(p=>({item:p.item,entity:p.entity,side:p.side,perMinute:n(th[p.item])})),
+   outputs:m.outputs.map(o=>({item:o.item,entity:o.chest,perMinute:rates[o.item],cap:o.capacity})),footprint:m.footprint},
+   category:'Science · Vulcanus',purpose:'Science production',sourceCollection:collection,inputs:ports.map(p=>p.item),outputs:m.outputs.map(o=>o.item),
+   proof:{passed:proof.passed,blueprintSha256:proof.blueprintSha256,gameVersion:proof.gameVersion,outputsPerMinute:rates,footprint:m.footprint,scenarios:Object.fromEntries(Object.entries(proof.scenarios).map(([k,s])=>[k,{passed:s.passed,fullLength:s.fullLength,ticks:s.actualTicks}]))},report:reportFile,version:proof.gameVersion,
+   setup:[`Vulcanus: production and utility science packs from lava and calcite, each into its own passive provider chest of ${m.outputs[0].capacity} packs. Foundries make the molten metal and cast plates, steel, gears, sticks, pipes, cable and low density structures; every circuit, module, furnace, rail, engine, battery and frame is made inside. Measured over 30 minutes with every port held to exactly its panel figure: ${m.outputs.map(o=>o.item+' '+rates[o.item]+'/min').join(', ')} from ${ports.map(p=>p.item+' '+n(th[p.item])+'/min').join(', ')}; with every port offered more the draw was ${ports.map(p=>p.item+' '+n(ge[p.item])).join(', ')}.`,
+    `Ports: lava by pipe and calcite by belt (west edge, top), plastic bars by belt (north edge), sulfuric acid and lubricant by pipe (south edge). Surplus stone, ${n(th.stone)} a minute, leaves on an express belt on the west edge and must be taken away. Power by substations; connect the labelled one. Footprint ${m.footprint.width} x ${m.footprint.height} tiles. No modules, no beacons, every recipe fixed.`,
+    `Native test on a Vulcanus surface with only the technology closure researched, ${Object.keys(proof.scenarios).length} scenarios: both rate runs, chests left full and released, a five-minute outage of every input, the stone exit blocked, a cold start with each input withheld, twelve staged builds in different orders, three rotations and two flips; every pipe network and machine checked for a foreign fluid every five ticks.`]});
+ }
+}
+
 // This exporter checks every ledger/code/native SHA and passive-provider output before registration.
 const optimizedContext={};vm.createContext(optimizedContext);vm.runInContext(await fs.readFile('site/autosaved-derivatives/data.js','utf8'),optimizedContext);
 for(const f of optimizedContext.AutosavedDerivatives.entries){
