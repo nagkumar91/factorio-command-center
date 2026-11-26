@@ -1,19 +1,48 @@
-// Shared helpers of the two Vulcanus supply blueprints (coal-plastic-lubricant and tungsten-carbide): layout builder, fluid-network model,
-// blueprint codec, static checks used by both generators, audits, the native validator and the tests.
+// Shared helpers of the Vulcanus supply blueprints (coal-plastic-lubricant, tungsten-carbide and rocket-fuel): layout builder,
+// fluid-network model, blueprint codec, static checks used by the generators, audits, the native validator and the tests.
 // What is not specific to these blueprints comes unchanged from the blue-tier mall's helpers (never copied).
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 export { sha, readJson, json, encode, encodeKeeping, decode, vector, coord, distance, allWires, rotate, box, intersects, contact, inside, envelope, technologyClosure } from '../requested-malls/blue-tier-mall/lib.mjs';
-import { readJson, rotate, box, intersects, contact, inside } from '../requested-malls/blue-tier-mall/lib.mjs';
+import { readJson, sha, rotate, box, intersects, contact, inside } from '../requested-malls/blue-tier-mall/lib.mjs';
 
 export const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const PROJECT = path.resolve(HERE, '../..');
 export const IDS = ['coal-plastic-lubricant', 'tungsten-carbide'];
+// Every member. The first two were qualified by the two-scenario supply protocol; later members add their own scenario groups.
+export const MEMBERS = [...IDS, 'rocket-fuel'];
 export const published = id => path.join(process.env.VULCANUS_SUPPLIES_PUBLISHED ? path.resolve(process.env.VULCANUS_SUPPLIES_PUBLISHED) : path.join(PROJECT, 'blueprint-sources/vulcanus-supplies'), id);
-export const prototypes = () => readJson(path.join(HERE, 'prototypes.json'));
-export const fluidSlots = () => readJson(path.join(HERE, 'fluid-slots.json'));
 export const exists = file => fs.access(file).then(() => true, () => false);
+// The family pins (prototypes.json, fluid-slots.json) are fixed: the two first members' manifests carry their hashes. A later member that
+// needs more recipes, items or fluid-port tables keeps its own additions beside its design (<id>/prototypes.json, <id>/fluid-slots.json);
+// they are laid over the family pins and may add entries but never change one.
+export const memberFile = (id, file) => id ? path.join(HERE, id, file) : null;
+const overlay = (base, extra, groups, what) => {
+  const out = { ...base };
+  for (const g of groups) { out[g] = { ...base[g] }; for (const [k, v] of Object.entries(extra[g] || {})) { if (k in base[g] && JSON.stringify(base[g][k]) !== JSON.stringify(v)) throw new Error(`member ${what} changes the family pin ${g}.${k}`); out[g][k] = v; } }
+  return out;
+};
+export async function prototypes(id) {
+  const base = await readJson(path.join(HERE, 'prototypes.json')), file = memberFile(id, 'prototypes.json');
+  if (!file || !(await exists(file))) return base;
+  const extra = await readJson(file);
+  if (extra.gameVersion !== base.gameVersion || extra.provenance.rawSha256 !== base.provenance.rawSha256) throw new Error('member prototypes come from another game dump');
+  return { ...overlay(base, extra, ['recipes', 'entities', 'items', 'fluids'], 'prototypes'), ...(extra.facts ? { facts: extra.facts } : {}) };
+}
+export async function fluidSlots(id) {
+  const base = await readJson(path.join(HERE, 'fluid-slots.json')), file = memberFile(id, 'fluid-slots.json');
+  if (!file || !(await exists(file))) return base;
+  const extra = await readJson(file);
+  if (extra.gameVersion !== base.gameVersion) throw new Error('member fluid slots come from another game version');
+  return { ...overlay(base, extra, ['slots'], 'fluid slots'), ...(extra.ports ? { ports: extra.ports } : {}), ...(extra.unusedPorts ? { unusedPorts: extra.unusedPorts } : {}) };
+}
+// Hashes of a member's own pin files (empty for the first two members, which have none).
+export async function memberPins(id) {
+  const out = {};
+  for (const [key, file] of [['memberPrototypeSha256', 'prototypes.json'], ['memberFluidSlotsSha256', 'fluid-slots.json']]) { const f = memberFile(id, file); if (f && await exists(f)) out[key] = sha(await fs.readFile(f)); }
+  return out;
+}
 // The 64-bit version number a blueprint of this game version carries (major, minor, patch, build).
 export const blueprintVersion = gameVersion => { const [a, b, c] = gameVersion.split('.').map(BigInt); return Number((a << 48n) + (b << 32n) + (c << 16n)); };
 
@@ -72,7 +101,7 @@ export function glyph(e) {
     case 'pipe': return '=';
     case 'pipe-to-ground': return { 0: '^', 4: '>', 8: 'v', 12: '<' }[d];
     case 'oil-refinery': return 'R';
-    case 'chemical-plant': return { 'heavy-oil-cracking': 'H', 'light-oil-cracking': 'L', plastic: 'P', 'plastic-bar': 'P', lubricant: 'U', carbon: 'C' }[e.recipe] || 'C';
+    case 'chemical-plant': return { 'heavy-oil-cracking': 'H', 'light-oil-cracking': 'L', plastic: 'P', 'plastic-bar': 'P', lubricant: 'U', carbon: 'C', 'solid-fuel-from-light-oil': 'S' }[e.recipe] || 'C';
     case 'assembling-machine-3': return 'A';
     case 'substation': return '#';
     case 'fast-transport-belt': return { 0: 'n', 4: 'e', 8: 's', 12: 'w' }[d];
@@ -165,9 +194,48 @@ export function analyzeFluids(entities, slots) {
   for (const c of components) if (c.fluids.length > 1) problems.push(`mixed network #${c.id}: ${c.fluids.join(' + ')}`);
   const fluidOf = new Map();
   for (const c of components) for (const id of c.entities) fluidOf.set(id, c.fluids[0] || null);
-  return { components, problems, fluidOf, ends };
+  const pairs = [...new Set(edges.map(([a, b]) => { const x = Number(a.split(':')[0]), y = Number(b.split(':')[0]); return Math.min(x, y) + '-' + Math.max(x, y); }))].map(k => k.split('-').map(Number)).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  return { components, problems, fluidOf, ends, edges: pairs };
 }
 const dedupe = list => { const seen = new Set(); return list.filter(b => { const k = b.entity + ':' + b.box; if (seen.has(k)) return false; seen.add(k); return true; }); };
+
+// Ports of a machine that its recipe does not use (a member's own fluid-slots.json lists them from the native probe): the tile outside
+// the machine a pipe would stand on (target), the machine tile behind it (tile) and the side of the machine it is on.
+export function unusedPortTiles(e, slots) {
+  const table = slots.unusedPorts?.[slotKey(e)];
+  if (!table) return [];
+  const list = table[dirKey(e)];
+  if (!list) throw new Error(`no unused-port table for ${slotKey(e)} ${dirKey(e)}`);
+  const half = (sizeOf(e.name) - 1) / 2, cx = Math.round(e.position.x - 0.5), cy = Math.round(e.position.y - 0.5);
+  return list.map(([dx, dy]) => { const side = Math.abs(dx) > half ? (dx > 0 ? E : W) : (dy > 0 ? S : N), [vx, vy] = VEC[side]; return { target: { x: cx + dx, y: cy + dy }, tile: { x: cx + dx - vx, y: cy + dy - vy }, side }; });
+}
+// The two port rules of the brief, on the static model:
+//  - every port a recipe uses meets either nothing or an opening of exactly its own fluid, and every fluid box is connected at least once;
+//  - no pipe opening (pipe, the open end of a pipe-to-ground, another machine's port) faces a port the recipe does not use.
+export function portRules(entities, slots) {
+  const fluid = analyzeFluids(entities, slots), key = (x, y) => x + ',' + y;
+  const openAt = new Map();   // tile -> the normal openings standing on it
+  for (const n of fluid.ends) if (n.kind === 'normal') openAt.set(key(n.tile.x, n.tile.y), [...(openAt.get(key(n.tile.x, n.tile.y)) || []), n]);
+  const facing = (target, side) => (openAt.get(key(target.x, target.y)) || []).filter(n => n.side === opposite(side));
+  const wrong = [], unconnected = [], faced = [];
+  for (const e of entities.filter(v => MACHINES.includes(v.name))) {
+    for (const b of machineBoxes(e, slots)) {
+      let met = 0;
+      for (const end of b.ends) for (const n of facing(end.target, end.side)) {
+        const other = n.fluid ?? fluid.fluidOf.get(n.e.entity_number);
+        if (other === b.fluid) met++; else wrong.push({ machine: e.entity_number, box: b.fluid, meets: other ?? 'an empty run', at: end.target });
+      }
+      if (!met) unconnected.push({ machine: e.entity_number, box: b.fluid });
+    }
+    const mine = unusedPortTiles(e, slots);
+    for (const u of mine) {
+      for (const n of facing(u.target, u.side)) faced.push({ machine: e.entity_number, at: u.target, by: n.e.entity_number });
+      for (const o of entities.filter(v => v !== e && MACHINES.includes(v.name))) for (const w of unusedPortTiles(o, slots)) if (w.tile.x === u.target.x && w.tile.y === u.target.y && w.target.x === u.tile.x && w.target.y === u.tile.y) faced.push({ machine: e.entity_number, at: u.target, by: o.entity_number, unusedToo: true });
+    }
+  }
+  const unused = entities.filter(v => MACHINES.includes(v.name)).map(e => ({ entity: e.entity_number, tiles: unusedPortTiles(e, slots).map(u => u.target) })).filter(u => u.tiles.length);
+  return { wrong, unconnected, faced, unused, edges: fluid.edges, fluid };
+}
 
 // ---------------------------------------------------------------------------------------------------------------------------
 // Static checks shared by both audits.

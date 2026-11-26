@@ -2,7 +2,7 @@
 import { box, sizeOf } from './lib.mjs';
 const esc = s => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 const COLORS = { 'oil-refinery': '#7a5a3a', 'chemical-plant': '#477196', 'assembling-machine-3': '#4f8f6f', 'fast-inserter': '#41a9d2', 'long-handed-inserter': '#d78352', 'fast-transport-belt': '#b74c41', 'fast-underground-belt': '#8a3a31', pipe: '#75bd95', 'pipe-to-ground': '#4f8f6f', substation: '#e0af60', 'display-panel': '#dac77a' };
-const SHORT = { 'simple-coal-liquefaction': 'coal liq.', 'heavy-oil-cracking': 'heavy crack', 'light-oil-cracking': 'light crack', 'plastic-bar': 'plastic', lubricant: 'lubricant', carbon: 'carbon', 'tungsten-carbide': 'WC' };
+const SHORT = { 'simple-coal-liquefaction': 'coal liq.', 'heavy-oil-cracking': 'heavy crack', 'light-oil-cracking': 'light crack', 'plastic-bar': 'plastic', lubricant: 'lubricant', carbon: 'carbon', 'tungsten-carbide': 'WC', 'solid-fuel-from-light-oil': 'solid fuel', 'rocket-fuel': 'rocket fuel' };
 export function layoutSvg(d, p) {
   const scale = 22, left = 36, top = 74, { bounds } = d.footprint;
   let shapes = '';

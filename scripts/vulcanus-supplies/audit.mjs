@@ -4,7 +4,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { blueprintVersion, published, prototypes, fluidSlots, readJson, json, sha, decode, allWires, VEC, N, E, S, W, opposite, sizeOf, MACHINES, analyzeFluids, collisions, insertTiles, entityAt, powerCoverage, envelope, distance, box, intersects } from './lib.mjs';
+import { blueprintVersion, published, prototypes, fluidSlots, readJson, json, sha, decode, allWires, VEC, N, E, S, W, opposite, sizeOf, MACHINES, analyzeFluids, portRules, collisions, insertTiles, entityAt, powerCoverage, envelope, distance, box, intersects } from './lib.mjs';
 
 const ALLOWED = ['oil-refinery', 'chemical-plant', 'assembling-machine-3', 'fast-inserter', 'long-handed-inserter', 'fast-transport-belt', 'fast-underground-belt', 'pipe', 'pipe-to-ground', 'substation', 'display-panel'];
 
@@ -91,6 +91,7 @@ export function auditBlueprint(object, m, p, slots) {
   check('Exactly the declared recipes are made, nothing else', JSON.stringify([...new Set(machines.map(e => e.recipe))].sort()) === JSON.stringify(Object.keys(need).sort()));
 
   // ---- fluids -------------------------------------------------------------------------------------------------------
+  const graph0 = beltGraph(es);
   const fluid = analyzeFluids(es, slots);
   check('No unpaired underground pipe and no mixed network in the static model', fluid.problems.length === 0, fluid.problems);
   check('Fluid networks equal the manifest', JSON.stringify(fluid.components.map(c => ({ id: c.id, fluid: c.fluids[0] || null, entities: c.entities, boxes: c.boxes }))) === JSON.stringify(m.fluidComponents));
@@ -107,6 +108,19 @@ export function auditBlueprint(object, m, p, slots) {
   }
   check('Every network with a machine input has a source (an outside entrance or a machine output) and every output reaches a consumer or an exit', unsourced.length === 0 && unsunk.length === 0, { unsourced, unsunk });
   check('Every fluid entrance and exit pipe is on a network of exactly its own fluid, and no two ports share a network', fluidPorts.every(x => compOf.get(x.entity)?.fluids.length === 1 && compOf.get(x.entity).fluids[0] === x.item) && new Set(fluidPorts.map(x => compOf.get(x.entity)?.id)).size === fluidPorts.length);
+  // ---- port rules (members whose manifest states its fluid connections and unused ports) ---------------------------------
+  if (m.fluidEdges) {
+    const rules = portRules(es, slots);
+    check('Every port a recipe uses meets an opening of exactly its own fluid or nothing, and every fluid box of every machine is connected', rules.wrong.length === 0 && rules.unconnected.length === 0, { wrong: rules.wrong, unconnected: rules.unconnected });
+    check('No pipe, pipe-to-ground opening or machine port faces a port the recipe does not use', rules.faced.length === 0, rules.faced);
+    check('Fluid connections and unused-port tiles equal the manifest', JSON.stringify(rules.edges) === JSON.stringify(m.fluidEdges) && JSON.stringify(rules.unused) === JSON.stringify(m.unusedPorts), { connections: rules.edges.length, unusedPortTiles: rules.unused.reduce((n, u) => n + u.tiles.length, 0) });
+    const side = m.exitBelt;
+    if (side) {
+      const row = side.row.map(get), column = side.column.map(get), exit = get(side.exit), ahead = b => { const t = tileOf(b), v = VEC[b.direction || 0]; return graph0.at.get(keyOf(t.x + v[0], t.y + v[1])); };
+      const line = list => list.every((b, i) => ahead(b) === (list[i + 1] || exit));
+      check('The exit belt is two unbranched lines that meet on the exit tile, one from behind and one from the side', line(row) && line(column) && (graph0.feeders.get(keyOf(tileOf(exit).x, tileOf(exit).y)) || []).length === 2 && [row, column].every(list => (graph0.feeders.get(keyOf(tileOf(list[0]).x, tileOf(list[0]).y)) || []).length === 0));
+    }
+  }
 
   // ---- belts and inserters -------------------------------------------------------------------------------------------
   const graph = beltGraph(es);
@@ -173,7 +187,7 @@ const inside1 = (e, t, p) => { const b = box(e, p); return t.x + 0.5 > b.left &&
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
   const id = process.argv[2], dir = process.argv[3] && !process.argv[3].startsWith('--') ? path.resolve(process.argv[3]) : published(id);
-  const [p, slots, m] = await Promise.all([prototypes(), fluidSlots(), readJson(path.join(dir, 'manifest.json'))]);
+  const [p, slots, m] = await Promise.all([prototypes(id), fluidSlots(id), readJson(path.join(dir, 'manifest.json'))]);
   const audit = auditBlueprint(decode(await fs.readFile(path.join(dir, 'blueprint.txt'), 'utf8')), m, p, slots);
   if (process.argv.includes('--write')) await fs.writeFile(path.join(dir, 'static-audit.json'), json(audit));
   console.log(JSON.stringify({ passed: audit.passed, checks: audit.checksTotal, errors: audit.errors }, null, 2));

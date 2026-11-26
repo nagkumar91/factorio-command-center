@@ -56,5 +56,24 @@ for (const name of [...itemNames].sort()) {
 }
 for (const name of ['sulfuric-acid', 'water', 'heavy-oil', 'light-oil', 'petroleum-gas', 'lubricant']) out.fluids[name] = { name, default_temperature: dump.fluid[name].default_temperature };
 for (const t of Object.values(dump.technology)) out.technologies[t.name] = { name: t.name, prerequisites: t.prerequisites, effects: t.effects, unit: t.unit, research_trigger: t.research_trigger };
+// A later member's own additions (see lib.mjs: prototypes(id)): only what the family pin lacks, from the same raw dump.
+//   FACTORIO_RAW=<dump> node scripts/vulcanus-supplies/pin-prototypes.mjs rocket-fuel      writes rocket-fuel/prototypes.json, leaves prototypes.json alone
+const MEMBERS = { 'rocket-fuel': { recipes: ['solid-fuel-from-light-oil', 'rocket-fuel'], items: ['solid-fuel', 'rocket-fuel'], fluids: [],
+  // what a rocket takes, for the README's "how often does this fill one": the silo's part count and the rocket fuel in one part
+  facts: () => ({ rocket: { silo: 'rocket-silo', rocketPartsRequired: dump['rocket-silo']['rocket-silo'].rocket_parts_required, partRecipe: dump['rocket-silo']['rocket-silo'].fixed_recipe, rocketFuelPerPart: dump.recipe[dump['rocket-silo']['rocket-silo'].fixed_recipe].ingredients.find(v => v.name === 'rocket-fuel').amount } }) } };
+const member = process.argv[2];
+if (member) {
+  const spec = MEMBERS[member];
+  if (!spec) throw new Error('No member pin list for ' + member);
+  const family = JSON.parse(await fs.readFile(path.join(HERE, 'prototypes.json'), 'utf8'));
+  if (family.provenance.rawSha256 !== provenance.rawSha256) throw new Error('This dump is not the one the family pin came from');
+  const item = name => { const i = Object.values(dump).map(g => g[name]).find(v => v?.stack_size && v.type !== 'recipe' && v.type !== 'technology'); return { name, stack_size: i.stack_size, ...(i.fuel_value ? { fuel_value: i.fuel_value } : {}) }; };
+  const extra = { schema: 1, member, gameVersion: versions.base, provenance: { method: 'Same raw dump as ../prototypes.json; only the recipes and items that file lacks', rawSha256: provenance.rawSha256, familyPrototypeSha256: sha(await fs.readFile(path.join(HERE, 'prototypes.json'))) },
+    recipes: Object.fromEntries(spec.recipes.map(n => [n, recipe(n)])), items: Object.fromEntries(spec.items.map(n => [n, item(n)])), fluids: Object.fromEntries(spec.fluids.map(n => [n, { name: n, default_temperature: dump.fluid[n].default_temperature }])), ...(spec.facts ? { facts: spec.facts() } : {}) };
+  for (const g of ['recipes', 'items', 'fluids']) for (const k of Object.keys(extra[g])) if (family[g][k]) throw new Error(`${g}.${k} is already in the family pin`);
+  await fs.writeFile(path.join(HERE, member, 'prototypes.json'), json(extra));
+  console.log(JSON.stringify({ written: member + '/prototypes.json', recipes: Object.keys(extra.recipes), items: Object.keys(extra.items) }));
+  process.exit(0);
+}
 await fs.writeFile(path.join(HERE, 'prototypes.json'), json(out));
 console.log(JSON.stringify({ written: 'prototypes.json', gameVersion: out.gameVersion, recipes: Object.keys(out.recipes).length, entities: Object.keys(out.entities).length, items: Object.keys(out.items).length, technologies: Object.keys(out.technologies).length }));

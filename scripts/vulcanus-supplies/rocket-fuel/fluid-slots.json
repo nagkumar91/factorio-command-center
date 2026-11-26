@@ -1,0 +1,721 @@
+{
+ "schema": 1,
+ "member": "rocket-fuel",
+ "gameVersion": "2.1.25",
+ "surface": "vulcanus",
+ "method": "scripts/vulcanus-supplies/probes/ports.mjs: each machine and recipe imported from a blueprint in every direction, unmirrored and mirrored. slots: get_fluid_box_pipe_connections of every fluid box (offsets of the tile a pipe must occupy, from the machine centre), only for the recipes the family table lacks. ports: every tile where a pipe connected to the machine under recipes that use every connection (oil-refinery: advanced-oil-processing; chemical-plant: heavy-oil-cracking; assembling-machine-3: water-barrel + empty-water-barrel). unusedPorts: ports the recipe in use left unconnected when a pipe stood on every tile around the machine; no pipe opening may face them.",
+ "slots": {
+  "chemical-plant|solid-fuel-from-light-oil": {
+   "d0": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       -2
+      ],
+      [
+       1,
+       -2
+      ]
+     ]
+    }
+   ],
+   "d4": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       2,
+       -1
+      ],
+      [
+       2,
+       1
+      ]
+     ]
+    }
+   ],
+   "d8": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       2
+      ],
+      [
+       -1,
+       2
+      ]
+     ]
+    }
+   ],
+   "d12": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       -2,
+       1
+      ],
+      [
+       -2,
+       -1
+      ]
+     ]
+    }
+   ],
+   "d0M": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       -2
+      ],
+      [
+       -1,
+       -2
+      ]
+     ]
+    }
+   ],
+   "d4M": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       2,
+       1
+      ],
+      [
+       2,
+       -1
+      ]
+     ]
+    }
+   ],
+   "d8M": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       2
+      ],
+      [
+       1,
+       2
+      ]
+     ]
+    }
+   ],
+   "d12M": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       -2,
+       -1
+      ],
+      [
+       -2,
+       1
+      ]
+     ]
+    }
+   ]
+  },
+  "assembling-machine-3|rocket-fuel": {
+   "d0": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       0,
+       -2
+      ]
+     ]
+    }
+   ],
+   "d4": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       2,
+       0
+      ]
+     ]
+    }
+   ],
+   "d8": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       0,
+       2
+      ]
+     ]
+    }
+   ],
+   "d12": [
+    {
+     "fluid": "light-oil",
+     "flow": "input",
+     "targets": [
+      [
+       -2,
+       0
+      ]
+     ]
+    }
+   ]
+  }
+ },
+ "ports": {
+  "chemical-plant": {
+   "d0": [
+    "-1,-2",
+    "-1,2",
+    "1,-2",
+    "1,2"
+   ],
+   "d4": [
+    "-2,-1",
+    "-2,1",
+    "2,-1",
+    "2,1"
+   ],
+   "d8": [
+    "-1,-2",
+    "-1,2",
+    "1,-2",
+    "1,2"
+   ],
+   "d12": [
+    "-2,-1",
+    "-2,1",
+    "2,-1",
+    "2,1"
+   ],
+   "d0M": [
+    "-1,-2",
+    "-1,2",
+    "1,-2",
+    "1,2"
+   ],
+   "d4M": [
+    "-2,-1",
+    "-2,1",
+    "2,-1",
+    "2,1"
+   ],
+   "d8M": [
+    "-1,-2",
+    "-1,2",
+    "1,-2",
+    "1,2"
+   ],
+   "d12M": [
+    "-2,-1",
+    "-2,1",
+    "2,-1",
+    "2,1"
+   ]
+  },
+  "oil-refinery": {
+   "d0": [
+    "-1,3",
+    "-2,-3",
+    "0,-3",
+    "1,3",
+    "2,-3"
+   ],
+   "d4": [
+    "-3,-1",
+    "-3,1",
+    "3,-2",
+    "3,0",
+    "3,2"
+   ],
+   "d8": [
+    "-1,-3",
+    "-2,3",
+    "0,3",
+    "1,-3",
+    "2,3"
+   ],
+   "d12": [
+    "-3,-2",
+    "-3,0",
+    "-3,2",
+    "3,-1",
+    "3,1"
+   ],
+   "d0M": [
+    "-1,3",
+    "-2,-3",
+    "0,-3",
+    "1,3",
+    "2,-3"
+   ],
+   "d4M": [
+    "-3,-1",
+    "-3,1",
+    "3,-2",
+    "3,0",
+    "3,2"
+   ],
+   "d8M": [
+    "-1,-3",
+    "-2,3",
+    "0,3",
+    "1,-3",
+    "2,3"
+   ],
+   "d12M": [
+    "-3,-2",
+    "-3,0",
+    "-3,2",
+    "3,-1",
+    "3,1"
+   ]
+  },
+  "assembling-machine-3": {
+   "d0": [
+    "0,-2",
+    "0,2"
+   ],
+   "d4": [
+    "-2,0",
+    "2,0"
+   ],
+   "d8": [
+    "0,-2",
+    "0,2"
+   ],
+   "d12": [
+    "-2,0",
+    "2,0"
+   ]
+  }
+ },
+ "unusedPorts": {
+  "oil-refinery|simple-coal-liquefaction": {
+   "d0": [
+    [
+     0,
+     -3
+    ],
+    [
+     2,
+     -3
+    ]
+   ],
+   "d4": [
+    [
+     3,
+     0
+    ],
+    [
+     3,
+     2
+    ]
+   ],
+   "d8": [
+    [
+     -2,
+     3
+    ],
+    [
+     0,
+     3
+    ]
+   ],
+   "d12": [
+    [
+     -3,
+     -2
+    ],
+    [
+     -3,
+     0
+    ]
+   ],
+   "d0M": [
+    [
+     -2,
+     -3
+    ],
+    [
+     0,
+     -3
+    ]
+   ],
+   "d4M": [
+    [
+     3,
+     -2
+    ],
+    [
+     3,
+     0
+    ]
+   ],
+   "d8M": [
+    [
+     0,
+     3
+    ],
+    [
+     2,
+     3
+    ]
+   ],
+   "d12M": [
+    [
+     -3,
+     0
+    ],
+    [
+     -3,
+     2
+    ]
+   ]
+  },
+  "chemical-plant|heavy-oil-cracking": {
+   "d0": [],
+   "d4": [],
+   "d8": [],
+   "d12": [],
+   "d0M": [],
+   "d4M": [],
+   "d8M": [],
+   "d12M": []
+  },
+  "chemical-plant|solid-fuel-from-light-oil": {
+   "d0": [
+    [
+     -1,
+     2
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "d4": [
+    [
+     -2,
+     -1
+    ],
+    [
+     -2,
+     1
+    ]
+   ],
+   "d8": [
+    [
+     -1,
+     -2
+    ],
+    [
+     1,
+     -2
+    ]
+   ],
+   "d12": [
+    [
+     2,
+     -1
+    ],
+    [
+     2,
+     1
+    ]
+   ],
+   "d0M": [
+    [
+     -1,
+     2
+    ],
+    [
+     1,
+     2
+    ]
+   ],
+   "d4M": [
+    [
+     -2,
+     -1
+    ],
+    [
+     -2,
+     1
+    ]
+   ],
+   "d8M": [
+    [
+     -1,
+     -2
+    ],
+    [
+     1,
+     -2
+    ]
+   ],
+   "d12M": [
+    [
+     2,
+     -1
+    ],
+    [
+     2,
+     1
+    ]
+   ]
+  },
+  "assembling-machine-3|rocket-fuel": {
+   "d0": [
+    [
+     0,
+     2
+    ]
+   ],
+   "d4": [
+    [
+     -2,
+     0
+    ]
+   ],
+   "d8": [
+    [
+     0,
+     -2
+    ]
+   ],
+   "d12": [
+    [
+     2,
+     0
+    ]
+   ]
+  }
+ },
+ "facts": {
+  "oil-refinery|simple-coal-liquefaction": {
+   "d0": {
+    "mirroring": false,
+    "capacities": [
+     100,
+     150
+    ]
+   },
+   "d4": {
+    "mirroring": false,
+    "capacities": [
+     100,
+     150
+    ]
+   },
+   "d8": {
+    "mirroring": false,
+    "capacities": [
+     100,
+     150
+    ]
+   },
+   "d12": {
+    "mirroring": false,
+    "capacities": [
+     100,
+     150
+    ]
+   },
+   "d0M": {
+    "mirroring": true,
+    "capacities": [
+     100,
+     150
+    ]
+   },
+   "d4M": {
+    "mirroring": true,
+    "capacities": [
+     100,
+     150
+    ]
+   },
+   "d8M": {
+    "mirroring": true,
+    "capacities": [
+     100,
+     150
+    ]
+   },
+   "d12M": {
+    "mirroring": true,
+    "capacities": [
+     100,
+     150
+    ]
+   }
+  },
+  "chemical-plant|heavy-oil-cracking": {
+   "d0": {
+    "mirroring": false,
+    "capacities": [
+     120,
+     160,
+     200
+    ]
+   },
+   "d4": {
+    "mirroring": false,
+    "capacities": [
+     120,
+     160,
+     200
+    ]
+   },
+   "d8": {
+    "mirroring": false,
+    "capacities": [
+     120,
+     160,
+     200
+    ]
+   },
+   "d12": {
+    "mirroring": false,
+    "capacities": [
+     120,
+     160,
+     200
+    ]
+   },
+   "d0M": {
+    "mirroring": true,
+    "capacities": [
+     120,
+     160,
+     200
+    ]
+   },
+   "d4M": {
+    "mirroring": true,
+    "capacities": [
+     120,
+     160,
+     200
+    ]
+   },
+   "d8M": {
+    "mirroring": true,
+    "capacities": [
+     120,
+     160,
+     200
+    ]
+   },
+   "d12M": {
+    "mirroring": true,
+    "capacities": [
+     120,
+     160,
+     200
+    ]
+   }
+  },
+  "chemical-plant|solid-fuel-from-light-oil": {
+   "d0": {
+    "mirroring": false,
+    "capacities": [
+     40
+    ]
+   },
+   "d4": {
+    "mirroring": false,
+    "capacities": [
+     40
+    ]
+   },
+   "d8": {
+    "mirroring": false,
+    "capacities": [
+     40
+    ]
+   },
+   "d12": {
+    "mirroring": false,
+    "capacities": [
+     40
+    ]
+   },
+   "d0M": {
+    "mirroring": true,
+    "capacities": [
+     40
+    ]
+   },
+   "d4M": {
+    "mirroring": true,
+    "capacities": [
+     40
+    ]
+   },
+   "d8M": {
+    "mirroring": true,
+    "capacities": [
+     40
+    ]
+   },
+   "d12M": {
+    "mirroring": true,
+    "capacities": [
+     40
+    ]
+   }
+  },
+  "assembling-machine-3|rocket-fuel": {
+   "d0": {
+    "mirroring": false,
+    "capacities": [
+     40
+    ]
+   },
+   "d4": {
+    "mirroring": false,
+    "capacities": [
+     40
+    ]
+   },
+   "d8": {
+    "mirroring": false,
+    "capacities": [
+     40
+    ]
+   },
+   "d12": {
+    "mirroring": false,
+    "capacities": [
+     40
+    ]
+   }
+  }
+ }
+}

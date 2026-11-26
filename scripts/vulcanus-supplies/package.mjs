@@ -1,7 +1,7 @@
 // Turns a Layout (design.mjs of either blueprint) into the published artefacts: blueprint, manifest, ports, footprint, and the
 // fixture description the native harness reads. Pure function of the pinned prototypes and the fluid-slot table.
 import assert from 'node:assert/strict';
-import { sha, encodeKeeping, envelope, technologyClosure, distance, box, intersects, blueprintVersion, analyzeFluids, machineBoxes, MACHINES, VEC, sizeOf, insertTiles, entityAt } from './lib.mjs';
+import { sha, encodeKeeping, envelope, technologyClosure, distance, box, intersects, blueprintVersion, analyzeFluids, machineBoxes, portRules, MACHINES, VEC, sizeOf, insertTiles, entityAt } from './lib.mjs';
 
 const DIR_NAME = { 0: 'north', 4: 'east', 8: 'south', 12: 'west' };
 export const sideVector = side => ({ west: [-1, 0], east: [1, 0], north: [0, -1], south: [0, 1] })[side];
@@ -53,7 +53,7 @@ export function assemble(d, p, slots, options = {}) {
   const fluidOf = {};
   for (const e of entities) if (e.name === 'pipe' || e.name === 'pipe-to-ground') fluidOf[e.entity_number] = fluid.fluidOf.get(e.entity_number);
   const manifest = {
-    schema: 1, id: d.id, revision: 1, candidateSha256: hash, requiredGameVersion: p.gameVersion, prototypeSha256: options.prototypeSha256, fluidSlotsSha256: options.fluidSlotsSha256,
+    schema: 1, id: d.id, revision: 1, candidateSha256: hash, requiredGameVersion: p.gameVersion, prototypeSha256: options.prototypeSha256, fluidSlotsSha256: options.fluidSlotsSha256, ...(options.memberPrototypeSha256 ? { memberPrototypeSha256: options.memberPrototypeSha256 } : {}), ...(options.memberFluidSlotsSha256 ? { memberFluidSlotsSha256: options.memberFluidSlotsSha256 } : {}),
     intendedUse: d.intendedUse, products: d.products, targets: d.targets, equipment: d.equipment, footprint,
     inputPorts: inputs, outputPorts: outputs, power, machines, roles: Object.fromEntries(d.roles), routes: d.routes,
     machineBoxes: machineBoxTable, machineFluids, fluidOf,
@@ -62,6 +62,9 @@ export function assemble(d, p, slots, options = {}) {
     sizing: d.sizing,
     status: { static: 'static-audit.json', native: 'native-report.json; qualified only when that report passed for candidateSha256' },
     ...(d.extra || {}),
+    // Members that state their port rules (see portRules in lib.mjs): every fluid connection of the static model as a pair of entity
+    // numbers, and the tiles in front of the ports no recipe uses. The native harness compares both with what the game built.
+    ...(d.fluidSafety ? { fluidEdges: fluid.edges, unusedPorts: portRules(entities, slots).unused } : {}),
   };
   return { blueprint, code, hash, manifest, footprint, ports: { candidateSha256: hash, inputs, outputs, power }, tech, fluid, layout: L, d };
 }
@@ -74,8 +77,9 @@ export function fixtureOf(manifest, bp, p, scenario) {
     inputs: manifest.inputPorts.map(x => ({ id: x.id, item: x.item, kind: x.kind === 'belt' ? 'belt' : 'pipe', entity: x.entity, externalContact: { x: x.externalContact.x + 0.5, y: x.externalContact.y + 0.5 } })),
     outputs: manifest.outputPorts.map(x => ({ id: x.id, item: x.item, kind: x.kind === 'belt' ? 'belt' : 'pipe', entity: x.entity, externalContact: { x: x.externalContact.x + 0.5, y: x.externalContact.y + 0.5 } })),
     approaches: [...manifest.inputPorts, ...manifest.outputPorts].map(x => ({ id: x.id, tiles: x.approach.map(t => ({ x: t.x + 0.5, y: t.y + 0.5 })) })),
-    power: { entry: manifest.power.entry, panel: manifest.power.panel, poles: manifest.power.poles, externalPole: { x: manifest.power.externalPole.x, y: manifest.power.externalPole.y } },
+    power: { entry: manifest.power.entry, panel: manifest.power.panel, poles: manifest.power.poles, externalPole: { x: manifest.power.externalPole.x, y: manifest.power.externalPole.y }, ...(manifest.power.externalSource ? { externalSource: manifest.power.externalSource } : {}) },
     footprint: manifest.footprint,
+    ...(manifest.fluidEdges ? { fluidEdges: manifest.fluidEdges, unusedPorts: manifest.unusedPorts.map(u => ({ entity: u.entity, tiles: u.tiles.map(t => ({ x: t.x + 0.5, y: t.y + 0.5 })) })) } : {}),
   };
   return M;
 }

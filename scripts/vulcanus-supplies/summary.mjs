@@ -17,7 +17,8 @@ export function summarize(report, manifest) {
     }
   }
   const steady = {};
-  for (const mode of Object.keys(phases)) steady[mode] = { outputsPerMinute: phases[mode].steady.outputsPerMinute, inputsPerMinute: phases[mode].steady.inputsPerMinute };
+  // (a scenario without a "steady" phase, such as a shortened build or placement run, has no entry here)
+  for (const mode of Object.keys(phases)) if (phases[mode].steady) steady[mode] = { outputsPerMinute: phases[mode].steady.outputsPerMinute, inputsPerMinute: phases[mode].steady.inputsPerMinute };
   // The published draw is the throttled run's own (the entrances took exactly the panel figure); the generous run shows what the blueprint takes when offered more.
-  return { phases, steady, outputsPerMinute: steady.throttled?.outputsPerMinute ?? Object.values(steady)[0].outputsPerMinute, inputsPerMinute: steady.throttled?.inputsPerMinute ?? Object.values(steady)[0].inputsPerMinute };
+  return { phases, steady, outputsPerMinute: steady.throttled?.outputsPerMinute ?? Object.values(steady)[0]?.outputsPerMinute, inputsPerMinute: steady.throttled?.inputsPerMinute ?? Object.values(steady)[0]?.inputsPerMinute };
 }

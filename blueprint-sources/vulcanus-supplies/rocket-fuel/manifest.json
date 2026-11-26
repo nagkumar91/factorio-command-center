@@ -1,0 +1,3101 @@
+{
+  "schema": 1,
+  "id": "rocket-fuel",
+  "revision": 1,
+  "candidateSha256": "7a4378fc6d96432d0c16c58c465ae66a0287ae938e7bb22150b8e6f6e60a2003",
+  "requiredGameVersion": "2.1.25",
+  "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+  "fluidSlotsSha256": "31e11b1740a63e84996b36575f20c9d9dcccfd26f764a1a7b32a07f783cf5198",
+  "memberPrototypeSha256": "4ff90132849d8e6683622a80297bbcc282756c93811be0e73a16c5f4dfa5b0f6",
+  "memberFluidSlotsSha256": "a1f8b32707293424c4985db94ddbd829cbdc364097c38ef50624468cde09ca0c",
+  "intendedUse": "rocket fuel on a belt from coal, calcite, sulfuric acid and water, by simple coal liquefaction, heavy oil cracking and solid fuel from light oil",
+  "products": [
+    "rocket-fuel"
+  ],
+  "targets": {
+    "rocket-fuel": 12
+  },
+  "equipment": {
+    "machines": [
+      "oil-refinery",
+      "chemical-plant",
+      "assembling-machine-3"
+    ],
+    "inserter": "fast-inserter",
+    "transport": "fast-transport-belt",
+    "power": "substation",
+    "modules": 0,
+    "beacons": 0,
+    "quality": "normal"
+  },
+  "footprint": {
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 34,
+      "bottom": 10
+    },
+    "width": 34,
+    "height": 10,
+    "area": 340,
+    "includes": "all entities, panels, substations, belts, pipes and underground pipes; external supply excluded",
+    "counts": {
+      "assembling-machine-3": 3,
+      "chemical-plant": 5,
+      "display-panel": 6,
+      "fast-inserter": 15,
+      "fast-transport-belt": 37,
+      "oil-refinery": 3,
+      "pipe": 47,
+      "pipe-to-ground": 10,
+      "substation": 3
+    },
+    "entities": 129
+  },
+  "inputPorts": [
+    {
+      "id": "IN-1",
+      "item": "coal",
+      "kind": "belt",
+      "side": "west",
+      "flow": "east",
+      "entity": 28,
+      "tile": {
+        "x": 0,
+        "y": 6
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 6
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -1,
+          "y": 6
+        },
+        {
+          "x": -2,
+          "y": 6
+        },
+        {
+          "x": -3,
+          "y": 6
+        }
+      ],
+      "panel": 124,
+      "label": "IN: coal 352/min",
+      "perMinute": 352
+    },
+    {
+      "id": "IN-2",
+      "item": "calcite",
+      "kind": "belt",
+      "side": "west",
+      "flow": "east",
+      "entity": 30,
+      "tile": {
+        "x": 0,
+        "y": 8
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 8
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -1,
+          "y": 8
+        },
+        {
+          "x": -2,
+          "y": 8
+        },
+        {
+          "x": -3,
+          "y": 8
+        }
+      ],
+      "panel": 125,
+      "label": "IN: calcite 71/min",
+      "perMinute": 71
+    },
+    {
+      "id": "IN-3",
+      "item": "sulfuric-acid",
+      "kind": "pipe",
+      "side": "west",
+      "flow": "east",
+      "entity": 12,
+      "tile": {
+        "x": 0,
+        "y": 0
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 0
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -2,
+          "y": 0
+        },
+        {
+          "x": -3,
+          "y": 0
+        },
+        {
+          "x": -4,
+          "y": 0
+        }
+      ],
+      "panel": 126,
+      "label": "IN: sulfuric-acid 880/min",
+      "perMinute": 880
+    },
+    {
+      "id": "IN-4",
+      "item": "water",
+      "kind": "pipe",
+      "side": "north",
+      "flow": "south",
+      "entity": 82,
+      "tile": {
+        "x": 21,
+        "y": 0
+      },
+      "externalContact": {
+        "x": 21,
+        "y": -1
+      },
+      "vector": [
+        0,
+        -1
+      ],
+      "approach": [
+        {
+          "x": 21,
+          "y": -2
+        },
+        {
+          "x": 21,
+          "y": -3
+        },
+        {
+          "x": 21,
+          "y": -4
+        }
+      ],
+      "panel": 127,
+      "label": "IN: water 1320/min",
+      "perMinute": 1320
+    }
+  ],
+  "outputPorts": [
+    {
+      "id": "OUT-1",
+      "item": "rocket-fuel",
+      "kind": "belt",
+      "side": "east",
+      "flow": "east",
+      "entity": 110,
+      "tile": {
+        "x": 33,
+        "y": 9
+      },
+      "externalContact": {
+        "x": 34,
+        "y": 9
+      },
+      "vector": [
+        1,
+        0
+      ],
+      "approach": [
+        {
+          "x": 34,
+          "y": 9
+        },
+        {
+          "x": 35,
+          "y": 9
+        },
+        {
+          "x": 36,
+          "y": 9
+        }
+      ],
+      "panel": 128,
+      "label": "OUT: rocket-fuel 12/min",
+      "perMinute": 12
+    }
+  ],
+  "power": {
+    "entry": 123,
+    "panel": 129,
+    "label": "POWER: connect substation",
+    "externalPole": {
+      "x": 36,
+      "y": 1
+    },
+    "poles": [
+      121,
+      122,
+      123
+    ]
+  },
+  "machines": [
+    {
+      "entity": 1,
+      "name": "oil-refinery",
+      "recipe": "simple-coal-liquefaction",
+      "role": "liquefaction-1",
+      "tile": {
+        "x": 2,
+        "y": 1
+      },
+      "direction": 8,
+      "mirror": false
+    },
+    {
+      "entity": 2,
+      "name": "oil-refinery",
+      "recipe": "simple-coal-liquefaction",
+      "role": "liquefaction-2",
+      "tile": {
+        "x": 7,
+        "y": 1
+      },
+      "direction": 8,
+      "mirror": false
+    },
+    {
+      "entity": 3,
+      "name": "oil-refinery",
+      "recipe": "simple-coal-liquefaction",
+      "role": "liquefaction-3",
+      "tile": {
+        "x": 12,
+        "y": 1
+      },
+      "direction": 8,
+      "mirror": false
+    },
+    {
+      "entity": 4,
+      "name": "chemical-plant",
+      "recipe": "heavy-oil-cracking",
+      "role": "heavy-cracking-1",
+      "tile": {
+        "x": 18,
+        "y": 1
+      },
+      "direction": 0,
+      "mirror": true
+    },
+    {
+      "entity": 5,
+      "name": "chemical-plant",
+      "recipe": "heavy-oil-cracking",
+      "role": "heavy-cracking-2",
+      "tile": {
+        "x": 22,
+        "y": 1
+      },
+      "direction": 0,
+      "mirror": false
+    },
+    {
+      "entity": 6,
+      "name": "chemical-plant",
+      "recipe": "solid-fuel-from-light-oil",
+      "role": "solid-fuel-1",
+      "tile": {
+        "x": 25,
+        "y": 1
+      },
+      "direction": 8,
+      "mirror": false
+    },
+    {
+      "entity": 7,
+      "name": "assembling-machine-3",
+      "recipe": "rocket-fuel",
+      "role": "rocket-fuel-1",
+      "tile": {
+        "x": 29,
+        "y": 1
+      },
+      "direction": 8,
+      "mirror": false
+    },
+    {
+      "entity": 8,
+      "name": "chemical-plant",
+      "recipe": "solid-fuel-from-light-oil",
+      "role": "solid-fuel-2",
+      "tile": {
+        "x": 18,
+        "y": 5
+      },
+      "direction": 0,
+      "mirror": false
+    },
+    {
+      "entity": 9,
+      "name": "assembling-machine-3",
+      "recipe": "rocket-fuel",
+      "role": "rocket-fuel-2",
+      "tile": {
+        "x": 22,
+        "y": 5
+      },
+      "direction": 0,
+      "mirror": false
+    },
+    {
+      "entity": 10,
+      "name": "chemical-plant",
+      "recipe": "solid-fuel-from-light-oil",
+      "role": "solid-fuel-3",
+      "tile": {
+        "x": 25,
+        "y": 5
+      },
+      "direction": 0,
+      "mirror": false
+    },
+    {
+      "entity": 11,
+      "name": "assembling-machine-3",
+      "recipe": "rocket-fuel",
+      "role": "rocket-fuel-3",
+      "tile": {
+        "x": 29,
+        "y": 5
+      },
+      "direction": 0,
+      "mirror": false
+    }
+  ],
+  "roles": {
+    "1": "liquefaction-1",
+    "2": "liquefaction-2",
+    "3": "liquefaction-3",
+    "4": "heavy-cracking-1",
+    "5": "heavy-cracking-2",
+    "6": "solid-fuel-1",
+    "7": "rocket-fuel-1",
+    "8": "solid-fuel-2",
+    "9": "rocket-fuel-2",
+    "10": "solid-fuel-3",
+    "11": "rocket-fuel-3"
+  },
+  "routes": [
+    {
+      "inserter": 47,
+      "label": "belt -> refinery 1 (arm at 3,6)",
+      "sourceBelts": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "destEntity": 1
+    },
+    {
+      "inserter": 48,
+      "label": "belt -> refinery 1 (arm at 4,6)",
+      "sourceBelts": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "destEntity": 1
+    },
+    {
+      "inserter": 49,
+      "label": "belt -> refinery 1 (arm at 5,6)",
+      "sourceBelts": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "destEntity": 1
+    },
+    {
+      "inserter": 53,
+      "label": "belt -> refinery 2 (arm at 8,6)",
+      "sourceBelts": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "destEntity": 2
+    },
+    {
+      "inserter": 54,
+      "label": "belt -> refinery 2 (arm at 9,6)",
+      "sourceBelts": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "destEntity": 2
+    },
+    {
+      "inserter": 55,
+      "label": "belt -> refinery 2 (arm at 10,6)",
+      "sourceBelts": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "destEntity": 2
+    },
+    {
+      "inserter": 59,
+      "label": "belt -> refinery 3 (arm at 13,6)",
+      "sourceBelts": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "destEntity": 3
+    },
+    {
+      "inserter": 60,
+      "label": "belt -> refinery 3 (arm at 14,6)",
+      "sourceBelts": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "destEntity": 3
+    },
+    {
+      "inserter": 61,
+      "label": "belt -> refinery 3 (arm at 15,6)",
+      "sourceBelts": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "destEntity": 3
+    },
+    {
+      "inserter": 97,
+      "label": "solid-fuel plant 1 -> assembler 1 (solid fuel)",
+      "sourceEntity": 6,
+      "destEntity": 7
+    },
+    {
+      "inserter": 98,
+      "label": "solid-fuel plant 2 -> assembler 2 (solid fuel)",
+      "sourceEntity": 8,
+      "destEntity": 9
+    },
+    {
+      "inserter": 99,
+      "label": "solid-fuel plant 3 -> assembler 3 (solid fuel)",
+      "sourceEntity": 10,
+      "destEntity": 11
+    },
+    {
+      "inserter": 118,
+      "label": "assembler 1 -> exit belt (rocket fuel)",
+      "sourceEntity": 7,
+      "destBelts": [
+        111
+      ]
+    },
+    {
+      "inserter": 119,
+      "label": "assembler 2 -> exit belt (rocket fuel)",
+      "sourceEntity": 9,
+      "destBelts": [
+        100
+      ]
+    },
+    {
+      "inserter": 120,
+      "label": "assembler 3 -> exit belt (rocket fuel)",
+      "sourceEntity": 11,
+      "destBelts": [
+        107
+      ]
+    }
+  ],
+  "machineBoxes": {
+    "1": [
+      {
+        "fluid": "sulfuric-acid",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            -3
+          ],
+          [
+            -1,
+            -3
+          ]
+        ]
+      },
+      {
+        "fluid": "heavy-oil",
+        "flow": "output",
+        "targets": [
+          [
+            2,
+            3
+          ]
+        ]
+      }
+    ],
+    "2": [
+      {
+        "fluid": "sulfuric-acid",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            -3
+          ],
+          [
+            -1,
+            -3
+          ]
+        ]
+      },
+      {
+        "fluid": "heavy-oil",
+        "flow": "output",
+        "targets": [
+          [
+            2,
+            3
+          ]
+        ]
+      }
+    ],
+    "3": [
+      {
+        "fluid": "sulfuric-acid",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            -3
+          ],
+          [
+            -1,
+            -3
+          ]
+        ]
+      },
+      {
+        "fluid": "heavy-oil",
+        "flow": "output",
+        "targets": [
+          [
+            2,
+            3
+          ]
+        ]
+      }
+    ],
+    "4": [
+      {
+        "fluid": "water",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            -2
+          ]
+        ]
+      },
+      {
+        "fluid": "heavy-oil",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            -2
+          ]
+        ]
+      },
+      {
+        "fluid": "light-oil",
+        "flow": "output",
+        "targets": [
+          [
+            1,
+            2
+          ],
+          [
+            -1,
+            2
+          ]
+        ]
+      }
+    ],
+    "5": [
+      {
+        "fluid": "water",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            -2
+          ]
+        ]
+      },
+      {
+        "fluid": "heavy-oil",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            -2
+          ]
+        ]
+      },
+      {
+        "fluid": "light-oil",
+        "flow": "output",
+        "targets": [
+          [
+            -1,
+            2
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      }
+    ],
+    "6": [
+      {
+        "fluid": "light-oil",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            2
+          ],
+          [
+            -1,
+            2
+          ]
+        ]
+      }
+    ],
+    "7": [
+      {
+        "fluid": "light-oil",
+        "flow": "input",
+        "targets": [
+          [
+            0,
+            2
+          ]
+        ]
+      }
+    ],
+    "8": [
+      {
+        "fluid": "light-oil",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            -2
+          ]
+        ]
+      }
+    ],
+    "9": [
+      {
+        "fluid": "light-oil",
+        "flow": "input",
+        "targets": [
+          [
+            0,
+            -2
+          ]
+        ]
+      }
+    ],
+    "10": [
+      {
+        "fluid": "light-oil",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            -2
+          ]
+        ]
+      }
+    ],
+    "11": [
+      {
+        "fluid": "light-oil",
+        "flow": "input",
+        "targets": [
+          [
+            0,
+            -2
+          ]
+        ]
+      }
+    ]
+  },
+  "machineFluids": {
+    "1": [
+      "sulfuric-acid",
+      "heavy-oil"
+    ],
+    "2": [
+      "sulfuric-acid",
+      "heavy-oil"
+    ],
+    "3": [
+      "sulfuric-acid",
+      "heavy-oil"
+    ],
+    "4": [
+      "water",
+      "heavy-oil",
+      "light-oil"
+    ],
+    "5": [
+      "water",
+      "heavy-oil",
+      "light-oil"
+    ],
+    "6": [
+      "light-oil"
+    ],
+    "7": [
+      "light-oil"
+    ],
+    "8": [
+      "light-oil"
+    ],
+    "9": [
+      "light-oil"
+    ],
+    "10": [
+      "light-oil"
+    ],
+    "11": [
+      "light-oil"
+    ]
+  },
+  "fluidOf": {
+    "12": "sulfuric-acid",
+    "13": "sulfuric-acid",
+    "14": "sulfuric-acid",
+    "15": "sulfuric-acid",
+    "16": "sulfuric-acid",
+    "17": "sulfuric-acid",
+    "18": "sulfuric-acid",
+    "19": "sulfuric-acid",
+    "20": "sulfuric-acid",
+    "21": "sulfuric-acid",
+    "22": "sulfuric-acid",
+    "23": "sulfuric-acid",
+    "24": "sulfuric-acid",
+    "25": "sulfuric-acid",
+    "26": "sulfuric-acid",
+    "27": "sulfuric-acid",
+    "50": "heavy-oil",
+    "51": "heavy-oil",
+    "52": "heavy-oil",
+    "56": "heavy-oil",
+    "57": "heavy-oil",
+    "58": "heavy-oil",
+    "62": "heavy-oil",
+    "63": "heavy-oil",
+    "64": "heavy-oil",
+    "65": "heavy-oil",
+    "66": "heavy-oil",
+    "67": "heavy-oil",
+    "68": "heavy-oil",
+    "69": "heavy-oil",
+    "70": "heavy-oil",
+    "71": "heavy-oil",
+    "72": "heavy-oil",
+    "73": "heavy-oil",
+    "74": "heavy-oil",
+    "75": "heavy-oil",
+    "76": "heavy-oil",
+    "77": "heavy-oil",
+    "78": "heavy-oil",
+    "79": "heavy-oil",
+    "80": "heavy-oil",
+    "81": "water",
+    "82": "water",
+    "83": "water",
+    "84": "light-oil",
+    "85": "light-oil",
+    "86": "light-oil",
+    "87": "light-oil",
+    "88": "light-oil",
+    "89": "light-oil",
+    "90": "light-oil",
+    "91": "light-oil",
+    "92": "light-oil",
+    "93": "light-oil",
+    "94": "light-oil",
+    "95": "light-oil",
+    "96": "light-oil"
+  },
+  "fluidComponents": [
+    {
+      "id": 1,
+      "fluid": "sulfuric-acid",
+      "entities": [
+        1,
+        2,
+        3,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 0,
+          "fluid": "sulfuric-acid",
+          "flow": "input"
+        },
+        {
+          "entity": 2,
+          "box": 0,
+          "fluid": "sulfuric-acid",
+          "flow": "input"
+        },
+        {
+          "entity": 3,
+          "box": 0,
+          "fluid": "sulfuric-acid",
+          "flow": "input"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "fluid": "heavy-oil",
+      "entities": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        50,
+        51,
+        52,
+        56,
+        57,
+        58,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 1,
+          "fluid": "heavy-oil",
+          "flow": "output"
+        },
+        {
+          "entity": 2,
+          "box": 1,
+          "fluid": "heavy-oil",
+          "flow": "output"
+        },
+        {
+          "entity": 3,
+          "box": 1,
+          "fluid": "heavy-oil",
+          "flow": "output"
+        },
+        {
+          "entity": 4,
+          "box": 1,
+          "fluid": "heavy-oil",
+          "flow": "input"
+        },
+        {
+          "entity": 5,
+          "box": 1,
+          "fluid": "heavy-oil",
+          "flow": "input"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "fluid": "water",
+      "entities": [
+        4,
+        5,
+        81,
+        82,
+        83
+      ],
+      "boxes": [
+        {
+          "entity": 4,
+          "box": 0,
+          "fluid": "water",
+          "flow": "input"
+        },
+        {
+          "entity": 5,
+          "box": 0,
+          "fluid": "water",
+          "flow": "input"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "fluid": "light-oil",
+      "entities": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96
+      ],
+      "boxes": [
+        {
+          "entity": 4,
+          "box": 2,
+          "fluid": "light-oil",
+          "flow": "output"
+        },
+        {
+          "entity": 5,
+          "box": 2,
+          "fluid": "light-oil",
+          "flow": "output"
+        },
+        {
+          "entity": 6,
+          "box": 0,
+          "fluid": "light-oil",
+          "flow": "input"
+        },
+        {
+          "entity": 7,
+          "box": 0,
+          "fluid": "light-oil",
+          "flow": "input"
+        },
+        {
+          "entity": 8,
+          "box": 0,
+          "fluid": "light-oil",
+          "flow": "input"
+        },
+        {
+          "entity": 9,
+          "box": 0,
+          "fluid": "light-oil",
+          "flow": "input"
+        },
+        {
+          "entity": 10,
+          "box": 0,
+          "fluid": "light-oil",
+          "flow": "input"
+        },
+        {
+          "entity": 11,
+          "box": 0,
+          "fluid": "light-oil",
+          "flow": "input"
+        }
+      ]
+    }
+  ],
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "automation",
+    "steel-processing",
+    "logistic-science-pack",
+    "automation-2",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "flammables",
+    "plastics",
+    "advanced-circuit",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "advanced-oil-processing",
+    "rocket-fuel",
+    "modules",
+    "speed-module",
+    "productivity-module",
+    "advanced-material-processing",
+    "advanced-material-processing-2",
+    "logistics",
+    "logistics-2",
+    "railway",
+    "production-science-pack",
+    "lubricant",
+    "electric-engine",
+    "automation-3",
+    "fast-inserter",
+    "electric-energy-distribution-1",
+    "electric-energy-distribution-2",
+    "circuit-network",
+    "concrete",
+    "processing-unit",
+    "battery",
+    "robotics",
+    "logistic-robotics",
+    "low-density-structure",
+    "rocket-silo",
+    "space-platform",
+    "space-science-pack",
+    "space-platform-thruster",
+    "planet-discovery-vulcanus",
+    "calcite-processing"
+  ],
+  "requirements": [
+    {
+      "recipe": "rocket-fuel",
+      "technology": "rocket-fuel"
+    },
+    {
+      "recipe": "oil-refinery",
+      "technology": "oil-processing"
+    },
+    {
+      "recipe": "chemical-plant",
+      "technology": "oil-processing"
+    },
+    {
+      "recipe": "assembling-machine-3",
+      "technology": "automation-3"
+    },
+    {
+      "recipe": "pipe",
+      "technology": "steam-power"
+    },
+    {
+      "recipe": "fast-transport-belt",
+      "technology": "logistics-2"
+    },
+    {
+      "recipe": "fast-inserter",
+      "technology": "fast-inserter"
+    },
+    {
+      "recipe": "pipe-to-ground",
+      "technology": "steam-power"
+    },
+    {
+      "recipe": "substation",
+      "technology": "electric-energy-distribution-2"
+    },
+    {
+      "recipe": "display-panel",
+      "technology": "circuit-network"
+    },
+    {
+      "recipe": "simple-coal-liquefaction",
+      "technology": "calcite-processing"
+    },
+    {
+      "recipe": "heavy-oil-cracking",
+      "technology": "advanced-oil-processing"
+    },
+    {
+      "recipe": "solid-fuel-from-light-oil",
+      "technology": "advanced-oil-processing"
+    }
+  ],
+  "sizing": {
+    "targets": {
+      "rocket-fuel": 12
+    },
+    "requiredCraftsPerMinute": {
+      "simple-coal-liquefaction": 35.2,
+      "heavy-oil-cracking": 44,
+      "solid-fuel-from-light-oil": 120,
+      "rocket-fuel": 12
+    },
+    "craftsPerMinuteEach": {
+      "simple-coal-liquefaction": 12,
+      "heavy-oil-cracking": 30,
+      "solid-fuel-from-light-oil": 60,
+      "rocket-fuel": 5
+    },
+    "machinesNeeded": {
+      "simple-coal-liquefaction": 3,
+      "heavy-oil-cracking": 2,
+      "solid-fuel-from-light-oil": 2,
+      "rocket-fuel": 3
+    },
+    "perMinute": {
+      "coal": 352,
+      "calcite": 70.4,
+      "sulfuric-acid": 880,
+      "water": 1320
+    },
+    "cost": {
+      "coalPerRocketFuel": 29.333333333333332,
+      "calcitePerRocketFuel": 5.866666666666667,
+      "acidPerRocketFuel": 73.33333333333333,
+      "waterPerRocketFuel": 110
+    },
+    "lightOilPerMinute": {
+      "forSolidFuel": 1200,
+      "forRocketFuel": 120,
+      "total": 1320
+    },
+    "heavyOilPerMinute": 1760,
+    "solidFuelPerMinute": 120,
+    "rocket": {
+      "rocketFuelEach": 50,
+      "minutesEach": 4.166666666666667
+    },
+    "laneMerge": {
+      "tile": 32,
+      "feeders": 2,
+      "length": 15
+    }
+  },
+  "status": {
+    "static": "static-audit.json",
+    "native": "native-report.json; qualified only when that report passed for candidateSha256"
+  },
+  "exitBelt": {
+    "row": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109
+    ],
+    "column": [
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117
+    ],
+    "exit": 110
+  },
+  "fluidEdges": [
+    [
+      1,
+      15
+    ],
+    [
+      1,
+      17
+    ],
+    [
+      1,
+      50
+    ],
+    [
+      2,
+      20
+    ],
+    [
+      2,
+      22
+    ],
+    [
+      2,
+      56
+    ],
+    [
+      3,
+      25
+    ],
+    [
+      3,
+      27
+    ],
+    [
+      3,
+      62
+    ],
+    [
+      4,
+      77
+    ],
+    [
+      4,
+      81
+    ],
+    [
+      4,
+      84
+    ],
+    [
+      4,
+      86
+    ],
+    [
+      5,
+      80
+    ],
+    [
+      5,
+      83
+    ],
+    [
+      5,
+      88
+    ],
+    [
+      5,
+      90
+    ],
+    [
+      6,
+      91
+    ],
+    [
+      6,
+      93
+    ],
+    [
+      7,
+      96
+    ],
+    [
+      8,
+      84
+    ],
+    [
+      8,
+      86
+    ],
+    [
+      9,
+      89
+    ],
+    [
+      10,
+      91
+    ],
+    [
+      10,
+      93
+    ],
+    [
+      11,
+      96
+    ],
+    [
+      12,
+      13
+    ],
+    [
+      13,
+      14
+    ],
+    [
+      14,
+      15
+    ],
+    [
+      15,
+      16
+    ],
+    [
+      16,
+      17
+    ],
+    [
+      17,
+      18
+    ],
+    [
+      18,
+      19
+    ],
+    [
+      19,
+      20
+    ],
+    [
+      20,
+      21
+    ],
+    [
+      21,
+      22
+    ],
+    [
+      22,
+      23
+    ],
+    [
+      23,
+      24
+    ],
+    [
+      24,
+      25
+    ],
+    [
+      25,
+      26
+    ],
+    [
+      26,
+      27
+    ],
+    [
+      50,
+      51
+    ],
+    [
+      51,
+      52
+    ],
+    [
+      52,
+      65
+    ],
+    [
+      56,
+      57
+    ],
+    [
+      57,
+      58
+    ],
+    [
+      58,
+      68
+    ],
+    [
+      58,
+      69
+    ],
+    [
+      62,
+      63
+    ],
+    [
+      63,
+      64
+    ],
+    [
+      64,
+      72
+    ],
+    [
+      64,
+      73
+    ],
+    [
+      65,
+      66
+    ],
+    [
+      66,
+      67
+    ],
+    [
+      67,
+      68
+    ],
+    [
+      69,
+      70
+    ],
+    [
+      70,
+      71
+    ],
+    [
+      71,
+      72
+    ],
+    [
+      73,
+      74
+    ],
+    [
+      74,
+      75
+    ],
+    [
+      75,
+      76
+    ],
+    [
+      76,
+      77
+    ],
+    [
+      77,
+      78
+    ],
+    [
+      78,
+      79
+    ],
+    [
+      79,
+      80
+    ],
+    [
+      81,
+      82
+    ],
+    [
+      82,
+      83
+    ],
+    [
+      84,
+      85
+    ],
+    [
+      85,
+      86
+    ],
+    [
+      86,
+      87
+    ],
+    [
+      87,
+      88
+    ],
+    [
+      88,
+      89
+    ],
+    [
+      89,
+      90
+    ],
+    [
+      90,
+      91
+    ],
+    [
+      91,
+      92
+    ],
+    [
+      92,
+      93
+    ],
+    [
+      93,
+      94
+    ],
+    [
+      94,
+      95
+    ],
+    [
+      95,
+      96
+    ]
+  ],
+  "unusedPorts": [
+    {
+      "entity": 1,
+      "tiles": [
+        {
+          "x": 2,
+          "y": 6
+        },
+        {
+          "x": 4,
+          "y": 6
+        }
+      ]
+    },
+    {
+      "entity": 2,
+      "tiles": [
+        {
+          "x": 7,
+          "y": 6
+        },
+        {
+          "x": 9,
+          "y": 6
+        }
+      ]
+    },
+    {
+      "entity": 3,
+      "tiles": [
+        {
+          "x": 12,
+          "y": 6
+        },
+        {
+          "x": 14,
+          "y": 6
+        }
+      ]
+    },
+    {
+      "entity": 6,
+      "tiles": [
+        {
+          "x": 25,
+          "y": 0
+        },
+        {
+          "x": 27,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "entity": 7,
+      "tiles": [
+        {
+          "x": 30,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "entity": 8,
+      "tiles": [
+        {
+          "x": 18,
+          "y": 8
+        },
+        {
+          "x": 20,
+          "y": 8
+        }
+      ]
+    },
+    {
+      "entity": 9,
+      "tiles": [
+        {
+          "x": 23,
+          "y": 8
+        }
+      ]
+    },
+    {
+      "entity": 10,
+      "tiles": [
+        {
+          "x": 25,
+          "y": 8
+        },
+        {
+          "x": 27,
+          "y": 8
+        }
+      ]
+    },
+    {
+      "entity": 11,
+      "tiles": [
+        {
+          "x": 30,
+          "y": 8
+        }
+      ]
+    }
+  ],
+  "measured": {
+    "phases": {
+      "generous": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.73
+          },
+          "inputsPerMinute": {
+            "coal": 367.5,
+            "calcite": 77.6,
+            "sulfuric-acid": 1031.7,
+            "water": 1376.7
+          },
+          "consumedPerMinute": {
+            "coal": 359.3,
+            "calcite": 71.9,
+            "sulfuric-acid": 898.3,
+            "water": 1334
+          }
+        },
+        "steady": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.27
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 129.5,
+            "calcite": 25.9,
+            "sulfuric-acid": 326.7,
+            "water": 412
+          },
+          "consumedPerMinute": {
+            "coal": 130.7,
+            "calcite": 26.1,
+            "sulfuric-acid": 326.7,
+            "water": 412
+          }
+        },
+        "release": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 15
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1395
+          },
+          "consumedPerMinute": {
+            "coal": 357.3,
+            "calcite": 71.5,
+            "sulfuric-acid": 893.3,
+            "water": 1500
+          },
+          "recoverySeconds": {
+            "rocket-fuel": 300
+          }
+        },
+        "input outage": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "rocket-fuel": 3.6
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "calcite": 0,
+            "sulfuric-acid": 0,
+            "water": 0
+          },
+          "consumedPerMinute": {
+            "coal": 24,
+            "calcite": 4.8,
+            "sulfuric-acid": 60,
+            "water": 114
+          }
+        },
+        "recovery": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.3
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          },
+          "consumedPerMinute": {
+            "coal": 359.5,
+            "calcite": 71.9,
+            "sulfuric-acid": 898.8,
+            "water": 1342.5
+          },
+          "recoverySeconds": {
+            "rocket-fuel": 300
+          }
+        }
+      },
+      "throttled": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.33
+          },
+          "inputsPerMinute": {
+            "coal": 351.9,
+            "calcite": 70.9,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 346.7,
+            "calcite": 69.3,
+            "sulfuric-acid": 866.7,
+            "water": 1290
+          }
+        },
+        "steady": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "rocket-fuel": 12
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1320
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 131.6,
+            "calcite": 27.4,
+            "sulfuric-acid": 388.3,
+            "water": 419.3
+          },
+          "consumedPerMinute": {
+            "coal": 131.3,
+            "calcite": 26.3,
+            "sulfuric-acid": 328.3,
+            "water": 413
+          }
+        },
+        "release": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 14
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 351.3,
+            "calcite": 70.3,
+            "sulfuric-acid": 878.3,
+            "water": 1358
+          },
+          "recoverySeconds": {
+            "rocket-fuel": 300
+          }
+        },
+        "input outage": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "rocket-fuel": 0.8
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "calcite": 0,
+            "sulfuric-acid": 0,
+            "water": 0
+          },
+          "consumedPerMinute": {
+            "coal": 10,
+            "calcite": 2,
+            "sulfuric-acid": 25,
+            "water": 0
+          }
+        },
+        "recovery": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 70.5,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 350,
+            "calcite": 70,
+            "sulfuric-acid": 875,
+            "water": 1320
+          },
+          "recoverySeconds": {
+            "rocket-fuel": 302
+          }
+        }
+      },
+      "withheld-coal": {
+        "coal withheld from a cold start": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "calcite": 4.4,
+            "sulfuric-acid": 100,
+            "water": 32
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "calcite": 0,
+            "sulfuric-acid": 0,
+            "water": 0
+          }
+        },
+        "coal supplied: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 351.8,
+            "calcite": 68.5,
+            "sulfuric-acid": 854,
+            "water": 1254.4
+          },
+          "consumedPerMinute": {
+            "coal": 341.7,
+            "calcite": 68.3,
+            "sulfuric-acid": 854.2,
+            "water": 1255
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1319.8
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1323
+          }
+        }
+      },
+      "withheld-calcite": {
+        "calcite withheld from a cold start": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 6.9,
+            "calcite": 0,
+            "sulfuric-acid": 100,
+            "water": 32
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "calcite": 0,
+            "sulfuric-acid": 0,
+            "water": 0
+          }
+        },
+        "calcite supplied: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 342.8,
+            "calcite": 70.8,
+            "sulfuric-acid": 857.5,
+            "water": 1259.9
+          },
+          "consumedPerMinute": {
+            "coal": 346.7,
+            "calcite": 69.3,
+            "sulfuric-acid": 866.7,
+            "water": 1275
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.1
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 355,
+            "calcite": 71,
+            "sulfuric-acid": 887.5,
+            "water": 1332
+          }
+        }
+      },
+      "withheld-sulfuric-acid": {
+        "sulfuric-acid withheld from a cold start": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 6.9,
+            "calcite": 4.4,
+            "sulfuric-acid": 0,
+            "water": 32
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "calcite": 0,
+            "sulfuric-acid": 0,
+            "water": 0
+          }
+        },
+        "sulfuric-acid supplied: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 337,
+            "calcite": 67.5,
+            "sulfuric-acid": 880,
+            "water": 1239.5
+          },
+          "consumedPerMinute": {
+            "coal": 338.3,
+            "calcite": 67.7,
+            "sulfuric-acid": 845.8,
+            "water": 1245
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.8
+          },
+          "inputsPerMinute": {
+            "coal": 351.9,
+            "calcite": 70.5,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1317
+          }
+        }
+      },
+      "withheld-water": {
+        "water withheld from a cold start": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 38.9,
+            "calcite": 10.8,
+            "sulfuric-acid": 185,
+            "water": 0
+          },
+          "consumedPerMinute": {
+            "coal": 34,
+            "calcite": 6.8,
+            "sulfuric-acid": 85,
+            "water": 0
+          }
+        },
+        "water supplied: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 11
+          },
+          "inputsPerMinute": {
+            "coal": 341.7,
+            "calcite": 69.3,
+            "sulfuric-acid": 849.9,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 345,
+            "calcite": 69,
+            "sulfuric-acid": 862.5,
+            "water": 1310
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.1
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 70.3,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 351,
+            "calcite": 70.2,
+            "sulfuric-acid": 877.5,
+            "water": 1320
+          }
+        }
+      },
+      "build-shuffle-1": {
+        "built piece by piece: until the rate": {
+          "measuredMinutes": 7,
+          "outputsPerMinute": {
+            "rocket-fuel": 9.43
+          },
+          "inputsPerMinute": {
+            "coal": 324.1,
+            "calcite": 73.7,
+            "sulfuric-acid": 1046.4,
+            "water": 1210
+          },
+          "consumedPerMinute": {
+            "coal": 304.3,
+            "calcite": 60.9,
+            "sulfuric-acid": 760.7,
+            "water": 1118.6
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.2
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          }
+        }
+      },
+      "build-shuffle-2": {
+        "built piece by piece: until the rate": {
+          "measuredMinutes": 7,
+          "outputsPerMinute": {
+            "rocket-fuel": 9.43
+          },
+          "inputsPerMinute": {
+            "coal": 325.4,
+            "calcite": 74.3,
+            "sulfuric-acid": 1050,
+            "water": 1218.6
+          },
+          "consumedPerMinute": {
+            "coal": 305.7,
+            "calcite": 61.1,
+            "sulfuric-acid": 764.3,
+            "water": 1127.1
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.3
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          }
+        }
+      },
+      "build-shuffle-3": {
+        "built piece by piece: until the rate": {
+          "measuredMinutes": 7,
+          "outputsPerMinute": {
+            "rocket-fuel": 9.29
+          },
+          "inputsPerMinute": {
+            "coal": 324.9,
+            "calcite": 73.6,
+            "sulfuric-acid": 1053.6,
+            "water": 1214.3
+          },
+          "consumedPerMinute": {
+            "coal": 307.1,
+            "calcite": 61.4,
+            "sulfuric-acid": 767.9,
+            "water": 1122.9
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.3
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          }
+        }
+      },
+      "build-pipes-first": {
+        "built piece by piece: until the rate": {
+          "measuredMinutes": 7,
+          "outputsPerMinute": {
+            "rocket-fuel": 9.29
+          },
+          "inputsPerMinute": {
+            "coal": 322.4,
+            "calcite": 73.4,
+            "sulfuric-acid": 1042.9,
+            "water": 1210
+          },
+          "consumedPerMinute": {
+            "coal": 302.9,
+            "calcite": 60.6,
+            "sulfuric-acid": 757.1,
+            "water": 1118.6
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.3
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1347
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1347
+          }
+        }
+      },
+      "build-machines-first": {
+        "built piece by piece: until the rate": {
+          "measuredMinutes": 7,
+          "outputsPerMinute": {
+            "rocket-fuel": 9.43
+          },
+          "inputsPerMinute": {
+            "coal": 322.9,
+            "calcite": 73.9,
+            "sulfuric-acid": 1046.4,
+            "water": 1209.8
+          },
+          "consumedPerMinute": {
+            "coal": 304.3,
+            "calcite": 60.9,
+            "sulfuric-acid": 760.7,
+            "water": 1118.6
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.3
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350.1
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          }
+        }
+      },
+      "late-power": {
+        "no power for ten minutes": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 7.5,
+            "calcite": 7.5,
+            "sulfuric-acid": 200,
+            "water": 64
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "calcite": 0,
+            "sulfuric-acid": 0,
+            "water": 0
+          }
+        },
+        "power connected: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 11
+          },
+          "inputsPerMinute": {
+            "coal": 370.5,
+            "calcite": 74.5,
+            "sulfuric-acid": 900,
+            "water": 1325
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1325
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.3
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          }
+        }
+      },
+      "late-coal": {
+        "coal not connected for five minutes": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "calcite": 18.6,
+            "sulfuric-acid": 400,
+            "water": 128
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "calcite": 0,
+            "sulfuric-acid": 0,
+            "water": 0
+          }
+        },
+        "coal connected: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 11
+          },
+          "inputsPerMinute": {
+            "coal": 380.8,
+            "calcite": 70.7,
+            "sulfuric-acid": 895.8,
+            "water": 1315
+          },
+          "consumedPerMinute": {
+            "coal": 358.3,
+            "calcite": 71.7,
+            "sulfuric-acid": 895.8,
+            "water": 1315
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.2
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          }
+        }
+      },
+      "late-calcite": {
+        "calcite not connected for five minutes": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 27.4,
+            "calcite": 0,
+            "sulfuric-acid": 400,
+            "water": 128
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "calcite": 0,
+            "sulfuric-acid": 0,
+            "water": 0
+          }
+        },
+        "calcite connected: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 11
+          },
+          "inputsPerMinute": {
+            "coal": 359.5,
+            "calcite": 87,
+            "sulfuric-acid": 900,
+            "water": 1325
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1325
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.4
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          }
+        }
+      },
+      "late-sulfuric-acid": {
+        "sulfuric-acid not connected for five minutes": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 27.6,
+            "calcite": 17.4,
+            "sulfuric-acid": 0,
+            "water": 128
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "calcite": 0,
+            "sulfuric-acid": 0,
+            "water": 0
+          }
+        },
+        "sulfuric-acid connected: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 11
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 1233.3,
+            "water": 1325
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1325
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 12.4
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1350
+          }
+        }
+      },
+      "late-water": {
+        "water not connected for five minutes": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 158,
+            "calcite": 43.8,
+            "sulfuric-acid": 740,
+            "water": 0
+          },
+          "consumedPerMinute": {
+            "coal": 136,
+            "calcite": 27.2,
+            "sulfuric-acid": 340,
+            "water": 0
+          }
+        },
+        "water connected: until the rate": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "rocket-fuel": 13.8
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 885,
+            "water": 1928
+          },
+          "consumedPerMinute": {
+            "coal": 354,
+            "calcite": 70.8,
+            "sulfuric-acid": 885,
+            "water": 1800
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 13
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1356
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1356
+          }
+        }
+      },
+      "exit-unconnected": {
+        "exit not connected for an hour": {
+          "measuredMinutes": 60,
+          "outputsPerMinute": {
+            "rocket-fuel": 0
+          },
+          "inputsPerMinute": {
+            "coal": 71.1,
+            "calcite": 15.3,
+            "sulfuric-acid": 206.7,
+            "water": 228.2
+          },
+          "consumedPerMinute": {
+            "coal": 69.3,
+            "calcite": 13.9,
+            "sulfuric-acid": 173.3,
+            "water": 217.5
+          }
+        },
+        "exit connected: until the rate": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "rocket-fuel": 31.6
+          },
+          "inputsPerMinute": {
+            "coal": 358.4,
+            "calcite": 72,
+            "sulfuric-acid": 885,
+            "water": 1704
+          },
+          "consumedPerMinute": {
+            "coal": 354,
+            "calcite": 70.8,
+            "sulfuric-acid": 885,
+            "water": 1704
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 15
+          },
+          "inputsPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1398
+          },
+          "consumedPerMinute": {
+            "coal": 360,
+            "calcite": 72,
+            "sulfuric-acid": 900,
+            "water": 1398
+          }
+        }
+      },
+      "hand-size-2": {
+        "from empty: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 351.8,
+            "calcite": 70.8,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 340,
+            "calcite": 68,
+            "sulfuric-acid": 850,
+            "water": 1250
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.9
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1320
+          }
+        }
+      },
+      "hand-size-4": {
+        "from empty: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 351.8,
+            "calcite": 70.8,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 338.3,
+            "calcite": 67.7,
+            "sulfuric-acid": 845.8,
+            "water": 1245
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.8
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1320
+          }
+        }
+      },
+      "place-rot90": {
+        "from empty: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 351.8,
+            "calcite": 70.8,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 338.3,
+            "calcite": 67.7,
+            "sulfuric-acid": 845.8,
+            "water": 1245
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.8
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1320
+          }
+        }
+      },
+      "place-rot180": {
+        "from empty: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 351.8,
+            "calcite": 70.8,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 338.3,
+            "calcite": 67.7,
+            "sulfuric-acid": 845.8,
+            "water": 1245
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.8
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1320
+          }
+        }
+      },
+      "place-rot270": {
+        "from empty: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 351.8,
+            "calcite": 70.8,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 338.3,
+            "calcite": 67.7,
+            "sulfuric-acid": 845.8,
+            "water": 1245
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.8
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1320
+          }
+        }
+      },
+      "place-flipH": {
+        "from empty: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 351.8,
+            "calcite": 70.8,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 338.3,
+            "calcite": 67.7,
+            "sulfuric-acid": 845.8,
+            "water": 1245
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.8
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1320
+          }
+        }
+      },
+      "place-flipV": {
+        "from empty: until the rate": {
+          "measuredMinutes": 6,
+          "outputsPerMinute": {
+            "rocket-fuel": 10.5
+          },
+          "inputsPerMinute": {
+            "coal": 351.8,
+            "calcite": 70.8,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 338.3,
+            "calcite": 67.7,
+            "sulfuric-acid": 845.8,
+            "water": 1245
+          }
+        },
+        "rate held": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "rocket-fuel": 11.8
+          },
+          "inputsPerMinute": {
+            "coal": 352,
+            "calcite": 71,
+            "sulfuric-acid": 880,
+            "water": 1320
+          },
+          "consumedPerMinute": {
+            "coal": 352,
+            "calcite": 70.4,
+            "sulfuric-acid": 880,
+            "water": 1320
+          }
+        }
+      }
+    },
+    "steady": {
+      "generous": {
+        "outputsPerMinute": {
+          "rocket-fuel": 12.27
+        },
+        "inputsPerMinute": {
+          "coal": 360,
+          "calcite": 72,
+          "sulfuric-acid": 900,
+          "water": 1350
+        }
+      },
+      "throttled": {
+        "outputsPerMinute": {
+          "rocket-fuel": 12
+        },
+        "inputsPerMinute": {
+          "coal": 352,
+          "calcite": 71,
+          "sulfuric-acid": 880,
+          "water": 1320
+        }
+      }
+    },
+    "outputsPerMinute": {
+      "rocket-fuel": 12
+    },
+    "inputsPerMinute": {
+      "coal": 352,
+      "calcite": 71,
+      "sulfuric-acid": 880,
+      "water": 1320
+    }
+  },
+  "outputsPerMinute": {
+    "rocket-fuel": 12
+  },
+  "inputsPerMinute": {
+    "coal": 352,
+    "calcite": 71,
+    "sulfuric-acid": 880,
+    "water": 1320
+  }
+}

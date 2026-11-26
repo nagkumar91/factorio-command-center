@@ -4,7 +4,7 @@
 // Needs only the pinned prototypes.json and fluid-slots.json beside this file; no game and no raw dump.
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { HERE, published, prototypes, fluidSlots, readJson, json, sha, box, exists, ascii } from './lib.mjs';
+import { HERE, published, prototypes, fluidSlots, memberPins, readJson, json, sha, box, exists, ascii } from './lib.mjs';
 import { auditBlueprint } from './audit.mjs';
 import { summarize } from './summary.mjs';
 import { layoutSvg } from './svg.mjs';
@@ -13,11 +13,11 @@ const args = process.argv.slice(2);
 const id = args[0];
 const option = name => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };
 const out = option('--out') ? path.resolve(option('--out')) : published(id);
-const [p, slots] = await Promise.all([prototypes(), fluidSlots()]);
+const [p, slots] = await Promise.all([prototypes(id), fluidSlots(id)]);
 const { design } = await import(path.join(HERE, id, 'design.mjs'));
 const { readme } = await import(path.join(HERE, id, 'readme.mjs')).catch(() => ({ readme: null }));
 // The string already in the output folder is kept when it decodes to exactly the generated blueprint (see encodeKeeping in the shared lib).
-const options = { prototypeSha256: sha(await fs.readFile(path.join(HERE, 'prototypes.json'))), fluidSlotsSha256: sha(await fs.readFile(path.join(HERE, 'fluid-slots.json'))), committedCode: await fs.readFile(path.join(out, 'blueprint.txt'), 'utf8').catch(() => undefined) };
+const options = { prototypeSha256: sha(await fs.readFile(path.join(HERE, 'prototypes.json'))), fluidSlotsSha256: sha(await fs.readFile(path.join(HERE, 'fluid-slots.json'))), ...(await memberPins(id)), committedCode: await fs.readFile(path.join(out, 'blueprint.txt'), 'utf8').catch(() => undefined) };
 const d = design(p, slots, options);
 const audit = auditBlueprint(d.blueprint, d.manifest, p, slots);
 

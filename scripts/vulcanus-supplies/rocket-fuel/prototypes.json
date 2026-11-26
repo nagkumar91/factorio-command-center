@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "member": "rocket-fuel",
+  "gameVersion": "2.1.25",
+  "provenance": {
+    "method": "Same raw dump as ../prototypes.json; only the recipes and items that file lacks",
+    "rawSha256": "289d0de81102a710f16fc989a5df399facdef91c100901da87e5e69b4d911495",
+    "familyPrototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810"
+  },
+  "recipes": {
+    "solid-fuel-from-light-oil": {
+      "type": "recipe",
+      "name": "solid-fuel-from-light-oil",
+      "categories": [
+        "chemistry"
+      ],
+      "enabled": false,
+      "energy_required": 1,
+      "ingredients": [
+        {
+          "type": "fluid",
+          "name": "light-oil",
+          "amount": 10
+        }
+      ],
+      "results": [
+        {
+          "type": "item",
+          "name": "solid-fuel",
+          "amount": 1
+        }
+      ]
+    },
+    "rocket-fuel": {
+      "type": "recipe",
+      "name": "rocket-fuel",
+      "categories": [
+        "crafting-with-fluid",
+        "organic"
+      ],
+      "enabled": false,
+      "energy_required": 15,
+      "ingredients": [
+        {
+          "type": "item",
+          "name": "solid-fuel",
+          "amount": 10
+        },
+        {
+          "type": "fluid",
+          "name": "light-oil",
+          "amount": 10
+        }
+      ],
+      "results": [
+        {
+          "type": "item",
+          "name": "rocket-fuel",
+          "amount": 1
+        }
+      ]
+    }
+  },
+  "items": {
+    "solid-fuel": {
+      "name": "solid-fuel",
+      "stack_size": 50,
+      "fuel_value": "12MJ"
+    },
+    "rocket-fuel": {
+      "name": "rocket-fuel",
+      "stack_size": 20,
+      "fuel_value": "100MJ"
+    }
+  },
+  "fluids": {},
+  "facts": {
+    "rocket": {
+      "silo": "rocket-silo",
+      "rocketPartsRequired": 50,
+      "partRecipe": "rocket-part",
+      "rocketFuelPerPart": 1
+    }
+  }
+}
