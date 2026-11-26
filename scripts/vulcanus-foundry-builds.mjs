@@ -22,6 +22,7 @@ export const BUILT='25 November 2026';
 export const GROUPS={
  foundry:{label:'The foundry mall',lead:'The one blueprint that does the work: lava and calcite in, the finished items out in five chests.'},
  supplies:{label:'Supplies that feed the foundry mall',lead:'One copy of each covers the foundry mall (see the table above). Build them first, or at the same time.'},
+ rockets:{label:'Rocket supplies (not an input of the foundry mall)',lead:'This one does not feed the foundry mall. It makes rocket fuel for rocket launches, from the same four inputs as the coal-to-plastic supply. Its own needs are in its card.'},
  plates:{label:'Plate-fed malls (not on the foundry chain)',lead:'These two run from smelted plates that you bring yourself. They use neither the foundry mall nor its supplies.'}
 };
 export const BUILDS=[
@@ -31,6 +32,8 @@ export const BUILDS=[
   {section:'What to preserve'},{section:'Power'},{section:'How it balances itself (no circuits)',only:/Taking more than/}]},
  {key:'tungsten-carbide',dir:'vulcanus-supplies/tungsten-carbide',kind:'supply',group:'supplies',caveats:[
   {section:'What to preserve'},{section:'Power'}]},
+ {key:'rocket-fuel',dir:'vulcanus-supplies/rocket-fuel',kind:'supply',group:'rockets',caveats:[
+  {section:'',only:/^A rocket needs/},{section:'Known limits',skip:/hand size|mirror images|Not tested standing/},{section:'Beside the coal-to-plastic supply',only:/^- \*\*Leave at least/},{section:'What to preserve'},{section:'Power'}]},
  {key:'assembler-3-mall',dir:'requested-malls/assembler-3-mall',kind:'assembler',group:'plates',caveats:[
   {section:'',only:/^- \*\*Measured rate/},{section:'Inputs: four belts on the west edge',only:/^Each entrance/},
   {section:'What it costs: one assembling machine 3',only:/^An assembling machine 2 on its own/},{section:'Native test',only:/^\*\*Game version/}]},
@@ -187,7 +190,7 @@ function card(v){
 /** The table at the top: each foundry mall input, where it comes from, the peak draw, and how many copies of its supply that is;
  * then what the two supplies need themselves. */
 export function connectHtml(views){
- const mall=views.find(v=>v.kind==='foundry'),supplies=views.filter(v=>v.kind==='supply'),by=new Map(views.map(v=>[v.key,v]));
+ const mall=views.find(v=>v.kind==='foundry'),supplies=views.filter(v=>v.kind==='supply'&&v.group==='supplies'),by=new Map(views.map(v=>[v.key,v]));
  const rows=mall.inputs.map(p=>{
   const maker=by.get(SUPPLIED_BY[p.item]);
   let from,cover='—';
