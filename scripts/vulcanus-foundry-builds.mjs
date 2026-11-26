@@ -21,7 +21,7 @@ export const BUILT='25 November 2026';
 
 /** The blueprints, in page order. Only folders, groups and which README passages to quote live here; no figures. */
 export const GROUPS={
- foundry:{label:'The foundry mall',lead:'The one blueprint that does the work: lava and calcite in, the finished items out in five chests.'},
+ foundry:{label:'The foundry malls',lead:'Lava and calcite in, the finished items out in passive provider chests. The big foundry mall is the full set. The smaller one after it is the alternative with fewer products, and it includes the rocket fuel section.'},
  supplies:{label:'Supplies that feed the foundry mall',lead:'One copy of each covers the foundry mall (see the table above). Build them first, or at the same time.'},
  science:{label:'Science from lava',lead:'Production and utility science packs made from lava and calcite in one blueprint. It takes plastic and lubricant from the coal supply above and its own sulfuric acid; the card says how many copies of the supply it needs.'},
  circuits:{label:'Circuits from lava',lead:'Electronic, advanced and processing unit circuits made from lava and calcite, each on one belt, with the plates and cable made inside. Advanced circuits and processing units also take plastic from the coal supply above; their cards say how many copies of it they need. None of them is an input of the foundry mall.'},
@@ -31,6 +31,8 @@ export const GROUPS={
 export const BUILDS=[
  {key:'foundry-mall',dir:'requested-malls/foundry-mall',kind:'foundry',group:'foundry',caveats:[
   {section:'',only:/order of the list|^Rocket parts/},{section:'Entrances, exit, power',only:/^- /},{section:'Things to know',skip:/\bU[12]\b/}]},
+ {key:'foundry-belts-fuel-mall',dir:'requested-malls/foundry-belts-fuel-mall',kind:'foundry',group:'foundry',smallerOf:'foundry-mall',caveats:[
+  {section:'Entrances, exit, power',only:/^- /,skip:/^- \*\*Panel figures/},{section:'Known limits',skip:/\bU[12]\b|^- Tiny/}]},
  {key:'coal-plastic-lubricant',dir:'vulcanus-supplies/coal-plastic-lubricant',kind:'supply',group:'supplies',caveats:[
   {section:'What to preserve'},{section:'Power'},{section:'How it balances itself (no circuits)',only:/Taking more than/}]},
  {key:'tungsten-carbide',dir:'vulcanus-supplies/tungsten-carbide',kind:'supply',group:'supplies',caveats:[
@@ -85,11 +87,13 @@ export function readmeLines(readme,section,only,{skip,sentences}={}){
 }
 
 /** Peak draw of the foundry mall per input: the maximum, over the measured rate windows of the native report, of what the machines consumed
- * per minute. This is the derivation scripts/index-designed-blueprints.mjs registers as `drawn`; `window` names the window that set the peak. */
-export function peakDraw(report){
+ * per minute. This is the derivation scripts/index-designed-blueprints.mjs registers as `drawn`; `window` names the window that set the peak.
+ * With `entrances` (the port keys of a mall that has two entrances for one item), the maximum of what crossed each entrance per minute instead. */
+export function peakDraw(report,entrances){
  const drawn={},window={};let stone=0;
  for(const ph of report.scenarios.rate.phases.filter(p=>p.perMinute)){
-  for(const [item,v] of Object.entries(ph.perMinute.consumed))if(v>(drawn[item]??-1)){drawn[item]=v;window[item]=ph.name.replace(/^rate:\s*/,'').replace(/^group \d+ \((.*)\)$/,'$1');}
+  const per=entrances?Object.fromEntries(entrances.map(k=>[k,(ph.accepted?.[k]??0)/(ph.ticks/3600)])):ph.perMinute.consumed;
+  for(const [item,v] of Object.entries(per))if(v>(drawn[item]??-1)){drawn[item]=v;if(v>0)window[item]=ph.name.replace(/^rate:\s*/,'').replace(/^group \d+ \((.*)\)$/,'$1');}
   stone=Math.max(stone,ph.perMinute.stoneOut??0);
  }
  return {drawn,window,stone};
@@ -123,12 +127,13 @@ export function describe(b,names){
  const {spec,m,ports,report}=b,fp=m.footprint,name=id=>names.get(id)||id.replaceAll('-',' ').replace(/^./,c=>c.toUpperCase());
  const itemLabel=id=>{const q=id.match(/^(.*?)\s*\((.*)\)$/);return q?`${name(q[1])} (${q[2]})`:name(id);};
  const h1=b.readme.match(/^# (.+)$/m)?.[1]??m.id,[title,...rest]=h1.split(' · ');
- const v={key:spec.key,group:spec.group,kind:spec.kind,name:title.trim(),tagline:rest.join(' · '),code:b.code,hash:b.hash,gameVersion:report.gameVersion,
+ const v={key:spec.key,group:spec.group,kind:spec.kind,name:title.trim(),tagline:rest.join(' · '),smallerOf:spec.smallerOf,code:b.code,hash:b.hash,gameVersion:report.gameVersion,
   size:{width:fp.width,height:fp.height,area:fp.area,entities:fp.entities},equipment:m.equipment,itemLabel,nameOf:name};
  const fluidOrBelt=p=>p.mode??p.kind;
- let needs={},outputRate={},peakWindow={},stone=null;
+ let needs={},outputRate={},peakWindow={},stone=null,byEntrance=false;
  if(spec.kind==='foundry'){
-  const peak=peakDraw(report);needs=peak.drawn;peakWindow=peak.window;stone=peak.stone;
+  byEntrance=ports.inputs.every(p=>p.key);
+  const peak=peakDraw(report,byEntrance?ports.inputs.map(p=>p.key):undefined);needs=peak.drawn;peakWindow=peak.window;stone=peak.stone;
   for(const ph of report.scenarios.rate.phases.filter(p=>p.perMinute))for(const [item,x] of Object.entries(ph.perMinute.collected))if(x>0)outputRate[item]=x;
   v.fillMinutes=report.scenarios.fill.phases[0].ticks/3600;
  }else if(spec.kind==='supply'){
@@ -144,8 +149,8 @@ export function describe(b,names){
  }else{
   needs=report.measured.inputsPerMinute;outputRate=report.measured.outputsPerMinute;v.fillMinutes=report.stockTiming[0].allTick/3600;
  }
- v.needs=needs;v.outputRate=outputRate;
- v.inputs=ports.inputs.map(p=>({item:p.item,mode:fluidOrBelt(p),where:where(p,fp),label:p.label,perMinute:needs[p.item],peak:peakWindow[p.item]}));
+ v.needs=needs;v.outputRate=outputRate;v.byEntrance=byEntrance;
+ v.inputs=ports.inputs.map(p=>({item:p.item,mode:fluidOrBelt(p),where:where(p,fp),label:p.label,perMinute:needs[byEntrance?p.key:p.item],peak:peakWindow[byEntrance?p.key:p.item]}));
  // exits that are belts or pipes: the foundry mall's surplus stone, the supplies' products
  const exitPorts=spec.kind==='foundry'||spec.kind==='science'?ports.exits:spec.kind==='supply'||spec.kind==='circuits'?ports.outputs:[];
  v.exits=exitPorts.map(p=>({item:p.item,mode:fluidOrBelt(p),where:where(p,fp),label:p.label,perMinute:spec.kind==='foundry'||spec.kind==='science'?stone:outputRate[p.item]}));
@@ -157,13 +162,14 @@ export function describe(b,names){
  if(spec.kind==='foundry'){
   // the chest holding most of the group's items (a kit stock such as "fast-inserter (kit)" counts as its plain item, which another chest also lists)
   const base=i=>i.replace(/\s*\(.*\)$/,''),chestOf=items=>{const n=c=>items.filter(i=>c.items.includes(base(i))).length;return chests.reduce((best,c)=>n(c)>(best?n(best):0)?c:best,undefined);};
-  const inGroups=new Set(m.groups.flatMap(g=>g.products)),extras=Object.keys(m.caps).filter(k=>!inGroups.has(k));
+  const own=m.independent??[],inGroups=new Set(m.groups.flatMap(g=>g.products)),extras=Object.keys(m.caps).filter(k=>!inGroups.has(k)&&!own.includes(k));
   const groups=m.groups.map(g=>({order:g.group,name:g.name,chest:chestOf(g.products),items:g.products.map(i=>row(i))}));
   const leftover=[];
   for(const key of extras){ // a stock that belongs to a group by its note in brackets, e.g. "fast-inserter (kit)"
    const note=(key.match(/\(([^)]*)\)/)?.[1]||'').toLowerCase(),g=note&&groups.find(x=>x.name.toLowerCase().includes(note));
    (g?g.items:leftover).push({item:key,label:itemLabel(key),cap:m.caps[key],perMinute:undefined});
   }
+  if(own.length){groups.push({order:null,name:'Own section, outside the order',chest:chestOf(own),items:own.map(i=>row(i))});v.independent=own.map(i=>({label:itemLabel(i),cap:m.caps[i],perMinute:m.panelFigures?.[i]}));}
   if(leftover.length)groups.push({order:null,name:'Other stock',chest:undefined,items:leftover});
   v.makesGroups=groups;
  }else if(spec.kind==='supply'){
@@ -189,12 +195,12 @@ function makesHtml(v){
  const showGroup=v.makesGroups.some(g=>g.name),rated=hasRates(v.makesGroups);
  const head=[...(showGroup?['Order','Group']:[]),'Item','Stock kept (cap)',...(rated?['Measured per minute']:[]),'Chest'];
  const body=v.makesGroups.map(g=>g.items.map((i,n)=>`<tr>${showGroup&&n===0?`<td class="num" rowspan="${g.items.length}">${esc(g.order??'—')}</td><td rowspan="${g.items.length}">${esc(g.name)}</td>`:''}<td>${esc(i.label)}</td><td class="num">${fmt(i.cap)}</td>${rated?`<td class="num">${i.perMinute===undefined?'—':fmt(i.perMinute)}</td>`:''}${n===0?`<td rowspan="${g.items.length}">${g.chest?`${esc(g.chest.label)}<br><span class="muted">${esc(g.chest.where)}</span>`:'—'}</td>`:''}</tr>`).join('')).join('');
- return `<h3>What it makes</h3>${v.kind==='foundry'?'<p>Made in the order of this table: a group waits while a group above it has something it can make. Caps are edited in one constant combinator on the blueprint.</p>':'<p>Each product has its own passive provider chest, kept at the cap shown.</p>'}${table(head,body)}`;
+ return `<h3>What it makes</h3>${v.kind==='foundry'?`<p>Made in the order of this table: a group waits while a group above it has something it can make. Caps are edited in one constant combinator on the blueprint.${v.independent?` ${v.independent.map(i=>i.label).join(', ')} is outside this order: its section has its own chest and neither waits for the list nor holds it up.`:''}</p>`:'<p>Each product has its own passive provider chest, kept at the cap shown.</p>'}${table(head,body)}`;
 }
 function portsHtml(v){
  const rows=[...v.inputs.map(p=>['In',p]),...v.exits.map(p=>['Out',p])];
  const body=rows.map(([dir,p])=>`<tr><td>${dir}</td><td>${esc(v.nameOf(p.item))}</td><td>${esc(p.mode)}</td><td>${esc(p.where)}<br><span class="muted">${esc(p.label)}</span></td><td class="num">${p.perMinute===undefined?'—':fmt(p.perMinute)}${p.peak?`<br><span class="muted">peak while collecting: ${esc(p.peak)}</span>`:''}</td></tr>`).join('');
- const head=v.kind==='foundry'?'Per minute (peak)':['supply','science','circuits'].includes(v.kind)?'Per minute (measured)':'Per minute (measured draw)';
+ const head=v.kind==='foundry'?(v.byEntrance?'Per minute (peak at the entrance)':'Per minute (peak)'):['supply','science','circuits'].includes(v.kind)?'Per minute (measured)':'Per minute (measured draw)';
  return `<h3>Entrances and exits</h3><p class="muted">Tiles are counted from the top-left corner of the blueprint (column, row).</p>${table(['','Item','Belt or pipe','Where',head],body)}${v.power?`<p><strong>Power:</strong> connect the labelled substation or pole (panel text <code>${esc(v.power)}</code>).</p>`:''}`;
 }
 function facts(v){
@@ -214,15 +220,22 @@ function suppliesHtml(v,views){
   return out>0?`<li>${esc(v.nameOf(p.item))}: ${fmt(p.perMinute)} a minute at its entrance. ${coverText(p.perMinute,out)} (<a href="#${esc(maker.key)}">${esc(maker.name)}</a>).</li>`:'';}).join('');
  return items?`<h3>Supply it needs</h3><ul>${items}</ul>`:'';
 }
+/** The smaller foundry mall's card: what it leaves out compared with the one it is the alternative to (the groups of that mall's manifest that this one does not have), and what it adds. */
+function siblingHtml(v,views){
+ const big=v.smallerOf&&views.find(x=>x.key===v.smallerOf);if(!big)return '';
+ const gone=big.makesGroups.filter(g=>g.name&&g.order!==null&&!v.makesGroups.some(x=>x.name===g.name)).map(g=>`the ${g.name} group (${g.items.length} ${g.items.length===1?'item':'items'})`);
+ const added=(v.independent??[]).map(i=>({text:`${i.label.toLowerCase()} section (${i.perMinute!==undefined?`${fmt(i.perMinute)} a minute at its panel figure, `:''}into its own chest, cap ${fmt(i.cap)})`,standalone:`stand-alone ${i.label.toLowerCase()} blueprint`}));
+ return `<p>The smaller alternative to the <a href="#${esc(big.key)}">${esc(big.name.toLowerCase())}</a>: ${v.size.width} × ${v.size.height} tiles against ${big.size.width} × ${big.size.height}. Compared with it, this one leaves out ${gone.join(' and ')||'nothing from the list'}. It includes the ${added.map(x=>x.text).join(' and ')||'no extra section'}${added.length?`, so the ${added.map(x=>x.standalone).join(' and the ')} is not needed with it`:''}.</p>`;
+}
 function card(v,views){
  const g=GROUPS[v.group];
- return `<article class="today-card vulcanus-card" id="${esc(v.key)}" data-build-id="${esc(v.key)}"><div class="eyebrow">${esc(g.label)}</div><h2>${esc(v.name)}</h2>${v.tagline?`<p>${esc(v.tagline)}</p>`:''}<div class="today-actions"><button class="button primary" data-copy="${esc(v.key)}">Copy string</button><a class="button secondary" href="${esc(v.key)}.txt" download>Open the string (.txt)</a></div><img class="today-preview" src="${esc(v.key)}-layout.svg" alt="Layout of ${esc(v.name)}" loading="lazy">${facts(v)}${makesHtml(v)}${portsHtml(v)}${suppliesHtml(v,views)}<h3>Good to know</h3><ul>${v.caveats.map(c=>`<li>${inline(c)}</li>`).join('')}</ul><p class="hash">Blueprint SHA-256: <code>${esc(v.hash)}</code></p><details><summary>Import string</summary><textarea readonly aria-label="${esc(v.name)} import string">${esc(v.code)}</textarea></details></article>`;
+ return `<article class="today-card vulcanus-card" id="${esc(v.key)}" data-build-id="${esc(v.key)}"><div class="eyebrow">${esc(g.label)}</div><h2>${esc(v.name)}</h2>${v.tagline?`<p>${esc(v.tagline)}</p>`:''}${siblingHtml(v,views)}<div class="today-actions"><button class="button primary" data-copy="${esc(v.key)}">Copy string</button><a class="button secondary" href="${esc(v.key)}.txt" download>Open the string (.txt)</a></div><img class="today-preview" src="${esc(v.key)}-layout.svg" alt="Layout of ${esc(v.name)}" loading="lazy">${facts(v)}${makesHtml(v)}${portsHtml(v)}${suppliesHtml(v,views)}<h3>Good to know</h3><ul>${v.caveats.map(c=>`<li>${inline(c)}</li>`).join('')}</ul><p class="hash">Blueprint SHA-256: <code>${esc(v.hash)}</code></p><details><summary>Import string</summary><textarea readonly aria-label="${esc(v.name)} import string">${esc(v.code)}</textarea></details></article>`;
 }
 
 /** The table at the top: each foundry mall input, where it comes from, the peak draw, and how many copies of its supply that is;
  * then what the two supplies need themselves. */
 export function connectHtml(views){
- const mall=views.find(v=>v.kind==='foundry'),supplies=views.filter(v=>v.kind==='supply'&&v.group==='supplies'),by=new Map(views.map(v=>[v.key,v]));
+ const mall=views.find(v=>v.kind==='foundry'&&!v.smallerOf),small=views.find(v=>v.smallerOf===mall?.key),supplies=views.filter(v=>v.kind==='supply'&&v.group==='supplies'),by=new Map(views.map(v=>[v.key,v]));
  const rows=mall.inputs.map(p=>{
   const maker=by.get(SUPPLIED_BY[p.item]);
   let from,cover='—';
@@ -236,7 +249,7 @@ export function connectHtml(views){
  const items=[...new Set(supplies.flatMap(s=>s.inputs.map(p=>p.item)))];
  const feeds=items.map(item=>{const per=supplies.map(s=>s.needs[item]),total=per.reduce((a,x)=>a+(x??0),0);
   return `<tr><td>${esc(mall.nameOf(item))}</td>${per.map(x=>`<td class="num">${x===undefined?'—':fmt(x)}</td>`).join('')}<td class="num">${fmt(total)}</td></tr>`;}).join('');
- return `<section class="connect" id="how-they-connect"><h2>How they connect</h2><p>The foundry mall takes ${mall.inputs.length} inputs. Peak draw is the most each input was used in any of the measured windows of the foundry mall's native test (one product group collected at a time at full caps).</p>${table(['Foundry mall input','Where it comes from','Peak draw per minute','Supply'],rows+exitRows)}<h3>What the two supplies need themselves</h3>${table(['Item',...supplies.map(s=>s.name),'Both together'],feeds)}</section>`;
+ return `<section class="connect" id="how-they-connect"><h2>How they connect</h2><p>This table is for the big foundry mall only.${small?` The smaller foundry mall takes its ${((l)=>l.length>1?`${l.slice(0,-1).join(', ')} and ${l.at(-1)}`:l.join(''))([...new Set(small.inputs.filter(p=>SUPPLIED_BY[p.item]).map(p=>small.nameOf(p.item).toLowerCase()))])} from the same supplies; its figures are in its own card.`:''} The big foundry mall takes ${mall.inputs.length} inputs. Peak draw is the most each input was used in any of the measured windows of its native test (one product group collected at a time at full caps).</p>${table(['Big foundry mall input','Where it comes from','Peak draw per minute','Supply'],rows+exitRows)}<h3>What the two supplies need themselves</h3>${table(['Item',...supplies.map(s=>s.name),'Both together'],feeds)}</section>`;
 }
 
 export function renderPage(views,nav){

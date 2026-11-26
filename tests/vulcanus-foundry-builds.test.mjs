@@ -43,15 +43,15 @@ test('the page exists, is the first entry of the left menu with an existing icon
  assert.equal(ID.match(/\d/),null,'no letter-number codes in the page id');
 });
 
-test('order: foundry mall first, its two supplies under a heading that says they feed it, then science from lava, then circuits from lava, then the rocket fuel supply under its own heading, then the two plate-fed malls as their own group',()=>{
+test('order: the foundry mall, then its smaller alternative (foundry belts and fuel mall) in the same group, then the two supplies under a heading that says they feed it, then science from lava, then circuits from lava, then the rocket fuel supply under its own heading, then the two plate-fed malls as their own group',()=>{
  const at=k=>html.indexOf(`id="${k}"`),g=k=>html.indexOf(`id="g-${k}"`);
- assert.deepEqual(BUILDS.map(b=>b.key),['foundry-mall','coal-plastic-lubricant','tungsten-carbide','production-utility-science','electronic-circuits','advanced-circuits','processing-units','rocket-fuel','assembler-3-mall','express-belt-mall']);
+ assert.deepEqual(BUILDS.map(b=>b.key),['foundry-mall','foundry-belts-fuel-mall','coal-plastic-lubricant','tungsten-carbide','production-utility-science','electronic-circuits','advanced-circuits','processing-units','rocket-fuel','assembler-3-mall','express-belt-mall']);
  assert.deepEqual(Object.keys(GROUPS),['foundry','supplies','science','circuits','rockets','plates']);
- assert.ok(at('foundry-mall')<at('coal-plastic-lubricant')&&at('coal-plastic-lubricant')<at('tungsten-carbide')&&at('tungsten-carbide')<at('production-utility-science')&&at('production-utility-science')<at('electronic-circuits')&&at('electronic-circuits')<at('advanced-circuits')&&at('advanced-circuits')<at('processing-units')&&at('processing-units')<at('rocket-fuel')&&at('rocket-fuel')<at('assembler-3-mall')&&at('assembler-3-mall')<at('express-belt-mall'));
- assert.ok(g('foundry')<at('foundry-mall')&&at('foundry-mall')<g('supplies')&&g('supplies')<at('coal-plastic-lubricant')&&at('tungsten-carbide')<g('science')&&g('science')<at('production-utility-science')&&at('production-utility-science')<g('circuits')&&g('circuits')<at('electronic-circuits')&&at('processing-units')<g('rockets')&&g('rockets')<at('rocket-fuel')&&at('rocket-fuel')<g('plates')&&g('plates')<at('assembler-3-mall'));
- assert.match(GROUPS.science.label,/Science from lava/);assert.equal(GROUPS.circuits.label,'Circuits from lava');assert.match(GROUPS.rockets.label,/Rocket supplies/);
+ assert.ok(at('foundry-mall')<at('foundry-belts-fuel-mall')&&at('foundry-belts-fuel-mall')<at('coal-plastic-lubricant')&&at('coal-plastic-lubricant')<at('tungsten-carbide')&&at('tungsten-carbide')<at('production-utility-science')&&at('production-utility-science')<at('electronic-circuits')&&at('electronic-circuits')<at('advanced-circuits')&&at('advanced-circuits')<at('processing-units')&&at('processing-units')<at('rocket-fuel')&&at('rocket-fuel')<at('assembler-3-mall')&&at('assembler-3-mall')<at('express-belt-mall'));
+ assert.ok(g('foundry')<at('foundry-mall')&&at('foundry-belts-fuel-mall')<g('supplies')&&g('supplies')<at('coal-plastic-lubricant')&&at('tungsten-carbide')<g('science')&&g('science')<at('production-utility-science')&&at('production-utility-science')<g('circuits')&&g('circuits')<at('electronic-circuits')&&at('processing-units')<g('rockets')&&g('rockets')<at('rocket-fuel')&&at('rocket-fuel')<g('plates')&&g('plates')<at('assembler-3-mall'));
+ assert.equal(GROUPS.foundry.label,'The foundry malls');assert.match(GROUPS.science.label,/Science from lava/);assert.equal(GROUPS.circuits.label,'Circuits from lava');assert.match(GROUPS.rockets.label,/Rocket supplies/);
  assert.equal(SUPPLIED_BY['rocket-fuel'],undefined,'rocket fuel is not a foundry mall input');for(const k of ['electronic-circuits','advanced-circuits','processing-units'])assert.equal(SUPPLIED_BY[k],undefined,k+' is not a foundry mall input');
- const links=html.split('<ul class="toc">')[1].split('</ul>')[0];assert.ok(links.includes('Rocket supplies')&&links.includes('href="#rocket-fuel"')&&links.includes('Science from lava')&&links.includes('href="#production-utility-science"')&&links.includes('Circuits from lava'),'the list of links at the top');
+ const links=html.split('<ul class="toc">')[1].split('</ul>')[0];assert.ok(links.includes('The foundry malls')&&links.includes('href="#foundry-mall"')&&links.includes('href="#foundry-belts-fuel-mall"')&&links.includes('Rocket supplies')&&links.includes('href="#rocket-fuel"')&&links.includes('Science from lava')&&links.includes('href="#production-utility-science"')&&links.includes('Circuits from lava'),'the list of links at the top');
  for(const k of ['electronic-circuits','advanced-circuits','processing-units'])assert.ok(links.includes(`href="#${k}"`),k+' is in the list of links at the top');
  assert.ok(text(html).includes(`${BUILDS.length} blueprints for Vulcanus`),'the intro count follows the data');
  assert.match(GROUPS.supplies.label,/feed the foundry mall/);assert.match(GROUPS.plates.label,/not on the foundry chain/);
@@ -60,7 +60,7 @@ test('order: foundry mall first, its two supplies under a heading that says they
 
 test('every string shown equals the committed blueprint.txt, every hash shown equals the manifest and the string; layouts are the committed pictures',async()=>{
  assert.equal((html.match(/<textarea /g)||[]).length,BUILDS.length);assert.equal((html.match(/data-copy="/g)||[]).length,BUILDS.length);
- assert.equal(BUILDS.length,10);
+ assert.equal(BUILDS.length,11);
  for(const b of builds){
   const dir=`blueprint-sources/${b.spec.dir}`,code=(await read(`${dir}/blueprint.txt`)).trim(),card=section(html,b.spec.key);
   assert.equal(b.code,code);assert.equal(b.hash,b.m.candidateSha256);assert.equal(sha(code),b.m.candidateSha256);
@@ -92,6 +92,7 @@ test('size, test version and fill time on every card come from the manifest and 
   assert.ok(card.includes(`Natively in Factorio ${b.report.gameVersion}`),b.spec.key);
   assert.ok(card.includes(`${b.m.equipment.quality} quality items, no modules, no beacons`),b.spec.key);
  }
+ const small=by('foundry-belts-fuel-mall').report.scenarios.fill.phases[0].ticks/3600;assert.ok(text(section(html,'foundry-belts-fuel-mall')).includes(`${fmt(small)} minutes`));
  const fill=(by('foundry-mall').report.scenarios.fill.phases[0].ticks/3600),am3=by('assembler-3-mall').report.fillTimes['fill from empty'].both/3600,ex=by('express-belt-mall').report.stockTiming[0].allTick/3600;
  assert.ok(text(section(html,'foundry-mall')).includes(`${fmt(fill)} minutes`));assert.ok(text(section(html,'assembler-3-mall')).includes(`${fmt(am3)} minutes`));assert.ok(text(section(html,'express-belt-mall')).includes(`${fmt(ex)} minutes`));
 });
@@ -126,6 +127,63 @@ test('foundry mall: the caps table is the manifest caps (every key, grouped in l
  assert.ok(!/\b(7116|14\.2|202\.4|333\.9)\b/.test(src));
 });
 
+test('foundry belts and fuel mall: the smaller alternative has the big mall\'s card content, from its own manifest, ports and report; its sentence names what it leaves out and the fuel section',async()=>{
+ const b=by('foundry-belts-fuel-mall'),big=by('foundry-mall'),card=section(html,'foundry-belts-fuel-mall'),flat=text(card),t=rows(card);
+ assert.equal(b.spec.kind,'foundry');assert.equal(b.spec.group,'foundry');assert.equal(b.spec.smallerOf,'foundry-mall');
+ assert.ok(card.includes('<div class="eyebrow">The foundry malls</div>'));assert.ok(card.includes('<h2>Foundry belts and fuel mall</h2>'));
+ assert.ok(html.indexOf('id="foundry-mall"')<html.indexOf('id="foundry-belts-fuel-mall"'),'after the big mall');
+ // caps and chests: every cap of the manifest once, in its group (the fuel in its own section) and in the chest that holds it, with its own cap
+ const rowsOf=placed(card);assert.equal(rowsOf.length,Object.keys(b.m.caps).length,'one row per cap');
+ for(const [item,cap] of Object.entries(b.m.caps)){const r=rowsOf.filter(x=>x.item===label(item));assert.equal(r.length,1,item+' once');assert.equal(r[0].cap,fmt(cap),item+' cap');
+  const home=b.ports.outputs.find(o=>o.items.includes(item));assert.ok(r[0].chest.startsWith(home.label),`${item} in ${home.label}, not ${r[0].chest}`);
+  const col=Math.floor(home.position.x-b.m.footprint.bounds.left),row=Math.floor(home.position.y-b.m.footprint.bounds.top);assert.ok(r[0].chest.includes(`tile (${col}, ${row})`),item+' chest tile');}
+ for(const g of b.m.groups)for(const item of g.products){const r=rowsOf.find(x=>x.item===label(item));assert.equal(r.group,g.name,item+' group');}
+ const own=rowsOf.find(x=>x.item===label(b.m.independent[0]));assert.match(own.group,/outside the order/);assert.ok(text(card).includes('outside this order'));
+ assert.deepEqual(b.m.independent,['rocket-fuel']);assert.ok(b.m.caps['rocket-fuel']>0);
+ assert.equal(rowsOf.find(x=>x.item===label('foundry')).group,'foundry','the foundry group');
+ // entrances: the nine of ports.json, at their tiles, with the peak at the entrance of the rate windows (accepted / minutes); two calcite entrances stay apart
+ assert.equal(b.ports.inputs.length,9);assert.equal(b.ports.inputs.filter(p=>p.item==='calcite').length,2);
+ const windows=b.report.scenarios.rate.phases.filter(p=>p.perMinute),ins=t.filter(r=>r[0]==='In');assert.equal(ins.length,b.ports.inputs.length);
+ b.ports.inputs.forEach((p,n)=>{
+  const peak=Math.max(...windows.map(w=>(w.accepted[p.key]??0)/(w.ticks/3600)));
+  const col=Math.floor(p.position.x-b.m.footprint.bounds.left),rw=Math.floor(p.position.y-b.m.footprint.bounds.top);
+  assert.equal(ins[n][1],names.get(p.item),p.id);assert.ok(ins[n][3].startsWith(`${p.side} edge, tile (${col}, ${rw})`)&&ins[n][3].includes(p.label),p.id+': '+ins[n][3]);assert.ok(ins[n][4].startsWith(fmt(peak)),`${p.id} ${ins[n][4]} vs ${fmt(peak)}`);
+ });
+ const fuelCalcite=ins[b.ports.inputs.findIndex(p=>p.key==='calcite-fuel')],mallCalcite=ins[b.ports.inputs.findIndex(p=>p.key==='calcite')];assert.notEqual(fuelCalcite[3],mallCalcite[3]);assert.notEqual(fuelCalcite[4],mallCalcite[4],'the two calcite entrances show their own draws');
+ assert.ok(card.includes('Per minute (peak at the entrance)'));
+ const stone=b.ports.exits[0],sr=t.find(r=>r[0]==='Out');assert.equal(b.ports.exits.length,1);assert.equal(sr[1],names.get('stone'));assert.equal(sr[4],fmt(Math.max(...windows.map(w=>w.perMinute.stoneOut))));
+ assert.ok(sr[3].startsWith(`${stone.side} edge, tile (${Math.floor(stone.position.x-b.m.footprint.bounds.left)}, ${Math.floor(stone.position.y-b.m.footprint.bounds.top)})`));
+ // size, equipment, measured fill time, the power line and the README caveats
+ assert.ok(flat.includes(`${b.m.footprint.width} × ${b.m.footprint.height} tiles (${fmt(b.m.footprint.area)} tiles), ${fmt(b.m.footprint.entities)} entities`));
+ assert.ok(flat.includes(`${fmt(b.report.scenarios.fill.phases[0].ticks/3600)} minutes (measured)`));assert.ok(flat.includes(b.ports.power.label));
+ const readme=await read('blueprint-sources/requested-malls/foundry-belts-fuel-mall/README.md');
+ assert.ok(flat.includes('Calcite has two entrances')&&flat.includes('One foundry casts all five iron products'),'caveats read from the README');
+ assert.ok(readme.includes('One foundry casts all five iron products'));assert.ok(!flat.includes('Panel figures.'),'the long panel-figure bullet is not quoted');
+ // the sentence: what it leaves out (the groups of the big manifest it does not have, with their item counts), what it adds, and that the stand-alone fuel blueprint is not needed
+ const gone=big.m.groups.filter(g=>!b.m.groups.some(x=>x.name===g.name));assert.ok(gone.length>=2);
+ for(const g of gone)assert.ok(flat.includes(`the ${g.name} group (${g.products.length} ${g.products.length===1?'item':'items'})`),g.name);
+ for(const g of b.m.groups)assert.ok(!flat.includes(`the ${g.name} group (`),g.name+' is not left out');
+ assert.ok(flat.includes('The smaller alternative to the foundry mall'));assert.ok(card.includes('href="#foundry-mall"'));
+ assert.ok(flat.includes(`${b.m.footprint.width} × ${b.m.footprint.height} tiles against ${big.m.footprint.width} × ${big.m.footprint.height}`));
+ assert.ok(flat.includes(`rocket fuel section (${fmt(b.m.panelFigures['rocket-fuel'])} a minute at its panel figure, into its own chest, cap ${fmt(b.m.caps['rocket-fuel'])})`));
+ assert.ok(flat.includes('so the stand-alone rocket fuel blueprint is not needed with it'));
+ assert.ok(!text(section(html,'foundry-mall')).includes('The smaller alternative'),'the big mall carries no such sentence');
+ // the big mall's connection table is the big mall's alone: it says so, names the smaller mall's supplied inputs, and none of the smaller mall's figures or entrances are in it
+ const conn=html.split('id="how-they-connect"')[1].split('</section>')[0],lead=text(conn.split('<table')[0]);
+ assert.ok(lead.includes('This table is for the big foundry mall only')&&lead.includes('smaller foundry mall takes its plastic bar, tungsten carbide and lubricant from the same supplies'));
+ assert.ok(!conn.includes('Coal</td><td>Your own')&&!/coal/i.test(rows(conn.split('What the two supplies')[0]).map(r=>r[0]).join(' ')),'the fuel section\'s entrances are not rows of the big mall\'s table');
+ assert.equal(rows(conn.split('What the two supplies')[0]).filter(r=>r[0]==='Calcite').length,1,'one calcite row');
+ const bigCalcite=rows(conn).find(r=>r[0]==='Calcite');assert.ok(bigCalcite[2].startsWith(fmt(peakDraw(big.report).drawn.calcite)));
+ // the string, the .txt and the hash are covered with every card above; here also the numbers that must not be typed in the script
+ const src=await read('scripts/vulcanus-foundry-builds.mjs');for(const hard of [/afbef0f1/,/\b200\b/,/\b918\b/,/\b179\.8\b/,/\b2070\b/])assert.ok(!hard.test(src),hard+' is not typed into the generator');
+ // a re-release changes the card with the data: a new fuel cap, a new calcite draw at the fuel entrance, a new string, a new group
+ const live=structuredClone(builds),f=live.find(x=>x.spec.key==='foundry-belts-fuel-mall');
+ f.m.caps['rocket-fuel']=240;f.m.panelFigures['rocket-fuel']=15;f.report.scenarios.rate.phases.find(p=>p.perMinute&&p.accepted['calcite-fuel']).accepted['calcite-fuel']=999000;f.code+='X';f.m.groups.push({group:5,name:'steel',level:0,products:['steel-plate']});
+ const page=renderPage(live.map(x=>describe(x,names)),nav()),c2=section(page,'foundry-belts-fuel-mall'),t2=rows(c2);
+ assert.ok(placed(c2).some(x=>x.item==='Rocket fuel'&&x.cap===fmt(240)));assert.ok(text(c2).includes('15 a minute at its panel figure, into its own chest, cap 240'));
+ assert.ok(t2.find(r=>r[0]==='In'&&r[3].includes('west edge, tile (0, 25)'))[4].startsWith(fmt(999000/30)));assert.ok(c2.includes('<textarea readonly aria-label="Foundry belts and fuel mall import string">'+f.code));
+ assert.deepEqual(rows(page.split('id="how-they-connect"')[1].split('</section>')[0]).slice(1,9),rows(conn).slice(1,9),'the big mall table does not move');
+});
 test('foundry mall draws: peak per input over the measured rate windows, the derivation the library registers; entrances at the tiles of ports.json',async()=>{
  const b=by('foundry-mall'),{drawn,stone}=peakDraw(b.report);
  // independent derivation: the largest consumed-per-minute among the windows that have one
