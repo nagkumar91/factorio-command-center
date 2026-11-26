@@ -1,5 +1,16 @@
 (() => {
 'use strict';
+// Newest designed builds first. A designed blueprint that is current and game-tested moves to the front, newest release date
+// first (releasedAt comes from blueprint-sources/release-dates.json); equal dates and every other card keep the order they
+// already had. Applied in the All view (browse and every search or filter) and in the designed-blueprints collection only; every
+// other collection view keeps its own order (explicit `order` in the early-game, transport, science and power collections,
+// registration order in the dated release collections, version progressions, historical and autosaved sets).
+const releaseTime = b => Date.parse(b.releasedAt);
+const isNewRelease = b => !!b.designedCollection && b.lifecycle === 'current' && b.validation?.status === 'game-tested' && Number.isFinite(releaseTime(b));
+const newestFirst = list => {
+  const fresh = list.filter(isNewRelease).sort((a, b) => releaseTime(b) - releaseTime(a));
+  return fresh.length ? [...fresh, ...list.filter(b => !isNewRelease(b))] : list;
+};
 function create(ui) {
   const track = (event, target) => globalThis.FactorioAnalytics?.track(event, target);
   const { catalog, library, community, production, atlas, esc, image, svg, number, heading, searchField, empty, showModal, notify, addRows, renderPage, download } = ui;
@@ -68,8 +79,10 @@ function create(ui) {
     const named = CIRCUIT_COLOURS.reduce((q, [colour, item]) => q.replace(colour, item), query.toLowerCase());
     return named !== query.toLowerCase() && matchesWords(text, named);
   };
+  // Newest-first applies to the whole library and to the designed-blueprints collection; any other collection keeps its own order.
+  const newestFirstView = () => s.source === 'All' || s.source === FLIGHT_COLLECTION;
   function filteredBlueprints() {
-    return library.blueprints.filter(b => {
+    const ordered = library.blueprints.filter(b => {
       const a = b.analysis;
       const search = s.direction === 'outputs' ? [b.colour || '', ...productsOf(b).map(id => name(id) + ' ' + id), ...madeInsideOf(b).map(id => name(id) + ' ' + id), ...(a.serviceOutputs || [])].join(' ') : s.direction === 'inputs' ? [...a.inputs.map(id => name(id) + ' ' + id), ...(a.serviceInputs || [])].join(' ') : [b.name, b.collection, b.section, b.category, b.purpose, b.gameVersion, b.profile, b.file, a.kind, ...productsOf(b), ...madeInsideOf(b), ...(a.serviceOutputs || []), ...a.inputs, ...b.entries.map(r => r.id)].join(' ');
       return (s.inputBoundary === 'all' || boundaryOf(b) === s.inputBoundary) && inCollection(b) && (s.category === 'All' || b.category === s.category) && (s.kind === 'All' || a.kind === s.kind) && matches(search, s.query);
@@ -79,6 +92,7 @@ function create(ui) {
       const score = b => b.section === 'Solar, Accumulators, and Substations' ? 0 : b.section === 'Robots' ? 1 : b.category === 'Power' ? 2 : 3;
       return score(a) - score(b);
     });
+    return newestFirstView() ? newestFirst(ordered) : ordered;
   }
   function coveragePage() {
     const coverage = atlas.coverage;
@@ -358,5 +372,5 @@ function create(ui) {
   function clearDisplayedBlueprint() { displayedBlueprint = undefined; versionFamily = undefined; }
   return { boundaryMenu, blueprintsPage, blueprintDialog, productionPage, coveragePage, handleClick, handleInput, handleChange, refreshBlueprints, clearDisplayedBlueprint };
 }
-globalThis.FactorioExplorer = { create };
+globalThis.FactorioExplorer = { create, newestFirst, isNewRelease };
 })();

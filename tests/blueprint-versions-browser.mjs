@@ -32,7 +32,7 @@ try{
  assert.equal(await menu.getByRole('button',{name:/From raw materials/}).getAttribute('aria-pressed'),'true');
  assert.equal(await page.locator('#blueprint-source').inputValue(),'All');
  const ids=await page.locator('.blueprint-card .blueprint-actions [data-action="blueprint-details"]').evaluateAll(elements=>elements.map(e=>e.dataset.id));
- assert.ok(ids.length>0&&ids.every(id=>atlas.blueprints.find(b=>b.id===id)?.rawOnly),'Raw menu lists raw modules');
+ assert.ok(ids.length>0&&ids.every(id=>{const b=atlas.blueprints.find(b=>b.id===id);return b?.rawOnly||b?.designedCollection;}),'Raw menu lists raw modules (newest designed builds lead the All view, then the modules)');
  await menu.getByRole('button',{name:/Needs intermediate parts/}).click();
  assert.ok(await page.locator('.blueprint-card').count()>0);
  assert.equal(await page.locator('.starter-requires').count(),0,'Intermediate filter excludes raw-only modules');
