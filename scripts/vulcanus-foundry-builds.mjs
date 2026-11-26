@@ -1,6 +1,6 @@
 /** One page for the Vulcanus blueprints: the foundry mall, its two supplies (coal to plastic bars and lubricant, tungsten carbide),
  * the science blueprint that makes production and utility packs from lava, and the two plate-fed malls (assembling machine 3,
- * express belts): site/vulcanus-foundry-builds/
+ * express belts), and the three circuit blueprints (electronic, advanced, processing units) made from lava: site/vulcanus-foundry-builds/
  * (index.html, vulcanus.css, one string and one layout picture per blueprint). Every figure is read from the committed manifest,
  * ports and native report of each blueprint folder when this runs, never typed here, so the page follows the data when a
  * blueprint is re-released (a new string, new caps, new draws). The prose of the caveats is read from each README.
@@ -24,6 +24,7 @@ export const GROUPS={
  foundry:{label:'The foundry mall',lead:'The one blueprint that does the work: lava and calcite in, the finished items out in five chests.'},
  supplies:{label:'Supplies that feed the foundry mall',lead:'One copy of each covers the foundry mall (see the table above). Build them first, or at the same time.'},
  science:{label:'Science from lava',lead:'Production and utility science packs made from lava and calcite in one blueprint. It takes plastic and lubricant from the coal supply above and its own sulfuric acid; the card says how many copies of the supply it needs.'},
+ circuits:{label:'Circuits from lava',lead:'Electronic, advanced and processing unit circuits made from lava and calcite, each on one belt, with the plates and cable made inside. Advanced circuits and processing units also take plastic from the coal supply above; their cards say how many copies of it they need. None of them is an input of the foundry mall.'},
  rockets:{label:'Rocket supplies (not an input of the foundry mall)',lead:'This one does not feed the foundry mall. It makes rocket fuel for rocket launches, from the same four inputs as the coal-to-plastic supply. Its own needs are in its card.'},
  plates:{label:'Plate-fed malls (not on the foundry chain)',lead:'These two run from smelted plates that you bring yourself. They use neither the foundry mall nor its supplies.'}
 };
@@ -36,6 +37,12 @@ export const BUILDS=[
   {section:'What to preserve'},{section:'Power'}]},
  {key:'production-utility-science',dir:'vulcanus-science/production-utility-science',kind:'science',group:'science',caveats:[
   {section:'Supplies it needs'},{section:'Ports',only:/^- \*\*(Lava|Stone)/},{section:'Good to know'}]},
+ {key:'electronic-circuits',dir:'vulcanus-circuits/electronic-circuits',kind:'circuits',group:'circuits',caveats:[
+  {section:'Entrances, exits, power',only:/^- \*\*(Product exit|Stone|Power)/},{section:'Things to know',skip:/^- Arms/}]},
+ {key:'advanced-circuits',dir:'vulcanus-circuits/advanced-circuits',kind:'circuits',group:'circuits',caveats:[
+  {section:'Entrances, exits, power',only:/^- \*\*(Product exit|Stone|Power)/},{section:'Things to know',skip:/^- Arms/}]},
+ {key:'processing-units',dir:'vulcanus-circuits/processing-units',kind:'circuits',group:'circuits',caveats:[
+  {section:'Entrances, exits, power',only:/^- \*\*(Product exit|Stone|Power|Sulfuric acid)/},{section:'Things to know',skip:/^- Arms/}]},
  {key:'rocket-fuel',dir:'vulcanus-supplies/rocket-fuel',kind:'supply',group:'rockets',caveats:[
   {section:'',only:/^A rocket needs/},{section:'Known limits',skip:/hand size|mirror images|Not tested standing/},{section:'Beside the coal-to-plastic supply',only:/^- \*\*Leave at least/},{section:'What to preserve'},{section:'Power'}]},
  {key:'assembler-3-mall',dir:'requested-malls/assembler-3-mall',kind:'assembler',group:'plates',caveats:[
@@ -129,6 +136,9 @@ export function describe(b,names){
  }else if(spec.kind==='science'){
   // measured with every port held to exactly its panel figure; the stone that leaves is in the same block
   needs=report.measured.ports.throttled;outputRate=report.measured.rates.throttled;stone=needs.stone;
+ }else if(spec.kind==='circuits'){
+  // measured with every entrance offered exactly its panel figure; the stone that leaves is in the same block
+  const th=report.measured.throttled;needs=th.drawPerMinute;outputRate={[m.product]:th.productPerMinute,stone:th.stonePerMinute};
  }else if(spec.kind==='assembler'){
   const w=report.windows['rate-am3'];needs=w.inputsPerMinute;outputRate=w.removedPerMinute;v.fillMinutes=report.fillTimes['fill from empty'].both/3600;
  }else{
@@ -137,7 +147,7 @@ export function describe(b,names){
  v.needs=needs;v.outputRate=outputRate;
  v.inputs=ports.inputs.map(p=>({item:p.item,mode:fluidOrBelt(p),where:where(p,fp),label:p.label,perMinute:needs[p.item],peak:peakWindow[p.item]}));
  // exits that are belts or pipes: the foundry mall's surplus stone, the supplies' products
- const exitPorts=spec.kind==='foundry'||spec.kind==='science'?ports.exits:spec.kind==='supply'?ports.outputs:[];
+ const exitPorts=spec.kind==='foundry'||spec.kind==='science'?ports.exits:spec.kind==='supply'||spec.kind==='circuits'?ports.outputs:[];
  v.exits=exitPorts.map(p=>({item:p.item,mode:fluidOrBelt(p),where:where(p,fp),label:p.label,perMinute:spec.kind==='foundry'||spec.kind==='science'?stone:outputRate[p.item]}));
  v.power=ports.power?.label;
  // what it makes
@@ -158,6 +168,8 @@ export function describe(b,names){
   v.makesGroups=groups;
  }else if(spec.kind==='supply'){
   v.makesRates=m.outputPorts.map(o=>({item:o.item,label:name(o.item),perMinute:outputRate[o.item],target:m.targets?.[o.item]}));
+ }else if(spec.kind==='circuits'){
+  v.makesRates=[{item:m.product,label:name(m.product),perMinute:outputRate[m.product],target:m.target}];
  }else if(spec.kind==='science'){
   v.makesRates=m.outputs.map(o=>({item:o.item,label:name(o.item),perMinute:outputRate[o.item],target:m.targets[o.item]}));
   v.chestNote=`Each pack has its own passive provider chest that holds ${fmt(m.outputs[0].capacity)} packs: ${m.outputs.map(o=>`${name(o.item)} at tile (${o.tile.x}, ${o.tile.y})`).join(', ')}.`;
@@ -182,7 +194,7 @@ function makesHtml(v){
 function portsHtml(v){
  const rows=[...v.inputs.map(p=>['In',p]),...v.exits.map(p=>['Out',p])];
  const body=rows.map(([dir,p])=>`<tr><td>${dir}</td><td>${esc(v.nameOf(p.item))}</td><td>${esc(p.mode)}</td><td>${esc(p.where)}<br><span class="muted">${esc(p.label)}</span></td><td class="num">${p.perMinute===undefined?'—':fmt(p.perMinute)}${p.peak?`<br><span class="muted">peak while collecting: ${esc(p.peak)}</span>`:''}</td></tr>`).join('');
- const head=v.kind==='foundry'?'Per minute (peak)':v.kind==='supply'||v.kind==='science'?'Per minute (measured)':'Per minute (measured draw)';
+ const head=v.kind==='foundry'?'Per minute (peak)':['supply','science','circuits'].includes(v.kind)?'Per minute (measured)':'Per minute (measured draw)';
  return `<h3>Entrances and exits</h3><p class="muted">Tiles are counted from the top-left corner of the blueprint (column, row).</p>${table(['','Item','Belt or pipe','Where',head],body)}${v.power?`<p><strong>Power:</strong> connect the labelled substation or pole (panel text <code>${esc(v.power)}</code>).</p>`:''}`;
 }
 function facts(v){
@@ -192,9 +204,19 @@ function facts(v){
  if(v.fillMinutes!==undefined)f.push(['From empty to every cap',`${fmt(v.fillMinutes)} minutes (measured)`]);
  return `<dl>${f.map(([k,x])=>`<dt>${esc(k)}</dt><dd>${esc(x)}</dd>`).join('')}</dl>`;
 }
-function card(v){
+/** How many copies of a supply an entrance needs, in the words of the foundry mall's table. */
+const coverText=(need,out)=>`One copy makes ${fmt(out)} a minute: ${need<=out?'one copy covers it':`${Math.ceil(need/out)} copies needed`}`;
+/** For a circuits card: each entrance whose item a supply blueprint of this page makes, and how many copies of that supply its draw needs. */
+function suppliesHtml(v,views){
+ if(v.kind!=='circuits')return '';
+ const items=v.inputs.filter(p=>SUPPLIED_BY[p.item]&&p.perMinute!==undefined).map(p=>{
+  const maker=views.find(x=>x.key===SUPPLIED_BY[p.item]),out=maker?.outputRate[p.item];
+  return out>0?`<li>${esc(v.nameOf(p.item))}: ${fmt(p.perMinute)} a minute at its entrance. ${coverText(p.perMinute,out)} (<a href="#${esc(maker.key)}">${esc(maker.name)}</a>).</li>`:'';}).join('');
+ return items?`<h3>Supply it needs</h3><ul>${items}</ul>`:'';
+}
+function card(v,views){
  const g=GROUPS[v.group];
- return `<article class="today-card vulcanus-card" id="${esc(v.key)}" data-build-id="${esc(v.key)}"><div class="eyebrow">${esc(g.label)}</div><h2>${esc(v.name)}</h2>${v.tagline?`<p>${esc(v.tagline)}</p>`:''}<div class="today-actions"><button class="button primary" data-copy="${esc(v.key)}">Copy string</button><a class="button secondary" href="${esc(v.key)}.txt" download>Open the string (.txt)</a></div><img class="today-preview" src="${esc(v.key)}-layout.svg" alt="Layout of ${esc(v.name)}" loading="lazy">${facts(v)}${makesHtml(v)}${portsHtml(v)}<h3>Good to know</h3><ul>${v.caveats.map(c=>`<li>${inline(c)}</li>`).join('')}</ul><p class="hash">Blueprint SHA-256: <code>${esc(v.hash)}</code></p><details><summary>Import string</summary><textarea readonly aria-label="${esc(v.name)} import string">${esc(v.code)}</textarea></details></article>`;
+ return `<article class="today-card vulcanus-card" id="${esc(v.key)}" data-build-id="${esc(v.key)}"><div class="eyebrow">${esc(g.label)}</div><h2>${esc(v.name)}</h2>${v.tagline?`<p>${esc(v.tagline)}</p>`:''}<div class="today-actions"><button class="button primary" data-copy="${esc(v.key)}">Copy string</button><a class="button secondary" href="${esc(v.key)}.txt" download>Open the string (.txt)</a></div><img class="today-preview" src="${esc(v.key)}-layout.svg" alt="Layout of ${esc(v.name)}" loading="lazy">${facts(v)}${makesHtml(v)}${portsHtml(v)}${suppliesHtml(v,views)}<h3>Good to know</h3><ul>${v.caveats.map(c=>`<li>${inline(c)}</li>`).join('')}</ul><p class="hash">Blueprint SHA-256: <code>${esc(v.hash)}</code></p><details><summary>Import string</summary><textarea readonly aria-label="${esc(v.name)} import string">${esc(v.code)}</textarea></details></article>`;
 }
 
 /** The table at the top: each foundry mall input, where it comes from, the peak draw, and how many copies of its supply that is;
@@ -206,7 +228,7 @@ export function connectHtml(views){
   let from,cover='—';
   if(maker){
    const out=maker.outputRate[p.item];from=`<a href="#${esc(maker.key)}">${esc(maker.name)}</a>`;
-   cover=out>0&&p.perMinute!==undefined?`One copy makes ${fmt(out)} a minute: ${p.perMinute<=out?'one copy covers it':`${Math.ceil(p.perMinute/out)} copies needed`}`:'—';
+   cover=out>0&&p.perMinute!==undefined?coverText(p.perMinute,out):'—';
   }else from=esc(OWN_SOURCE[p.item]??'Your own source. There is no blueprint for this one.');
   return `<tr><td>${esc(mall.nameOf(p.item))}</td><td>${from}</td><td class="num">${fmt(p.perMinute)}${p.peak?`<br><span class="muted">peak while collecting: ${esc(p.peak)}</span>`:''}</td><td>${cover}</td></tr>`;
  }).join('');
@@ -219,7 +241,7 @@ export function connectHtml(views){
 
 export function renderPage(views,nav){
  const order=Object.keys(GROUPS);
- const sections=order.map(g=>`<section class="vulcanus-group" aria-labelledby="g-${g}"><h2 class="group-title" id="g-${g}">${esc(GROUPS[g].label)}</h2><p>${esc(GROUPS[g].lead)}</p><div class="today-grid">${views.filter(v=>v.group===g).map(card).join('')}</div></section>`).join('');
+ const sections=order.map(g=>`<section class="vulcanus-group" aria-labelledby="g-${g}"><h2 class="group-title" id="g-${g}">${esc(GROUPS[g].label)}</h2><p>${esc(GROUPS[g].lead)}</p><div class="today-grid">${views.filter(v=>v.group===g).map(v=>card(v,views)).join('')}</div></section>`).join('');
  const toc=order.map(g=>`<li>${esc(GROUPS[g].label)}: ${views.filter(v=>v.group===g).map(v=>`<a href="#${esc(v.key)}">${esc(v.name)}</a>`).join(', ')}</li>`).join('');
  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#171a1c"><title>${TITLE} · Factorio Command Center</title><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="../flight-plans.css"><link rel="stylesheet" href="../todays-flight-builds/today.css"><link rel="stylesheet" href="vulcanus.css"></head><body class="flight-workshop"><a class="skip-link" href="#main">Skip to content</a><aside class="sidebar" id="flight-sidebar" aria-label="Workshop navigation"><a class="flight-brand" href="../index.html"><span>FACTORIO<small>COMMAND CENTER</small></span></a><div class="flight-context">${nav}</div></aside><div class="workspace"><header class="topbar"><button class="icon-button mobile-menu" data-flight-menu aria-controls="flight-sidebar" aria-expanded="false">☰ Workshops</button><a href="../index.html?collection=flight-plans#blueprints">All flight blueprints in the library →</a></header><main id="main" class="today-guide vulcanus-guide"><span class="eyebrow">BUILT ${esc(BUILT.toUpperCase())} · VULCANUS</span><h1>${TITLE}</h1><p>${views.length} blueprints for Vulcanus on one page, so you can place the whole set without hunting through the library. Each one has its string to copy, its layout, its size, what it makes, what it needs, where things go in and out, and what to watch for. Every figure below is read from the blueprint's own files and its native test.</p><ul class="toc">${toc}</ul><p role="status" id="copy-status" aria-live="polite"></p>${connectHtml(views)}${sections}</main></div><script src="../flight-plans.js"></script><script src="../todays-flight-builds/today.js"></script></body></html>`;
 }
