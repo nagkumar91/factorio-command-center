@@ -21,8 +21,15 @@ import path from 'node:path';
 import os from 'node:os';
 import assert from 'node:assert/strict';
 import { spawn, execFile, execFileSync } from 'node:child_process';
-import { HERE, PROJECT, PUBLISHED, ID, PROTOCOL, QUALIFICATION, prototypes, readJson, json, sha, decode, encode, scenarioSummary } from './lib.mjs';
-import { expand, OUTSIDE } from './bill.mjs';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+// A mall of the family (its own lib.mjs, bill.mjs, audit.mjs and optionally scenarios.mjs in one folder) is validated
+// by this same file: FOUNDRY_FAMILY names that folder. The harness (control.lua) is always the one beside this file.
+const SHARED = path.dirname(fileURLToPath(import.meta.url));
+const FAMILY = process.env.FOUNDRY_FAMILY ? path.resolve(process.env.FOUNDRY_FAMILY) : SHARED;
+const part = name => import(pathToFileURL(path.join(FAMILY, name)).href);
+const { HERE, PROJECT, PUBLISHED, ID, PROTOCOL, QUALIFICATION, prototypes, readJson, json, sha, decode, encode, scenarioSummary } = await part('lib.mjs');
+const bill = await part('bill.mjs'), OUTSIDE = bill.OUTSIDE;
+const familyScenario = (await part('scenarios.mjs').catch(e => { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e; return {}; })).scenario;
 
 const args = process.argv.slice(2);
 const option = name => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : undefined; };
@@ -34,8 +41,8 @@ const bp = decode(code);
 assert.equal(sha(code), manifest.candidateSha256, 'manifest does not describe this blueprint string');
 assert.equal(sha(await fs.readFile(path.join(HERE, 'prototypes.json'))), manifest.prototypeSha256, 'prototype snapshot mismatch');
 if (!(explore && args.includes('--skip-audit'))) {
-  const { auditBlueprint } = await import('./audit.mjs');
-  const audit = auditBlueprint(bp, manifest, p);
+  const auditModule = await part('audit.mjs');
+  const audit = auditModule.auditFor ? await auditModule.auditFor(bp, manifest, p) : auditModule.auditBlueprint(bp, manifest, p);
   assert.equal(audit.passed, true, 'Static audit is a prerequisite: ' + JSON.stringify(audit.errors));
 }
 const protocol = { ...PROTOCOL };
@@ -48,13 +55,16 @@ const FULL = { ...manifest.caps };
 const REDUCED = Object.fromEntries(Object.entries(FULL).map(([k, v]) => [k, reduce(v)]));
 const capSets = { full: FULL, reduced: REDUCED };
 // Which products need which outside input (from the pinned recipes).
-const needs = Object.fromEntries(manifest.products.map(v => [v.key, Object.keys(expand(p, { [v.item]: 1 }).outside)]));
+const needs = Object.fromEntries(manifest.products.map(v => [v.key, bill.needsOf ? bill.needsOf(p, v) : Object.keys(bill.expand(p, { [v.item]: 1 }).outside)]));
 const dependents = input => manifest.products.filter(v => needs[v.key].includes(input)).map(v => v.key);
-const QUIET = Object.fromEntries(['U1', 'U2', 'rocket-silo', 'assembling-machine-3', 'assembling-machine-2', 'assembling-machine-1', 'space-platform-foundation', 'processing-unit', 'speed-module', 'electric-engine-unit', 'engine-unit', 'battery'].map(r => [r, true]));
+const QUIET = Object.fromEntries((protocol.quietRoles || ['U1', 'U2', 'rocket-silo', 'assembling-machine-3', 'assembling-machine-2', 'assembling-machine-1', 'space-platform-foundation', 'processing-unit', 'speed-module', 'electric-engine-unit', 'engine-unit', 'battery']).map(r => [r, true]));
+const FIXTURES = protocol.fixtures || { roboport: { x: -8, y: -2 }, robotChests: [{ x: -9.5, y: 1.5 }, { x: -8.5, y: 1.5 }, { x: -7.5, y: 1.5 }, { x: -6.5, y: 1.5 }], matrixDrivers: { x: -5.5, y: 1.5 } };
 const SETTLE = protocol.settleSeconds;
 const fill = (name, extra = {}) => ({ name, mode: 'until_caps', limit: protocol.fillLimitTicks, expect: 'caps', settleSeconds: SETTLE, ...extra });
 const edited = (caps, f) => Object.fromEntries(protocol.capEditItems.map(k => [k, f(caps[k])]));
 function scenario(name) {
+  const own = familyScenario?.(name, { fill, protocol, manifest, FULL, REDUCED, OUTSIDE, dependents });
+  if (own) return own;
   if (name === 'fill') return { caps: 'full', phases: [
     fill('fill from empty'),
     fill('refill after complete collection', { collectAtStart: true, setCaps: REDUCED }),
@@ -94,14 +104,14 @@ function scenario(name) {
     const cases = [];
     for (const [role, networks] of Object.entries(protocol.matrixNetworks)) {
       const recipes = protocol.matrixRecipes[role] || [...new Set(manifest.rules.filter(r => r.machine === role).map(r => r.recipe))];
-      const states = networks.reduce((list, n) => list.flatMap(st => [{ ...st, [n]: true }, { ...st, [n]: false }]), [Object.fromEntries(['molten-iron', 'molten-copper', 'water', 'lubricant'].map(n => [n, true]))]);
+      const states = networks.reduce((list, n) => list.flatMap(st => [{ ...st, [n]: true }, { ...st, [n]: false }]), [Object.fromEntries((protocol.matrixFluids || ['molten-iron', 'molten-copper', 'water', 'lubricant']).map(n => [n, true]))]);
       for (const from of recipes) for (const to of recipes) if (from !== to) for (const state of states) cases.push({ machine: role, from, to, state });
     }
-    return { caps: 'reduced', matrix: { caseTicks: protocol.matrixCaseTicks, cases, machines: Object.fromEntries(Object.keys(protocol.matrixNetworks).map(r => [r, true])), drivers: { x: -5.5, y: 1.5 } }, phases: [{ name: 'port matrix', mode: 'ticks', ticks: cases.length * protocol.matrixCaseTicks + 120, withhold: OUTSIDE, expect: 'never' }] };
+    return { caps: 'reduced', matrix: { caseTicks: protocol.matrixCaseTicks, cases, machines: Object.fromEntries(Object.keys(protocol.matrixNetworks).map(r => [r, true])), drivers: FIXTURES.matrixDrivers, ...(protocol.matrixFluids ? { fluids: protocol.matrixFluids } : {}) }, phases: [{ name: 'port matrix', mode: 'ticks', ticks: cases.length * protocol.matrixCaseTicks + 120, withhold: OUTSIDE, expect: 'never' }] };
   }
   if (name.startsWith('build:')) {
     const order = name.slice(6);
-    if (order.startsWith('robots-')) return { caps: 'reduced', robots: { count: Number(order.slice(7)), roboport: { x: -8, y: -2 }, chests: [{ x: -9.5, y: 1.5 }, { x: -8.5, y: 1.5 }, { x: -7.5, y: 1.5 }, { x: -6.5, y: 1.5 }], limit: protocol.robotLimitTicks }, phases: [fill('fill after construction by robots')] };
+    if (order.startsWith('robots-')) return { caps: 'reduced', robots: { count: Number(order.slice(7)), roboport: FIXTURES.roboport, chests: FIXTURES.robotChests, limit: protocol.robotLimitTicks }, phases: [fill('fill after construction by robots')] };
     return { caps: 'reduced', build: { name: order, order: buildOrder(order), perStep: 1, stepTicks: protocol.buildStepTicks }, phases: [fill('fill after piecemeal construction')] };
   }
   if (name === 'late:power') return { caps: 'reduced', phases: [
@@ -166,12 +176,12 @@ function placeAs(kind = 'none') {
   const zero = v => (v === 0 ? 0 : v);
   const pos = ({ x, y }) => { if (flip === 'h') x = -x; if (flip === 'v') y = -y; for (let i = 0; i < k; i++) [x, y] = [-y, x]; return { x: zero(x), y: zero(y) }; };
   const dir = d => { d = d || 0; if (flip === 'h') d = (16 - d) % 16; if (flip === 'v') d = (24 - d) % 16; return (d + 4 * k) % 16; };
-  const MIRRORED = ['foundry', 'chemical-plant'];
+  const MIRRORED = ['foundry', 'chemical-plant', 'oil-refinery'];
   const entities = bp.blueprint.entities.map(e => ({ ...e, position: pos(e.position), direction: dir(e.direction),
     ...(flip && MIRRORED.includes(e.name) ? { mirror: !e.mirror } : {}), ...(flip && e.name === 'storage-tank' ? { direction: (dir(e.direction) + 4) % 8 } : {}) }));
   const pole = manifest.power.externalPolePosition;
   const placed = { ...manifest, ports: manifest.ports.map(v => ({ ...v, externalContact: pos(v.externalContact), ...(v.exit ? { sinkDirection: dir(12) } : {}) })),
-    power: { ...manifest.power, externalPolePosition: pos(pole), externalSourcePosition: pos({ x: pole.x - 3, y: pole.y }) } };
+    power: { ...manifest.power, externalPolePosition: pos(pole), externalSourcePosition: pos(manifest.power.externalSourcePosition || { x: pole.x - 3, y: pole.y }) } };
   const blueprint = flip ? encode({ blueprint: { ...bp.blueprint, entities } }) : code;
   return { entities, manifest: placed, blueprint, place: { name: kind, direction: 4 * k, mirrored: !!flip, blueprintSha256: sha(blueprint) } };
 }
@@ -186,7 +196,7 @@ for (const name of ['base', 'quality', 'elevated-rails', 'space-age']) {
   assert.equal(versions[name], manifest.requiredGameVersion, `Wrong installed ${name} version`);
 }
 for (const [file, expected] of Object.entries(p.provenance.sourceHashes)) assert.equal(sha(await fs.readFile(path.join(data, file))), expected, `Installed game source differs from the prototype snapshot: ${file}`);
-const control = await fs.readFile(option('--control') ? path.resolve(option('--control')) : path.join(HERE, 'control.lua'), 'utf8');
+const control = await fs.readFile(option('--control') ? path.resolve(option('--control')) : path.join(SHARED, 'control.lua'), 'utf8');
 const runnerSha256 = sha(await fs.readFile(new URL(import.meta.url)));
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, '-');
 const root = process.env.FOUNDRY_RUN_ROOT ? path.resolve(process.env.FOUNDRY_RUN_ROOT) : path.join(PROJECT, '.cache', ID, `native-${stamp}-${process.pid}`);
@@ -275,7 +285,7 @@ const reports = Object.fromEntries(await Promise.all(names.map(async name => {
 const passed = names.every(n => reports[n].passed);
 const merged = {
   schema: 2, passed, blueprintSha256: manifest.candidateSha256, prototypeSha256: manifest.prototypeSha256, gameVersion: versions.base, activeMods: versions, surface: manifest.surface, runnerSha256, nativeControlSha256: sha(control),
-  nativeCommand: 'node scripts/requested-malls/foundry-mall/validate.mjs' + (explore ? ' ' + args.join(' ') : ''), ...(explore ? { exploration: true } : {}),
+  nativeCommand: `node scripts/requested-malls/${ID}/validate.mjs` + (explore ? ' ' + args.join(' ') : ''), ...(explore ? { exploration: true } : {}),
   failures: names.flatMap(n => reports[n].failures.map(f => `${n}: ${f}`)), wallSecondsTotal: (Date.now() - started) / 1000,
   capSets, dependents: Object.fromEntries(protocol.withheldInputs.map(n => [n, dependents(n)])),
   scenarios: Object.fromEntries(names.map(n => [n, reports[n]])),

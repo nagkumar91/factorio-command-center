@@ -1,6 +1,7 @@
 -- Native harness of the foundry mall. Imports the exact blueprint on a Vulcanus surface and never repairs it.
 -- Runs only in the validator's private save. Supply: the declared entrances only (lava, calcite, water, lubricant,
--- sulfuric acid, plastic, tungsten carbide), a sink on the stone exit and outside power.
+-- sulfuric acid, plastic, tungsten carbide; a mall of the family may declare others), a sink on the stone exit and
+-- outside power. An entrance is named by its key: the item, or the port's own key where one item has two entrances.
 -- The run is a list of phases (T.phases), each with: mode ('until_caps' with a tick limit, or 'ticks'), the inputs
 -- withheld, what is collected (at the start, every second, or one item), optional cap edits and what is measured.
 local T = require('fixture')
@@ -9,9 +10,12 @@ local PER_MINUTE = 3600
 local RED, GREEN = defines.wire_connector_id.circuit_red, defines.wire_connector_id.circuit_green
 local CONNECTOR = {[1]=defines.wire_connector_id.circuit_red, [2]=defines.wire_connector_id.circuit_green, [3]=defines.wire_connector_id.combinator_output_red, [4]=defines.wire_connector_id.combinator_output_green}
 local COMBINATOR = {['decider-combinator']=true, ['arithmetic-combinator']=true, ['selector-combinator']=true}
-local INPUTS = {'lava', 'calcite', 'water', 'lubricant', 'sulfuric-acid', 'plastic-bar', 'tungsten-carbide'}
-local ITEM_INPUTS = {'calcite', 'plastic-bar', 'tungsten-carbide'}
-local FLUID_INPUTS = {'lava', 'water', 'lubricant', 'sulfuric-acid'}
+local INPUTS, ITEM_INPUTS, FLUID_INPUTS, INPUT_ITEM = {}, {}, {}, {}
+for _, port in ipairs(M.ports) do if not port.exit then
+  local key = port.key or port.item
+  INPUTS[#INPUTS + 1] = key INPUT_ITEM[key] = port.item
+  if port.kind == 'fluid' then FLUID_INPUTS[#FLUID_INPUTS + 1] = key else ITEM_INPUTS[#ITEM_INPUTS + 1] = key end
+end end
 
 local function fail(message) error('FOUNDRY_MALL: ' .. message) end
 local function record(t, name, passed, detail)
@@ -150,7 +154,7 @@ after_build = function(t)
       t.entities[spec.entity_number] = e
       -- (a turned machine without fluid ports reports no direction)
       if e.direction ~= (spec.direction or 0) and not UNDIRECTED[spec.name] and not (T.place and (spec.name == 'electric-furnace' or (spec.name == 'assembling-machine-3' and e.fluids_count == 0))) then exact = false record(t, 'direction changed #' .. spec.entity_number .. ' ' .. spec.name, false, {want=spec.direction or 0, got=e.direction}) end
-      if spec.name == 'foundry' and e.mirroring ~= (spec.mirror == true) then exact = false record(t, 'mirroring changed #' .. spec.entity_number, false, {want=spec.mirror == true, got=e.mirroring}) end
+      if (spec.name == 'foundry' or spec.name == 'chemical-plant' or spec.name == 'oil-refinery') and e.mirroring ~= (spec.mirror == true) then exact = false record(t, 'mirroring changed #' .. spec.entity_number, false, {want=spec.mirror == true, got=e.mirroring}) end
       if spec.name == 'display-panel' and not (e.display_panel_always_show and e.display_panel_text == spec.text) then record(t, 'display panel text #' .. spec.entity_number, false) end
     end
   end
@@ -236,6 +240,8 @@ after_build = function(t)
   -- chests
   record(t, 'exactly ' .. #M.outputs .. ' passive provider chests', #surface.find_entities_filtered{name='passive-provider-chest', force=force} == #M.outputs)
   if not t.construction then for _, o in ipairs(M.outputs) do record(t, 'cold empty provider ' .. o.id, t.entities[o.chest].get_inventory(defines.inventory.chest).is_empty()) end end
+  -- what was made at the blueprint's own caps while it was being built is taken out before the scenario's caps are written
+  if t.construction then t.construction.collected = collect(t) end
   -- the scenario's starting caps, written into the caps combinator exactly as a player would edit it
   for name, value in pairs(T.startCaps) do if not set_cap(t, name, value) then fail('no cap slot ' .. name) end end
   t.switching = {}
@@ -272,7 +278,7 @@ script.on_init(function()
   local force = game.create_force('foundry-mall-test')
   for _, name in ipairs(T.technologyClosure) do if not force.technologies[name] then fail('missing technology ' .. name) end force.technologies[name].researched = true end
   if T.bonus then force.inserter_stack_size_bonus = T.bonus.stack force.bulk_inserter_capacity_bonus = T.bonus.bulk end
-  local t = {surface=surface, force=force, begin=game.tick, checks={}, failures={}, entities={}, fixtures={}, phases={}, phase=0, caps={}, accepted={}, stone=0, ringPeaks={}, ringPeakTotal=0, violations={}, fluidFaults={}, fluidFaultIndex={}, joins={}, joinIndex={}, samples={}, watch={}, fluidOf={}, numberOf={}}
+  local t = {surface=surface, force=force, begin=game.tick, checks={}, failures={}, entities={}, fixtures={}, phases={}, phase=0, caps={}, accepted={}, stone=0, ringPeaks={}, ringPeakTotal=0, violations={}, fluidFaults={}, fluidFaultIndex={}, joins={}, joinIndex={}, samples={}, watch={}, fluidOf={}, numberOf={}, credit={}}
   for name, cap in pairs(M.caps) do t.caps[name] = cap end
   t.chunks = chunks t.pressure = surface.get_property('pressure')
   t.bonus = {stack=force.inserter_stack_size_bonus, bulk=force.bulk_inserter_capacity_bonus}
@@ -314,7 +320,8 @@ script.on_init(function()
     elseif port.exit then
       entry.sink = fixture('fast-transport-belt', port.externalContact, port.sinkDirection or defines.direction.west)
     end
-    t.ports[port.item] = entry
+    t.ports[port.key or port.item] = entry
+    if port.exit then t.stoneSink = entry.sink end
   end
   t.externalPole = fixture('substation', M.power.externalPolePosition)
   t.power = fixture('electric-energy-interface', M.power.externalSourcePosition or {x=M.power.externalPolePosition.x - 3, y=M.power.externalPolePosition.y})
@@ -347,11 +354,13 @@ end)
 
 local function withheld(t, name) return t.current and t.current.withhold and t.current.withhold[name] end
 local function throttle(t, name) return t.current and t.current.spec.thin and t.current.spec.thin[name] end
+-- an entrance held to a figure a minute (the figure on its panel) for the phase
+local function metered(t, name) return t.current and t.current.spec.supply and t.current.spec.supply[name] end
 local function consumption(t)
   local items, fluids = t.force.get_item_production_statistics(t.surface), t.force.get_fluid_production_statistics(t.surface)
   local out = {}
   for _, name in ipairs(INPUTS) do
-    if t.ports[name].kind == 'fluid' then out[name] = fluids.get_output_count(name) else out[name] = items.get_output_count(name) end
+    if t.ports[name].kind == 'fluid' then out[name] = fluids.get_output_count(INPUT_ITEM[name]) else out[name] = items.get_output_count(INPUT_ITEM[name]) end
   end
   out['molten-iron'] = fluids.get_input_count('molten-iron') out['molten-copper'] = fluids.get_input_count('molten-copper')
   out['stone made'] = items.get_input_count('stone') out['stone used'] = items.get_output_count('stone')
@@ -365,6 +374,7 @@ local function begin_phase(t, tick)
   if not spec then return false end
   local ph = {name=spec.name, mode=spec.mode, start=tick, reached={}, levelTicks={}, recipeTicks={}, switches={}, statusSamples={}, craftsByLevel={}, collected={}, withhold=spec.withhold, peak=0, gatedActive=0, groupCrafts={}}
   if spec.withhold then ph.withholdSet = {} for _, name in ipairs(spec.withhold) do ph.withholdSet[name] = true end end
+  ph.supply = spec.supply
   t.current = {spec=spec, record=ph, withhold=ph.withholdSet, lastRecipe={}, lastCrafts=crafts(t)}
   if spec.collectItems then t.current.collectOnly = {} for _, n in ipairs(spec.collectItems) do t.current.collectOnly[n] = true end end
   if spec.except then t.current.skip = {} for _, n in ipairs(spec.except) do t.current.skip[n] = true end end
@@ -438,6 +448,11 @@ local function end_phase(t, tick, why)
     local total = 0 for _, name in ipairs(spec.rateItems) do total = total + (ph.collected[name] or 0) end
     record(t, label .. ': the collected group kept being made', total > 0, ph.collected)
   end
+  -- a product collected through the phase must have come at a rate inside its bounds (a minute)
+  if spec.rateBounds then for name, bounds in pairs(spec.rateBounds) do
+    local rate = (ph.collected[name] or 0) / minutes
+    record(t, label .. ': ' .. name .. ' a minute between ' .. bounds.min .. ' and ' .. bounds.max, rate >= bounds.min and rate <= bounds.max, rate)
+  end end
   record(t, label .. ': no chest holds a foreign item', foreign(t) == nil, foreign(t))
 end
 
@@ -585,7 +600,8 @@ matrix_step = function(t, tick)
     x.case = T.matrix.cases[x.at]
     if not x.case then t.matrix.done = true x.case = nil return end
     x.found, x.foundIndex = {}, {}
-    for fluid in pairs(M.fluids) do if fluid ~= 'lava' and fluid ~= 'sulfuric-acid' then set_network(t, fluid, false) end end
+    if T.matrix.fluids then for _, fluid in ipairs(T.matrix.fluids) do set_network(t, fluid, false) end
+    else for fluid in pairs(M.fluids) do if fluid ~= 'lava' and fluid ~= 'sulfuric-acid' then set_network(t, fluid, false) end end end
     for _, m in ipairs(M.machines) do if m.switching or m.role:find('^molten') then empty_machine(t.entities[m.entity]) end end
     ask(t, x.case.machine, x.case.from)
     for fluid, full in pairs(x.case.state) do set_network(t, fluid, full) end
@@ -663,20 +679,30 @@ script.on_nth_tick(4, function(event)
   for _, name in ipairs(ITEM_INPUTS) do if not withheld(t, name) then
     local entity = t.entities[t.ports[name].entityId]
     local thin = throttle(t, name)   -- items a minute, one lane, when the phase thins this entrance
+    local meter = metered(t, name)
+    local what = INPUT_ITEM[name]
     if entity and entity.valid then
-      if thin then
-        if event.tick % (4 * math.max(1, math.floor(900 / thin))) == 0 and entity.get_transport_line(1).insert_at_back{name=name, count=1} then t.accepted[name] = (t.accepted[name] or 0) + 1 end
-      else for lane = 1, 2 do if entity.get_transport_line(lane).insert_at_back{name=name, count=1} then t.accepted[name] = (t.accepted[name] or 0) + 1 end end end
+      if meter then
+        -- exactly the figure: credit builds up a 900th of it every call and is spent one item at a time
+        local credit = math.min((t.credit[name] or 0) + meter / 900, 4)
+        while credit >= 1 do
+          if entity.get_transport_line(1).insert_at_back{name=what, count=1} or entity.get_transport_line(2).insert_at_back{name=what, count=1} then t.accepted[name] = (t.accepted[name] or 0) + 1 credit = credit - 1 else break end
+        end
+        t.credit[name] = credit
+      elseif thin then
+        if event.tick % (4 * math.max(1, math.floor(900 / thin))) == 0 and entity.get_transport_line(1).insert_at_back{name=what, count=1} then t.accepted[name] = (t.accepted[name] or 0) + 1 end
+      else for lane = 1, 2 do if entity.get_transport_line(lane).insert_at_back{name=what, count=1} then t.accepted[name] = (t.accepted[name] or 0) + 1 end end end
     end
   end end
-  local sink = t.ports.stone.sink
+  local sink = t.stoneSink
   if not withheld(t, 'stone exit') then for lane = 1, 2 do local line = sink.get_transport_line(lane) local n = line.get_item_count() if n > 0 then t.stone = t.stone + n line.clear() end end end
 end)
 script.on_nth_tick(5, function(event)
   local t = storage.run if not t or t.done or not (t.current or t.building) or T.scriptMode == 'none' then return end   -- nothing is supplied before the first phase begins, except under construction
   for _, name in ipairs(FLUID_INPUTS) do if not withheld(t, name) then
     local thin = throttle(t, name)   -- units a second when the phase thins this entrance
-    t.accepted[name] = (t.accepted[name] or 0) + t.ports[name].pipe.insert_fluid{name=name, amount=thin and thin / 12 or 500, temperature=T.fluidTemperature[name]}
+    local meter = metered(t, name)   -- units a minute
+    t.accepted[name] = (t.accepted[name] or 0) + t.ports[name].pipe.insert_fluid{name=INPUT_ITEM[name], amount=meter and meter / 720 or thin and thin / 12 or 500, temperature=T.fluidTemperature[INPUT_ITEM[name]]}
   end end
 end)
 -- Every 10 ticks: which recipe each recipe-switching machine runs.

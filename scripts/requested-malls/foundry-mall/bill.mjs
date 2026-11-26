@@ -72,6 +72,8 @@ export function expand(p, demand) {
   const stoneUsed = need.get('stone') || 0;
   return { crafts, machineSeconds: seconds, outside, intermediates: Object.fromEntries([...need].filter(([k]) => !OUTSIDE.includes(k) && k !== 'stone')), moltenIron: need.get('molten-iron') || 0, moltenCopper: need.get('molten-copper') || 0, stoneMade, stoneUsed, stoneSurplus: stoneMade - stoneUsed };
 }
+// The entrances a product cannot be made without.
+export const needsOf = (p, v) => Object.keys(expand(p, { [v.item]: 1 }).outside);
 export async function fullBill(p) {
   const kit = await loadKit(), list = products(p, kit);
   const round = v => Math.round(v * 100) / 100;

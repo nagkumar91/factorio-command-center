@@ -331,6 +331,29 @@ for(const id of ['electronic-circuits','advanced-circuits','processing-units']){
  }
 }
 
+// Foundry belts and fuel mall (Vulcanus): the foundry mall without the assembling machine 3 line and the platform kit,
+// re-packed, with the rocket fuel supply attached as a section of its own. Registered only with a passing native report
+// for the exact string; the rates shown are that report's measured ones.
+{
+ const dir='blueprint-sources/requested-malls/foundry-belts-fuel-mall',m=await read(dir+'/manifest.json').catch(()=>null),reportFile=dir+'/native-report.json',proof=m&&await read(reportFile).catch(()=>null);
+ if(!m||!proof||proof.passed!==true||proof.blueprintSha256!==m.candidateSha256)console.warn('Not registered (no exact-hash passing native report): foundry-belts-fuel-mall');
+ else{
+  const made={};
+  for(const ph of proof.scenarios.rate.phases.filter(ph=>ph.perMinute))for(const [item,v] of Object.entries(ph.perMinute.collected))if(v>0&&item!=='rocket-fuel')made[item]=Number(v.toFixed(2));
+  made['rocket-fuel']=Number(proof.scenarios['fuel:idle'].phases.at(-1).perMinute.collected['rocket-fuel'].toFixed(2));
+  const fill=proof.scenarios.fill.phases[0],ports=m.ports.filter(p=>!p.exit),f=m.footprint;
+  await register({file:dir+'/blueprint.txt',info:{name:'Foundry belts and fuel mall · express belts, inserters, drills, foundries · 12 rocket fuel a minute',blueprintSha256:m.candidateSha256,
+   inputs:ports.map(p=>({item:p.item,entity:p.entity,side:p.side,perMinute:p.perMinute})),
+   outputs:m.stock.map(s=>({item:s.item,entity:s.chest,cap:m.caps[s.key]})),footprint:f},
+   category:'Malls · belts and inserters',purpose:'Mall production',sourceCollection:collection,inputs:[...new Set(ports.map(p=>p.item))],outputs:[...new Set(m.products.map(v=>v.item))],
+   proof:{passed:proof.passed,blueprintSha256:proof.blueprintSha256,gameVersion:proof.gameVersion,outputsPerMinute:made,footprint:f,scenarios:Object.fromEntries(Object.entries(proof.scenarios).map(([n,s])=>[n,{passed:s.passed,caps:s.capsName,ticks:s.actualTicks}]))},report:reportFile,version:proof.gameVersion,
+   setup:[`Vulcanus, on demand, in list order: express belt, underground belt and splitter, fast and bulk inserters, electric mining drills and foundries, each kept at its cap in four passive provider chests. The smaller sister of the foundry mall: no assembling machine 3 product and no platform kit. Mall part ${f.mallPart.width} x ${f.mallPart.height}, with the rocket fuel section ${f.width} x ${f.height}.`,
+    `Rocket fuel: ${m.panelFigures['rocket-fuel']} a minute from coal into a fifth chest (cap ${m.caps['rocket-fuel']}), as a section of its own that neither waits for the list nor holds it up. It is the stand-alone rocket fuel supply tile for tile; placing this blueprint replaces it.`,
+    `Inputs: calcite, plastic and tungsten carbide belts (north); lava pipe (west); lubricant and water pipes (east); for the fuel section sulfuric acid by pipe and coal and calcite by belt (west). Surplus stone leaves on a belt on the west edge and must be taken away. Power by substations. Caps are edited in one constant combinator.`,
+    `Native test on a Vulcanus surface: fill from empty at the published caps in ${(fill.ticks/3600).toFixed(0)} minutes in list order, rocket fuel measured over thirty minutes with its entrances at their panel figures, and at reduced caps refill, outage, hold, cap edits, one cold start per withheld entrance, piecemeal construction and turned and mirrored placement, every fluid segment read every tick.`]});
+ }
+}
+
 // Vulcanus science (26 November 2026): production and utility science packs, 60 a minute each, from lava and calcite in one blueprint.
 // Registered only with a passing native report for the exact string; the figures shown are that report's measured ones (every port
 // held to exactly its panel figure).
