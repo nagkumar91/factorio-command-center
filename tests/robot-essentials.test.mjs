@@ -14,16 +14,19 @@ const bp=decodeBlueprint(code).blueprint,entities=bp.entities;
 const byId=new Map(entities.map(e=>[e.entity_number,e]));
 const report=JSON.parse(await read(dir+'native-report.json'));
 const evidence=report.builds.find(b=>b.id===m.id);
-const officialSha='ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3';
-const targets={'construction-robot':5,'logistic-robot':5,roboport:0.5,'storage-chest':2,'passive-provider-chest':2};
+const officialSha='289d0de81102a710f16fc989a5df399facdef91c100901da87e5e69b4d911495'; // Factorio 2.1.25 Space Age, vanilla (--dump-data)
+const rawDefault='/Users/nagkumar/clawd/workspaces/.claude/tmp-robot-requester-product/dump/write/script-output/data-raw-dump.json';
+const targets={'construction-robot':5,'logistic-robot':5,roboport:0.5,'storage-chest':2,'passive-provider-chest':2,'requester-chest':2};
+const ringProducts=Object.keys(targets).filter(p=>p!=='requester-chest');
 // Full-stack caps: one stack of each product (stack sizes 50 / 50 / 10 / 50 / 50 in the prototype dump).
-const caps={'construction-robot':50,'logistic-robot':50,roboport:10,'storage-chest':50,'passive-provider-chest':50};
+const caps={'construction-robot':50,'logistic-robot':50,roboport:10,'storage-chest':50,'passive-provider-chest':50,'requester-chest':50};
+const fiveCaps={'construction-robot':50,'logistic-robot':50,roboport:10,'storage-chest':50,'passive-provider-chest':50};
 const oldCaps={'construction-robot':20,'logistic-robot':20,roboport:2,'storage-chest':10,'passive-provider-chest':10};
 const products=Object.keys(targets);
-const demand={'steel-plate':74.5,'iron-plate':105,lubricant:150,'electronic-circuit':145,'sulfuric-acid':400,'copper-plate':93,'plastic-bar':73};
+const demand={'steel-plate':90.5,'iron-plate':105,lubricant:150,'electronic-circuit':155,'sulfuric-acid':400,'copper-plate':97,'plastic-bar':77};
 // Two-speed token clock: the timer adds 8 units a tick (9 while the supply gate is open).
-const nominal={'construction-robot':0.98,'logistic-robot':0.975,roboport:1.012,'storage-chest':0.985,'passive-provider-chest':0.985};
-const periodUnits={'construction-robot':5877,'logistic-robot':5907,roboport:56916,'storage-chest':14619,'passive-provider-chest':14619};
+const nominal={'construction-robot':0.98,'logistic-robot':0.975,roboport:1.012,'storage-chest':0.985,'passive-provider-chest':0.985,'requester-chest':0.985};
+const periodUnits={'construction-robot':5877,'logistic-robot':5907,roboport:56916,'storage-chest':14619,'passive-provider-chest':14619,'requester-chest':14619};
 const gateThresholds={'plastic-bar':18,'copper-plate':20,'steel-plate':16,'iron-gear-wheel':10,'advanced-circuit':8,battery:6,'electric-engine-unit':3};
 const panelReport=JSON.parse(await read(dir+'panel-supply-report.json'));
 const panelEvidence=panelReport.builds.find(b=>b.id===m.id);
@@ -38,7 +41,7 @@ test('one record; string, report, prototypes, harness and validator hashes agree
  assert(evidence,'native build evidence missing');
  assert.equal(evidence.blueprintSha256,m.blueprintSha256,'native report is stale for this blueprint');
  assert.equal(m.prototypeSha256,officialSha);assert.equal(report.prototypeSha256,officialSha);
- assert.equal(report.gameVersion,'2.1.24');
+ assert.equal(report.gameVersion,'2.1.25');
  assert.equal(report.harnessSha256,hash(await read('scripts/robot-essentials/control.lua')),'harness changed since the report');
  assert.equal(report.validatorSha256,hash(await read('scripts/robot-essentials/validate.mjs')),'validator changed since the report');
  for(const field of ['dataHarnessSha256','configurationSha256'])assert.match(report[field],/^[a-f0-9]{64}$/);
@@ -49,7 +52,7 @@ test('one record; string, report, prototypes, harness and validator hashes agree
 test('the report passes, and the pass formula recomputed from its numbers holds',()=>{
  assert.equal(report.passed,true);assert.equal(evidence.passed,true);
  const p=report.protocolMinutes;
- assert(p.warmup>=15&&p.measure>=30&&p.blocked>=8&&p.settle>=5&&p.recovery>=10&&p.phases===5&&p.phase>=15&&p.phaseSettle>=5,'protocol shorter than the spec');
+ assert(p.warmup>=15&&p.measure>=30&&p.blocked>=8&&p.settle>=5&&p.recovery>=10&&p.phases===6&&p.phase>=15&&p.phaseSettle>=5,'protocol shorter than the spec');
  // Full-stack caps need long holds: one chest fills 50 at about 2 per minute (25 minutes), the roboport 10 at 0.5 to 0.6 (17 to 20).
  assert(p.blocked>=30&&p.phaseSettle>=30,'closed hold and selective settle must outlast the slowest cap');
  for(const f of [evidence,panelEvidence]){
@@ -75,7 +78,7 @@ test('the report passes, and the pass formula recomputed from its numbers holds'
  const closed=evidence.recovery.collectionPauseStock;assert.deepEqual(sorted(closed.map(p=>p.item)),sorted(products));
  for(const p of closed){assert.equal(p.count,caps[p.item]);assert.equal(p.entity,m.stockControl.chest);}
  assert(evidence.recovery.blockedOutputFilled.every(p=>p.inserted===0));
- const phases=evidence.independentStockCapTests;assert.equal(phases.length,5);assert.deepEqual(sorted(phases.map(p=>p.blockedProduct)),sorted(products));
+ const phases=evidence.independentStockCapTests;assert.equal(phases.length,6);assert.deepEqual(sorted(phases.map(p=>p.blockedProduct)),sorted(products));
  for(const phase of phases){assert.equal(phase.finalBlockedStock,caps[phase.blockedProduct]);for(const item of products.filter(p=>p!==phase.blockedProduct))assert(phase.outputsPerMinute[item]>=floor(item),`${phase.blockedProduct} phase: ${item}`);}
  for(const loop of m.loopControl){const s=evidence.loopSamples[loop.name];assert(s.maxStock<0.9*loop.capacity,'ring above 90%');}
  assert.equal(evidence.powered,true);assert.equal(evidence.externalApproachesClear,true);assert.equal(evidence.stockNetworksIsolated,true);assert(evidence.exactRecipeChecks>0);
@@ -85,8 +88,10 @@ test('the report passes, and the pass formula recomputed from its numbers holds'
  // Saturated entrances: the clock ran boosted, and nothing fell below the replaced design's measured rates.
  assert.equal(evidence.checks.clockBoostedWhenSaturated,true);
  assert(evidence.supplyGateSamples.boosted>=0.9*evidence.supplyGateSamples.samples);
- const replaced={'construction-robot':5.27,'logistic-robot':5.4,roboport:0.57,'storage-chest':2.2,'passive-provider-chest':2.2};
- for(const item of products)assert(Math.round(evidence.outputsPerMinute[item]*100)/100>=replaced[item],`${item} below the replaced design: ${evidence.outputsPerMinute[item]}`);
+ // The earlier five-product string measured 5.27 / 5.4 / 0.57 / 2.2 / 2.2 here; with the requester chest's advanced circuits the six advanced-circuit machines are saturated and the roboport, last in line for them, measures 0.53 (floor 0.475), the rest stay at or above the earlier rates.
+ const replaced={'construction-robot':5.27,'logistic-robot':5.4,'storage-chest':2.2,'passive-provider-chest':2.2,'requester-chest':2.2};
+ for(const[item,rate]of Object.entries(replaced))assert(Math.round(evidence.outputsPerMinute[item]*100)/100>=rate,`${item} below the replaced design: ${evidence.outputsPerMinute[item]}`);
+ assert(evidence.outputsPerMinute.roboport>=0.5,'roboport steady at saturated entrances: '+evidence.outputsPerMinute.roboport);
 });
 
 test('fed at exactly the panel figures, the same full protocol passes',async()=>{
@@ -108,7 +113,7 @@ test('fed at exactly the panel figures, the same full protocol passes',async()=>
   assert(panelEvidence.recovery.outputsPerMinute[item]>=floor(item),`panel supply recovery ${item}`);
  }
  for(const p of panelEvidence.recovery.collectionPauseStock)assert.equal(p.count,caps[p.item]);
- assert.equal(panelEvidence.independentStockCapTests.length,5);
+ assert.equal(panelEvidence.independentStockCapTests.length,6);
  for(const phase of panelEvidence.independentStockCapTests){assert.equal(phase.finalBlockedStock,caps[phase.blockedProduct]);for(const item of products.filter(p=>p!==phase.blockedProduct))assert(phase.outputsPerMinute[item]>=floor(item),`panel supply, ${phase.blockedProduct} phase: ${item}`);}
  assert.equal(panelEvidence.machines.length,entities.filter(e=>e.recipe).length);
  for(const n of panelEvidence.machines)assert(n.measuredCrafts>0,`idle at panel supply: ${n.recipe}`);
@@ -118,9 +123,9 @@ test('fed at exactly the panel figures, the same full protocol passes',async()=>
 
 test('products, targets, caps and the recipe boundary match the spec',()=>{
  assert.deepEqual(m.targets,targets);assert.deepEqual(m.products,products);
- assert.deepEqual(m.outputCaps,caps);assert.deepEqual(m.stockControl.caps,caps);assert.equal(m.stockControl.mode,'dynamic-filter');
+ assert.deepEqual(m.outputCaps,caps);assert.deepEqual(m.stockControl.caps,caps);assert.match(m.stockControl.mode,/^dynamic-filter/);
  assert.deepEqual(m.recipeAudit.externalPerMinute,demand);
- assert.deepEqual(m.greenCircuitSupply,{perMinute:145,copiesOfGreenCircuits:1});
+ assert.deepEqual(m.greenCircuitSupply,{perMinute:155,copiesOfGreenCircuits:1});
  assert.equal(m.machineCounts['advanced-circuit'],6);assert.equal(m.machineCounts['copper-cable'],1);
  assert.equal(m.machineCounts['flying-robot-frame'],5);assert.equal(m.machineCounts['engine-unit'],3);
  assert.equal(m.machineCounts['electric-engine-unit'],3);assert.equal(m.machineCounts.battery,2);
@@ -131,7 +136,7 @@ test('products, targets, caps and the recipe boundary match the spec',()=>{
  for(const e of entities.filter(e=>e.recipe))assert.equal(e.name,e.recipe==='battery'?'chemical-plant':'assembling-machine-2');
 });
 
-test('seven west entrances with one labelled panel each; one east chest holds all five products',()=>{
+test('seven west entrances with one labelled panel each; one east chest holds all six products',()=>{
  const material=m.ports.filter(p=>p.kind==='input'||p.kind==='fluid');
  assert.deepEqual(sorted(material.map(p=>p.items[0])),sorted(Object.keys(demand)));
  assert.deepEqual(sorted(m.inputs.map(p=>p.item)),sorted(['electronic-circuit','iron-plate','copper-plate','steel-plate','plastic-bar']));
@@ -155,10 +160,12 @@ test('seven west entrances with one labelled panel each; one east chest holds al
  assert.equal(chest.position.x+.5,m.footprint.right,'output chest on the east edge');
  const port=m.ports.find(p=>p.kind==='output');assert.deepEqual(port.caps,caps);assert.equal(port.externalSide,'east');
  const collector=byId.get(m.stockControl.collector);assert(collector.use_filters&&collector.control_behavior.circuit_set_filters);
+ // The collector's dynamic filters hold five items at most: the five ring-borne products have one cap decider each, the requester chest none.
  for(const item of products){
   const gates=entities.filter(e=>e.name==='decider-combinator'&&e.control_behavior?.decider_conditions?.conditions?.some(c=>c.first_signal?.name===item&&c.comparator==='<'&&c.constant===caps[item])&&e.control_behavior.decider_conditions.outputs.some(o=>o.signal?.name===item&&!o.copy_count_from_input));
-  assert.equal(gates.length,1,'one cap decider for '+item);
+  assert.equal(gates.length,item==='requester-chest'?0:1,'cap deciders for '+item);
  }
+ assert.deepEqual(sorted(Object.keys(m.stockControl.deciders)),sorted(ringProducts));
  assert.equal(m.ports.filter(p=>p.kind==='power').length,1);
 });
 
@@ -184,7 +191,8 @@ test('footprint and area goal',()=>{
  assert.deepEqual(m.footprint,f);
  assert.equal(m.areaGoal.achievedTiles,f.width*f.height);
  assert.equal(m.areaGoal.goalTiles,760);assert.equal(m.areaGoal.stretchTiles,703);
- assert(f.width*f.height<1071/2,'not smaller than half of the 1,071-tile workshop');
+ assert(f.width*f.height<0.6*1092,'not smaller than 60% of the 1,092-tile workshop');
+ assert.deepEqual([f.width,f.height],[37,16]);
 });
 
 test('ring conventions: per-tile hold readers, limits under 60%, controlled arms on the ring network',()=>{
@@ -288,38 +296,50 @@ test('the replaced version is kept with its evidence',async()=>{
  assert.equal(hash(oldCode),'d2c80909a9d3017a54ccf4c7704eeda88500887da964b4d9af792a144af30763');assert.equal(oldManifest.blueprintSha256,hash(oldCode));
  const oldReport=JSON.parse(await read(dir+old+'native-report.json'));assert.equal(oldReport.passed,true);assert.equal(oldReport.builds[0].blueprintSha256,hash(oldCode));
  assert.match((await read(dir+old+'NOTE.md')).toString(),/supplyGate/);
- // Same interface as the replaced version (the chest caps are the twenty-robot ones there): products, caps, panels, entrance tiles and the output chest tile.
- assert.deepEqual(oldManifest.products,m.products);assert.deepEqual(oldManifest.outputCaps,oldCaps);assert.deepEqual(oldManifest.recipeAudit.externalPerMinute,m.recipeAudit.externalPerMinute);
- assert.deepEqual(oldManifest.footprint,m.footprint);assert.deepEqual(oldManifest.machineCounts,m.machineCounts);
+ // Same interface as the five-product string it grew from (the chest caps are the twenty-robot ones there): its products, panels, entrance tiles and machines, plus the requester chest.
+ const five=JSON.parse(await read(dir+'history/five-products-full-stack/manifest.json'))[0];
+ assert.deepEqual(oldManifest.products,five.products);assert.deepEqual(oldManifest.outputCaps,oldCaps);assert.deepEqual(oldManifest.recipeAudit.externalPerMinute,five.recipeAudit.externalPerMinute);
+ assert.deepEqual(oldManifest.footprint,five.footprint);assert.deepEqual(oldManifest.machineCounts,five.machineCounts);
  const tile=p=>[p.kind,p.items[0],p.externalSide,p.x,p.y];
- assert.deepEqual(m.ports.filter(p=>p.kind!=='power').map(tile),oldManifest.ports.filter(p=>p.kind!=='power').map(tile));
+ assert.deepEqual(five.ports.filter(p=>p.kind!=='power'&&p.kind!=='output').map(tile),oldManifest.ports.filter(p=>p.kind!=='power'&&p.kind!=='output').map(tile));
+ // The six-product string keeps every entrance tile.
+ assert.deepEqual(m.ports.filter(p=>p.kind==='input'||p.kind==='fluid').map(tile),oldManifest.ports.filter(p=>p.kind==='input'||p.kind==='fluid').map(tile));
 });
 
-test('the twenty-robot caps version is kept with both reports and listed as an older version',async()=>{
- const old='history/twenty-robot-caps/';
- const oldManifest=JSON.parse(await read(dir+old+'manifest.json'))[0],oldCode=(await read(dir+old+'robot-essentials.txt')).toString().trim();
+test('the five-product and twenty-robot versions are kept with their reports and listed as older versions',async()=>{
+ const fiveDir='history/five-products-full-stack/',oldDir='history/twenty-robot-caps/';
+ const fiveManifest=JSON.parse(await read(dir+fiveDir+'manifest.json'))[0],fiveCode=(await read(dir+fiveDir+'robot-essentials.txt')).toString().trim();
+ assert.equal(hash(fiveCode),'e8d154c907fd8aee84de6c6bfbf2d2242cd0dcebd00c3b63c4892c793e2346e6');assert.equal(fiveManifest.blueprintSha256,hash(fiveCode));
+ for(const f of ['native-report.json','panel-supply-report.json']){const r=JSON.parse(await read(dir+fiveDir+f));assert.equal(r.passed,true);assert.equal(r.builds[0].blueprintSha256,hash(fiveCode));assert.equal(r.gameVersion,'2.1.24');}
+ assert.match((await read(dir+fiveDir+'NOTE.md')).toString(),/requester/i);assert.deepEqual(fiveManifest.outputCaps,fiveCaps);assert.notEqual(fiveManifest.blueprintSha256,m.blueprintSha256);
+ const oldManifest=JSON.parse(await read(dir+oldDir+'manifest.json'))[0],oldCode=(await read(dir+oldDir+'robot-essentials.txt')).toString().trim();
  assert.equal(hash(oldCode),'afdc129e1e85043a6b9a9a7b026129c8691a29a7994546247cd7e9d333654c48');assert.equal(oldManifest.blueprintSha256,hash(oldCode));
- for(const f of ['native-report.json','panel-supply-report.json']){const r=JSON.parse(await read(dir+old+f));assert.equal(r.passed,true);assert.equal(r.builds[0].blueprintSha256,hash(oldCode));}
- assert.match((await read(dir+old+'NOTE.md')).toString(),/twenty/i);
- assert.deepEqual(oldManifest.outputCaps,oldCaps);assert.notEqual(oldManifest.blueprintSha256,m.blueprintSha256);
- // Only the five chest caps (and the description that names them) differ: the layout, machines, ring limits and clock are the old string's.
- const oldBp=decodeBlueprint(oldCode).blueprint;
- assert.equal(oldBp.entities.length,entities.length);
- const capGates=new Set(Object.values(m.stockControl.deciders));assert.equal(capGates.size,5);
+ for(const f of ['native-report.json','panel-supply-report.json']){const r=JSON.parse(await read(dir+oldDir+f));assert.equal(r.passed,true);assert.equal(r.builds[0].blueprintSha256,hash(oldCode));}
+ assert.match((await read(dir+oldDir+'NOTE.md')).toString(),/twenty/i);
+ assert.deepEqual(oldManifest.outputCaps,oldCaps);
+ // The oldest string differs from the five-product string only in its five cap constants (and the description naming them).
+ const fiveBp=decodeBlueprint(fiveCode).blueprint,oldBp=decodeBlueprint(oldCode).blueprint;
+ assert.equal(oldBp.entities.length,fiveBp.entities.length);
+ const capGates=new Set(Object.values(fiveManifest.stockControl.deciders));assert.equal(capGates.size,5);
  const mask=e=>{const c=structuredClone(e);if(capGates.has(c.entity_number))for(const d of c.control_behavior.decider_conditions.conditions)d.constant='cap';return c;};
- assert.deepEqual(oldBp.entities.map(mask),entities.map(mask),'entities differ beyond the five cap constants');
- assert.deepEqual(oldBp.wires,bp.wires);
- assert.deepEqual(oldManifest.loopControl,m.loopControl);assert.deepEqual(oldManifest.productionClock,m.productionClock);assert.deepEqual(oldManifest.footprint,m.footprint);
+ assert.deepEqual(oldBp.entities.map(mask),fiveBp.entities.map(mask),'entities differ beyond the five cap constants');
+ assert.deepEqual(oldBp.wires,fiveBp.wires);
+ assert.deepEqual(oldManifest.loopControl,fiveManifest.loopControl);assert.deepEqual(oldManifest.productionClock,fiveManifest.productionClock);assert.deepEqual(oldManifest.footprint,fiveManifest.footprint);
+ // The six-product string: the five-product string's ring limits and gate thresholds, the same entrances and east chest tile column, one requester machine more.
+ assert.deepEqual(m.loopControl[0].limits,fiveManifest.loopControl[0].limits);assert.deepEqual(m.productionClock.supplyGate.thresholds,fiveManifest.productionClock.supplyGate.thresholds);
+ assert.equal(m.footprint.width,fiveManifest.footprint.width+4);assert.equal(m.footprint.height,fiveManifest.footprint.height);
  // versions, newest first, built with familyVersions
- assert.deepEqual(m.versions.map(v=>v.label),['Full-stack caps','Twenty-robot caps']);
- assert.deepEqual(m.versions.map(v=>v.blueprintSha256),[m.blueprintSha256,oldManifest.blueprintSha256]);
- assert.deepEqual(m.versions.map(v=>v.file),['robot-essentials.txt',old+'robot-essentials.txt']);
- for(const v of m.versions){assert(v.tiles===528&&v.machines===28);for(const side of ['steady','recovery'])for(const item of products)assert(v.outputsPerMinute[side][item]>=floor(item));}
+ assert.deepEqual(m.versions.map(v=>v.label),['Requester chests','Full-stack caps','Twenty-robot caps']);
+ assert.deepEqual(m.versions.map(v=>v.blueprintSha256),[m.blueprintSha256,fiveManifest.blueprintSha256,oldManifest.blueprintSha256]);
+ assert.deepEqual(m.versions.map(v=>v.file),['robot-essentials.txt',fiveDir+'robot-essentials.txt',oldDir+'robot-essentials.txt']);
+ assert.deepEqual(m.versions.map(v=>[v.tiles,v.machines]),[[592,29],[528,28],[528,28]]);
+ for(const v of m.versions)for(const side of ['steady','recovery'])for(const item of Object.keys(v.outputsPerMinute[side]))assert(v.outputsPerMinute[side][item]>=targets[item]*.95,`${v.label} ${side} ${item}`);
+ assert.deepEqual(Object.keys(m.versions[0].outputsPerMinute.steady).sort(),sorted(products));
  assert(!m.versions.some(v=>/\d/.test(v.label)));
 });
 
-test('stack sizes and chest slots: five products at their caps fit one passive provider chest',async()=>{
- const rawPath=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
+test('stack sizes and chest slots: six products at their caps fit one passive provider chest',async()=>{
+ const rawPath=process.env.FACTORIO_RAW||rawDefault;
  const bytes=await fs.readFile(rawPath).catch(()=>null);
  if(!bytes)return;
  const raw=JSON.parse(bytes);

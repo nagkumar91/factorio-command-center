@@ -13,7 +13,7 @@ const atlas=JSON.parse(await fs.readFile('site/data/atlas.json','utf8'));
 const CONTRACT={
  'green-circuits':{section:'Circuits',purpose:'Circuit production',inputs:['iron-plate','copper-plate'],outputs:['electronic-circuit']},
  'essentials-mall':{section:'Building essentials',purpose:'Production',inputs:['iron-plate','copper-plate','steel-plate','stone-brick','plastic-bar','electronic-circuit'],outputs:['assembling-machine-2','fast-transport-belt','fast-underground-belt','fast-splitter','fast-inserter','bulk-inserter','electric-furnace','electric-mining-drill']},
- 'robot-essentials':{section:'Robots and logistics',purpose:'Robot production',inputs:['iron-plate','copper-plate','steel-plate','plastic-bar','electronic-circuit','sulfuric-acid','lubricant'],outputs:['construction-robot','logistic-robot','roboport','storage-chest','passive-provider-chest']},
+ 'robot-essentials':{section:'Robots and logistics',purpose:'Robot production',inputs:['iron-plate','copper-plate','steel-plate','plastic-bar','electronic-circuit','sulfuric-acid','lubricant'],outputs:['construction-robot','logistic-robot','roboport','storage-chest','passive-provider-chest','requester-chest']},
  'six-science':{section:'Science · six packs from supplied circuits',purpose:'Science production',inputs:['iron-plate','copper-plate','steel-plate','stone-brick','stone','coal','plastic-bar','sulfur','electronic-circuit','sulfuric-acid','lubricant'],outputs:['automation-science-pack','logistic-science-pack','military-science-pack','chemical-science-pack','production-science-pack','utility-science-pack']}
 };
 const sorted=a=>[...a].sort();

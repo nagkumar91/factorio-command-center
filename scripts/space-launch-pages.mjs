@@ -12,7 +12,7 @@ import {createHash} from 'node:crypto';
 import sharp from 'sharp';
 import {decodeBlueprint,encodeBlueprint} from './blueprints.mjs';
 import {renderFlightPlanPage} from './flight-plan-shell.mjs';
-import {exactNativeEvidence,groupPorts,footprint,counts,refreshSnapshot,preview,table,STYLE,SCRIPT} from './workshop-guides.mjs';
+import {exactNativeEvidence,groupPorts,footprint,counts,refreshSnapshot,prototypeMatches,preview,table,STYLE,SCRIPT} from './workshop-guides.mjs';
 import {dedupeIcons} from './essentials-pages.mjs';
 
 const ROOT=fileURLToPath(new URL('../',import.meta.url));
@@ -182,7 +182,7 @@ export async function buildSpaceLaunchPages({root=ROOT,rawPath=process.env.FACTO
 
  for(const r of published){
   const {m,code,bp,report,evidence}=r,res=evidence.result,platform=m.class==='platform';
-  if(m.prototypeSha256!==model.prototypeSha256)throw Error(`${m.id}: preview prototype mismatch`);
+  if(!prototypeMatches(m,model))throw Error(`${m.id}: preview prototype mismatch`);
   const f=platform?tileBounds(bp):footprint(bp,model);for(const key of ['left','top','right','bottom','width','height'])if(m.footprint?.[key]!==f[key])throw Error(`${m.id}: footprint mismatch ${key}`);
   const construction=counts(bp.entities.map(e=>e.name)),machines=counts(bp.entities.map(e=>e.recipe).filter(Boolean));
   if(JSON.stringify(Object.entries(construction).sort())!==JSON.stringify(Object.entries(m.construction||{}).sort()))throw Error(`${m.id}: construction mismatch`);

@@ -7,7 +7,7 @@ const bp=decodeBlueprint((await fs.readFile(dir+'/'+m.file,'utf8')).trim()).blue
 const grid=new Map(),key=(x,y)=>x+','+y;
 const arrows={0:'^',4:'>',8:'v',12:'<'};
 const size={'assembling-machine-2':3,'chemical-plant':3,substation:2};
-const letter={'battery':'B','steel-chest':'S','copper-cable':'C','advanced-circuit':'A','flying-robot-frame':'F','construction-robot':'R','logistic-robot':'L','storage-chest':'H','electric-engine-unit':'E','iron-gear-wheel':'G',pipe:'P','engine-unit':'N',roboport:'O','passive-provider-chest':'V'};
+const letter={'battery':'B','steel-chest':'S','copper-cable':'C','advanced-circuit':'A','flying-robot-frame':'F','construction-robot':'R','logistic-robot':'L','storage-chest':'H','electric-engine-unit':'E','iron-gear-wheel':'G',pipe:'P','engine-unit':'N',roboport:'O','passive-provider-chest':'V','requester-chest':'Q'};
 for(const e of bp.entities){
  const n=size[e.name]||1;let w=n,h=n;
  if(/combinator/.test(e.name)){w=1;h=2;if([4,12].includes(e.direction))[w,h]=[2,1];}

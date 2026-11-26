@@ -1,6 +1,6 @@
 {
  "releaseGroup": "essentials-20261121",
- "id": "designed-e8d154c907fd8aee",
+ "id": "designed-563311c2d22c7d44",
  "name": "Robot essentials · 5/5/0.5/2/2 per minute",
  "collection": "Long game flight plans and strategies",
  "category": "Robots and logistics",
@@ -8,7 +8,7 @@
  "purpose": "Robot production",
  "designedCollection": true,
  "lifecycle": "current",
- "gameVersion": "2.1.24",
+ "gameVersion": "2.1.25",
  "profile": "Space Age",
  "coverageExcluded": false,
  "author": "Factorio Command Center",
@@ -93,7 +93,8 @@
   "logistic-robot",
   "roboport",
   "storage-chest",
-  "passive-provider-chest"
+  "passive-provider-chest",
+  "requester-chest"
  ],
  "analysis": {
   "kind": "Robot production",
@@ -111,14 +112,16 @@
    "logistic-robot",
    "roboport",
    "storage-chest",
-   "passive-provider-chest"
+   "passive-provider-chest",
+   "requester-chest"
   ],
   "netOutputs": [
    "construction-robot",
    "logistic-robot",
    "roboport",
    "storage-chest",
-   "passive-provider-chest"
+   "passive-provider-chest",
+   "requester-chest"
   ],
   "internal": [
    "advanced-circuit",
@@ -198,24 +201,24 @@
   "notes": [
    "Inputs are recipe ingredients and recognized machine fuels or fluids supplied from outside. Outputs are products not consumed by another included process. Check belt, pipe, and robot connections in-game; this analysis does not simulate routing or throughput.",
    "Supply every labeled operating input, including fluids where listed, and external electricity. Preserve stock controls, circuit wires and passive-provider chest limits. Intermediates are manufactured inside; construction materials are not operating inputs.",
-   "Needs supplied electronic circuits: 145 per minute at the targets; 1 green-circuit supplier copy (360 per minute each) covers it.",
+   "Needs supplied electronic circuits: 155 per minute at the targets; 1 green-circuit supplier copy (360 per minute each) covers it.",
    "Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests, 10 passive provider chests. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. Supply electricity at either substation; the two are wired together.",
    "Supplied electronic circuits: 145 per minute at the nominal target, one green-circuits copy (360 per minute) covers it.",
    "The entrance panels are the supply to plan for. Fed at exactly the panel figures the workshop makes about 4.9 construction robots, 4.9 logistic robots, 0.5 roboports and 2.0 of each chest per minute (token pace 4.9 / 4.88 / 0.51 / 1.97 / 1.97), all above the 95% floors; panel-supply-report.json is that full-protocol run. With more supply than the panels a boost of one eighth switches on while the ring is well stocked: about 5.5 / 5.5 / 0.57 / 2.2 / 2.2 per minute from roughly 1.25 times the panel figures upward (about 165 electronic circuits, 120 iron, 107 copper, 85 steel, 84 plastic, 450 sulfuric acid and 169 lubricant per minute when every entrance is saturated). Below the panel figures the roboport falls short first.",
    "Leave the shared chest unrestricted (no bar). Caps live in the five filter deciders next to the chest.",
    "The ring holds at most the stock limits in loopControl; do not remove the red wires from ring tiles or the entrance belts, which are circuit-gated.",
-   "Game profile: Factorio 2.1.24."
+   "Game profile: Factorio 2.1.25."
   ]
  },
  "setupNotes": [
   "Supply every labeled operating input, including fluids where listed, and external electricity. Preserve stock controls, circuit wires and passive-provider chest limits. Intermediates are manufactured inside; construction materials are not operating inputs.",
-  "Needs supplied electronic circuits: 145 per minute at the targets; 1 green-circuit supplier copy (360 per minute each) covers it.",
+  "Needs supplied electronic circuits: 155 per minute at the targets; 1 green-circuit supplier copy (360 per minute each) covers it.",
   "Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests, 10 passive provider chests. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. Supply electricity at either substation; the two are wired together.",
   "Supplied electronic circuits: 145 per minute at the nominal target, one green-circuits copy (360 per minute) covers it.",
   "The entrance panels are the supply to plan for. Fed at exactly the panel figures the workshop makes about 4.9 construction robots, 4.9 logistic robots, 0.5 roboports and 2.0 of each chest per minute (token pace 4.9 / 4.88 / 0.51 / 1.97 / 1.97), all above the 95% floors; panel-supply-report.json is that full-protocol run. With more supply than the panels a boost of one eighth switches on while the ring is well stocked: about 5.5 / 5.5 / 0.57 / 2.2 / 2.2 per minute from roughly 1.25 times the panel figures upward (about 165 electronic circuits, 120 iron, 107 copper, 85 steel, 84 plastic, 450 sulfuric acid and 169 lubricant per minute when every entrance is saturated). Below the panel figures the roboport falls short first.",
   "Leave the shared chest unrestricted (no bar). Caps live in the five filter deciders next to the chest.",
   "The ring holds at most the stock limits in loopControl; do not remove the red wires from ring tiles or the entrance belts, which are circuit-gated.",
-  "Game profile: Factorio 2.1.24."
+  "Game profile: Factorio 2.1.25."
  ],
  "operatingPorts": {
   "inputs": [
@@ -440,7 +443,7 @@
  "blueprintSha256": "afdc129e1e85043a6b9a9a7b026129c8691a29a7994546247cd7e9d333654c48",
  "validation": {
   "status": "game-tested",
-  "note": "Exact blueprint SHA-256 matched native Factorio 2.1.24 evidence. Measured delivery: construction-robot 5.53/min; logistic-robot 5.50/min; roboport 0.60/min; storage-chest 2.20/min; passive-provider-chest 2.20/min.",
+  "note": "Exact blueprint SHA-256 matched native Factorio 2.1.25 evidence. Measured delivery: construction-robot 5.53/min; logistic-robot 5.50/min; roboport 0.60/min; storage-chest 2.20/min; passive-provider-chest 2.20/min.",
   "blueprintSha256": "afdc129e1e85043a6b9a9a7b026129c8691a29a7994546247cd7e9d333654c48",
   "report": "sources/designed-blueprints/robot-essentials/history/twenty-robot-caps/native-report.json"
  },

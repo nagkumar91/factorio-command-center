@@ -13,7 +13,7 @@ const run=promisify(execFile),sha=s=>createHash('sha256').update(s).digest('hex'
 const source=process.argv[2]||'blueprint-sources/robot-logistics-workshop',name=process.argv[3]||'explore';
 const supply=process.env.RLW_SUPPLY===undefined?null:Number(process.env.RLW_SUPPLY),pauseMinutes=Number(process.env.RLW_PAUSE_MINUTES||5);
 const backlog=Number(process.env.RLW_BACKLOG||100); // items a real supply belt could hold waiting at the entrance
-const rawPath=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
+const rawPath=process.env.FACTORIO_RAW||'/Users/nagkumar/clawd/workspaces/.claude/tmp-robot-requester-product/dump/write/script-output/data-raw-dump.json';
 const bytes=await fs.readFile(rawPath),raw=JSON.parse(bytes);
 const builds=JSON.parse(await fs.readFile(source+'/manifest.json'));
 for(const b of builds){
@@ -49,7 +49,7 @@ if(recoveryTotal!==72000)swap('72000',String(recoveryTotal),true);
 const root=path.resolve('.cache/robot-logistics-workshop/'+name+'-run'),app=path.join(os.homedir(),'Library/Application Support/Steam/steamapps/common/Factorio/factorio.app/Contents'),mod=root+'/mods/rgby_test';
 await fs.rm(root,{recursive:true,force:true});await fs.mkdir(mod,{recursive:true});
 await fs.writeFile(root+'/mods/mod-list.json',JSON.stringify({mods:['base','elevated-rails','quality','recycler','space-age','rgby_test'].map(name=>({name,enabled:true}))}));
-await fs.writeFile(mod+'/info.json',JSON.stringify({name:'rgby_test',version:'1.0.0',title:'Private workshop exploration',author:'local',factorio_version:'2.1',dependencies:['base = 2.1.24','space-age']}));
+await fs.writeFile(mod+'/info.json',JSON.stringify({name:'rgby_test',version:'1.0.0',title:'Private workshop exploration',author:'local',factorio_version:'2.1',dependencies:['base = 2.1.25','space-age']}));
 await fs.writeFile(mod+'/control.lua',lua);await fs.writeFile(mod+'/data.lua','-- no prototypes added\n');
 await fs.writeFile(mod+'/payload.lua','return [====['+JSON.stringify({builds,warmup,measure,recovery,debugTopology:process.env.RLW_DEBUG==='1'})+']====]');
 await fs.writeFile(root+'/config.ini',`[path]\nread-data=${app}/data\nwrite-data=${root}\n[general]\nlocale=en\n[other]\nupdate-runner-threads-count=1\n`);

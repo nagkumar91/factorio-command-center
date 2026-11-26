@@ -11,7 +11,7 @@ import {createHash} from 'node:crypto';
 import sharp from 'sharp';
 import {decodeBlueprint,encodeBlueprint} from './blueprints.mjs';
 import {renderFlightPlanPage} from './flight-plan-shell.mjs';
-import {exactNativeEvidence,groupPorts,footprint,counts,refreshSnapshot,preview,table,STYLE,SCRIPT} from './workshop-guides.mjs';
+import {exactNativeEvidence,groupPorts,footprint,counts,refreshSnapshot,prototypeMatches,preview,table,STYLE,SCRIPT} from './workshop-guides.mjs';
 import {checkVersions,versionsSection,VERSIONS_SCRIPT,VERSIONS_STYLE} from './blueprint-versions.mjs';
 import {suppliersLine,SUPPLIERS_STYLE} from './suppliers.mjs';
 
@@ -28,14 +28,14 @@ const num=n=>Number.isFinite(n)?String(Number(n.toFixed(2))):'—';
 const LEDE={
  'green-circuits':'Makes 360 electronic circuits per minute from iron and copper plates, on one red belt leaving the east side. One copy covers the essentials mall or robot essentials; six-pack science needs three.',
  'essentials-mall':'Eight building products on demand: assembling machine 2, fast transport belts, fast underground belts, fast splitters, fast inserters, bulk inserters, electric furnaces and electric mining drills. Each product stops at its own chest cap. Gears, cable, advanced circuits and the yellow-tier parts are made inside.',
- 'robot-essentials':'Construction robots, logistic robots, roboports, storage chests and passive provider chests at 5 / 5 / 0.5 / 2 / 2 per minute, in a smaller footprint than the robot logistics workshop. Batteries, engines, frames and advanced circuits are made inside.',
+ 'robot-essentials':'Construction robots, logistic robots, roboports, storage chests, passive provider chests and requester chests at 5 / 5 / 0.5 / 2 / 2 / 2 per minute, in a smaller footprint than the robot logistics workshop. Batteries, engines, frames and advanced circuits are made inside.',
  'six-science':'Automation, logistic, military, chemical, production and utility science packs at 30 per minute each, from supplied plates, bricks, stone, coal, sulfur, plastic, electronic circuits and two fluids. Space science stays with the orbital cell.'
 };
 const REPRODUCE=id=>[
- 'export FACTORIO_RAW=<Factorio 2.1.24 Space Age data-raw-dump.json>',
+ 'export FACTORIO_RAW=<data-raw-dump.json of the Factorio Space Age version the native report names>',
  `node scripts/${id}/generate.mjs        # writes blueprint-sources/${id}/${id}.txt and manifest.json`,
  `node --test tests/${id}.test.mjs`,
- `node scripts/${id}/validate.mjs        # full native protocol; needs a local Factorio 2.1.24 install, run headless with a private profile under .cache/${id}/`
+ `node scripts/${id}/validate.mjs        # full native protocol; needs a local install of the Factorio version the native report names, run headless with a private profile under .cache/${id}/`
 ];
 
 /** Read the four sources. Each record says whether its exact import has passing native evidence. */
@@ -90,7 +90,7 @@ export async function buildEssentialsPages({root=ROOT,rawPath=process.env.FACTOR
  const pairs=pairing(records),built=[];
  for(const r of published){
   const {m,code,bp,report,panelSupply,evidence}=r,res=evidence.result;
-  if(m.prototypeSha256!==model.prototypeSha256)throw Error(`${m.id}: preview prototype mismatch`);
+  if(!prototypeMatches(m,model))throw Error(`${m.id}: preview prototype mismatch`);
   const f=footprint(bp,model);for(const key of Object.keys(f))if(m.footprint?.[key]!==f[key])throw Error(`${m.id}: footprint mismatch ${key}`);
   const construction=counts(bp.entities.map(e=>e.name)),machines=counts(bp.entities.map(e=>e.recipe).filter(Boolean));
   if(JSON.stringify(Object.entries(construction).sort())!==JSON.stringify(Object.entries(m.construction||{}).sort()))throw Error(`${m.id}: construction mismatch`);

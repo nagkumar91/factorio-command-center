@@ -1,4 +1,4 @@
-# Robot logistics workshop · 10/10/1/4/4 per minute
+# Robot logistics workshop · 10/10/1/4/4/4 per minute
 
 Open index.html locally with the parent site's styles.css, flight-plans.css, flight-plans.js and assets retained. No network or game install is required. layout.svg is fully self-contained. Download the .txt import, or Copy import selects the full string for Ctrl+C / Command+C under file://.
 

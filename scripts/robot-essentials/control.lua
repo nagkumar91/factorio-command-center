@@ -58,7 +58,7 @@ local function signal_count(signals,name)
  return 0
 end
 script.on_init(function()
- check(script.active_mods.base=='2.1.24','wrong base version')
+ check(script.active_mods.base=='2.1.25','wrong base version')
  storage.tests={}
  for index,b in ipairs(payload.builds) do
   local force=game.create_force('science-'..index);force.enable_all_recipes();force.inserter_stack_size_bonus=0;force.bulk_inserter_capacity_bonus=1
@@ -231,7 +231,7 @@ script.on_event(defines.events.on_tick,function()
    storage.report.builds[index].selectiveProgress=storage.report.builds[index].selectiveProgress or {}
    storage.report.builds[index].selectiveProgress[phase]={blockedProduct=p.item,count=t.selectiveStocks[phase],cap=p.cap,passed=t.selectiveStocks[phase]==p.cap}
    local progress=storage.report.builds[index].selectiveProgress[phase];progress.loopSignals=t.entities[b.loopControl[1].reader].get_signals(defines.wire_connector_id.circuit_red);progress.robotMachines={}
-   for id,e in pairs(t.entities)do if crafting(e) and (recipe(t,id)=='construction-robot' or recipe(t,id)=='logistic-robot' or recipe(t,id)=='roboport' or recipe(t,id)=='storage-chest' or recipe(t,id)=='passive-provider-chest' or recipe(t,id)=='flying-robot-frame')then progress.robotMachines[#progress.robotMachines+1]={entity=id,recipe=recipe(t,id),status=status(e),productsFinished=e.products_finished,input=e.get_inventory(defines.inventory.crafter_input).get_contents()}end end
+   for id,e in pairs(t.entities)do if crafting(e) and (recipe(t,id)=='construction-robot' or recipe(t,id)=='logistic-robot' or recipe(t,id)=='roboport' or recipe(t,id)=='storage-chest' or recipe(t,id)=='passive-provider-chest' or recipe(t,id)=='requester-chest' or recipe(t,id)=='flying-robot-frame')then progress.robotMachines[#progress.robotMachines+1]={entity=id,recipe=recipe(t,id),status=status(e),productsFinished=e.products_finished,input=e.get_inventory(defines.inventory.crafter_input).get_contents()}end end
    helpers.write_file('result.json',helpers.table_to_json(storage.report),false)
   end
   if game.tick%60==0 then
@@ -352,7 +352,7 @@ script.on_event(defines.events.on_tick,function()
   for index,t in ipairs(storage.tests)do
    local recovery={blockedMinutes=B/3600,settlingMinutes=S/3600,measurementMinutes=R/3600,outputsPerMinute={}}
    for _,item in ipairs(payload.builds[index].products or {})do recovery.outputsPerMinute[item]=(t.recoveryOutput[item]or 0)/(math.max(R,1)/3600)end
-   recovery.capReachedMinute=t.blockedReached or {};recovery.pauseMode='natural-five-product-stocking-collection-paused-no-product-fixtures';recovery.collectionPauseStock=t.collectionPauseStock;recovery.blockedOutputFilled=t.blockedOutputFilled
+   recovery.capReachedMinute=t.blockedReached or {};recovery.pauseMode='natural-product-stocking-collection-paused-no-product-fixtures';recovery.collectionPauseStock=t.collectionPauseStock;recovery.blockedOutputFilled=t.blockedOutputFilled
    storage.report.builds[index].recovery=recovery
   end
   helpers.write_file('result.json',helpers.table_to_json(storage.report),false)

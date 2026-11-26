@@ -1,10 +1,10 @@
 [
   {
     "id": "robot-essentials",
-    "name": "Robot essentials · 5/5/0.5/2/2 per minute",
+    "name": "Robot essentials · 5/5/0.5/2/2/2 per minute",
     "file": "robot-essentials.txt",
-    "blueprintSha256": "e8d154c907fd8aee84de6c6bfbf2d2242cd0dcebd00c3b63c4892c793e2346e6",
-    "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
+    "blueprintSha256": "563311c2d22c7d44c9309cae8bb697d8daad3f8261fa50191dc22a08e46da8d3",
+    "prototypeSha256": "289d0de81102a710f16fc989a5df399facdef91c100901da87e5e69b4d911495",
     "class": "rate",
     "status": "qualified",
     "products": [
@@ -12,31 +12,34 @@
       "logistic-robot",
       "roboport",
       "storage-chest",
-      "passive-provider-chest"
+      "passive-provider-chest",
+      "requester-chest"
     ],
     "targets": {
       "construction-robot": 5,
       "logistic-robot": 5,
       "roboport": 0.5,
       "storage-chest": 2,
-      "passive-provider-chest": 2
+      "passive-provider-chest": 2,
+      "requester-chest": 2
     },
     "outputCaps": {
       "construction-robot": 50,
       "logistic-robot": 50,
       "roboport": 10,
       "storage-chest": 50,
-      "passive-provider-chest": 50
+      "passive-provider-chest": 50,
+      "requester-chest": 50
     },
     "recipeAudit": {
       "externalPerMinute": {
-        "steel-plate": 74.5,
+        "steel-plate": 90.5,
         "iron-plate": 105,
         "lubricant": 150,
-        "electronic-circuit": 145,
+        "electronic-circuit": 155,
         "sulfuric-acid": 400,
-        "copper-plate": 93,
-        "plastic-bar": 73
+        "copper-plate": 97,
+        "plastic-bar": 77
       },
       "externalPerProduct": {
         "construction-robot": {
@@ -74,6 +77,12 @@
           "electronic-circuit": 10,
           "plastic-bar": 4,
           "copper-plate": 4
+        },
+        "requester-chest": {
+          "steel-plate": 16,
+          "electronic-circuit": 10,
+          "plastic-bar": 4,
+          "copper-plate": 4
         }
       },
       "craftsPerMinute": {
@@ -85,12 +94,13 @@
         "pipe": 20,
         "battery": 20,
         "logistic-robot": 5,
-        "advanced-circuit": 36.5,
-        "copper-cable": 73,
+        "advanced-circuit": 38.5,
+        "copper-cable": 77,
         "roboport": 0.5,
         "storage-chest": 2,
-        "steel-chest": 4,
-        "passive-provider-chest": 2
+        "steel-chest": 6,
+        "passive-provider-chest": 2,
+        "requester-chest": 2
       },
       "recipeIngredients": {
         "construction-robot": [
@@ -285,6 +295,23 @@
             "name": "advanced-circuit",
             "amount": 1
           }
+        ],
+        "requester-chest": [
+          {
+            "type": "item",
+            "name": "steel-chest",
+            "amount": 1
+          },
+          {
+            "type": "item",
+            "name": "electronic-circuit",
+            "amount": 3
+          },
+          {
+            "type": "item",
+            "name": "advanced-circuit",
+            "amount": 1
+          }
         ]
       }
     },
@@ -295,7 +322,7 @@
         "items": [
           "electronic-circuit"
         ],
-        "entity": 175,
+        "entity": 185,
         "x": -0.5,
         "y": 1.5,
         "position": {
@@ -304,8 +331,8 @@
         },
         "externalSide": "west",
         "direction": 4,
-        "perMinute": 145,
-        "displayEntity": 229
+        "perMinute": 155,
+        "displayEntity": 244
       },
       {
         "kind": "input",
@@ -313,7 +340,7 @@
         "items": [
           "iron-plate"
         ],
-        "entity": 176,
+        "entity": 186,
         "x": -0.5,
         "y": 2.5,
         "position": {
@@ -323,7 +350,7 @@
         "externalSide": "west",
         "direction": 4,
         "perMinute": 105,
-        "displayEntity": 230
+        "displayEntity": 245
       },
       {
         "kind": "input",
@@ -331,7 +358,7 @@
         "items": [
           "copper-plate"
         ],
-        "entity": 177,
+        "entity": 187,
         "x": -0.5,
         "y": 3.5,
         "position": {
@@ -340,8 +367,8 @@
         },
         "externalSide": "west",
         "direction": 4,
-        "perMinute": 93,
-        "displayEntity": 231
+        "perMinute": 97,
+        "displayEntity": 246
       },
       {
         "kind": "input",
@@ -349,7 +376,7 @@
         "items": [
           "steel-plate"
         ],
-        "entity": 178,
+        "entity": 188,
         "x": -0.5,
         "y": 4.5,
         "position": {
@@ -358,8 +385,8 @@
         },
         "externalSide": "west",
         "direction": 4,
-        "perMinute": 74.5,
-        "displayEntity": 232
+        "perMinute": 90.5,
+        "displayEntity": 247
       },
       {
         "kind": "input",
@@ -367,7 +394,7 @@
         "items": [
           "plastic-bar"
         ],
-        "entity": 179,
+        "entity": 189,
         "x": -0.5,
         "y": 5.5,
         "position": {
@@ -376,8 +403,8 @@
         },
         "externalSide": "west",
         "direction": 4,
-        "perMinute": 73,
-        "displayEntity": 233
+        "perMinute": 77,
+        "displayEntity": 248
       },
       {
         "kind": "fluid",
@@ -385,7 +412,7 @@
         "items": [
           "sulfuric-acid"
         ],
-        "entity": 180,
+        "entity": 190,
         "x": -0.5,
         "y": -2.5,
         "position": {
@@ -394,7 +421,7 @@
         },
         "externalSide": "west",
         "perMinute": 400,
-        "displayEntity": 234
+        "displayEntity": 249
       },
       {
         "kind": "fluid",
@@ -402,7 +429,7 @@
         "items": [
           "lubricant"
         ],
-        "entity": 187,
+        "entity": 197,
         "x": -0.5,
         "y": 11.5,
         "position": {
@@ -411,7 +438,7 @@
         },
         "externalSide": "west",
         "perMinute": 150,
-        "displayEntity": 235
+        "displayEntity": 250
       },
       {
         "kind": "output",
@@ -421,13 +448,14 @@
           "logistic-robot",
           "roboport",
           "storage-chest",
-          "passive-provider-chest"
+          "passive-provider-chest",
+          "requester-chest"
         ],
-        "entity": 200,
-        "x": 31.5,
+        "entity": 210,
+        "x": 35.5,
         "y": -1.5,
         "position": {
-          "x": 31.5,
+          "x": 35.5,
           "y": -1.5
         },
         "externalSide": "east",
@@ -436,13 +464,14 @@
           "logistic-robot": 50,
           "roboport": 10,
           "storage-chest": 50,
-          "passive-provider-chest": 50
+          "passive-provider-chest": 50,
+          "requester-chest": 50
         }
       },
       {
         "kind": "power",
         "items": [],
-        "entity": 237,
+        "entity": 252,
         "x": 8,
         "y": 4,
         "position": {
@@ -458,7 +487,7 @@
         "items": [
           "electronic-circuit"
         ],
-        "entity": 175,
+        "entity": 185,
         "x": -0.5,
         "y": 1.5,
         "position": {
@@ -467,8 +496,8 @@
         },
         "externalSide": "west",
         "direction": 4,
-        "perMinute": 145,
-        "displayEntity": 229,
+        "perMinute": 155,
+        "displayEntity": 244,
         "item": "electronic-circuit"
       },
       {
@@ -477,7 +506,7 @@
         "items": [
           "iron-plate"
         ],
-        "entity": 176,
+        "entity": 186,
         "x": -0.5,
         "y": 2.5,
         "position": {
@@ -487,7 +516,7 @@
         "externalSide": "west",
         "direction": 4,
         "perMinute": 105,
-        "displayEntity": 230,
+        "displayEntity": 245,
         "item": "iron-plate"
       },
       {
@@ -496,7 +525,7 @@
         "items": [
           "copper-plate"
         ],
-        "entity": 177,
+        "entity": 187,
         "x": -0.5,
         "y": 3.5,
         "position": {
@@ -505,8 +534,8 @@
         },
         "externalSide": "west",
         "direction": 4,
-        "perMinute": 93,
-        "displayEntity": 231,
+        "perMinute": 97,
+        "displayEntity": 246,
         "item": "copper-plate"
       },
       {
@@ -515,7 +544,7 @@
         "items": [
           "steel-plate"
         ],
-        "entity": 178,
+        "entity": 188,
         "x": -0.5,
         "y": 4.5,
         "position": {
@@ -524,8 +553,8 @@
         },
         "externalSide": "west",
         "direction": 4,
-        "perMinute": 74.5,
-        "displayEntity": 232,
+        "perMinute": 90.5,
+        "displayEntity": 247,
         "item": "steel-plate"
       },
       {
@@ -534,7 +563,7 @@
         "items": [
           "plastic-bar"
         ],
-        "entity": 179,
+        "entity": 189,
         "x": -0.5,
         "y": 5.5,
         "position": {
@@ -543,8 +572,8 @@
         },
         "externalSide": "west",
         "direction": 4,
-        "perMinute": 73,
-        "displayEntity": 233,
+        "perMinute": 77,
+        "displayEntity": 248,
         "item": "plastic-bar"
       }
     ],
@@ -555,7 +584,7 @@
         "items": [
           "sulfuric-acid"
         ],
-        "entity": 180,
+        "entity": 190,
         "x": -0.5,
         "y": -2.5,
         "position": {
@@ -564,7 +593,7 @@
         },
         "externalSide": "west",
         "perMinute": 400,
-        "displayEntity": 234,
+        "displayEntity": 249,
         "item": "sulfuric-acid"
       },
       {
@@ -573,7 +602,7 @@
         "items": [
           "lubricant"
         ],
-        "entity": 187,
+        "entity": 197,
         "x": -0.5,
         "y": 11.5,
         "position": {
@@ -582,7 +611,7 @@
         },
         "externalSide": "west",
         "perMinute": 150,
-        "displayEntity": 235,
+        "displayEntity": 250,
         "item": "lubricant"
       }
     ],
@@ -593,11 +622,11 @@
         "items": [
           "construction-robot"
         ],
-        "entity": 200,
-        "x": 31.5,
+        "entity": 210,
+        "x": 35.5,
         "y": -1.5,
         "position": {
-          "x": 31.5,
+          "x": 35.5,
           "y": -1.5
         },
         "externalSide": "east",
@@ -609,11 +638,11 @@
         "items": [
           "logistic-robot"
         ],
-        "entity": 200,
-        "x": 31.5,
+        "entity": 210,
+        "x": 35.5,
         "y": -1.5,
         "position": {
-          "x": 31.5,
+          "x": 35.5,
           "y": -1.5
         },
         "externalSide": "east",
@@ -625,11 +654,11 @@
         "items": [
           "roboport"
         ],
-        "entity": 200,
-        "x": 31.5,
+        "entity": 210,
+        "x": 35.5,
         "y": -1.5,
         "position": {
-          "x": 31.5,
+          "x": 35.5,
           "y": -1.5
         },
         "externalSide": "east",
@@ -641,11 +670,11 @@
         "items": [
           "storage-chest"
         ],
-        "entity": 200,
-        "x": 31.5,
+        "entity": 210,
+        "x": 35.5,
         "y": -1.5,
         "position": {
-          "x": 31.5,
+          "x": 35.5,
           "y": -1.5
         },
         "externalSide": "east",
@@ -657,11 +686,27 @@
         "items": [
           "passive-provider-chest"
         ],
-        "entity": 200,
-        "x": 31.5,
+        "entity": 210,
+        "x": 35.5,
         "y": -1.5,
         "position": {
-          "x": 31.5,
+          "x": 35.5,
+          "y": -1.5
+        },
+        "externalSide": "east",
+        "cap": 50
+      },
+      {
+        "item": "requester-chest",
+        "label": "requester-chest",
+        "items": [
+          "requester-chest"
+        ],
+        "entity": 210,
+        "x": 35.5,
+        "y": -1.5,
+        "position": {
+          "x": 35.5,
           "y": -1.5
         },
         "externalSide": "east",
@@ -674,6 +719,7 @@
       "steel-chest": 1,
       "copper-cable": 1,
       "advanced-circuit": 6,
+      "requester-chest": 1,
       "flying-robot-frame": 5,
       "construction-robot": 1,
       "logistic-robot": 1,
@@ -687,15 +733,15 @@
     "footprint": {
       "left": -1,
       "top": -4,
-      "right": 32,
+      "right": 36,
       "bottom": 12,
-      "width": 33,
+      "width": 37,
       "height": 16
     },
     "areaGoal": {
       "goalTiles": 760,
       "stretchTiles": 703,
-      "achievedTiles": 528
+      "achievedTiles": 592
     },
     "loopControl": [
       {
@@ -776,68 +822,66 @@
           71,
           72,
           73,
-          74
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82
         ],
         "controlled": [
-          77,
-          81,
-          84,
-          87,
-          90,
-          94,
+          85,
+          89,
+          92,
+          95,
           98,
           102,
           106,
           110,
-          115,
-          119,
-          123,
-          127,
-          131,
-          146,
-          149,
-          152,
-          155,
-          158,
+          114,
+          118,
+          125,
+          129,
+          133,
+          137,
+          141,
+          156,
+          159,
+          162,
           165,
           168,
-          171,
           175,
-          176,
-          177,
           178,
-          179
+          181,
+          185,
+          186,
+          187,
+          188,
+          189
         ],
         "reserves": [
           {
-            "entity": 79,
+            "entity": 87,
             "item": "iron-plate",
             "reserve": 16
           },
           {
-            "entity": 80,
+            "entity": 88,
             "item": "iron-plate",
             "reserve": 16
           },
           {
-            "entity": 83,
+            "entity": 91,
             "item": "steel-plate",
             "reserve": 8
           },
           {
-            "entity": 86,
+            "entity": 94,
             "item": "copper-plate",
             "reserve": 8
-          },
-          {
-            "entity": 89,
-            "item": "electronic-circuit",
-            "reserve": 16
-          },
-          {
-            "entity": 93,
-            "item": "electronic-circuit",
-            "reserve": 16
           },
           {
             "entity": 97,
@@ -860,27 +904,37 @@
             "reserve": 16
           },
           {
-            "entity": 157,
+            "entity": 113,
+            "item": "electronic-circuit",
+            "reserve": 16
+          },
+          {
+            "entity": 117,
+            "item": "electronic-circuit",
+            "reserve": 16
+          },
+          {
+            "entity": 167,
             "item": "iron-plate",
             "reserve": 8
           },
           {
-            "entity": 160,
+            "entity": 170,
             "item": "iron-gear-wheel",
             "reserve": 8
           },
           {
-            "entity": 161,
+            "entity": 171,
             "item": "advanced-circuit",
             "reserve": 16
           }
         ],
         "gates": [
-          175,
-          176,
-          177,
-          178,
-          179
+          185,
+          186,
+          187,
+          188,
+          189
         ],
         "limits": {
           "electronic-circuit": 64,
@@ -903,78 +957,95 @@
           "passive-provider-chest": 4,
           "roboport": 2
         },
-        "capacity": 592,
+        "capacity": 656,
         "maximumStock": 352
       }
     ],
     "stockControl": {
-      "mode": "dynamic-filter",
-      "collector": 201,
-      "chest": 200,
+      "mode": "dynamic-filter (an inserter holds at most five filters, so five products); the requester chest is capped by its own gated inserter",
+      "collector": 212,
+      "chest": 210,
       "caps": {
         "construction-robot": 50,
         "logistic-robot": 50,
         "roboport": 10,
         "storage-chest": 50,
-        "passive-provider-chest": 50
+        "passive-provider-chest": 50,
+        "requester-chest": 50
       },
       "deciders": {
-        "construction-robot": 202,
-        "logistic-robot": 203,
-        "roboport": 204,
-        "storage-chest": 205,
-        "passive-provider-chest": 206
+        "construction-robot": 213,
+        "logistic-robot": 214,
+        "roboport": 215,
+        "storage-chest": 216,
+        "passive-provider-chest": 217
+      },
+      "directProducts": {
+        "requester-chest": {
+          "inserter": 211,
+          "cap": 50,
+          "permission": 228
+        }
       }
     },
     "productionClock": {
-      "timer": 227,
+      "timer": 242,
       "moduloEntities": {
-        "construction-robot": 218,
-        "logistic-robot": 220,
-        "roboport": 222,
-        "storage-chest": 224,
-        "passive-provider-chest": 226
+        "construction-robot": 231,
+        "logistic-robot": 233,
+        "roboport": 235,
+        "storage-chest": 237,
+        "passive-provider-chest": 239,
+        "requester-chest": 241
       },
       "robotTokens": {
         "construction-robot": {
-          "latch": 217,
-          "permission": 207,
-          "handReset": 208,
-          "output": 135,
+          "latch": 230,
+          "permission": 218,
+          "handReset": 219,
+          "output": 145,
           "tokenSignal": "signal-K",
           "resetSignal": "signal-U"
         },
         "logistic-robot": {
-          "latch": 219,
-          "permission": 209,
-          "handReset": 210,
-          "output": 139,
+          "latch": 232,
+          "permission": 220,
+          "handReset": 221,
+          "output": 149,
           "tokenSignal": "signal-L",
           "resetSignal": "signal-V"
         },
         "roboport": {
-          "latch": 221,
-          "permission": 211,
-          "handReset": 212,
-          "output": 162,
+          "latch": 234,
+          "permission": 222,
+          "handReset": 223,
+          "output": 172,
           "tokenSignal": "signal-M",
           "resetSignal": "signal-W"
         },
         "storage-chest": {
-          "latch": 223,
-          "permission": 213,
-          "handReset": 214,
-          "output": 143,
+          "latch": 236,
+          "permission": 224,
+          "handReset": 225,
+          "output": 153,
           "tokenSignal": "signal-N",
           "resetSignal": "signal-Y"
         },
         "passive-provider-chest": {
-          "latch": 225,
-          "permission": 215,
-          "handReset": 216,
-          "output": 174,
+          "latch": 238,
+          "permission": 226,
+          "handReset": 227,
+          "output": 184,
           "tokenSignal": "signal-O",
           "resetSignal": "signal-Z"
+        },
+        "requester-chest": {
+          "latch": 240,
+          "permission": 228,
+          "handReset": 229,
+          "output": 211,
+          "tokenSignal": "signal-H",
+          "resetSignal": "signal-X"
         }
       },
       "periodUnits": {
@@ -982,7 +1053,8 @@
         "logistic-robot": 5907,
         "roboport": 56916,
         "storage-chest": 14619,
-        "passive-provider-chest": 14619
+        "passive-provider-chest": 14619,
+        "requester-chest": 14619
       },
       "unitsPerTick": {
         "nominal": 8,
@@ -993,7 +1065,8 @@
         "logistic-robot": 0.975,
         "roboport": 1.012,
         "storage-chest": 0.985,
-        "passive-provider-chest": 0.985
+        "passive-provider-chest": 0.985,
+        "requester-chest": 0.985
       },
       "tokensPerMinute": {
         "construction-robot": {
@@ -1015,10 +1088,14 @@
         "passive-provider-chest": {
           "nominal": 1.97,
           "boosted": 2.216
+        },
+        "requester-chest": {
+          "nominal": 1.97,
+          "boosted": 2.216
         }
       },
       "supplyGate": {
-        "entity": 228,
+        "entity": 243,
         "signal": "signal-T",
         "boost": 1,
         "thresholds": {
@@ -1038,42 +1115,72 @@
       "blockedMinutes": 30,
       "settleMinutes": 5,
       "recoveryMinutes": 10,
-      "selectivePhases": 5,
+      "selectivePhases": 6,
       "selectiveSettleMinutes": 30,
       "selectiveMeasureMinutes": 10
     },
     "construction": {
-      "arithmetic-combinator": 11,
-      "assembling-machine-2": 26,
+      "arithmetic-combinator": 13,
+      "assembling-machine-2": 27,
       "bulk-inserter": 3,
       "chemical-plant": 2,
-      "decider-combinator": 16,
+      "decider-combinator": 18,
       "display-panel": 7,
-      "fast-inserter": 70,
-      "fast-transport-belt": 79,
+      "fast-inserter": 72,
+      "fast-transport-belt": 87,
       "passive-provider-chest": 1,
       "pipe": 18,
       "pipe-to-ground": 2,
-      "substation": 2
+      "substation": 3
     },
     "setupNotes": [
-      "Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests, 50 passive provider chests. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. Supply electricity at either substation; the two are wired together.",
-      "Supplied electronic circuits: 145 per minute at the nominal target, one green-circuits copy (360 per minute) covers it.",
-      "The entrance panels are the supply to plan for. Fed at exactly the panel figures the workshop makes about 4.9 construction robots, 4.9 logistic robots, 0.5 roboports and 2.0 of each chest per minute (token pace 4.9 / 4.88 / 0.51 / 1.97 / 1.97), all above the 95% floors; panel-supply-report.json is that full-protocol run. With more supply than the panels a boost of one eighth switches on while the ring is well stocked: about 5.5 / 5.5 / 0.57 / 2.2 / 2.2 per minute from roughly 1.25 times the panel figures upward (about 165 electronic circuits, 120 iron, 107 copper, 85 steel, 84 plastic, 450 sulfuric acid and 169 lubricant per minute when every entrance is saturated). Below the panel figures the roboport falls short first.",
-      "Leave the shared chest unrestricted (no bar). Caps (50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests, 50 passive provider chests) live in the five filter deciders next to the chest; the chest has 48 slots and the five products at their caps fill five.",
-      "The ring holds at most the stock limits in loopControl; do not remove the red wires from ring tiles or the entrance belts, which are circuit-gated."
+      "Factorio 2.1.25 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests, 50 passive provider chests, 50 requester chests (the requester chests come straight from their own machine beside it through a gated inserter). Preserve the red ring wires (per-tile hold readers), the green and red chest wires, the token wires, filters and caps. Supply electricity at either substation; the two are wired together.",
+      "Supplied electronic circuits: 155 per minute at the nominal target, one green-circuits copy (360 per minute) covers it.",
+      "The entrance panels are the supply to plan for. Fed at exactly the panel figures the workshop makes about 4.9 construction robots, 4.9 logistic robots, 0.5 roboports and 2.0 of each of the three chests per minute (token pace 4.9 / 4.88 / 0.51 / 1.97 / 1.97 / 1.97), all above the 95% floors; panel-supply-report.json is that full-protocol run. With more supply than the panels a boost of one eighth switches on while the ring is well stocked; with saturated entrances the full protocol measured 5.53 / 5.47 / 0.53 / 2.2 / 2.2 / 2.2 per minute and drew about 176 electronic circuits, 120 iron, 110 copper, 101 steel, 88 plastic, 450 sulfuric acid and 169 lubricant per minute. Below the panel figures the roboport falls short first. The supply level at which the boost starts (about 1.25 times the panel figures) was measured for the five-product string and has not been measured again.",
+      "Leave the shared chest unrestricted (no bar). Caps (50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests, 50 passive provider chests, 50 requester chests): the first five live in the five filter deciders next to the chest, the requester chests in the permission decider of the inserter that fills the chest from its machine; the chest has 48 slots and the six products at their caps fill six.",
+      "The ring holds at most the stock limits in loopControl; do not remove the red wires from ring tiles or the entrance belts, which are circuit-gated. The requester chest machine hands its product to the chest through the inserter at the chest’s west side; keep that inserter and its red and green wires."
     ],
     "greenCircuitSupply": {
-      "perMinute": 145,
+      "perMinute": 155,
       "copiesOfGreenCircuits": 1
     },
     "versions": [
       {
-        "label": "Full-stack caps",
-        "summary": "The chest holds one full stack of each product: 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests and 50 passive provider chests before the collector stops taking that product.",
-        "blueprintSha256": "e8d154c907fd8aee84de6c6bfbf2d2242cd0dcebd00c3b63c4892c793e2346e6",
+        "label": "Requester chests",
+        "summary": "Adds the requester chest as a sixth product, two a minute, into the same output chest (one full stack of 50). Its machine stands beside the chest and a gated inserter fills it; the footprint grows by four columns.",
+        "blueprintSha256": "563311c2d22c7d44c9309cae8bb697d8daad3f8261fa50191dc22a08e46da8d3",
         "file": "robot-essentials.txt",
         "report": "native-report.json",
+        "width": 37,
+        "height": 16,
+        "tiles": 592,
+        "machines": 29,
+        "outputsPerMinute": {
+          "steady": {
+            "construction-robot": 5.533333333333333,
+            "logistic-robot": 5.466666666666667,
+            "roboport": 0.5333333333333333,
+            "storage-chest": 2.2,
+            "passive-provider-chest": 2.2,
+            "requester-chest": 2.2333333333333334
+          },
+          "recovery": {
+            "construction-robot": 5.4,
+            "logistic-robot": 5.4,
+            "roboport": 0.6,
+            "storage-chest": 2.2,
+            "passive-provider-chest": 2.2,
+            "requester-chest": 2.2
+          }
+        }
+      },
+      {
+        "label": "Full-stack caps",
+        "summary": "The earlier string with five products: the chest holds one full stack of each (50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests and 50 passive provider chests) before the collector stops taking that product.",
+        "blueprintSha256": "e8d154c907fd8aee84de6c6bfbf2d2242cd0dcebd00c3b63c4892c793e2346e6",
+        "file": "history/five-products-full-stack/robot-essentials.txt",
+        "manifest": "history/five-products-full-stack/manifest.json",
+        "report": "history/five-products-full-stack/native-report.json",
         "width": 33,
         "height": 16,
         "tiles": 528,
@@ -1097,7 +1204,7 @@
       },
       {
         "label": "Twenty-robot caps",
-        "summary": "The earlier string: the chest stops at 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests and 10 passive provider chests. Same layout, machines and rates.",
+        "summary": "The oldest string: the chest stops at 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests and 10 passive provider chests. Same layout, machines and rates as the five-product string.",
         "blueprintSha256": "afdc129e1e85043a6b9a9a7b026129c8691a29a7994546247cd7e9d333654c48",
         "file": "history/twenty-robot-caps/robot-essentials.txt",
         "manifest": "history/twenty-robot-caps/manifest.json",

@@ -15,7 +15,7 @@ const app=path.join(os.homedir(),'Library/Application Support/Steam/steamapps/co
 await fs.rm(root,{recursive:true,force:true});
 await fs.mkdir(mod,{recursive:true});
 await fs.writeFile(root+'/mods/mod-list.json',JSON.stringify({mods:['base','elevated-rails','quality','recycler','space-age','robot_essentials_probe'].map(name=>({name,enabled:true}))}));
-await fs.writeFile(mod+'/info.json',JSON.stringify({name:'robot_essentials_probe',version:'1.0.0',title:'Private clock wrap probe',author:'local',factorio_version:'2.1',dependencies:['base = 2.1.24','space-age']}));
+await fs.writeFile(mod+'/info.json',JSON.stringify({name:'robot_essentials_probe',version:'1.0.0',title:'Private clock wrap probe',author:'local',factorio_version:'2.1',dependencies:['base = 2.1.25','space-age']}));
 await fs.writeFile(mod+'/data.lua','-- No prototypes added.\n');
 await fs.writeFile(mod+'/control.lua',`
 local T={type='virtual',name='signal-T'}

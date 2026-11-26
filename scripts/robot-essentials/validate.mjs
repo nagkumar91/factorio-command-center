@@ -22,7 +22,7 @@ const run=promisify(execFile),sha=s=>createHash('sha256').update(s).digest('hex'
 const id='robot-essentials';
 const source=process.env.RE_SOURCE||'blueprint-sources/'+id;
 const explore=process.env.ESSENTIALS_EXPLORE==='1',importOnly=process.env.RE_IMPORT_ONLY==='1',panelSupply=process.env.RE_PANEL_SUPPLY==='1'&&!explore&&!importOnly;
-const rawPath=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
+const rawPath=process.env.FACTORIO_RAW||'/Users/nagkumar/clawd/workspaces/.claude/tmp-robot-requester-product/dump/write/script-output/data-raw-dump.json';
 const bytes=await fs.readFile(rawPath),raw=JSON.parse(bytes);
 if(source!=='blueprint-sources/'+id&&!explore&&!importOnly)throw Error('A full run publishes only blueprint-sources/'+id+'; use ESSENTIALS_EXPLORE=1 for other sources');
 const builds=JSON.parse(await fs.readFile(source+'/manifest.json'));
@@ -49,7 +49,7 @@ const root=path.resolve(process.env.RE_RUN_ROOT||'.cache/'+id+'/native-'+Date.no
 const app=path.join(os.homedir(),'Library/Application Support/Steam/steamapps/common/Factorio/factorio.app/Contents'),mod=root+'/mods/robot_essentials_test';
 await fs.mkdir(mod,{recursive:true});
 await fs.writeFile(root+'/mods/mod-list.json',JSON.stringify({mods:['base','elevated-rails','quality','recycler','space-age','robot_essentials_test'].map(name=>({name,enabled:true}))}));
-await fs.writeFile(mod+'/info.json',JSON.stringify({name:'robot_essentials_test',version:'1.0.0',title:'Private robot essentials qualification',author:'local',factorio_version:'2.1',dependencies:['base = 2.1.24','space-age']}));
+await fs.writeFile(mod+'/info.json',JSON.stringify({name:'robot_essentials_test',version:'1.0.0',title:'Private robot essentials qualification',author:'local',factorio_version:'2.1',dependencies:['base = 2.1.25','space-age']}));
 await fs.copyFile('scripts/'+id+'/control.lua',mod+'/control.lua');
 // Supply-limited feeding (control.lua, payload.supply). The published panel-supply run feeds
 // every belt and fluid entrance at exactly its panel figure. Exploration: RE_SUPPLY=1 feeds each
@@ -76,7 +76,7 @@ await game(['--benchmark',root+'/test.zip','--benchmark-ticks',String(ticks),'--
 if(importOnly){console.log('Native import geometry, wiring, gates, fluid segments, external approaches and power passed.');process.exit(0);}
 
 const report=JSON.parse(await fs.readFile(root+'/script-output/result.json'));
-Object.assign(report,{gameVersion:'2.1.24',prototypeSha256:sha(bytes),harnessSha256:sha(await fs.readFile(mod+'/control.lua')),dataHarnessSha256:sha(await fs.readFile(mod+'/data.lua')),validatorSha256:sha(await fs.readFile('scripts/'+id+'/validate.mjs')),configurationSha256:sha(await fs.readFile(mod+'/payload.lua')),
+Object.assign(report,{gameVersion:'2.1.25',prototypeSha256:sha(bytes),harnessSha256:sha(await fs.readFile(mod+'/control.lua')),dataHarnessSha256:sha(await fs.readFile(mod+'/data.lua')),validatorSha256:sha(await fs.readFile('scripts/'+id+'/validate.mjs')),configurationSha256:sha(await fs.readFile(mod+'/payload.lua')),
  ...(supply?{supply}:{}),protocolMinutes:Object.fromEntries(Object.entries(protocol).map(([k,v])=>[k,k==='phases'?v:v/3600])),warmupMinutes:protocol.warmup/3600,measurementMinutes:protocol.measure/3600,createdAt:new Date().toISOString(),short:explore});
 for(const r of report.builds){
  const b=builds.find(b=>b.id===r.id);r.blueprintSha256=b.blueprintSha256;r.fluids=Array.isArray(r.fluids)?r.fluids:[];

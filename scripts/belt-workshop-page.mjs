@@ -13,7 +13,7 @@ import {createHash} from 'node:crypto';
 import sharp from 'sharp';
 import {decodeBlueprint} from './blueprints.mjs';
 import {renderFlightPlanPage} from './flight-plan-shell.mjs';
-import {exactNativeEvidence,groupPorts,footprint,counts,recipeUnlocks,nominalDemand,preview,table,STYLE,SCRIPT} from './workshop-guides.mjs';
+import {exactNativeEvidence,groupPorts,footprint,counts,recipeUnlocks,nominalDemand,prototypeMatches,preview,table,STYLE,SCRIPT} from './workshop-guides.mjs';
 
 const ROOT=fileURLToPath(new URL('../',import.meta.url));
 export const ID='belt-workshop';
@@ -60,7 +60,7 @@ export async function buildBeltPage({root=ROOT}={}){
  if(!r.qualified){await fs.rm(out,{recursive:true,force:true});return {id:ID,published:false,reason:r.evidence.reason};}
  const {dir,m,code,bp,report,evidence,probes,readme}=r;
  const model=await readJSON(path.join(root,'blueprint-sources/workshop-preview-model.json'));
- if(m.prototypeSha256!==model.prototypeSha256)throw Error(`${ID}: preview prototype mismatch`);
+ if(!prototypeMatches(m,model))throw Error(`${ID}: preview prototype mismatch`);
  const f=footprint(bp,model);for(const key of Object.keys(f))if(m.footprint?.[key]!==f[key])throw Error(`${ID}: footprint mismatch ${key}`);
  const construction=counts(bp.entities.map(e=>e.name)),machines=counts(bp.entities.map(e=>e.recipe).filter(Boolean));
  if(JSON.stringify(Object.entries(construction).sort())!==JSON.stringify(Object.entries(m.construction||{}).sort()))throw Error(`${ID}: construction mismatch`);

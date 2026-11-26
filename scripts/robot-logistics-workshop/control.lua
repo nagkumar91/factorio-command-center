@@ -1,10 +1,10 @@
 local payload=helpers.json_to_table(require('payload'))
--- Phase lengths. The selective phases (one product held at its cap while the other four are collected) default to 15 minutes
+-- Phase lengths. The selective phases (one product held at its cap while the others are collected) default to 15 minutes
 -- (5 settle, 10 measured); payload.selective sets longer phases for full-stack caps. SELECTIVE_START follows the recovery
--- protocol (closed hold, settle, measure), SELECTIVE_END the five phases.
+-- protocol (closed hold, settle, measure), SELECTIVE_END one phase per product.
 local SEL=payload.selective or {phaseTicks=54000,settleTicks=18000}
 local SELECTIVE_START=payload.warmup+payload.measure+(payload.recovery and payload.recovery.pauseTicks+payload.recovery.settleTicks+payload.recovery.measureTicks or 72000)
-local SELECTIVE_END=SELECTIVE_START+5*SEL.phaseTicks
+local SELECTIVE_END=SELECTIVE_START+#payload.builds[1].products*SEL.phaseTicks
 local MEASURE_MINUTES=(SEL.phaseTicks-SEL.settleTicks)/3600
 local function check(ok,msg) if not ok then error('FLIGHT_SCIENCE: '..msg) end end
 local function status(e) for n,v in pairs(defines.entity_status) do if v==e.status then return n end end return tostring(e.status) end
@@ -37,7 +37,7 @@ local function input_route(t,p)
  return nil
 end
 script.on_init(function()
- check(script.active_mods.base=='2.1.24','wrong base version')
+ check(script.active_mods.base=='2.1.25','wrong base version')
  storage.tests={}
  for index,b in ipairs(payload.builds) do
   local force=game.create_force('science-'..index);force.enable_all_recipes();force.inserter_stack_size_bonus=0;force.bulk_inserter_capacity_bonus=1
@@ -326,7 +326,7 @@ script.on_event(defines.events.on_tick,function()
   for index,t in ipairs(storage.tests)do
    local recovery={blockedMinutes=payload.recovery.pauseTicks/3600,settlingMinutes=payload.recovery.settleTicks/3600,measurementMinutes=payload.recovery.measureTicks/3600,outputsPerMinute={}}
    for _,item in ipairs(payload.builds[index].products or {})do recovery.outputsPerMinute[item]=(t.recoveryOutput[item]or 0)/(payload.recovery.measureTicks/3600)end
-   recovery.capReachedMinute=t.blockedReached or {};recovery.pauseMode=payload.builds[index].researchProbe and 'not-applicable-research-probe' or 'natural-five-product-stocking-collection-paused-no-product-fixtures';recovery.collectionPauseStock=t.collectionPauseStock;recovery.blockedOutputFilled=t.blockedOutputFilled
+   recovery.capReachedMinute=t.blockedReached or {};recovery.pauseMode=payload.builds[index].researchProbe and 'not-applicable-research-probe' or 'natural-product-stocking-collection-paused-no-product-fixtures';recovery.collectionPauseStock=t.collectionPauseStock;recovery.blockedOutputFilled=t.blockedOutputFilled
    storage.report.builds[index].recovery=recovery
   end
   helpers.write_file('result.json',helpers.table_to_json(storage.report),false)

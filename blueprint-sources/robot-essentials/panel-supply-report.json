@@ -4,90 +4,91 @@
       "id": "robot-essentials",
       "outputsPerMinute": {
         "construction-robot": 4.9,
-        "logistic-robot": 4.9,
-        "roboport": 0.5,
+        "logistic-robot": 4.866666666666666,
+        "roboport": 0.5333333333333333,
         "storage-chest": 2,
-        "passive-provider-chest": 2
+        "passive-provider-chest": 2,
+        "requester-chest": 1.9666666666666666
       },
       "consumptionPerMinute": {
-        "electronic-circuit": 145,
+        "electronic-circuit": 154.56666666666666,
         "iron-plate": 105,
-        "copper-plate": 93.33333333333333,
-        "steel-plate": 73.9,
-        "plastic-bar": 73.26666666666667
+        "copper-plate": 96.96666666666667,
+        "steel-plate": 89.93333333333334,
+        "plastic-bar": 77.06666666666666
       },
       "inputs": [
         {
           "item": "electronic-circuit",
-          "entity": 175,
-          "acceptedDuringMeasurement": 4344,
+          "entity": 185,
+          "acceptedDuringMeasurement": 4650,
           "productiveRoute": [
-            175,
-            74,
+            185,
+            82,
             1,
             2,
             3,
-            112
+            122
           ]
         },
         {
           "item": "iron-plate",
-          "entity": 176,
+          "entity": 186,
           "acceptedDuringMeasurement": 3150,
           "productiveRoute": [
-            176,
-            73,
-            74,
+            186,
+            81,
+            82,
             1,
             2,
             3,
             4,
-            75
+            83
           ]
         },
         {
           "item": "copper-plate",
-          "entity": 177,
-          "acceptedDuringMeasurement": 2790,
+          "entity": 187,
+          "acceptedDuringMeasurement": 2910,
           "productiveRoute": [
-            177,
-            72,
-            73,
-            74,
+            187,
+            80,
+            81,
+            82,
             1,
             2,
             3,
             4,
-            75
+            83
           ]
         },
         {
           "item": "steel-plate",
-          "entity": 178,
-          "acceptedDuringMeasurement": 2235,
+          "entity": 188,
+          "acceptedDuringMeasurement": 2715,
           "productiveRoute": [
-            178,
-            71,
-            72,
-            73,
-            74,
+            188,
+            79,
+            80,
+            81,
+            82,
             1,
             2,
             3,
-            112
+            122
           ]
         },
         {
           "item": "plastic-bar",
-          "entity": 179,
-          "acceptedDuringMeasurement": 2190,
+          "entity": 189,
+          "acceptedDuringMeasurement": 2310,
           "productiveRoute": [
-            179,
-            70,
-            71,
-            72,
-            73,
-            74,
+            189,
+            78,
+            79,
+            80,
+            81,
+            82,
             1,
             2,
             3,
@@ -103,40 +104,45 @@
             13,
             14,
             15,
-            88
+            96
           ]
         }
       ],
       "outputPorts": [
         {
           "item": "construction-robot",
-          "entity": 200,
+          "entity": 210,
           "collectedDuringMeasurement": 147
         },
         {
           "item": "logistic-robot",
-          "entity": 200,
-          "collectedDuringMeasurement": 147
+          "entity": 210,
+          "collectedDuringMeasurement": 146
         },
         {
           "item": "roboport",
-          "entity": 200,
-          "collectedDuringMeasurement": 15
+          "entity": 210,
+          "collectedDuringMeasurement": 16
         },
         {
           "item": "storage-chest",
-          "entity": 200,
+          "entity": 210,
           "collectedDuringMeasurement": 60
         },
         {
           "item": "passive-provider-chest",
-          "entity": 200,
+          "entity": 210,
           "collectedDuringMeasurement": 60
+        },
+        {
+          "item": "requester-chest",
+          "entity": 210,
+          "collectedDuringMeasurement": 59
         }
       ],
       "machines": [
         {
-          "entity": 75,
+          "entity": 83,
           "recipe": "battery",
           "actualRecipe": "battery",
           "nativeCraftingSpeed": 1,
@@ -158,27 +164,39 @@
               "amount": 20
             }
           ],
-          "measuredCrafts": 450,
+          "measuredCrafts": 441,
           "status": "working",
           "statusSamples": {
-            "working": 1800
+            "working": 1764,
+            "full_output": 27,
+            "item_ingredient_shortage": 9
+          },
+          "missing": {
+            "copper-plate": 6,
+            "iron-plate": 6
           },
           "inventory": [
             {
               "name": "iron-plate",
               "quality": "normal",
-              "count": 2
+              "count": 1
             },
             {
               "name": "copper-plate",
               "quality": "normal",
-              "count": 2
+              "count": 1
             }
           ],
-          "output": {}
+          "output": [
+            {
+              "name": "battery",
+              "quality": "normal",
+              "count": 2
+            }
+          ]
         },
         {
-          "entity": 78,
+          "entity": 86,
           "recipe": "iron-gear-wheel",
           "actualRecipe": "iron-gear-wheel",
           "nativeCraftingSpeed": 0.75,
@@ -190,20 +208,26 @@
               "amount": 2
             }
           ],
-          "measuredCrafts": 975,
-          "status": "working",
+          "measuredCrafts": 978,
+          "status": "item_ingredient_shortage",
           "statusSamples": {
-            "working": 655,
-            "item_ingredient_shortage": 1145
+            "item_ingredient_shortage": 1133,
+            "working": 667
           },
           "missing": {
-            "iron-plate": 1145
+            "iron-plate": 1133
           },
-          "inventory": {},
+          "inventory": [
+            {
+              "name": "iron-plate",
+              "quality": "normal",
+              "count": 1
+            }
+          ],
           "output": {}
         },
         {
-          "entity": 82,
+          "entity": 90,
           "recipe": "steel-chest",
           "actualRecipe": "steel-chest",
           "nativeCraftingSpeed": 0.75,
@@ -215,15 +239,15 @@
               "amount": 8
             }
           ],
-          "measuredCrafts": 118,
+          "measuredCrafts": 179,
           "status": "full_output",
           "statusSamples": {
-            "full_output": 841,
-            "item_ingredient_shortage": 877,
-            "working": 82
+            "item_ingredient_shortage": 853,
+            "full_output": 836,
+            "working": 111
           },
           "missing": {
-            "steel-plate": 877
+            "steel-plate": 853
           },
           "inventory": [
             {
@@ -241,7 +265,7 @@
           ]
         },
         {
-          "entity": 85,
+          "entity": 93,
           "recipe": "copper-cable",
           "actualRecipe": "copper-cable",
           "nativeCraftingSpeed": 0.75,
@@ -253,129 +277,21 @@
               "amount": 1
             }
           ],
-          "measuredCrafts": 2200,
+          "measuredCrafts": 2309,
           "status": "working",
           "statusSamples": {
-            "working": 1427,
-            "item_ingredient_shortage": 276,
-            "full_output": 97
+            "working": 1527,
+            "item_ingredient_shortage": 204,
+            "full_output": 69
           },
           "missing": {
-            "copper-plate": 276
+            "copper-plate": 204
           },
           "inventory": [
             {
               "name": "copper-plate",
               "quality": "normal",
               "count": 1
-            }
-          ],
-          "output": {}
-        },
-        {
-          "entity": 88,
-          "recipe": "advanced-circuit",
-          "actualRecipe": "advanced-circuit",
-          "nativeCraftingSpeed": 0.75,
-          "nativeRecipeEnergy": 6,
-          "nativeIngredients": [
-            {
-              "type": "item",
-              "name": "plastic-bar",
-              "amount": 2
-            },
-            {
-              "type": "item",
-              "name": "copper-cable",
-              "amount": 4
-            },
-            {
-              "type": "item",
-              "name": "electronic-circuit",
-              "amount": 2
-            }
-          ],
-          "measuredCrafts": 202,
-          "status": "working",
-          "statusSamples": {
-            "working": 1617,
-            "full_output": 153,
-            "item_ingredient_shortage": 30
-          },
-          "missing": {
-            "copper-cable": 25,
-            "plastic-bar": 19,
-            "electronic-circuit": 8
-          },
-          "inventory": [
-            {
-              "name": "plastic-bar",
-              "quality": "normal",
-              "count": 4
-            },
-            {
-              "name": "copper-cable",
-              "quality": "normal",
-              "count": 8
-            },
-            {
-              "name": "electronic-circuit",
-              "quality": "normal",
-              "count": 4
-            }
-          ],
-          "output": {}
-        },
-        {
-          "entity": 92,
-          "recipe": "advanced-circuit",
-          "actualRecipe": "advanced-circuit",
-          "nativeCraftingSpeed": 0.75,
-          "nativeRecipeEnergy": 6,
-          "nativeIngredients": [
-            {
-              "type": "item",
-              "name": "plastic-bar",
-              "amount": 2
-            },
-            {
-              "type": "item",
-              "name": "copper-cable",
-              "amount": 4
-            },
-            {
-              "type": "item",
-              "name": "electronic-circuit",
-              "amount": 2
-            }
-          ],
-          "measuredCrafts": 200,
-          "status": "working",
-          "statusSamples": {
-            "working": 1603,
-            "full_output": 157,
-            "item_ingredient_shortage": 40
-          },
-          "missing": {
-            "copper-cable": 27,
-            "electronic-circuit": 10,
-            "plastic-bar": 29
-          },
-          "inventory": [
-            {
-              "name": "plastic-bar",
-              "quality": "normal",
-              "count": 4
-            },
-            {
-              "name": "copper-cable",
-              "quality": "normal",
-              "count": 8
-            },
-            {
-              "name": "electronic-circuit",
-              "quality": "normal",
-              "count": 4
             }
           ],
           "output": {}
@@ -403,28 +319,28 @@
               "amount": 2
             }
           ],
-          "measuredCrafts": 196,
+          "measuredCrafts": 221,
           "status": "working",
           "statusSamples": {
-            "working": 1570,
-            "full_output": 162,
-            "item_ingredient_shortage": 68
+            "working": 1764,
+            "full_output": 29,
+            "item_ingredient_shortage": 7
           },
           "missing": {
-            "electronic-circuit": 18,
-            "plastic-bar": 59,
-            "copper-cable": 35
+            "electronic-circuit": 2,
+            "plastic-bar": 3,
+            "copper-cable": 7
           },
           "inventory": [
             {
               "name": "plastic-bar",
               "quality": "normal",
-              "count": 4
+              "count": 3
             },
             {
               "name": "copper-cable",
               "quality": "normal",
-              "count": 8
+              "count": 5
             },
             {
               "name": "electronic-circuit",
@@ -457,33 +373,33 @@
               "amount": 2
             }
           ],
-          "measuredCrafts": 197,
+          "measuredCrafts": 221,
           "status": "working",
           "statusSamples": {
-            "working": 1575,
-            "full_output": 148,
-            "item_ingredient_shortage": 77
+            "working": 1763,
+            "full_output": 27,
+            "item_ingredient_shortage": 10
           },
           "missing": {
-            "plastic-bar": 65,
-            "copper-cable": 36,
-            "electronic-circuit": 32
+            "plastic-bar": 8,
+            "electronic-circuit": 5,
+            "copper-cable": 5
           },
           "inventory": [
             {
               "name": "plastic-bar",
               "quality": "normal",
-              "count": 2
+              "count": 3
             },
             {
               "name": "copper-cable",
               "quality": "normal",
-              "count": 7
+              "count": 5
             },
             {
               "name": "electronic-circuit",
               "quality": "normal",
-              "count": 4
+              "count": 3
             }
           ],
           "output": {}
@@ -511,33 +427,33 @@
               "amount": 2
             }
           ],
-          "measuredCrafts": 179,
+          "measuredCrafts": 218,
           "status": "working",
           "statusSamples": {
-            "working": 1433,
-            "item_ingredient_shortage": 258,
-            "full_output": 109
+            "working": 1742,
+            "full_output": 44,
+            "item_ingredient_shortage": 14
           },
           "missing": {
-            "plastic-bar": 247,
-            "copper-cable": 34,
-            "electronic-circuit": 20
+            "plastic-bar": 11,
+            "copper-cable": 8,
+            "electronic-circuit": 2
           },
           "inventory": [
             {
               "name": "plastic-bar",
               "quality": "normal",
-              "count": 4
+              "count": 2
             },
             {
               "name": "copper-cable",
               "quality": "normal",
-              "count": 8
+              "count": 6
             },
             {
               "name": "electronic-circuit",
               "quality": "normal",
-              "count": 4
+              "count": 3
             }
           ],
           "output": {}
@@ -565,19 +481,130 @@
               "amount": 2
             }
           ],
-          "measuredCrafts": 126,
-          "status": "item_ingredient_shortage",
+          "measuredCrafts": 220,
+          "status": "working",
           "statusSamples": {
-            "working": 1004,
-            "item_ingredient_shortage": 790,
-            "full_output": 6
+            "item_ingredient_shortage": 10,
+            "working": 1753,
+            "full_output": 37
           },
           "missing": {
-            "plastic-bar": 788,
-            "copper-cable": 15,
+            "plastic-bar": 8,
+            "copper-cable": 3
+          },
+          "inventory": [
+            {
+              "name": "plastic-bar",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "copper-cable",
+              "quality": "normal",
+              "count": 4
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 112,
+          "recipe": "advanced-circuit",
+          "actualRecipe": "advanced-circuit",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 6,
+          "nativeIngredients": [
+            {
+              "type": "item",
+              "name": "plastic-bar",
+              "amount": 2
+            },
+            {
+              "type": "item",
+              "name": "copper-cable",
+              "amount": 4
+            },
+            {
+              "type": "item",
+              "name": "electronic-circuit",
+              "amount": 2
+            }
+          ],
+          "measuredCrafts": 209,
+          "status": "working",
+          "statusSamples": {
+            "working": 1669,
+            "full_output": 44,
+            "item_ingredient_shortage": 87
+          },
+          "missing": {
+            "plastic-bar": 80,
+            "copper-cable": 9,
             "electronic-circuit": 1
           },
           "inventory": [
+            {
+              "name": "plastic-bar",
+              "quality": "normal",
+              "count": 1
+            },
+            {
+              "name": "copper-cable",
+              "quality": "normal",
+              "count": 5
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 116,
+          "recipe": "advanced-circuit",
+          "actualRecipe": "advanced-circuit",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 6,
+          "nativeIngredients": [
+            {
+              "type": "item",
+              "name": "plastic-bar",
+              "amount": 2
+            },
+            {
+              "type": "item",
+              "name": "copper-cable",
+              "amount": 4
+            },
+            {
+              "type": "item",
+              "name": "electronic-circuit",
+              "amount": 2
+            }
+          ],
+          "measuredCrafts": 68,
+          "status": "item_ingredient_shortage",
+          "statusSamples": {
+            "working": 541,
+            "item_ingredient_shortage": 1256,
+            "full_output": 3
+          },
+          "missing": {
+            "plastic-bar": 1256,
+            "copper-cable": 1
+          },
+          "inventory": [
+            {
+              "name": "plastic-bar",
+              "quality": "normal",
+              "count": 1
+            },
             {
               "name": "copper-cable",
               "quality": "normal",
@@ -589,244 +616,299 @@
               "count": 4
             }
           ],
-          "output": [
+          "output": {}
+        },
+        {
+          "entity": 120,
+          "recipe": "requester-chest",
+          "actualRecipe": "requester-chest",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 0.5,
+          "nativeIngredients": [
+            {
+              "type": "item",
+              "name": "electronic-circuit",
+              "amount": 3
+            },
+            {
+              "type": "item",
+              "name": "advanced-circuit",
+              "amount": 1
+            },
+            {
+              "type": "item",
+              "name": "steel-chest",
+              "amount": 1
+            }
+          ],
+          "measuredCrafts": 59,
+          "status": "full_output",
+          "statusSamples": {
+            "full_output": 1482,
+            "item_ingredient_shortage": 282,
+            "working": 36
+          },
+          "missing": {
+            "steel-chest": 277,
+            "electronic-circuit": 16,
+            "advanced-circuit": 2
+          },
+          "inventory": [
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 8
+            },
             {
               "name": "advanced-circuit",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": [
+            {
+              "name": "requester-chest",
+              "quality": "normal",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "entity": 122,
+          "recipe": "flying-robot-frame",
+          "actualRecipe": "flying-robot-frame",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 20,
+          "nativeIngredients": [
+            {
+              "type": "item",
+              "name": "steel-plate",
+              "amount": 1
+            },
+            {
+              "type": "item",
+              "name": "battery",
+              "amount": 2
+            },
+            {
+              "type": "item",
+              "name": "electronic-circuit",
+              "amount": 3
+            },
+            {
+              "type": "item",
+              "name": "electric-engine-unit",
+              "amount": 1
+            }
+          ],
+          "measuredCrafts": 68,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "inventory": [
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "battery",
+              "quality": "normal",
+              "count": 4
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 6
+            },
+            {
+              "name": "electric-engine-unit",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 126,
+          "recipe": "flying-robot-frame",
+          "actualRecipe": "flying-robot-frame",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 20,
+          "nativeIngredients": [
+            {
+              "type": "item",
+              "name": "steel-plate",
+              "amount": 1
+            },
+            {
+              "type": "item",
+              "name": "battery",
+              "amount": 2
+            },
+            {
+              "type": "item",
+              "name": "electronic-circuit",
+              "amount": 3
+            },
+            {
+              "type": "item",
+              "name": "electric-engine-unit",
+              "amount": 1
+            }
+          ],
+          "measuredCrafts": 67,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "inventory": [
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "battery",
+              "quality": "normal",
+              "count": 4
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 6
+            },
+            {
+              "name": "electric-engine-unit",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 130,
+          "recipe": "flying-robot-frame",
+          "actualRecipe": "flying-robot-frame",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 20,
+          "nativeIngredients": [
+            {
+              "type": "item",
+              "name": "steel-plate",
+              "amount": 1
+            },
+            {
+              "type": "item",
+              "name": "battery",
+              "amount": 2
+            },
+            {
+              "type": "item",
+              "name": "electronic-circuit",
+              "amount": 3
+            },
+            {
+              "type": "item",
+              "name": "electric-engine-unit",
+              "amount": 1
+            }
+          ],
+          "measuredCrafts": 67,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "inventory": [
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "battery",
+              "quality": "normal",
+              "count": 4
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 6
+            },
+            {
+              "name": "electric-engine-unit",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 134,
+          "recipe": "flying-robot-frame",
+          "actualRecipe": "flying-robot-frame",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 20,
+          "nativeIngredients": [
+            {
+              "type": "item",
+              "name": "steel-plate",
+              "amount": 1
+            },
+            {
+              "type": "item",
+              "name": "battery",
+              "amount": 2
+            },
+            {
+              "type": "item",
+              "name": "electronic-circuit",
+              "amount": 3
+            },
+            {
+              "type": "item",
+              "name": "electric-engine-unit",
+              "amount": 1
+            }
+          ],
+          "measuredCrafts": 68,
+          "status": "working",
+          "statusSamples": {
+            "working": 1800
+          },
+          "inventory": [
+            {
+              "name": "steel-plate",
+              "quality": "normal",
+              "count": 1
+            },
+            {
+              "name": "battery",
+              "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "electronic-circuit",
+              "quality": "normal",
+              "count": 5
+            },
+            {
+              "name": "electric-engine-unit",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": [
+            {
+              "name": "flying-robot-frame",
               "quality": "normal",
               "count": 1
             }
           ]
         },
         {
-          "entity": 112,
-          "recipe": "flying-robot-frame",
-          "actualRecipe": "flying-robot-frame",
-          "nativeCraftingSpeed": 0.75,
-          "nativeRecipeEnergy": 20,
-          "nativeIngredients": [
-            {
-              "type": "item",
-              "name": "steel-plate",
-              "amount": 1
-            },
-            {
-              "type": "item",
-              "name": "battery",
-              "amount": 2
-            },
-            {
-              "type": "item",
-              "name": "electronic-circuit",
-              "amount": 3
-            },
-            {
-              "type": "item",
-              "name": "electric-engine-unit",
-              "amount": 1
-            }
-          ],
-          "measuredCrafts": 67,
-          "status": "working",
-          "statusSamples": {
-            "working": 1800
-          },
-          "inventory": [
-            {
-              "name": "steel-plate",
-              "quality": "normal",
-              "count": 2
-            },
-            {
-              "name": "battery",
-              "quality": "normal",
-              "count": 4
-            },
-            {
-              "name": "electronic-circuit",
-              "quality": "normal",
-              "count": 6
-            },
-            {
-              "name": "electric-engine-unit",
-              "quality": "normal",
-              "count": 2
-            }
-          ],
-          "output": {}
-        },
-        {
-          "entity": 116,
-          "recipe": "flying-robot-frame",
-          "actualRecipe": "flying-robot-frame",
-          "nativeCraftingSpeed": 0.75,
-          "nativeRecipeEnergy": 20,
-          "nativeIngredients": [
-            {
-              "type": "item",
-              "name": "steel-plate",
-              "amount": 1
-            },
-            {
-              "type": "item",
-              "name": "battery",
-              "amount": 2
-            },
-            {
-              "type": "item",
-              "name": "electronic-circuit",
-              "amount": 3
-            },
-            {
-              "type": "item",
-              "name": "electric-engine-unit",
-              "amount": 1
-            }
-          ],
-          "measuredCrafts": 68,
-          "status": "working",
-          "statusSamples": {
-            "working": 1800
-          },
-          "inventory": [
-            {
-              "name": "steel-plate",
-              "quality": "normal",
-              "count": 2
-            },
-            {
-              "name": "battery",
-              "quality": "normal",
-              "count": 4
-            },
-            {
-              "name": "electronic-circuit",
-              "quality": "normal",
-              "count": 6
-            },
-            {
-              "name": "electric-engine-unit",
-              "quality": "normal",
-              "count": 2
-            }
-          ],
-          "output": {}
-        },
-        {
-          "entity": 120,
-          "recipe": "flying-robot-frame",
-          "actualRecipe": "flying-robot-frame",
-          "nativeCraftingSpeed": 0.75,
-          "nativeRecipeEnergy": 20,
-          "nativeIngredients": [
-            {
-              "type": "item",
-              "name": "steel-plate",
-              "amount": 1
-            },
-            {
-              "type": "item",
-              "name": "battery",
-              "amount": 2
-            },
-            {
-              "type": "item",
-              "name": "electronic-circuit",
-              "amount": 3
-            },
-            {
-              "type": "item",
-              "name": "electric-engine-unit",
-              "amount": 1
-            }
-          ],
-          "measuredCrafts": 68,
-          "status": "working",
-          "statusSamples": {
-            "working": 1800
-          },
-          "inventory": [
-            {
-              "name": "steel-plate",
-              "quality": "normal",
-              "count": 2
-            },
-            {
-              "name": "battery",
-              "quality": "normal",
-              "count": 4
-            },
-            {
-              "name": "electronic-circuit",
-              "quality": "normal",
-              "count": 6
-            },
-            {
-              "name": "electric-engine-unit",
-              "quality": "normal",
-              "count": 2
-            }
-          ],
-          "output": {}
-        },
-        {
-          "entity": 124,
-          "recipe": "flying-robot-frame",
-          "actualRecipe": "flying-robot-frame",
-          "nativeCraftingSpeed": 0.75,
-          "nativeRecipeEnergy": 20,
-          "nativeIngredients": [
-            {
-              "type": "item",
-              "name": "steel-plate",
-              "amount": 1
-            },
-            {
-              "type": "item",
-              "name": "battery",
-              "amount": 2
-            },
-            {
-              "type": "item",
-              "name": "electronic-circuit",
-              "amount": 3
-            },
-            {
-              "type": "item",
-              "name": "electric-engine-unit",
-              "amount": 1
-            }
-          ],
-          "measuredCrafts": 67,
-          "status": "working",
-          "statusSamples": {
-            "working": 1800
-          },
-          "inventory": [
-            {
-              "name": "steel-plate",
-              "quality": "normal",
-              "count": 2
-            },
-            {
-              "name": "battery",
-              "quality": "normal",
-              "count": 4
-            },
-            {
-              "name": "electronic-circuit",
-              "quality": "normal",
-              "count": 6
-            },
-            {
-              "name": "electric-engine-unit",
-              "quality": "normal",
-              "count": 1
-            }
-          ],
-          "output": {}
-        },
-        {
-          "entity": 128,
+          "entity": 138,
           "recipe": "flying-robot-frame",
           "actualRecipe": "flying-robot-frame",
           "nativeCraftingSpeed": 0.75,
@@ -854,13 +936,13 @@
             }
           ],
           "measuredCrafts": 30,
-          "status": "working",
+          "status": "item_ingredient_shortage",
           "statusSamples": {
-            "working": 814,
-            "item_ingredient_shortage": 986
+            "working": 785,
+            "item_ingredient_shortage": 1015
           },
           "missing": {
-            "electric-engine-unit": 986
+            "electric-engine-unit": 1015
           },
           "inventory": [
             {
@@ -882,7 +964,7 @@
           "output": {}
         },
         {
-          "entity": 132,
+          "entity": 142,
           "recipe": "construction-robot",
           "actualRecipe": "construction-robot",
           "nativeCraftingSpeed": 0.75,
@@ -899,34 +981,34 @@
               "amount": 1
             }
           ],
-          "measuredCrafts": 149,
+          "measuredCrafts": 147,
           "status": "full_output",
           "statusSamples": {
-            "item_ingredient_shortage": 304,
-            "full_output": 1400,
-            "working": 96
+            "full_output": 1334,
+            "item_ingredient_shortage": 369,
+            "working": 97
           },
           "missing": {
-            "flying-robot-frame": 304,
-            "electronic-circuit": 3
+            "flying-robot-frame": 361,
+            "electronic-circuit": 22
           },
           "inventory": [
             {
               "name": "electronic-circuit",
               "quality": "normal",
-              "count": 4
+              "count": 5
             }
           ],
           "output": [
             {
               "name": "construction-robot",
               "quality": "normal",
-              "count": 4
+              "count": 3
             }
           ]
         },
         {
-          "entity": 136,
+          "entity": 146,
           "recipe": "logistic-robot",
           "actualRecipe": "logistic-robot",
           "nativeCraftingSpeed": 0.75,
@@ -943,34 +1025,34 @@
               "amount": 1
             }
           ],
-          "measuredCrafts": 147,
+          "measuredCrafts": 146,
           "status": "working",
           "statusSamples": {
-            "item_ingredient_shortage": 501,
-            "working": 97,
-            "full_output": 1202
+            "item_ingredient_shortage": 508,
+            "working": 103,
+            "full_output": 1189
           },
           "missing": {
-            "flying-robot-frame": 496,
-            "advanced-circuit": 6
+            "flying-robot-frame": 495,
+            "advanced-circuit": 36
           },
           "inventory": [
             {
               "name": "advanced-circuit",
               "quality": "normal",
-              "count": 2
+              "count": 5
             }
           ],
           "output": [
             {
               "name": "logistic-robot",
               "quality": "normal",
-              "count": 3
+              "count": 2
             }
           ]
         },
         {
-          "entity": 140,
+          "entity": 150,
           "recipe": "storage-chest",
           "actualRecipe": "storage-chest",
           "nativeCraftingSpeed": 0.75,
@@ -995,25 +1077,25 @@
           "measuredCrafts": 59,
           "status": "full_output",
           "statusSamples": {
-            "full_output": 1595,
-            "item_ingredient_shortage": 168,
-            "working": 37
+            "full_output": 1633,
+            "item_ingredient_shortage": 136,
+            "working": 31
           },
           "missing": {
-            "steel-chest": 168,
-            "electronic-circuit": 17,
+            "electronic-circuit": 87,
+            "steel-chest": 61,
             "advanced-circuit": 1
           },
           "inventory": [
             {
               "name": "electronic-circuit",
               "quality": "normal",
-              "count": 3
+              "count": 5
             },
             {
               "name": "advanced-circuit",
               "quality": "normal",
-              "count": 2
+              "count": 1
             }
           ],
           "output": [
@@ -1025,7 +1107,7 @@
           ]
         },
         {
-          "entity": 144,
+          "entity": 154,
           "recipe": "battery",
           "actualRecipe": "battery",
           "nativeCraftingSpeed": 1,
@@ -1047,32 +1129,39 @@
               "amount": 20
             }
           ],
-          "measuredCrafts": 150,
-          "status": "working",
+          "measuredCrafts": 159,
+          "status": "fluid_ingredient_shortage",
           "statusSamples": {
-            "working": 600,
-            "fluid_ingredient_shortage": 1197,
-            "item_ingredient_shortage": 3
+            "fluid_ingredient_shortage": 1140,
+            "working": 636,
+            "item_ingredient_shortage": 24
           },
           "missing": {
-            "iron-plate": 3
+            "copper-plate": 9,
+            "iron-plate": 15
           },
           "inventory": [
             {
               "name": "iron-plate",
               "quality": "normal",
-              "count": 2
+              "count": 1
             },
             {
               "name": "copper-plate",
               "quality": "normal",
-              "count": 1
+              "count": 2
             }
           ],
-          "output": {}
+          "output": [
+            {
+              "name": "battery",
+              "quality": "normal",
+              "count": 1
+            }
+          ]
         },
         {
-          "entity": 147,
+          "entity": 157,
           "recipe": "electric-engine-unit",
           "actualRecipe": "electric-engine-unit",
           "nativeCraftingSpeed": 0.75,
@@ -1103,18 +1192,18 @@
             {
               "name": "electronic-circuit",
               "quality": "normal",
-              "count": 2
+              "count": 4
             },
             {
               "name": "engine-unit",
               "quality": "normal",
-              "count": 1
+              "count": 2
             }
           ],
           "output": {}
         },
         {
-          "entity": 150,
+          "entity": 160,
           "recipe": "electric-engine-unit",
           "actualRecipe": "electric-engine-unit",
           "nativeCraftingSpeed": 0.75,
@@ -1145,18 +1234,18 @@
             {
               "name": "electronic-circuit",
               "quality": "normal",
-              "count": 2
+              "count": 4
             },
             {
               "name": "engine-unit",
               "quality": "normal",
-              "count": 1
+              "count": 2
             }
           ],
           "output": {}
         },
         {
-          "entity": 153,
+          "entity": 163,
           "recipe": "electric-engine-unit",
           "actualRecipe": "electric-engine-unit",
           "nativeCraftingSpeed": 0.75,
@@ -1181,8 +1270,8 @@
           "measuredCrafts": 30,
           "status": "fluid_ingredient_shortage",
           "statusSamples": {
-            "fluid_ingredient_shortage": 1410,
-            "working": 390
+            "working": 390,
+            "fluid_ingredient_shortage": 1410
           },
           "inventory": [
             {
@@ -1199,7 +1288,7 @@
           "output": {}
         },
         {
-          "entity": 156,
+          "entity": 166,
           "recipe": "pipe",
           "actualRecipe": "pipe",
           "nativeCraftingSpeed": 0.75,
@@ -1211,21 +1300,27 @@
               "amount": 1
             }
           ],
-          "measuredCrafts": 598,
-          "status": "item_ingredient_shortage",
+          "measuredCrafts": 596,
+          "status": "full_output",
           "statusSamples": {
-            "full_output": 949,
-            "item_ingredient_shortage": 447,
-            "working": 404
+            "full_output": 879,
+            "working": 404,
+            "item_ingredient_shortage": 517
           },
           "missing": {
-            "iron-plate": 447
+            "iron-plate": 517
           },
           "inventory": {},
-          "output": {}
+          "output": [
+            {
+              "name": "pipe",
+              "quality": "normal",
+              "count": 3
+            }
+          ]
         },
         {
-          "entity": 159,
+          "entity": 169,
           "recipe": "roboport",
           "actualRecipe": "roboport",
           "nativeCraftingSpeed": 0.75,
@@ -1250,34 +1345,34 @@
           "measuredCrafts": 15,
           "status": "item_ingredient_shortage",
           "statusSamples": {
-            "item_ingredient_shortage": 1699,
-            "working": 101
+            "item_ingredient_shortage": 1700,
+            "working": 100
           },
           "missing": {
-            "steel-plate": 1699,
-            "iron-gear-wheel": 433
+            "steel-plate": 1700,
+            "iron-gear-wheel": 68
           },
           "inventory": [
             {
               "name": "steel-plate",
               "quality": "normal",
-              "count": 33
+              "count": 26
             },
             {
               "name": "iron-gear-wheel",
               "quality": "normal",
-              "count": 64
+              "count": 63
             },
             {
               "name": "advanced-circuit",
               "quality": "normal",
-              "count": 90
+              "count": 78
             }
           ],
           "output": {}
         },
         {
-          "entity": 163,
+          "entity": 173,
           "recipe": "engine-unit",
           "actualRecipe": "engine-unit",
           "nativeCraftingSpeed": 0.75,
@@ -1302,30 +1397,20 @@
           "measuredCrafts": 97,
           "status": "working",
           "statusSamples": {
-            "working": 1295,
-            "full_output": 372,
-            "item_ingredient_shortage": 133
+            "working": 1286,
+            "full_output": 279,
+            "item_ingredient_shortage": 235
           },
           "missing": {
-            "steel-plate": 24,
-            "iron-gear-wheel": 16,
-            "pipe": 123
+            "steel-plate": 26,
+            "pipe": 223,
+            "iron-gear-wheel": 16
           },
           "inventory": [
             {
-              "name": "pipe",
-              "quality": "normal",
-              "count": 4
-            },
-            {
-              "name": "steel-plate",
-              "quality": "normal",
-              "count": 2
-            },
-            {
               "name": "iron-gear-wheel",
               "quality": "normal",
-              "count": 2
+              "count": 1
             }
           ],
           "output": [
@@ -1337,7 +1422,7 @@
           ]
         },
         {
-          "entity": 166,
+          "entity": 176,
           "recipe": "engine-unit",
           "actualRecipe": "engine-unit",
           "nativeCraftingSpeed": 0.75,
@@ -1359,77 +1444,17 @@
               "amount": 2
             }
           ],
-          "measuredCrafts": 99,
-          "status": "full_output",
-          "statusSamples": {
-            "full_output": 394,
-            "item_ingredient_shortage": 84,
-            "working": 1322
-          },
-          "missing": {
-            "steel-plate": 17,
-            "iron-gear-wheel": 22,
-            "pipe": 82
-          },
-          "inventory": [
-            {
-              "name": "pipe",
-              "quality": "normal",
-              "count": 1
-            },
-            {
-              "name": "steel-plate",
-              "quality": "normal",
-              "count": 1
-            },
-            {
-              "name": "iron-gear-wheel",
-              "quality": "normal",
-              "count": 1
-            }
-          ],
-          "output": [
-            {
-              "name": "engine-unit",
-              "quality": "normal",
-              "count": 2
-            }
-          ]
-        },
-        {
-          "entity": 169,
-          "recipe": "engine-unit",
-          "actualRecipe": "engine-unit",
-          "nativeCraftingSpeed": 0.75,
-          "nativeRecipeEnergy": 10,
-          "nativeIngredients": [
-            {
-              "type": "item",
-              "name": "steel-plate",
-              "amount": 1
-            },
-            {
-              "type": "item",
-              "name": "iron-gear-wheel",
-              "amount": 1
-            },
-            {
-              "type": "item",
-              "name": "pipe",
-              "amount": 2
-            }
-          ],
-          "measuredCrafts": 101,
+          "measuredCrafts": 100,
           "status": "working",
           "statusSamples": {
-            "item_ingredient_shortage": 65,
-            "working": 1349,
-            "full_output": 386
+            "full_output": 353,
+            "item_ingredient_shortage": 107,
+            "working": 1340
           },
           "missing": {
-            "pipe": 59,
-            "steel-plate": 16,
-            "iron-gear-wheel": 18
+            "steel-plate": 30,
+            "pipe": 83,
+            "iron-gear-wheel": 10
           },
           "inventory": [
             {
@@ -1440,24 +1465,73 @@
             {
               "name": "steel-plate",
               "quality": "normal",
+              "count": 2
+            },
+            {
+              "name": "iron-gear-wheel",
+              "quality": "normal",
+              "count": 2
+            }
+          ],
+          "output": {}
+        },
+        {
+          "entity": 179,
+          "recipe": "engine-unit",
+          "actualRecipe": "engine-unit",
+          "nativeCraftingSpeed": 0.75,
+          "nativeRecipeEnergy": 10,
+          "nativeIngredients": [
+            {
+              "type": "item",
+              "name": "steel-plate",
+              "amount": 1
+            },
+            {
+              "type": "item",
+              "name": "iron-gear-wheel",
+              "amount": 1
+            },
+            {
+              "type": "item",
+              "name": "pipe",
+              "amount": 2
+            }
+          ],
+          "measuredCrafts": 102,
+          "status": "working",
+          "statusSamples": {
+            "working": 1353,
+            "full_output": 373,
+            "item_ingredient_shortage": 74
+          },
+          "missing": {
+            "steel-plate": 56,
+            "pipe": 47,
+            "iron-gear-wheel": 15
+          },
+          "inventory": [
+            {
+              "name": "steel-plate",
+              "quality": "normal",
               "count": 1
             },
             {
               "name": "iron-gear-wheel",
               "quality": "normal",
-              "count": 1
+              "count": 2
             }
           ],
           "output": [
             {
               "name": "engine-unit",
               "quality": "normal",
-              "count": 2
+              "count": 1
             }
           ]
         },
         {
-          "entity": 172,
+          "entity": 182,
           "recipe": "passive-provider-chest",
           "actualRecipe": "passive-provider-chest",
           "nativeCraftingSpeed": 0.75,
@@ -1479,17 +1553,16 @@
               "amount": 1
             }
           ],
-          "measuredCrafts": 59,
+          "measuredCrafts": 60,
           "status": "full_output",
           "statusSamples": {
-            "full_output": 1409,
-            "item_ingredient_shortage": 359,
-            "working": 32
+            "full_output": 1467,
+            "item_ingredient_shortage": 298,
+            "working": 35
           },
           "missing": {
-            "steel-chest": 359,
-            "electronic-circuit": 5,
-            "advanced-circuit": 1
+            "steel-chest": 287,
+            "electronic-circuit": 34
           },
           "inventory": [
             {
@@ -1507,17 +1580,17 @@
             {
               "name": "passive-provider-chest",
               "quality": "normal",
-              "count": 3
+              "count": 4
             }
           ]
         }
       ],
       "powered": true,
-      "importedEntities": 237,
+      "importedEntities": 253,
       "loopSamples": {
         "robot-essentials": {
-          "maxStock": 359,
-          "capacity": 592,
+          "maxStock": 361,
+          "capacity": 656,
           "lastSignals": [
             {
               "signal": {
@@ -1547,19 +1620,25 @@
               "signal": {
                 "name": "passive-provider-chest"
               },
-              "count": 4
+              "count": 1
+            },
+            {
+              "signal": {
+                "name": "storage-chest"
+              },
+              "count": 1
             },
             {
               "signal": {
                 "name": "iron-plate"
               },
-              "count": 16
+              "count": 14
             },
             {
               "signal": {
                 "name": "copper-plate"
               },
-              "count": 33
+              "count": 32
             },
             {
               "signal": {
@@ -1571,7 +1650,7 @@
               "signal": {
                 "name": "plastic-bar"
               },
-              "count": 15
+              "count": 24
             },
             {
               "signal": {
@@ -1583,43 +1662,43 @@
               "signal": {
                 "name": "iron-gear-wheel"
               },
-              "count": 8
+              "count": 12
             },
             {
               "signal": {
                 "name": "copper-cable"
               },
-              "count": 21
+              "count": 19
             },
             {
               "signal": {
                 "name": "electronic-circuit"
               },
-              "count": 48
+              "count": 49
             },
             {
               "signal": {
                 "name": "advanced-circuit"
               },
-              "count": 23
+              "count": 18
             },
             {
               "signal": {
                 "name": "engine-unit"
               },
-              "count": 7
+              "count": 6
             },
             {
               "signal": {
                 "name": "electric-engine-unit"
               },
-              "count": 4
+              "count": 6
             },
             {
               "signal": {
                 "name": "flying-robot-frame"
               },
-              "count": 8
+              "count": 10
             }
           ]
         }
@@ -1627,13 +1706,13 @@
       "ringItemMax": {
         "iron-plate": 37,
         "copper-plate": 33,
-        "electronic-circuit": 65,
         "steel-plate": 33,
+        "electronic-circuit": 65,
         "plastic-bar": 25,
         "copper-cable": 53,
         "iron-gear-wheel": 24,
-        "pipe": 12,
         "steel-chest": 4,
+        "pipe": 12,
         "advanced-circuit": 29,
         "storage-chest": 4,
         "battery": 13,
@@ -1648,27 +1727,32 @@
       "tokenSamples": {
         "construction-robot": {
           "tokenHeld": 13,
-          "holding": 30,
+          "holding": 28,
           "samples": 1800
         },
         "logistic-robot": {
           "tokenHeld": 13,
-          "holding": 31,
+          "holding": 30,
           "samples": 1800
         },
         "roboport": {
-          "tokenHeld": 277,
-          "holding": 0,
+          "tokenHeld": 876,
+          "holding": 5,
           "samples": 1800
         },
         "storage-chest": {
           "tokenHeld": 5,
-          "holding": 14,
+          "holding": 13,
           "samples": 1800
         },
         "passive-provider-chest": {
           "tokenHeld": 5,
-          "holding": 14,
+          "holding": 15,
+          "samples": 1800
+        },
+        "requester-chest": {
+          "tokenHeld": 5,
+          "holding": 13,
           "samples": 1800
         }
       },
@@ -1676,7 +1760,7 @@
         "boosted": 0,
         "samples": 1800
       },
-      "exactRecipeChecks": 75628,
+      "exactRecipeChecks": 78329,
       "externalApproachesClear": true,
       "stockNetworksIsolated": true,
       "inserterCapacityResearch": {
@@ -1687,38 +1771,38 @@
       },
       "bulkInserters": [
         {
-          "entity": 79,
-          "observedMaxHand": 2
-        },
-        {
-          "entity": 80,
-          "observedMaxHand": 2
-        },
-        {
           "entity": 87,
+          "observedMaxHand": 2
+        },
+        {
+          "entity": 88,
+          "observedMaxHand": 2
+        },
+        {
+          "entity": 95,
           "observedMaxHand": 2
         }
       ],
       "fluids": [
         {
           "item": "sulfuric-acid",
-          "entity": 180,
+          "entity": 190,
           "acceptedDuringMeasurement": 12000,
           "sourceFluidSegment": 2,
           "productiveConsumers": [
-            75,
-            144
+            83,
+            154
           ]
         },
         {
           "item": "lubricant",
-          "entity": 187,
+          "entity": 197,
           "acceptedDuringMeasurement": 4500,
           "sourceFluidSegment": 3,
           "productiveConsumers": [
-            147,
-            150,
-            153
+            157,
+            160,
+            163
           ]
         }
       ],
@@ -1730,77 +1814,91 @@
           "construction-robot": 4.9,
           "logistic-robot": 4.9,
           "roboport": 0.5,
-          "storage-chest": 1.9,
-          "passive-provider-chest": 1.9
+          "storage-chest": 2,
+          "passive-provider-chest": 2,
+          "requester-chest": 1.9
         },
         "capReachedMinute": {
-          "construction-robot": 10.166666666666666,
-          "logistic-robot": 10.25,
-          "roboport": 18.4,
-          "passive-provider-chest": 24.633333333333333,
-          "storage-chest": 24.666666666666668
+          "logistic-robot": 10.066666666666666,
+          "construction-robot": 10.183333333333334,
+          "roboport": 18.283333333333335,
+          "requester-chest": 24.166666666666668,
+          "passive-provider-chest": 24.483333333333334,
+          "storage-chest": 24.5
         },
-        "pauseMode": "natural-five-product-stocking-collection-paused-no-product-fixtures",
+        "pauseMode": "natural-product-stocking-collection-paused-no-product-fixtures",
         "collectionPauseStock": [
           {
             "item": "construction-robot",
-            "entity": 200,
+            "entity": 210,
             "count": 50,
             "capacity": 50
           },
           {
             "item": "logistic-robot",
-            "entity": 200,
+            "entity": 210,
             "count": 50,
             "capacity": 50
           },
           {
             "item": "roboport",
-            "entity": 200,
+            "entity": 210,
             "count": 10,
             "capacity": 10
           },
           {
             "item": "storage-chest",
-            "entity": 200,
+            "entity": 210,
             "count": 50,
             "capacity": 50
           },
           {
             "item": "passive-provider-chest",
-            "entity": 200,
+            "entity": 210,
+            "count": 50,
+            "capacity": 50
+          },
+          {
+            "item": "requester-chest",
+            "entity": 210,
             "count": 50,
             "capacity": 50
           }
         ],
         "blockedOutputFilled": [
           {
-            "entity": 200,
+            "entity": 210,
             "item": "construction-robot",
             "inserted": 0,
             "mode": "natural-production-only"
           },
           {
-            "entity": 200,
+            "entity": 210,
             "item": "logistic-robot",
             "inserted": 0,
             "mode": "natural-production-only"
           },
           {
-            "entity": 200,
+            "entity": 210,
             "item": "roboport",
             "inserted": 0,
             "mode": "natural-production-only"
           },
           {
-            "entity": 200,
+            "entity": 210,
             "item": "storage-chest",
             "inserted": 0,
             "mode": "natural-production-only"
           },
           {
-            "entity": 200,
+            "entity": 210,
             "item": "passive-provider-chest",
+            "inserted": 0,
+            "mode": "natural-production-only"
+          },
+          {
+            "entity": 210,
+            "item": "requester-chest",
             "inserted": 0,
             "mode": "natural-production-only"
           }
@@ -1823,7 +1921,7 @@
               "signal": {
                 "name": "pipe"
               },
-              "count": 9
+              "count": 12
             },
             {
               "signal": {
@@ -1839,21 +1937,9 @@
             },
             {
               "signal": {
-                "name": "passive-provider-chest"
-              },
-              "count": 1
-            },
-            {
-              "signal": {
-                "name": "storage-chest"
-              },
-              "count": 1
-            },
-            {
-              "signal": {
                 "name": "iron-plate"
               },
-              "count": 16
+              "count": 37
             },
             {
               "signal": {
@@ -1871,13 +1957,13 @@
               "signal": {
                 "name": "plastic-bar"
               },
-              "count": 7
+              "count": 9
             },
             {
               "signal": {
                 "name": "battery"
               },
-              "count": 8
+              "count": 12
             },
             {
               "signal": {
@@ -1889,126 +1975,74 @@
               "signal": {
                 "name": "copper-cable"
               },
-              "count": 51
+              "count": 18
             },
             {
               "signal": {
                 "name": "electronic-circuit"
               },
-              "count": 46
+              "count": 64
             },
             {
               "signal": {
                 "name": "advanced-circuit"
               },
-              "count": 16
+              "count": 19
             },
             {
               "signal": {
                 "name": "engine-unit"
               },
-              "count": 7
+              "count": 6
             },
             {
               "signal": {
                 "name": "electric-engine-unit"
               },
-              "count": 7
+              "count": 6
             },
             {
               "signal": {
                 "name": "flying-robot-frame"
               },
-              "count": 9
+              "count": 8
             }
           ],
           "robotMachines": [
             {
-              "entity": 112,
-              "recipe": "flying-robot-frame",
-              "status": "working",
-              "productsFinished": 204,
-              "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 1
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 3
-                },
-                {
-                  "name": "electric-engine-unit",
-                  "quality": "normal",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "entity": 116,
-              "recipe": "flying-robot-frame",
-              "status": "working",
-              "productsFinished": 203,
-              "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 1
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 3
-                },
-                {
-                  "name": "electric-engine-unit",
-                  "quality": "normal",
-                  "count": 1
-                }
-              ]
-            },
-            {
               "entity": 120,
-              "recipe": "flying-robot-frame",
-              "status": "working",
-              "productsFinished": 202,
+              "recipe": "requester-chest",
+              "status": "full_output",
+              "productsFinished": 249,
               "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 1
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 2
-                },
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 3
+                  "count": 6
                 },
                 {
-                  "name": "electric-engine-unit",
+                  "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 1
+                  "count": 2
                 }
               ]
             },
             {
-              "entity": 124,
+              "entity": 122,
+              "recipe": "flying-robot-frame",
+              "status": "full_output",
+              "productsFinished": 202,
+              "input": {}
+            },
+            {
+              "entity": 126,
+              "recipe": "flying-robot-frame",
+              "status": "full_output",
+              "productsFinished": 201,
+              "input": {}
+            },
+            {
+              "entity": 130,
               "recipe": "flying-robot-frame",
               "status": "working",
               "productsFinished": 200,
@@ -2036,35 +2070,21 @@
               ]
             },
             {
-              "entity": 128,
+              "entity": 134,
               "recipe": "flying-robot-frame",
-              "status": "working",
-              "productsFinished": 134,
-              "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 4
-                },
-                {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 6
-                },
-                {
-                  "name": "electric-engine-unit",
-                  "quality": "normal",
-                  "count": 2
-                }
-              ]
+              "status": "full_output",
+              "productsFinished": 199,
+              "input": {}
             },
             {
-              "entity": 132,
+              "entity": 138,
+              "recipe": "flying-robot-frame",
+              "status": "full_output",
+              "productsFinished": 136,
+              "input": {}
+            },
+            {
+              "entity": 142,
               "recipe": "construction-robot",
               "status": "full_output",
               "productsFinished": 394,
@@ -2072,43 +2092,33 @@
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 1
-                },
-                {
-                  "name": "flying-robot-frame",
-                  "quality": "normal",
-                  "count": 2
+                  "count": 3
                 }
               ]
             },
             {
-              "entity": 136,
+              "entity": 146,
               "recipe": "logistic-robot",
               "status": "full_output",
-              "productsFinished": 529,
+              "productsFinished": 526,
               "input": [
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 1
-                },
-                {
-                  "name": "flying-robot-frame",
-                  "quality": "normal",
-                  "count": 1
+                  "count": 3
                 }
               ]
             },
             {
-              "entity": 140,
+              "entity": 150,
               "recipe": "storage-chest",
               "status": "full_output",
-              "productsFinished": 255,
+              "productsFinished": 254,
               "input": [
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 2
+                  "count": 3
                 },
                 {
                   "name": "advanced-circuit",
@@ -2118,7 +2128,7 @@
               ]
             },
             {
-              "entity": 159,
+              "entity": 169,
               "recipe": "roboport",
               "status": "item_ingredient_shortage",
               "productsFinished": 62,
@@ -2126,7 +2136,7 @@
                 {
                   "name": "steel-plate",
                   "quality": "normal",
-                  "count": 78
+                  "count": 82
                 },
                 {
                   "name": "iron-gear-wheel",
@@ -2136,25 +2146,25 @@
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 42
+                  "count": 29
                 }
               ]
             },
             {
-              "entity": 172,
+              "entity": 182,
               "recipe": "passive-provider-chest",
-              "status": "working",
-              "productsFinished": 253,
+              "status": "full_output",
+              "productsFinished": 254,
               "input": [
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 7
+                  "count": 3
                 },
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 2
+                  "count": 1
                 }
               ]
             }
@@ -2188,7 +2198,7 @@
               "signal": {
                 "name": "construction-robot"
               },
-              "count": 2
+              "count": 1
             },
             {
               "signal": {
@@ -2206,7 +2216,7 @@
               "signal": {
                 "name": "iron-plate"
               },
-              "count": 36
+              "count": 20
             },
             {
               "signal": {
@@ -2224,7 +2234,7 @@
               "signal": {
                 "name": "plastic-bar"
               },
-              "count": 24
+              "count": 23
             },
             {
               "signal": {
@@ -2236,150 +2246,257 @@
               "signal": {
                 "name": "iron-gear-wheel"
               },
-              "count": 24
+              "count": 19
             },
             {
               "signal": {
                 "name": "copper-cable"
               },
-              "count": 53
+              "count": 27
             },
             {
               "signal": {
                 "name": "electronic-circuit"
               },
-              "count": 65
+              "count": 25
             },
             {
               "signal": {
                 "name": "advanced-circuit"
               },
-              "count": 25
+              "count": 23
             },
             {
               "signal": {
                 "name": "engine-unit"
               },
-              "count": 6
+              "count": 8
             },
             {
               "signal": {
                 "name": "electric-engine-unit"
               },
-              "count": 7
+              "count": 6
             },
             {
               "signal": {
                 "name": "flying-robot-frame"
               },
-              "count": 7
+              "count": 10
             }
           ],
           "robotMachines": [
             {
-              "entity": 112,
-              "recipe": "flying-robot-frame",
-              "status": "full_output",
-              "productsFinished": 255,
-              "input": {}
-            },
-            {
-              "entity": 116,
-              "recipe": "flying-robot-frame",
-              "status": "full_output",
-              "productsFinished": 255,
-              "input": {}
-            },
-            {
               "entity": 120,
-              "recipe": "flying-robot-frame",
+              "recipe": "requester-chest",
               "status": "full_output",
-              "productsFinished": 253,
-              "input": {}
-            },
-            {
-              "entity": 124,
-              "recipe": "flying-robot-frame",
-              "status": "full_output",
-              "productsFinished": 252,
-              "input": {}
-            },
-            {
-              "entity": 128,
-              "recipe": "flying-robot-frame",
-              "status": "full_output",
-              "productsFinished": 187,
-              "input": {}
-            },
-            {
-              "entity": 132,
-              "recipe": "construction-robot",
-              "status": "item_ingredient_shortage",
-              "productsFinished": 600,
+              "productsFinished": 333,
               "input": [
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 5
-                }
-              ]
-            },
-            {
-              "entity": 136,
-              "recipe": "logistic-robot",
-              "status": "full_output",
-              "productsFinished": 583,
-              "input": [
-                {
-                  "name": "advanced-circuit",
-                  "quality": "normal",
-                  "count": 3
-                }
-              ]
-            },
-            {
-              "entity": 140,
-              "recipe": "storage-chest",
-              "status": "item_ingredient_shortage",
-              "productsFinished": 337,
-              "input": [
-                {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 8
+                  "count": 6
                 },
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "entity": 122,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 254,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 4
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 6
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "entity": 126,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 254,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 3
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "entity": 130,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 254,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 3
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "entity": 134,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 252,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
                   "count": 3
                 }
               ]
             },
             {
-              "entity": 159,
-              "recipe": "roboport",
+              "entity": 138,
+              "recipe": "flying-robot-frame",
               "status": "full_output",
+              "productsFinished": 188,
+              "input": {}
+            },
+            {
+              "entity": 142,
+              "recipe": "construction-robot",
+              "status": "item_ingredient_shortage",
+              "productsFinished": 602,
+              "input": [
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "entity": 146,
+              "recipe": "logistic-robot",
+              "status": "full_output",
+              "productsFinished": 579,
+              "input": [
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "flying-robot-frame",
+                  "quality": "normal",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "entity": 150,
+              "recipe": "storage-chest",
+              "status": "full_output",
+              "productsFinished": 338,
+              "input": [
+                {
+                  "name": "steel-chest",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "entity": 169,
+              "recipe": "roboport",
+              "status": "item_ingredient_shortage",
               "productsFinished": 84,
               "input": [
                 {
                   "name": "steel-plate",
                   "quality": "normal",
-                  "count": 52
+                  "count": 32
                 },
                 {
                   "name": "iron-gear-wheel",
                   "quality": "normal",
-                  "count": 52
+                  "count": 84
                 },
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 4
+                  "count": 27
                 }
               ]
             },
             {
-              "entity": 172,
+              "entity": 182,
               "recipe": "passive-provider-chest",
               "status": "full_output",
               "productsFinished": 337,
@@ -2450,7 +2567,7 @@
               "signal": {
                 "name": "iron-plate"
               },
-              "count": 35
+              "count": 36
             },
             {
               "signal": {
@@ -2462,7 +2579,7 @@
               "signal": {
                 "name": "steel-plate"
               },
-              "count": 30
+              "count": 32
             },
             {
               "signal": {
@@ -2474,7 +2591,7 @@
               "signal": {
                 "name": "battery"
               },
-              "count": 7
+              "count": 12
             },
             {
               "signal": {
@@ -2486,7 +2603,7 @@
               "signal": {
                 "name": "copper-cable"
               },
-              "count": 53
+              "count": 52
             },
             {
               "signal": {
@@ -2498,61 +2615,51 @@
               "signal": {
                 "name": "advanced-circuit"
               },
-              "count": 24
+              "count": 25
             },
             {
               "signal": {
                 "name": "engine-unit"
               },
-              "count": 6
+              "count": 7
             },
             {
               "signal": {
                 "name": "electric-engine-unit"
               },
-              "count": 8
+              "count": 6
             },
             {
               "signal": {
                 "name": "flying-robot-frame"
               },
-              "count": 10
+              "count": 7
             }
           ],
           "robotMachines": [
             {
-              "entity": 112,
-              "recipe": "flying-robot-frame",
-              "status": "working",
-              "productsFinished": 337,
+              "entity": 120,
+              "recipe": "requester-chest",
+              "status": "item_ingredient_shortage",
+              "productsFinished": 415,
               "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 4
-                },
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 6
+                  "count": 9
                 },
                 {
-                  "name": "electric-engine-unit",
+                  "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 2
+                  "count": 1
                 }
               ]
             },
             {
-              "entity": 116,
+              "entity": 122,
               "recipe": "flying-robot-frame",
               "status": "working",
-              "productsFinished": 337,
+              "productsFinished": 336,
               "input": [
                 {
                   "name": "steel-plate",
@@ -2577,7 +2684,7 @@
               ]
             },
             {
-              "entity": 120,
+              "entity": 126,
               "recipe": "flying-robot-frame",
               "status": "working",
               "productsFinished": 335,
@@ -2585,35 +2692,35 @@
                 {
                   "name": "steel-plate",
                   "quality": "normal",
-                  "count": 2
+                  "count": 1
                 },
                 {
                   "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
                   "quality": "normal",
                   "count": 3
                 },
                 {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 6
-                },
-                {
                   "name": "electric-engine-unit",
                   "quality": "normal",
-                  "count": 2
+                  "count": 1
                 }
               ]
             },
             {
-              "entity": 124,
+              "entity": 130,
               "recipe": "flying-robot-frame",
               "status": "working",
-              "productsFinished": 334,
+              "productsFinished": 335,
               "input": [
                 {
                   "name": "steel-plate",
                   "quality": "normal",
-                  "count": 2
+                  "count": 1
                 },
                 {
                   "name": "battery",
@@ -2623,17 +2730,45 @@
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 5
+                  "count": 3
                 },
                 {
                   "name": "electric-engine-unit",
                   "quality": "normal",
-                  "count": 2
+                  "count": 1
                 }
               ]
             },
             {
-              "entity": 128,
+              "entity": 134,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 333,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 3
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "entity": 138,
               "recipe": "flying-robot-frame",
               "status": "working",
               "productsFinished": 268,
@@ -2651,7 +2786,7 @@
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 5
+                  "count": 6
                 },
                 {
                   "name": "electric-engine-unit",
@@ -2661,24 +2796,36 @@
               ]
             },
             {
-              "entity": 132,
+              "entity": 142,
               "recipe": "construction-robot",
-              "status": "full_output",
+              "status": "item_ingredient_shortage",
               "productsFinished": 807,
               "input": [
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 1
+                  "count": 6
                 }
               ]
             },
             {
-              "entity": 136,
+              "entity": 146,
               "recipe": "logistic-robot",
               "status": "full_output",
-              "productsFinished": 788,
+              "productsFinished": 784,
+              "input": {}
+            },
+            {
+              "entity": 150,
+              "recipe": "storage-chest",
+              "status": "full_output",
+              "productsFinished": 421,
               "input": [
+                {
+                  "name": "steel-chest",
+                  "quality": "normal",
+                  "count": 1
+                },
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
@@ -2687,52 +2834,45 @@
               ]
             },
             {
-              "entity": 140,
-              "recipe": "storage-chest",
-              "status": "full_output",
-              "productsFinished": 422,
-              "input": [
-                {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 1
-                },
-                {
-                  "name": "advanced-circuit",
-                  "quality": "normal",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "entity": 159,
+              "entity": 169,
               "recipe": "roboport",
               "status": "full_output",
-              "productsFinished": 96,
+              "productsFinished": 97,
               "input": [
                 {
                   "name": "steel-plate",
                   "quality": "normal",
-                  "count": 2
+                  "count": 5
                 },
                 {
                   "name": "iron-gear-wheel",
                   "quality": "normal",
-                  "count": 54
+                  "count": 52
                 },
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 18
+                  "count": 4
                 }
               ]
             },
             {
-              "entity": 172,
+              "entity": 182,
               "recipe": "passive-provider-chest",
               "status": "full_output",
-              "productsFinished": 421,
-              "input": {}
+              "productsFinished": 420,
+              "input": [
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 3
+                },
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 1
+                }
+              ]
             }
           ]
         },
@@ -2782,13 +2922,13 @@
               "signal": {
                 "name": "iron-plate"
               },
-              "count": 16
+              "count": 18
             },
             {
               "signal": {
                 "name": "copper-plate"
               },
-              "count": 17
+              "count": 28
             },
             {
               "signal": {
@@ -2800,144 +2940,92 @@
               "signal": {
                 "name": "plastic-bar"
               },
-              "count": 17
+              "count": 8
             },
             {
               "signal": {
                 "name": "battery"
               },
-              "count": 6
+              "count": 13
             },
             {
               "signal": {
                 "name": "iron-gear-wheel"
               },
-              "count": 11
+              "count": 24
             },
             {
               "signal": {
                 "name": "copper-cable"
               },
-              "count": 52
+              "count": 53
             },
             {
               "signal": {
                 "name": "electronic-circuit"
               },
-              "count": 16
+              "count": 63
             },
             {
               "signal": {
                 "name": "advanced-circuit"
               },
-              "count": 24
+              "count": 23
             },
             {
               "signal": {
                 "name": "engine-unit"
               },
-              "count": 7
+              "count": 6
             },
             {
               "signal": {
                 "name": "electric-engine-unit"
               },
-              "count": 2
+              "count": 8
             },
             {
               "signal": {
                 "name": "flying-robot-frame"
               },
-              "count": 8
+              "count": 7
             }
           ],
           "robotMachines": [
             {
-              "entity": 112,
-              "recipe": "flying-robot-frame",
+              "entity": 120,
+              "recipe": "requester-chest",
               "status": "working",
-              "productsFinished": 416,
+              "productsFinished": 494,
               "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 4
-                },
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
                   "count": 6
                 },
                 {
-                  "name": "electric-engine-unit",
+                  "name": "advanced-circuit",
                   "quality": "normal",
                   "count": 2
                 }
               ]
             },
             {
-              "entity": 116,
+              "entity": 122,
               "recipe": "flying-robot-frame",
               "status": "working",
-              "productsFinished": 416,
-              "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 1
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 3
-                },
-                {
-                  "name": "electric-engine-unit",
-                  "quality": "normal",
-                  "count": 1
-                }
-              ]
+              "productsFinished": 415,
+              "input": {}
             },
             {
-              "entity": 120,
+              "entity": 126,
               "recipe": "flying-robot-frame",
               "status": "working",
               "productsFinished": 414,
-              "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 4
-                },
-                {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 6
-                },
-                {
-                  "name": "electric-engine-unit",
-                  "quality": "normal",
-                  "count": 2
-                }
-              ]
+              "input": {}
             },
             {
-              "entity": 124,
+              "entity": 130,
               "recipe": "flying-robot-frame",
               "status": "working",
               "productsFinished": 413,
@@ -2960,30 +3048,25 @@
                 {
                   "name": "electric-engine-unit",
                   "quality": "normal",
-                  "count": 1
+                  "count": 2
                 }
               ]
             },
             {
-              "entity": 128,
+              "entity": 134,
               "recipe": "flying-robot-frame",
               "status": "working",
-              "productsFinished": 347,
+              "productsFinished": 412,
               "input": [
                 {
-                  "name": "steel-plate",
+                  "name": "battery",
                   "quality": "normal",
                   "count": 1
                 },
                 {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 6
+                  "count": 3
                 },
                 {
                   "name": "electric-engine-unit",
@@ -2993,7 +3076,35 @@
               ]
             },
             {
-              "entity": 132,
+              "entity": 138,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 347,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 4
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 6
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "entity": 142,
               "recipe": "construction-robot",
               "status": "full_output",
               "productsFinished": 1006,
@@ -3001,60 +3112,28 @@
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
-                  "count": 2
+                  "count": 4
                 }
               ]
             },
             {
-              "entity": 136,
+              "entity": 146,
               "recipe": "logistic-robot",
               "status": "full_output",
-              "productsFinished": 986,
-              "input": [
-                {
-                  "name": "advanced-circuit",
-                  "quality": "normal",
-                  "count": 1
-                }
-              ]
+              "productsFinished": 980,
+              "input": {}
             },
             {
-              "entity": 140,
+              "entity": 150,
               "recipe": "storage-chest",
               "status": "full_output",
-              "productsFinished": 475,
+              "productsFinished": 474,
               "input": [
                 {
-                  "name": "advanced-circuit",
+                  "name": "steel-chest",
                   "quality": "normal",
                   "count": 1
-                }
-              ]
-            },
-            {
-              "entity": 159,
-              "recipe": "roboport",
-              "status": "full_output",
-              "productsFinished": 117,
-              "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 26
                 },
-                {
-                  "name": "iron-gear-wheel",
-                  "quality": "normal",
-                  "count": 25
-                }
-              ]
-            },
-            {
-              "entity": 172,
-              "recipe": "passive-provider-chest",
-              "status": "full_output",
-              "productsFinished": 500,
-              "input": [
                 {
                   "name": "electronic-circuit",
                   "quality": "normal",
@@ -3063,7 +3142,48 @@
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 2
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "entity": 169,
+              "recipe": "roboport",
+              "status": "full_output",
+              "productsFinished": 118,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 44
+                },
+                {
+                  "name": "iron-gear-wheel",
+                  "quality": "normal",
+                  "count": 39
+                },
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 4
+                }
+              ]
+            },
+            {
+              "entity": 182,
+              "recipe": "passive-provider-chest",
+              "status": "full_output",
+              "productsFinished": 499,
+              "input": [
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 5
+                },
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 3
                 }
               ]
             }
@@ -3107,6 +3227,12 @@
             },
             {
               "signal": {
+                "name": "storage-chest"
+              },
+              "count": 1
+            },
+            {
+              "signal": {
                 "name": "iron-plate"
               },
               "count": 16
@@ -3115,7 +3241,7 @@
               "signal": {
                 "name": "copper-plate"
               },
-              "count": 33
+              "count": 26
             },
             {
               "signal": {
@@ -3127,7 +3253,7 @@
               "signal": {
                 "name": "plastic-bar"
               },
-              "count": 15
+              "count": 14
             },
             {
               "signal": {
@@ -3139,104 +3265,71 @@
               "signal": {
                 "name": "iron-gear-wheel"
               },
-              "count": 8
+              "count": 19
             },
             {
               "signal": {
                 "name": "copper-cable"
               },
-              "count": 21
+              "count": 13
             },
             {
               "signal": {
                 "name": "electronic-circuit"
               },
-              "count": 48
+              "count": 54
             },
             {
               "signal": {
                 "name": "advanced-circuit"
               },
-              "count": 23
+              "count": 22
             },
             {
               "signal": {
                 "name": "engine-unit"
               },
-              "count": 7
+              "count": 6
             },
             {
               "signal": {
                 "name": "electric-engine-unit"
               },
-              "count": 4
+              "count": 7
             },
             {
               "signal": {
                 "name": "flying-robot-frame"
               },
-              "count": 8
+              "count": 7
             }
           ],
           "robotMachines": [
             {
-              "entity": 112,
-              "recipe": "flying-robot-frame",
-              "status": "working",
-              "productsFinished": 496,
-              "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 1
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 3
-                },
-                {
-                  "name": "electric-engine-unit",
-                  "quality": "normal",
-                  "count": 1
-                }
-              ]
-            },
-            {
-              "entity": 116,
-              "recipe": "flying-robot-frame",
-              "status": "working",
-              "productsFinished": 494,
-              "input": [
-                {
-                  "name": "steel-plate",
-                  "quality": "normal",
-                  "count": 2
-                },
-                {
-                  "name": "battery",
-                  "quality": "normal",
-                  "count": 4
-                },
-                {
-                  "name": "electronic-circuit",
-                  "quality": "normal",
-                  "count": 6
-                },
-                {
-                  "name": "electric-engine-unit",
-                  "quality": "normal",
-                  "count": 2
-                }
-              ]
-            },
-            {
               "entity": 120,
+              "recipe": "requester-chest",
+              "status": "full_output",
+              "productsFinished": 574,
+              "input": [
+                {
+                  "name": "steel-chest",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "entity": 122,
               "recipe": "flying-robot-frame",
               "status": "working",
               "productsFinished": 494,
@@ -3249,7 +3342,7 @@
                 {
                   "name": "battery",
                   "quality": "normal",
-                  "count": 1
+                  "count": 2
                 },
                 {
                   "name": "electronic-circuit",
@@ -3264,10 +3357,66 @@
               ]
             },
             {
-              "entity": 124,
+              "entity": 126,
               "recipe": "flying-robot-frame",
               "status": "working",
-              "productsFinished": 492,
+              "productsFinished": 493,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 3
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "entity": 130,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 493,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 3
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "entity": 134,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 489,
               "input": [
                 {
                   "name": "steel-plate",
@@ -3292,7 +3441,7 @@
               ]
             },
             {
-              "entity": 128,
+              "entity": 138,
               "recipe": "flying-robot-frame",
               "status": "working",
               "productsFinished": 426,
@@ -3320,10 +3469,10 @@
               ]
             },
             {
-              "entity": 132,
+              "entity": 142,
               "recipe": "construction-robot",
               "status": "full_output",
-              "productsFinished": 1204,
+              "productsFinished": 1203,
               "input": [
                 {
                   "name": "electronic-circuit",
@@ -3333,69 +3482,404 @@
               ]
             },
             {
-              "entity": 136,
+              "entity": 146,
               "recipe": "logistic-robot",
               "status": "full_output",
-              "productsFinished": 1183,
+              "productsFinished": 1177,
               "input": [
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 4
+                  "count": 2
                 }
               ]
             },
             {
-              "entity": 140,
+              "entity": 150,
               "recipe": "storage-chest",
               "status": "full_output",
               "productsFinished": 554,
               "input": [
                 {
-                  "name": "electronic-circuit",
+                  "name": "steel-chest",
                   "quality": "normal",
-                  "count": 3
+                  "count": 2
                 },
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 1
+                  "count": 3
                 }
               ]
             },
             {
-              "entity": 159,
+              "entity": 169,
               "recipe": "roboport",
               "status": "item_ingredient_shortage",
-              "productsFinished": 137,
+              "productsFinished": 138,
               "input": [
                 {
                   "name": "steel-plate",
                   "quality": "normal",
-                  "count": 49
+                  "count": 26
                 },
                 {
                   "name": "iron-gear-wheel",
                   "quality": "normal",
-                  "count": 30
+                  "count": 53
                 },
                 {
                   "name": "advanced-circuit",
                   "quality": "normal",
-                  "count": 34
+                  "count": 33
                 }
               ]
             },
             {
-              "entity": 172,
+              "entity": 182,
               "recipe": "passive-provider-chest",
               "status": "full_output",
               "productsFinished": 553,
               "input": [
                 {
-                  "name": "steel-chest",
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 4
+                },
+                {
+                  "name": "advanced-circuit",
                   "quality": "normal",
                   "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "blockedProduct": "requester-chest",
+          "count": 50,
+          "cap": 50,
+          "passed": true,
+          "loopSignals": [
+            {
+              "signal": {
+                "name": "steel-chest"
+              },
+              "count": 4
+            },
+            {
+              "signal": {
+                "name": "pipe"
+              },
+              "count": 12
+            },
+            {
+              "signal": {
+                "name": "logistic-robot"
+              },
+              "count": 1
+            },
+            {
+              "signal": {
+                "name": "construction-robot"
+              },
+              "count": 2
+            },
+            {
+              "signal": {
+                "name": "passive-provider-chest"
+              },
+              "count": 1
+            },
+            {
+              "signal": {
+                "name": "storage-chest"
+              },
+              "count": 1
+            },
+            {
+              "signal": {
+                "name": "iron-plate"
+              },
+              "count": 14
+            },
+            {
+              "signal": {
+                "name": "copper-plate"
+              },
+              "count": 32
+            },
+            {
+              "signal": {
+                "name": "steel-plate"
+              },
+              "count": 32
+            },
+            {
+              "signal": {
+                "name": "plastic-bar"
+              },
+              "count": 24
+            },
+            {
+              "signal": {
+                "name": "battery"
+              },
+              "count": 12
+            },
+            {
+              "signal": {
+                "name": "iron-gear-wheel"
+              },
+              "count": 12
+            },
+            {
+              "signal": {
+                "name": "copper-cable"
+              },
+              "count": 19
+            },
+            {
+              "signal": {
+                "name": "electronic-circuit"
+              },
+              "count": 49
+            },
+            {
+              "signal": {
+                "name": "advanced-circuit"
+              },
+              "count": 18
+            },
+            {
+              "signal": {
+                "name": "engine-unit"
+              },
+              "count": 6
+            },
+            {
+              "signal": {
+                "name": "electric-engine-unit"
+              },
+              "count": 6
+            },
+            {
+              "signal": {
+                "name": "flying-robot-frame"
+              },
+              "count": 10
+            }
+          ],
+          "robotMachines": [
+            {
+              "entity": 120,
+              "recipe": "requester-chest",
+              "status": "full_output",
+              "productsFinished": 624,
+              "input": [
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "entity": 122,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 573,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "entity": 126,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 571,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 6
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "entity": 130,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 571,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 1
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 6
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "entity": 134,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 569,
+              "input": {}
+            },
+            {
+              "entity": 138,
+              "recipe": "flying-robot-frame",
+              "status": "working",
+              "productsFinished": 505,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "battery",
+                  "quality": "normal",
+                  "count": 2
+                },
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 6
+                },
+                {
+                  "name": "electric-engine-unit",
+                  "quality": "normal",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "entity": 142,
+              "recipe": "construction-robot",
+              "status": "item_ingredient_shortage",
+              "productsFinished": 1400,
+              "input": [
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "entity": 146,
+              "recipe": "logistic-robot",
+              "status": "item_ingredient_shortage",
+              "productsFinished": 1372,
+              "input": [
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 6
+                }
+              ]
+            },
+            {
+              "entity": 150,
+              "recipe": "storage-chest",
+              "status": "item_ingredient_shortage",
+              "productsFinished": 633,
+              "input": [
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 9
+                },
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "entity": 169,
+              "recipe": "roboport",
+              "status": "full_output",
+              "productsFinished": 159,
+              "input": [
+                {
+                  "name": "steel-plate",
+                  "quality": "normal",
+                  "count": 3
+                },
+                {
+                  "name": "iron-gear-wheel",
+                  "quality": "normal",
+                  "count": 37
+                },
+                {
+                  "name": "advanced-circuit",
+                  "quality": "normal",
+                  "count": 19
+                }
+              ]
+            },
+            {
+              "entity": 182,
+              "recipe": "passive-provider-chest",
+              "status": "full_output",
+              "productsFinished": 633,
+              "input": [
+                {
+                  "name": "electronic-circuit",
+                  "quality": "normal",
+                  "count": 3
                 },
                 {
                   "name": "advanced-circuit",
@@ -3416,23 +3900,25 @@
             "logistic-robot": 4.9,
             "roboport": 0.5,
             "storage-chest": 2,
-            "passive-provider-chest": 2
+            "passive-provider-chest": 2,
+            "requester-chest": 2
           },
           "finalBlockedStock": 50,
-          "capReachedMinute": 10.116388888888888
+          "capReachedMinute": 10.099722222222223
         },
         {
           "blockedProduct": "logistic-robot",
           "settlingMinutes": 30,
           "measurementMinutes": 10,
           "outputsPerMinute": {
-            "construction-robot": 5.3,
-            "roboport": 0.5,
+            "construction-robot": 5.4,
+            "roboport": 0.6,
             "storage-chest": 2.1,
-            "passive-provider-chest": 2.1
+            "passive-provider-chest": 2.1,
+            "requester-chest": 2.2
           },
           "finalBlockedStock": 50,
-          "capReachedMinute": 10.233055555555556
+          "capReachedMinute": 10.216388888888888
         },
         {
           "blockedProduct": "roboport",
@@ -3440,25 +3926,27 @@
           "measurementMinutes": 10,
           "outputsPerMinute": {
             "construction-robot": 5.5,
-            "logistic-robot": 5.5,
+            "logistic-robot": 5.4,
             "storage-chest": 2.2,
-            "passive-provider-chest": 2.2
+            "passive-provider-chest": 2.3,
+            "requester-chest": 2.3
           },
           "finalBlockedStock": 10,
-          "capReachedMinute": 18.01638888888889
+          "capReachedMinute": 19.349722222222223
         },
         {
           "blockedProduct": "storage-chest",
           "settlingMinutes": 30,
           "measurementMinutes": 10,
           "outputsPerMinute": {
-            "construction-robot": 5.1,
-            "logistic-robot": 5,
+            "construction-robot": 4.9,
+            "logistic-robot": 4.8,
             "roboport": 0.5,
-            "passive-provider-chest": 2
+            "passive-provider-chest": 2,
+            "requester-chest": 2
           },
           "finalBlockedStock": 50,
-          "capReachedMinute": 24.94972222222222
+          "capReachedMinute": 24.983055555555556
         },
         {
           "blockedProduct": "passive-provider-chest",
@@ -3468,13 +3956,28 @@
             "construction-robot": 5,
             "logistic-robot": 5,
             "roboport": 0.6,
-            "storage-chest": 2.1
+            "storage-chest": 2,
+            "requester-chest": 2
           },
           "finalBlockedStock": 50,
           "capReachedMinute": 25.01638888888889
+        },
+        {
+          "blockedProduct": "requester-chest",
+          "settlingMinutes": 30,
+          "measurementMinutes": 10,
+          "outputsPerMinute": {
+            "construction-robot": 5,
+            "logistic-robot": 5,
+            "roboport": 0.5,
+            "storage-chest": 2,
+            "passive-provider-chest": 2
+          },
+          "finalBlockedStock": 50,
+          "capReachedMinute": 25.049722222222222
         }
       ],
-      "blueprintSha256": "e8d154c907fd8aee84de6c6bfbf2d2242cd0dcebd00c3b63c4892c793e2346e6",
+      "blueprintSha256": "563311c2d22c7d44c9309cae8bb697d8daad3f8261fa50191dc22a08e46da8d3",
       "checks": {
         "steady": true,
         "recovery": true,
@@ -3495,12 +3998,12 @@
   ],
   "feedPolicy": "Declared exterior belt lanes and declared fluid pipes only; collect products only from the declared east chest every second",
   "researchPolicy": "All recipes enabled; fast inserter stack bonus zero; bulk unlock-equivalent capacity bonus +1 only",
-  "gameVersion": "2.1.24",
-  "prototypeSha256": "ce40aee67d984865f22ed8e65ba6b93fefb014fc35e45b747b64aca3ed5682a3",
-  "harnessSha256": "332d720be352b3787965d85149f7fa8bc247971fcaf4c39ed9f55cd3d852ad04",
+  "gameVersion": "2.1.25",
+  "prototypeSha256": "289d0de81102a710f16fc989a5df399facdef91c100901da87e5e69b4d911495",
+  "harnessSha256": "2a4d14a215a3f265755c2a248cd0f2c7181a5a89893aca37267dbfab35db32c6",
   "dataHarnessSha256": "24f54ca5e196ea5d8f011ba7130c8ee9c5abebe7218980aa42fdde87cd8684fa",
-  "validatorSha256": "b624b2a6ef5286aad07c08e74bb3e0240caaa44e505fd0865c0b44a7864596b5",
-  "configurationSha256": "53174358588766293dd857b855d1cf5ba12d743edecdf2c060edf411811078d4",
+  "validatorSha256": "fc2b86d3db7b88b1a2dca44244b108c7fa686da559c1246a9c4b4ca1d51a2366",
+  "configurationSha256": "51a7b2fad81c76cc5bdffed8dd92df4322cfcbe3fe1e058b2b2b663a51771d54",
   "supply": {
     "belt": 1,
     "fluid": 1
@@ -3513,11 +4016,11 @@
     "recovery": 10,
     "phase": 40,
     "phaseSettle": 30,
-    "phases": 5
+    "phases": 6
   },
   "warmupMinutes": 15,
   "measurementMinutes": 30,
-  "createdAt": "2026-11-22T12:19:04.669Z",
+  "createdAt": "2026-11-26T16:46:29.695Z",
   "short": false,
   "passed": true
 }

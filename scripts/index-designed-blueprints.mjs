@@ -153,14 +153,14 @@ const SPACE_SUPPLY='Supply every labeled operating input, including fluids where
 const KIT_ITEMS=['rocket-silo','cargo-landing-pad','space-platform-starter-pack','space-platform-foundation','asteroid-collector','crusher','assembling-machine-2','electric-furnace','fast-inserter','solar-panel','accumulator','constant-combinator','arithmetic-combinator','decider-combinator','passive-provider-chest','substation'];
 const supplierName={'green-circuits':'green-circuit supplier','concrete-supplier':'concrete supplier','rocket-fuel-supplier':'rocket-fuel supplier'};
 for(const [folder,category,purpose,expected,opts={}] of [
- ['robot-logistics-workshop','Robots and logistics','Robot production',['construction-robot','logistic-robot','roboport','passive-provider-chest','storage-chest']],
+ ['robot-logistics-workshop','Robots and logistics','Robot production',['construction-robot','logistic-robot','roboport','passive-provider-chest','storage-chest','requester-chest']],
  ['inserter-workshop','Inserters','Production',['inserter','long-handed-inserter','fast-inserter','bulk-inserter']],
  // Belt workshop (22 November 2026): the inserter workshop's on-demand ring for belts. Not part of the 17 November group; takes only recommendations nobody holds.
  ['belt-workshop','Belts','Production',['fast-transport-belt','fast-underground-belt','fast-splitter','transport-belt','underground-belt','splitter'],{recommendUnclaimed:true}],
  // Essentials round, promoted in this order so each leads coverage for its own products.
  ['green-circuits','Circuits','Circuit production',['electronic-circuit']],
  ['essentials-mall','Building essentials','Production',['assembling-machine-2','fast-transport-belt','fast-underground-belt','fast-splitter','fast-inserter','bulk-inserter','electric-furnace','electric-mining-drill']],
- ['robot-essentials','Robots and logistics','Robot production',['construction-robot','logistic-robot','roboport','storage-chest','passive-provider-chest']],
+ ['robot-essentials','Robots and logistics','Robot production',['construction-robot','logistic-robot','roboport','storage-chest','passive-provider-chest','requester-chest']],
  ['six-science','Science · six packs from supplied circuits','Science production',['automation-science-pack','logistic-science-pack','military-science-pack','chemical-science-pack','production-science-pack','utility-science-pack']],
  // Space launch round, promoted in this order. Each option says what differs from a rate workshop:
  // outputs (the kit lists its 16 chest items, not its intermediates), recommend (the kit leads only

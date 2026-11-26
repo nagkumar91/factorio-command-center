@@ -1,4 +1,4 @@
-// Robot essentials: the smaller robot workshop (5/5/0.5/2/2 per minute).
+// Robot essentials: the smaller robot workshop (5/5/0.5/2/2/2 per minute).
 // One single-loop ring with three machine rows, electronic circuits supplied.
 // Structure and control patterns follow scripts/robot-logistics-workshop and
 // scripts/rgby-science/frames.mjs; see blueprint-sources/robot-essentials/README.md.
@@ -10,7 +10,7 @@ import {familyVersions} from '../blueprint-versions.mjs';
 import {powerFiveLayout} from './power.mjs';
 import {starterBounds} from '../science-factory/local-ports/compact-shared-layout.mjs';
 
-export const RAW=process.env.FACTORIO_RAW||'/Users/nagkumar/worktrees/factorio-blueprint-port-redesign/factorio-command-center/.cache/solar-native-audit/run-20261112T233408405Z/script-output/data-raw-dump.json';
+export const RAW=process.env.FACTORIO_RAW||'/Users/nagkumar/clawd/workspaces/.claude/tmp-robot-requester-product/dump/write/script-output/data-raw-dump.json';
 const bytes=await fs.readFile(RAW),raw=JSON.parse(bytes),sha=s=>createHash('sha256').update(s).digest('hex');
 const id='robot-essentials';
 const OUT=process.env.RE_OUT||'blueprint-sources/'+id;
@@ -29,18 +29,23 @@ const options={rear:false,acid:'west',gearArms:2,cornerChest:true,...JSON.parse(
 // would lower the measured rates. supplyGate:false rebuilds the earlier free-running timer,
 // machine order and reserves.
 const supplyGate=options.supplyGate===false?null:{base:8,boost:1,...options.supplyGate,thresholds:options.supplyGate?.thresholds||{'plastic-bar':18,'copper-plate':20,'steel-plate':16,'iron-gear-wheel':10,'advanced-circuit':8,battery:6,'electric-engine-unit':3}};
-const nominal={'construction-robot':0.98,'logistic-robot':0.975,roboport:1.012,'storage-chest':0.985,'passive-provider-chest':0.985,...options.nominal};
+const nominal={'construction-robot':0.98,'logistic-robot':0.975,roboport:1.012,'storage-chest':0.985,'passive-provider-chest':0.985,'requester-chest':0.985,...options.nominal};
 
 // ---------------------------------------------------------------- targets
-const targets={'construction-robot':5,'logistic-robot':5,roboport:0.5,'storage-chest':2,'passive-provider-chest':2};
+// The requester chest (entity requester-chest) is the sixth product. The collector's dynamic filters hold at most five items
+// (every inserter in the prototype dump has filter_count 5), so the requester chest does not ride the ring: its machine stands
+// beside the output chest and a circuit-gated inserter between the two puts it straight into the chest.
+const targets={'construction-robot':5,'logistic-robot':5,roboport:0.5,'storage-chest':2,'passive-provider-chest':2,'requester-chest':2};
 const products=Object.keys(targets);
 // Output chest caps: one full stack of each product (stack sizes in the prototype dump: robots 50, roboport 10,
 // chests 50). The earlier twenty-robot string (history/twenty-robot-caps) is RE_OPTIONS='{"caps":{"construction-robot":20,
 // "logistic-robot":20,"roboport":2,"storage-chest":10,"passive-provider-chest":10},"protocol":{"blockedMinutes":8,
 // "selectiveSettleMinutes":5}}'.
-const caps={'construction-robot':50,'logistic-robot':50,roboport:10,'storage-chest':50,'passive-provider-chest':50,...options.caps};
-const capText=products=>products.map(p=>caps[p]+' '+(p==='construction-robot'?'construction robots':p==='logistic-robot'?'logistic robots':p==='roboport'?'roboports':p==='storage-chest'?'storage chests':'passive provider chests')).join(', ');
-const headroom={'construction-robot':1.05,'logistic-robot':1.08,roboport:1.15,'storage-chest':1.1,'passive-provider-chest':1.1,...options.headroom};
+const caps={'construction-robot':50,'logistic-robot':50,roboport:10,'storage-chest':50,'passive-provider-chest':50,'requester-chest':50,...options.caps};
+const ringProducts=products.filter(p=>p!=='requester-chest');
+if(!options.caps)for(const p of products)assert.equal(caps[p],raw.item[p].stack_size,'cap is not one full stack: '+p);
+const capText=products=>products.map(p=>caps[p]+' '+(p==='construction-robot'?'construction robots':p==='logistic-robot'?'logistic robots':p==='roboport'?'roboports':p==='storage-chest'?'storage chests':p==='requester-chest'?'requester chests':'passive provider chests')).join(', ');
+const headroom={'construction-robot':1.05,'logistic-robot':1.08,roboport:1.15,'storage-chest':1.1,'passive-provider-chest':1.1,'requester-chest':1.1,...options.headroom};
 // Free-running timer: one unit per tick. Two-speed clock: `base` or `base+boost` units per tick.
 const periodTicks=Object.fromEntries(products.map(p=>[p,Math.floor(3600/(targets[p]*headroom[p]))]));
 const periodUnits=supplyGate?Object.fromEntries(products.map(p=>[p,Math.floor(3600*supplyGate.base/(targets[p]*nominal[p]))])):periodTicks;
@@ -132,7 +137,9 @@ const cond=(item,comparator,constant)=>({circuit_enabled:true,circuit_condition:
 // ---------------------------------------------------------------- geometry
 // Ring: top belt y=0 east, east column x=EAST south, bottom belt y=6 west,
 // west column x=0 north. Machine slots are three tiles wide at x=3k-2..3k.
-const EAST=31,TOP=0,BOTTOM=6,slotX=k=>3*k-1;
+// EAST is four columns further than the five-product design (31): the requester chest machine and its output inserter stand
+// between the last advanced-circuit machine and the output chest.
+const EAST=35,TOP=0,BOTTOM=6,slotX=k=>3*k-1;
 const loop=[];
 for(let x=0;x<EAST;x++)loop.push(belt(x,TOP,4));
 loop.push(belt(EAST,TOP,8));
@@ -183,6 +190,11 @@ topRecipes.forEach((recipe,i)=>{
   else arm(cx,-1,8,filters(['plastic-bar','copper-cable']));
  }
 });
+
+// REQUESTER CHEST machine: last on the top row, one filtered arm for its three ingredients; its output inserter (placed beside the chest
+// below) hands the product straight to the chest.
+assert(options.cornerChest===true&&!rear,'the requester chest machine needs the corner chest layout');
+{const cx=slotX(topRecipes.length+1);machine('requester-chest',cx,-3);arm(cx-1,-1,8,filters(['steel-chest','electronic-circuit','advanced-circuit']));assert.equal(cx+2,EAST-1,'output inserter column');}
 
 // INSIDE ROW (y 2..4): picks from the top belt (arms y=1), drops on the bottom belt (arms y=5).
 const inside=[['flying-robot-frame',2],['flying-robot-frame',5],['bay',8],['flying-robot-frame',11],['flying-robot-frame',14],['flying-robot-frame',17],['construction-robot',20],['logistic-robot',23],['bay',26],['storage-chest',29]];
@@ -260,6 +272,7 @@ for(const a of pipes['sulfuric-acid'])for(const b of pipes.lubricant)assert(Math
 // east of the ring disappear and their combinators move into empty tiles inside.
 const cornerChest=options.cornerChest===true;
 const chest=cornerChest?add('passive-provider-chest',EAST,-2):add('passive-provider-chest',EAST+2,3);
+productArms['requester-chest']=arm(EAST-1,-2,12);
 const collector=arm(cornerChest?EAST:EAST+1,cornerChest?-1:3,cornerChest?8:12,{use_filters:true,control_behavior:{circuit_set_filters:true,circuit_read_hand_contents:true,circuit_hand_read_mode:1,input_networks:{red:true,green:false},output_networks:{red:false,green:true}}});
 
 // ---------------------------------------------------------------- combinator slots
@@ -270,7 +283,10 @@ const vslot=(x,y)=>slots.push({x:x+.5,y:y+1,direction:0,cells:[[x,y],[x,y+1]]});
 for(const[recipe,cx]of inside)if(recipe!=='bay')hslot(cx-1,5);
 for(const bx of [7,25]){vslot(bx,1);vslot(bx+1,1);vslot(bx+2,1);vslot(bx+2,3);hslot(bx,5);}
 for(let x=10;x<=29;x+=2)hslot(x,11);
-if(cornerChest){vslot(EAST,-4);vslot(EAST,7);vslot(EAST,9);hslot(EAST-1,11);}
+if(cornerChest){vslot(EAST,-4);vslot(EAST,7);vslot(EAST,9);hslot(EAST-1,11);
+ // The four columns the requester chest added: the free ground inside the ring and below the bottom belt, beside the output chest.
+ for(const y of [1,2,5,7,8,9,10,11])for(const x of [31,33])hslot(x,y);
+ vslot(31,3);vslot(34,3);} // rows 3 and 4 around x=32..33 stay free for the east substation bay
 else for(let y=acidWest?-4:-5;y<=11;y++)if(y!==3)hslot(EAST+1,y);
 if(rear)for(const x of [12,15,18,21,24,27])hslot(x,-5);
 else if(!acidWest)for(let x=8;x<=30;x+=2)hslot(x,-5);
@@ -296,27 +312,30 @@ const one=signal=>({signal,copy_count_from_input:false,constant:1});
 const networks={ring:{color:'red',nodes:ringNodes}};
 const net=(name,color,...nodes)=>{(networks[name]??={color,nodes:[]}).nodes.push(...nodes);};
 
-// Collector: five deciders, product in chest+hand < cap -> product filter.
+// Collector: five deciders (the ring-borne products), product in chest+hand < cap -> product filter.
 net('chest','green',{entity:chest,connector:2},{entity:collector,connector:2});
 net('filters','red',{entity:collector,connector:1});
 const stockDeciders={};
-for(const item of products){
+for(const item of ringProducts){
  const d=decider(chest.position,[c(sig(item),'<',caps[item])],[one(sig(item))],{stock_control:true});
  stockDeciders[item]=d.entity_number;net('chest','green',{entity:d,connector:2});net('filters','red',{entity:d,connector:3});
 }
 
 // Production tokens (latched): timer -> per-product modulo -> latch holds a
 // token from each period start until the output arm holds the product.
-const tokenSignals=['signal-K','signal-L','signal-M','signal-N','signal-O'],resetSignals=['signal-U','signal-V','signal-W','signal-Y','signal-Z'];
+const tokenSignals=['signal-K','signal-L','signal-M','signal-N','signal-O','signal-H'],resetSignals=['signal-U','signal-V','signal-W','signal-Y','signal-Z','signal-X'];
 const robotTokens={},moduloEntities={};
 const tokenParts=[];
 products.forEach((item,i)=>{
  const out=productArms[item];assert(out,item);
  const token=virtual(tokenSignals[i]),reset=virtual(resetSignals[i]);
- const permission=decider(out.position,[c(sig(item),'<',limits[item]),c(token,'>',0,'and'),c(reset,'>',0,'or')],[one(virtual('signal-G'))]);
+ // The requester chest never rides the ring: its decider reads the chest's own red counts (stock below the cap) instead of the ring's.
+ const direct=item==='requester-chest';
+ const permission=decider(out.position,[c(sig(item),'<',direct?caps[item]:limits[item]),c(token,'>',0,'and'),c(reset,'>',0,'or')],[one(virtual('signal-G'))]);
  const handReset=arithmetic(out.position,sig(item),'*',1,reset);
  out.control_behavior={circuit_enabled:true,circuit_read_hand_contents:true,circuit_hand_read_mode:1,circuit_condition:{first_signal:virtual('signal-G'),comparator:'>',constant:0}};
- net('ring','red',{entity:permission,connector:1});
+ if(direct)net('chest-red','red',{entity:chest,connector:1},{entity:permission,connector:1});
+ else net('ring','red',{entity:permission,connector:1});
  net('permission-'+item,'red',{entity:permission,connector:3},{entity:out,connector:1});
  net('hand-'+item,'green',{entity:out,connector:2},{entity:handReset,connector:2});
  net('bus','green',{entity:permission,connector:2},{entity:handReset,connector:4});
@@ -324,7 +343,7 @@ products.forEach((item,i)=>{
 });
 // Latches, modulo combinators and the timer sit together on the south row so
 // the timer wire stays short; the token bus reaches the arm-side deciders.
-const tokenAnchor={x:21,y:11.5,...options.tokenAnchor};
+const tokenAnchor={x:27,y:11.5,...options.tokenAnchor};
 for(const t of tokenParts){
  const signal=virtual('signal-'+String.fromCharCode(65+t.i));
  // Two-speed clock: the timer moves 8 or 9 units a tick, so a period start is the one or two
@@ -381,14 +400,14 @@ for(const[name,n]of Object.entries(networks)){
 // ---------------------------------------------------------------- power
 ports.push({kind:'power',items:[],entity:0,x:0,y:0});
 const preBounds=starterBounds(entities,{...raw,container:{...raw.container,...raw['logistic-container']},'arithmetic-combinator':{...raw['arithmetic-combinator'],...raw['decider-combinator']}});
-const bays=[[8,4],[26,4]];
+const bays=[[8,4],[26,4],[33,4]];
 const layout={entities,wires,next,place,allowPole:e=>e.name==='substation'&&bays.some(([x,y])=>e.position.x===x&&e.position.y===y)};
 powerFiveLayout(layout,ports,raw);next=layout.next;
 for(const e of entities)e.tags={...e.tags,flight_science_entity:e.entity_number};
 
 // ---------------------------------------------------------------- blueprint and manifest
-const label='Robot essentials · 5/5/0.5/2/2 per minute';
-const description='Factorio 2.1.24 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps '+capText(products)+'. Preserve the red ring wires (per-tile hold readers), the green chest and token wires, filters and caps. '+(options.oldPowerWording?'Supply electricity at the marked substation.':'Supply electricity at either substation; the two are wired together.');
+const label='Robot essentials · 5/5/0.5/2/2/2 per minute';
+const description='Factorio 2.1.25 Space Age, normal quality: AM2 and chemical plants, no modules, red belts, fast/bulk inserters. WEST entrances: electronic circuits, iron, copper, steel, plastic (belts) and sulfuric acid, lubricant (pipes). EAST: one passive provider chest with independent caps '+capText(products)+' (the requester chests come straight from their own machine beside it through a gated inserter). Preserve the red ring wires (per-tile hold readers), the green and red chest wires, the token wires, filters and caps. '+(options.oldPowerWording?'Supply electricity at the marked substation.':'Supply electricity at either substation; the two are wired together.');
 const bp={item:'blueprint',version:562954249961472,label,description,entities,wires,icons:products.slice(0,4).map((name,i)=>({index:i+1,signal:{type:'item',name}}))};
 // Keep the committed string when it decodes to exactly this blueprint (another zlib build may compress the same
 // JSON differently), so its SHA-256 and native report stay valid everywhere.
@@ -416,7 +435,7 @@ const manifest={
  machineCounts,footprint,
  areaGoal:{goalTiles:760,stretchTiles:703,achievedTiles:footprint.width*footprint.height},
  loopControl:[{name:id,reader:loop[0].entity_number,readerMode:'per-tile-hold',loop:loop.map(e=>e.entity_number),controlled,reserves:reserveArms,gates:gates.map(e=>e.entity_number),limits,capacity,maximumStock}],
- stockControl:{mode:'dynamic-filter',collector:collector.entity_number,chest:chest.entity_number,caps,deciders:stockDeciders},
+ stockControl:{mode:'dynamic-filter (an inserter holds at most five filters, so five products); the requester chest is capped by its own gated inserter',collector:collector.entity_number,chest:chest.entity_number,caps,deciders:stockDeciders,directProducts:{'requester-chest':{inserter:productArms['requester-chest'].entity_number,cap:caps['requester-chest'],permission:robotTokens['requester-chest'].permission}}},
  productionClock:supplyGate?{timer:timer.entity_number,moduloEntities,robotTokens,periodUnits,unitsPerTick:{nominal:supplyGate.base,boosted:supplyGate.base+supplyGate.boost},nominal,
   tokensPerMinute:Object.fromEntries(products.map(p=>[p,{nominal:Math.round(3600*supplyGate.base/periodUnits[p]*1000)/1000,boosted:Math.round(3600*(supplyGate.base+supplyGate.boost)/periodUnits[p]*1000)/1000}])),
   supplyGate:{entity:supplyDecider.entity_number,signal:'signal-T',boost:supplyGate.boost,thresholds:supplyGate.thresholds}}
@@ -424,20 +443,23 @@ const manifest={
  protocol,
  construction:Object.fromEntries([...new Set(entities.map(e=>e.name))].sort().map(n=>[n,entities.filter(e=>e.name===n).length])),
  setupNotes:[description,
-  'Supplied electronic circuits: 145 per minute at the nominal target, one green-circuits copy (360 per minute) covers it.',
-  ...(supplyGate?['The entrance panels are the supply to plan for. Fed at exactly the panel figures the workshop makes about 4.9 construction robots, 4.9 logistic robots, 0.5 roboports and 2.0 of each chest per minute (token pace '+products.map(p=>Math.round(3600*supplyGate.base/periodUnits[p]*100)/100).join(' / ')+'), all above the 95% floors; panel-supply-report.json is that full-protocol run. With more supply than the panels a boost of one eighth switches on while the ring is well stocked: about 5.5 / 5.5 / 0.57 / 2.2 / 2.2 per minute from roughly 1.25 times the panel figures upward (about 165 electronic circuits, 120 iron, 107 copper, 85 steel, 84 plastic, 450 sulfuric acid and 169 lubricant per minute when every entrance is saturated). Below the panel figures the roboport falls short first.']
-   :['Plan supply above the entrance panels: the panel figures are recipe totals at the targets, but the production tokens run the products 5 to 15% above target, so the measured draw is about 163 electronic circuits, 121 iron, 107 copper, 86 steel and 85 plastic per minute (about 15% above the panels) and about 442 sulfuric acid and 165 lubricant per minute (about 10% above theirs). Fed at exactly the panel figures, logistic robots fall to about 1 per minute, because steel reaches the engine machines last; 1.10x still fails and 1.15x (the measured draw) passes (exploration measurement, not the published protocol).']),
-  'Leave the shared chest unrestricted (no bar). Caps ('+capText(products)+') live in the five filter deciders next to the chest; the chest has 48 slots and the five products at their caps fill five.',
-  'The ring holds at most the stock limits in loopControl; do not remove the red wires from ring tiles or the entrance belts, which are circuit-gated.'],
+  'Supplied electronic circuits: '+required['electronic-circuit']+' per minute at the nominal target, one green-circuits copy (360 per minute) covers it.',
+  ...(supplyGate?['The entrance panels are the supply to plan for. Fed at exactly the panel figures the workshop makes about 4.9 construction robots, 4.9 logistic robots, 0.5 roboports and 2.0 of each of the three chests per minute (token pace '+products.map(p=>Math.round(3600*supplyGate.base/periodUnits[p]*100)/100).join(' / ')+'), all above the 95% floors; panel-supply-report.json is that full-protocol run. With more supply than the panels a boost of one eighth switches on while the ring is well stocked; with saturated entrances the full protocol measured 5.53 / 5.47 / 0.53 / 2.2 / 2.2 / 2.2 per minute and drew about 176 electronic circuits, 120 iron, 110 copper, 101 steel, 88 plastic, 450 sulfuric acid and 169 lubricant per minute. Below the panel figures the roboport falls short first. The supply level at which the boost starts (about 1.25 times the panel figures) was measured for the five-product string and has not been measured again.']
+   :['Plan supply above the entrance panels: the panel figures are recipe totals at the targets, but the production tokens run the products 5 to 15% above target, so the measured draw is about 15% above the panels; this note belongs to the free-running clock of the earlier strings.']),
+  'Leave the shared chest unrestricted (no bar). Caps ('+capText(products)+'): the first five live in the five filter deciders next to the chest, the requester chests in the permission decider of the inserter that fills the chest from its machine; the chest has 48 slots and the six products at their caps fill six.',
+  'The ring holds at most the stock limits in loopControl; do not remove the red wires from ring tiles or the entrance belts, which are circuit-gated. The requester chest machine hands its product to the chest through the inserter at the chest\u2019s west side; keep that inserter and its red and green wires.'],
  greenCircuitSupply:{perMinute:required['electronic-circuit'],copiesOfGreenCircuits:Math.ceil(required['electronic-circuit']/360)},
 };
 await fs.mkdir(OUT,{recursive:true});
 await fs.writeFile(OUT+'/'+id+'.txt',code+'\n');
-// Tested versions, newest first (scripts/blueprint-versions.mjs): the full-stack string and the twenty-robot string it
-// replaced, kept complete in history/ with its own passing reports. Only for the published string when the folder holds both.
-const olderDir='history/twenty-robot-caps',hasOlder=await fs.access(OUT+'/'+olderDir+'/manifest.json').then(()=>true,()=>false);
+// Tested versions, newest first (scripts/blueprint-versions.mjs): this six-product string, the five-product full-stack string it
+// replaced and the twenty-robot string before that, each kept complete in history/ with its own passing reports. Only for the
+// published string when the folder holds both older ones.
+const olderDir='history/twenty-robot-caps',fiveDir='history/five-products-full-stack';
+const hasOlder=await Promise.all([olderDir,fiveDir].map(d=>fs.access(OUT+'/'+d+'/manifest.json').then(()=>true,()=>false))).then(a=>a.every(Boolean));
 if(status==='qualified'&&hasOlder&&!options.caps)manifest.versions=await familyVersions(OUT,[
- {label:'Full-stack caps',summary:'The chest holds one full stack of each product: 50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests and 50 passive provider chests before the collector stops taking that product.',file:id+'.txt',width:footprint.width,height:footprint.height,report:'native-report.json'},
- {label:'Twenty-robot caps',summary:'The earlier string: the chest stops at 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests and 10 passive provider chests. Same layout, machines and rates.',file:olderDir+'/'+id+'.txt',manifest:olderDir+'/manifest.json',report:olderDir+'/native-report.json'}]);
+ {label:'Requester chests',summary:'Adds the requester chest as a sixth product, two a minute, into the same output chest (one full stack of 50). Its machine stands beside the chest and a gated inserter fills it; the footprint grows by four columns.',file:id+'.txt',width:footprint.width,height:footprint.height,report:'native-report.json'},
+ {label:'Full-stack caps',summary:'The earlier string with five products: the chest holds one full stack of each (50 construction robots, 50 logistic robots, 10 roboports, 50 storage chests and 50 passive provider chests) before the collector stops taking that product.',file:fiveDir+'/'+id+'.txt',manifest:fiveDir+'/manifest.json',report:fiveDir+'/native-report.json'},
+ {label:'Twenty-robot caps',summary:'The oldest string: the chest stops at 20 construction robots, 20 logistic robots, 2 roboports, 10 storage chests and 10 passive provider chests. Same layout, machines and rates as the five-product string.',file:olderDir+'/'+id+'.txt',manifest:olderDir+'/manifest.json',report:olderDir+'/native-report.json'}]);
 await fs.writeFile(OUT+'/manifest.json',JSON.stringify([manifest],null,2)+'\n');
 console.log(JSON.stringify({id,out:OUT,footprint,area:footprint.width*footprint.height,machines:Object.values(machineCounts).reduce((a,b)=>a+b,0),entities:entities.length,required,blueprintSha256:manifest.blueprintSha256,maximumStock,capacity}));

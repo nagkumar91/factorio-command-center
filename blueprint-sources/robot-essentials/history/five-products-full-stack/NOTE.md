@@ -1,0 +1,7 @@
+# five-products-full-stack (qualified, superseded by the requester chest string)
+
+The 22 November string with five products (construction robots, logistic robots, roboports, storage chests, passive provider chests) and one full stack of each in the output chest (50 / 50 / 10 / 50 / 50). 33 x 16 = 528 tiles, 28 machines, SHA-256 `e8d154c9...46e6`.
+
+- Evidence: `native-report.json` (saturated entrances) and `panel-supply-report.json` (every entrance at exactly its panel figure) are the full-protocol reports for this exact string (`passed: true`): steady 5.53 / 5.5 / 0.6 / 2.2 / 2.2 saturated and 4.9 / 4.9 / 0.5 / 2.0 / 2.0 at the panels. They ran on Factorio 2.1.24 with the prototype dump named in `manifest.json`; the current harness, validator and prototype dump are the 2.1.25 ones, so those hashes inside the reports do not match the scripts as they are now.
+- Why superseded: the user asked for the requester chest as a sixth product (built 26 November 2026). The current string adds it and keeps every entrance, the entrance order and the output chest on the east edge; it is four columns wider (37 x 16 = 592 tiles, one more machine, a third substation). Both versions stay selectable (`versions` in the family manifest).
+- Reproduce: the five-product string was written by the generator as it stood before the requester chest change (git history of `scripts/robot-essentials/generate.mjs`, no option rebuilds it).
