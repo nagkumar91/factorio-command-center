@@ -53,7 +53,7 @@ export function auditBlueprint(object, m, p) {
     const okFrom = a.from ? from?.entity_number === a.from : from && (from.name === 'fast-transport-belt' || from.name.endsWith('chest'));
     const okTo = a.to ? to?.entity_number === a.to : to && (to.name === 'fast-transport-belt' || to.name.endsWith('chest') || ['assembling-machine-3', 'foundry', 'electric-furnace'].includes(to.name));
     if (!okFrom || !okTo) armFaults.push({ arm: a.entity, role: a.role, from: from?.name, to: to?.name });
-    if (/ring feed|switching output|to ring/.test(a.role) && !(to && ringSet.has(to.entity_number))) armFaults.push({ arm: a.entity, role: a.role, drop: 'not the ring' });
+    if (/ring feed|switching output$|to ring/.test(a.role) && !(to && ringSet.has(to.entity_number))) armFaults.push({ arm: a.entity, role: a.role, drop: 'not the ring' });
     if (/ring input|switching input|silo input/.test(a.role) && !(from && ringSet.has(from.entity_number))) armFaults.push({ arm: a.entity, role: a.role, pickup: 'not the ring' });
   }
   check('Every arm picks up and drops where its role says', armFaults.length === 0, armFaults.slice(0, 8));
@@ -155,7 +155,19 @@ export function auditBlueprint(object, m, p) {
   check('Every stock has exactly one chest; only fast inserters are in two (kit chest and inserter chest)', m.stock.length === products.length && m.stock.every(s => m.outputs.find(o => o.id === s.output)?.chest === s.chest && m.outputs.find(o => o.id === s.output).items.includes(s.item)) && m.outputs.flatMap(o => o.items).length === products.length && JSON.stringify(m.stock.filter(s => s.item === 'fast-inserter').map(s => s.output)) === '["OUT-2","OUT-4"]');
   check('The kit chest reaches the control net only through its pass (fast inserters masked) and its own count Q', netOf.get(`${m.outputs[1].chest}:2`) === 'KIT-CHEST' && netOf.get(`${m.kitChest.pass}:2`) === 'KIT-CHEST' && netOf.get(`${m.kitChest.pass}:4`) === 'GREEN' && netOf.get(`${m.kitChest.need}:2`) === 'KIT-CHEST' && netOf.get(`${m.kitChest.need}:4`) === 'GREEN' && get(m.kitChest.mask).control_behavior.sections.sections[0].filters.map(f => f.name).join() === 'fast-inserter');
   check('Every chest list names exactly its declared products', m.outputs.filter(o => o.list).every(o => JSON.stringify(get(o.list).control_behavior.sections.sections[0].filters.map(f => f.name).sort()) === JSON.stringify([...o.items].sort())));
-  check('Output chests are passive providers; the only other chest is the brick stock', m.outputs.every(o => get(o.chest).name === 'passive-provider-chest') && count('passive-provider-chest') === m.outputs.length && count('steel-chest') === 1 && get(m.brickChest.entity).bar === m.brickChest.stacks);
+  check('Output chests are passive providers; the only other chests are the brick stock and the belt foundry\'s buffer', m.outputs.every(o => get(o.chest).name === 'passive-provider-chest') && count('passive-provider-chest') === m.outputs.length && count('steel-chest') === 2 && get(m.brickChest.entity).bar === m.brickChest.stacks && get(m.buffer?.chest)?.name === 'steel-chest');
+  // Everything that leaves the belt foundry goes through the buffer chest, and comes out only while the ring has room
+  // for that item. (Without it the foundry hands a part-loaded recipe back to the ring all at once; the lane fills,
+  // the foundry cannot be emptied, and a foundry that cannot be emptied takes no new recipe.)
+  check('Belt foundry buffer: its only output arm drops into the chest, the chest arm drops on the ring, every item the foundry can hold has a limit', (() => {
+    if (!m.buffer) return false;
+    const limits = get(m.buffer.limits).control_behavior.sections.sections[0].filters, u2Rules = m.rules.filter(r => r.machine === 'U2').map(r => r.recipe);
+    const u2Items = new Set(u2Rules.flatMap(r => [...p.recipes[r].ingredients.filter(v => v.type === 'item').map(v => v.name), ...p.recipes[r].results.map(v => v.name)]));
+    const out = m.arms.filter(a => a.from === m.controllers.U2.machine), back = get(m.buffer.arm), c = get(m.buffer.filter).control_behavior.decider_conditions.conditions;
+    return out.length === 1 && out[0].to === m.buffer.chest && at(contact(back, p, 'pickup'))?.entity_number === m.buffer.chest && ringSet.has(at(contact(back, p, 'drop'))?.entity_number) && back.control_behavior.circuit_set_filters === true
+      && [...u2Items].every(n => limits.find(l => l.name === n)?.count < 0) && netOf.get(`${m.buffer.chest}:2`) === 'BUFFER-CHEST' && netOf.get(`${m.buffer.filter}:2`) === 'BUFFER-CHEST' && netOf.get(`${m.buffer.filter}:1`) === 'BUFFER-ROOM' && netOf.get(`${m.buffer.filter}:3`) === 'BUFFER-FILTER' && netOf.get(`${m.buffer.arm}:1`) === 'BUFFER-FILTER'
+      && netOf.get(`${m.buffer.chestCopy}:3`) === 'LOOSE' && netOf.get(`${m.buffer.handCopy}:3`) === 'LOOSE' && c.length === 2 && c[0].comparator === '>' && c[1].comparator === '<';
+  })());
 
   // ---- labels
   const labelled = id => { const e = get(id); return e?.name === 'display-panel' && e.always_show && e.text?.length > 3 && e.icon; };

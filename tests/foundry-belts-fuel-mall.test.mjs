@@ -158,7 +158,7 @@ test('stored native report: for exactly this string, every scenario passed', { s
   assert.equal(report.passed, true);
   assert.equal(report.gameVersion, '2.1.25');
   assert.deepEqual(Object.keys(report.scenarios).sort(), [...QUALIFICATION].sort());
-  const full = ['fill', 'rate', ...FUEL_SCENARIOS];
+  const full = ['fill', 'rate', ...FUEL_SCENARIOS, ...QUALIFICATION.filter(n => n.endsWith(':full'))];
   for (const n of QUALIFICATION) { const s = report.scenarios[n]; assert.equal(s.passed, true, n); assert.equal(s.blueprintSha256, manifest.candidateSha256, n); assert.equal(s.surface, 'vulcanus'); assert.equal(s.capsName, full.includes(n) ? 'full' : 'reduced', n); }
   const fill = report.scenarios.fill.phases[0];
   assert.deepEqual(fill.caps, manifest.caps, 'the fill ran at the published caps');
@@ -177,6 +177,8 @@ test('stored native report: for exactly this string, every scenario passed', { s
     for (const v of manifest.products) if (!report.dependents[input].includes(v.key)) assert.equal(withheld.stock[v.key], withheld.caps[v.key], `${v.key} fills without ${input}`);
   }
   for (const input of ['coal', 'sulfuric-acid', 'calcite-fuel']) assert.deepEqual(report.dependents[input], [FUEL]);
+  // hand-back: express belts are refilled with tungsten carbide still cut, at both cap sets
+  for (const n of PROTOCOL.handbackScenarios) { const ph = report.scenarios[n].phases; assert.equal(ph[2].endedBy, 'caps', n); assert.equal(ph[3].endedBy, 'caps', n); assert.notEqual(ph[3].holding.U2.recipe, 'none', n); }
   assert.deepEqual(report.dependents.water.sort(), ['foundry', FUEL].sort());
   for (const input of ['lava', 'calcite']) assert(!report.dependents[input].includes(FUEL));
 });

@@ -35,6 +35,9 @@ export const RING_RULE_CAPS = Object.freeze({
   'transport-belt': 12, 'underground-belt': 6, splitter: 3, 'fast-transport-belt': 6, 'fast-underground-belt': 6, 'fast-splitter': 3, inserter: 8, 'fast-inserter': 6, 'steel-chest': 1,
 });
 export const BRICK_STACKS = 5;
+// What leaves the belt foundry goes into a buffer chest; its arm puts an item on the ring only while the ring holds
+// fewer than that item's limit (finished products: FINAL_ON_RING).
+export const FINAL_ON_RING = 8;
 export const TANK_READY = 500;          // a fluid counts as present while its tank holds at least this much
 export const STALL = Object.freeze({ 'assembling-machine-3': 10800, 'rocket-silo': 7200, U1: 54000, U2: 18000 });  // ticks without progress before a dedicated final stops holding its level, or a switching machine gives up a recipe it cannot start
 export const LEVEL_HOLD = 7200;   // ticks a lower level must last before the level in force drops to it
@@ -235,7 +238,14 @@ export function design(p, kit, options = {}) {
   const u2 = machine('foundry', 7, 12, 'U2', { direction: E, control_behavior: { set_recipe: true, read_contents: true, read_working: true, working_signal: virtual('signal-W'), read_recipe_finished: true, recipe_finished_signal: virtual('signal-P') } }, { switching: true });
   const u2Shadow = machine('assembling-machine-3', 13, 6, 'U2-shadow', { control_behavior: { set_recipe: true, read_ingredients: true } }, { shadow: true });
   const u2In = [7, 8, 9].map(x => arm('bulk-inserter', x, 11, N, 'switching input', { blacklist: true, setFilters: true, to: u2.entity_number }));
-  const u2Out = [10, 11].map(x => arm('bulk-inserter', x, 11, S, 'switching output', { from: u2.entity_number, hand: true }));
+  // Everything that leaves the belt foundry goes into a buffer chest first (west of it), and from there onto the ring
+  // item by item while the ring has room for that item. Measured without the chest (string b9243fa7): with tungsten
+  // carbide cut, the foundry stood part-loaded with the foundry recipe; when express belts were taken it gave the
+  // recipe up and handed about 150 ingredients back to a ring that had been refilled meanwhile, the lane filled, its
+  // arms could not empty it, and a foundry that cannot be emptied takes no new recipe: it stood for good.
+  const u2Buffer = add('steel-chest', 5, 12);
+  const u2Out = [arm('bulk-inserter', 6, 12, E, 'switching output to buffer', { from: u2.entity_number, to: u2Buffer.entity_number, hand: true })];
+  const bufferArm = arm('bulk-inserter', 5, 11, S, 'buffer to ring', { setFilters: true, hand: 'HANDS', from: u2Buffer.entity_number });
   // output chests: AM3, kit, [silo], express, inserters, drill + foundry
   const CHESTS = [
     { id: 'OUT-1', x: 12, label: 'OUT: assembling machine 3', icon: 'assembling-machine-3', items: ['assembling-machine-3'] },
@@ -458,7 +468,7 @@ export function design(p, kit, options = {}) {
   }
   const controllers = {
     U1: controller('U1', u1, u1Shadow, u1In, u1Out, { hands: [25, 1, false], gate: [18, 6, true], park: [17, 6, true], take: [25, 8, false], hold: [25, 6, true], timer: [22, 6, false], boot: [27, 6, true], delay: [25, 5, false], diode: [23, 5, false], copy: [21, 5, false], pending: [16, 6, true], negate: [26, 6, true], limiter: [24, 6, true] }),
-    U2: controller('U2', u2, u2Shadow, u2In, u2Out, { hands: [7, 9, false], gate: [12, 5, false], park: [14, 5, false], take: [6, 5, false], hold: [4, 5, false], timer: [2, 5, false], boot: [0, 5, false], pending: [10, 5, false], diode: [3, 12, false], copy: [5, 12, false], delay: [0, 15, true], negate: [-1, 15, true], limiter: [2, 14, true] }),
+    U2: controller('U2', u2, u2Shadow, u2In, u2Out, { hands: [7, 9, false], gate: [12, 5, false], park: [14, 5, false], take: [6, 5, false], hold: [4, 5, false], timer: [2, 5, false], boot: [0, 5, false], pending: [10, 5, false], diode: [3, 12, false], copy: [2, 16, false], delay: [0, 15, true], negate: [-1, 15, true], limiter: [2, 14, true] }),
   };
 
   // assembling machine 3 (final): holds level 6 while its chest is short and it has crafted within the stall time
@@ -468,6 +478,21 @@ export function design(p, kit, options = {}) {
   join('GREEN', GREEN, am3Timer, 'in'); join('GREEN', GREEN, am3Flag, 'in'); join('ACT', GREEN, am3Flag, 'out');
   M.rules.push({ entity: am3Flag.entity_number, machine: 'flag', recipe: 'assembling-machine-3', group: 1, level: 6, weight: WEIGHT(6, 90), timer: am3Timer.entity_number, stallTicks: STALL['assembling-machine-3'] });
 
+  // the buffer chest's arm: its filter is every item that is in the chest and below its limit on the ring
+  const bufferLimits = { 'iron-plate': armCaps['iron-plate'], 'iron-gear-wheel': ruleCaps['iron-gear-wheel'], 'steel-plate': ruleCaps['steel-plate'], 'refined-concrete': ruleCaps['refined-concrete'],
+    ...Object.fromEntries(['electronic-circuit', 'advanced-circuit', 'tungsten-carbide'].map(n => [n, armCaps[n]])),
+    ...Object.fromEntries(['transport-belt', 'underground-belt', 'splitter', 'fast-transport-belt', 'fast-underground-belt', 'fast-splitter'].map(n => [n, ruleCaps[n]])), ...Object.fromEntries(['express-transport-belt', 'express-underground-belt', 'express-splitter', 'foundry'].map(n => [n, FINAL_ON_RING])) };
+  const copyCell = (x, y, vertical) => comb('arithmetic-combinator', x, y, vertical, { arithmetic_conditions: { first_signal: EACH, second_constant: 1, operation: '*', output_signal: EACH } });
+  const bufferRing = copyCell(2, 11, true), bufferCaps = constant(6, 11, Object.entries(bufferLimits).map(([n, k]) => [item(n), -k]));
+  const bufferFilter = decider(3, 11, false, [[atom(EACH, 'G', '>', 0), atom(EACH, 'R', '<', 0)]], [{ signal: EACH, copy_count_from_input: false, constant: 1 }]);
+  join('RING', RED, bufferRing, 'in'); join('BUFFER-ROOM', RED, bufferRing, 'out'); join('BUFFER-ROOM', RED, bufferCaps); join('BUFFER-ROOM', RED, bufferFilter, 'in');
+  join('BUFFER-CHEST', GREEN, u2Buffer); join('BUFFER-CHEST', GREEN, bufferFilter, 'in');
+  join('BUFFER-FILTER', RED, bufferFilter, 'out'); join('BUFFER-FILTER', RED, bufferArm);
+  // what lies in the chest and what its arm carries stay in sight of the rules (one copy each, like every other path)
+  const bufferChestCopy = copyCell(10, 11, false), bufferHandCopy = copyCell(1, 15, true);
+  join('BUFFER-CHEST', GREEN, bufferChestCopy, 'in'); join('LOOSE', RED, bufferChestCopy, 'out');
+  join('BUFFER-HAND', GREEN, bufferArm); join('BUFFER-HAND', GREEN, bufferHandCopy, 'in'); join('LOOSE', RED, bufferHandCopy, 'out');
+  relay(6, 16, 'LOOSE', RED);   // carries the loose-stock wire to the two cells in the south-west corner
   // south band controllers: fixed cells on rows 15..16
   const SOUTH = { negate: [12, 15, true], share: [13, 15, true], 'OUT-2': [14, 15, true], siloFilter: [15, 15, true], siloTimer: [16, 15, true], siloFlag: [19, 15, true], 'OUT-3': [20, 15, true], 'OUT-4': [21, 15, true], 'OUT-5': [24, 16, false] };
   // caps: one constant combinator (positive numbers), negated onto GREEN; signal-K is the cap of the kit chest's fast inserters
@@ -585,7 +610,7 @@ export function design(p, kit, options = {}) {
   for (const [name, limit] of Object.entries(armCaps)) { const a = M.arms.find(v => v.ringCap === name); laneOf[name] = insideLoop(entities[a.entity - 1]) ? 'outer' : 'inner'; laneLimits[laneOf[name]] += limit; }
   for (const [name, limit] of Object.entries(ruleCaps)) { const rule = RULES.find(v => !v.idle && p.recipes[v.r].results.some(x => x.name === name)); laneOf[name] = rule.m === 'U1' ? 'outer' : 'inner'; laneLimits[laneOf[name]] += limit; }
   const manifest = {
-    schema: 1, id: 'foundry-mall', revision: 2, candidateSha256: hash, requiredGameVersion: p.gameVersion, prototypeSha256: options.prototypeSha256, surface: 'vulcanus',
+    schema: 1, id: 'foundry-mall', revision: 3, candidateSha256: hash, requiredGameVersion: p.gameVersion, prototypeSha256: options.prototypeSha256, surface: 'vulcanus',
     intendedUse: 'on-demand mall on Vulcanus from lava and calcite: assembling machine 3, the white-pack platform kit, express belts, fast and bulk inserters, electric mining drills and foundries, each kept at its cap in passive provider chests, made in that order',
     groups: GROUP_NAMES.map((name, i) => ({ group: i + 1, name, level: LEVEL[i + 1], products: PRODUCTS.filter(v => v.group === i + 1).map(v => v.key) })),
     products: PRODUCTS, caps: CAPS, kitShare: KIT_SHARE, capSignals: Object.fromEntries(PRODUCTS.map(v => [v.key, capSignal(v).name])),
@@ -601,6 +626,7 @@ export function design(p, kit, options = {}) {
     fluids: { lava: lava.map(e => e.entity_number), 'molten-copper': copperPipes.map(e => e.entity_number), 'molten-iron': ironPipes.map(e => e.entity_number), water: [waterTank, ...waterPipes].map(e => e.entity_number), lubricant: [lubTank, ...lubPipes].map(e => e.entity_number), 'sulfuric-acid': acidPipes.map(e => e.entity_number) },
     tanks: { water: waterTank.entity_number, lubricant: lubTank.entity_number },
     pumps: [{ entity: copperPump.entity_number, fluid: 'molten-copper', from: moltenCopper.entity_number, to: steelFoundry.entity_number }, { entity: waterPump.entity_number, fluid: 'water', from: waterTank.entity_number, to: gearFoundry.entity_number }], brickChest: { entity: brickChest.entity_number, stacks: BRICK_STACKS },
+    buffer: { chest: u2Buffer.entity_number, arm: bufferArm.entity_number, feed: u2Out[0].entity_number, filter: bufferFilter.entity_number, limits: bufferCaps.entity_number, ringCopy: bufferRing.entity_number, chestCopy: bufferChestCopy.entity_number, handCopy: bufferHandCopy.entity_number, itemLimits: bufferLimits, finalOnRing: FINAL_ON_RING },
     silo: { machine: silo.entity_number, need: siloNeed, needs: siloNeeds.entity_number, filter: siloFilter.entity_number, timer: siloTimer.entity_number, arms: siloArms.map(a => a.entity_number) },
     casterCopies, idleRecipes: IDLE, idleWeight: IDLE_WEIGHT, realWeight: REAL_WEIGHT,
     levelHoldTicks: LEVEL_HOLD,

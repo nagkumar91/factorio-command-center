@@ -3,7 +3,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { box, scenarioSummary } from './lib.mjs';
-import { asciiMap, LEVEL_HOLD, STALL, BRICK_STACKS, TANK_READY } from './design.mjs';
+import { asciiMap, LEVEL_HOLD, STALL, BRICK_STACKS, TANK_READY, FINAL_ON_RING } from './design.mjs';
 
 const min = t => (t === undefined || t === null ? 'never' : (t / 3600).toFixed(1));
 const num = (v, d = 1) => (v === undefined || v === null ? '–' : (Math.round(v * 10 ** d) / 10 ** d).toString());
@@ -16,6 +16,8 @@ export async function loadExplorations(out) {
 }
 
 // The same fluid scenarios run on the string published before this one (written by validate.mjs --evidence).
+// The hand-back and outage scenarios run on the string published before this one (written by validate.mjs --evidence).
+export const BEFORE = { sha: 'b9243fa7ff6b0d164538d99c3d96d0315ed15feb018d74e40ab6da068f83134c', file: 'published-b9243fa7-handback-scenarios.json', upgrade: 'placed-over-b9243fa7.json' };
 export const EARLIER = { sha: '7977ee595dd543c191177381ddd3ad0867650e1227e8562379da6a043aa188ed', file: 'published-7977ee59-fluid-scenarios.json' };
 const FLUID_SCENARIOS = [
   ['ports', 'Port matrix: every recipe change of every recipe-switching foundry, with each network on its ports full or empty'],
@@ -32,6 +34,8 @@ const FLUID_SCENARIOS = [
 export async function render(d, audit, proven, p, report, out) {
   const m = d.manifest, b = m.footprint.bounds, bill = m.bill;
   const earlier = await fs.readFile(path.join(out, EARLIER.file), 'utf8').then(JSON.parse, () => null);
+  const before = await fs.readFile(path.join(out, BEFORE.file), 'utf8').then(JSON.parse, () => null);
+  const placedOver = await fs.readFile(path.join(out, BEFORE.upgrade), 'utf8').then(JSON.parse, () => null);
   const tile = pos => `(${Math.floor(pos.x) - b.left}, ${Math.floor(pos.y) - b.top})`;
   const explorations = await loadExplorations(out);
   const L = [];
@@ -67,6 +71,7 @@ export async function render(d, audit, proven, p, report, out) {
     `- **Casting core.** Two foundries make molten copper and molten iron from lava and calcite; pipes carry both to four casting foundries next to the ring. One casts iron plate. One casts steel or low density structures. One casts cable (handed straight to the two circuit machines) or copper plate. One casts gears, pipes, sticks, concrete or steel. The last three take their recipe from the circuit network.`,
     `- **Fluid ports.** In ${p.gameVersion} a recipe with one fluid ingredient uses both input ports of a foundry as one box, and when that recipe is taken away the game pushes what is left in the box back out through either port, into any pipe that will take it. An empty pipe takes anything. So no machine here has two ports of one kind on the pipes of two fluids. The two foundries that need a second fluid get it through a pump standing directly on that port, and a pump lets nothing back: molten copper for low density structures (pump at tile ${tile(d.blueprint.blueprint.entities[m.pumps[0].entity - 1].position)}, fed straight from one output port of the copper lava foundry; its other output port feeds the pipes of the cable foundry) and water for concrete (pump at tile ${tile(d.blueprint.blueprint.entities[m.pumps[1].entity - 1].position)}).`,
     `- **One ring** of ${m.ring.tiles} red belt tiles carries every intermediate and finished item. An arm that adds an item works only while the ring holds fewer than that item's limit; a recipe-switching machine is told to make an item only while the stock in sight is below its limit.`,
+    `- **The buffer chest.** Everything that leaves U2 goes into a steel chest first, and one arm puts it on the ring item by item while the ring holds fewer than that item's limit (finished products: ${FINAL_ON_RING}). When U2 gives up a part-loaded foundry recipe it hands back some 150 ingredients at once; put straight on the ring they filled the lane and U2 could never be emptied again (see the section on string \`${BEFORE.sha.slice(0, 8)}…\`). What lies in the chest still counts as stock for the rules.`,
     `- **Two universal machines.** U1 (assembling machine 3) makes ${m.rules.filter(r => r.machine === 'U1').map(r => r.recipe).filter((v, i, a) => a.indexOf(v) === i).length} recipes: the small kit items, inserters, drills and refined concrete. U2 (a foundry, lubricant on its fluid box) makes the three belt tiers and the foundry, with the foundry's +50% on each. One decider per recipe ("rule") says when that recipe is wanted and makeable; a selector picks the highest; the machine takes the recipe from the circuit. A never-fed shadow machine reads out the recipe's ingredients so the input arms load exactly one craft. A recipe is changed only on the tick a craft finishes or while the machine is parked.`,
     `- **Dedicated machines** for the high-volume chain: 2 electronic circuit, 4 advanced circuit, 2 speed module, processing unit, engine, electric engine, foundation, the assembling machine 1 → 2 → 3 line, the rocket silo (loads exactly one craft), a battery plant and the brick furnace.`,
     `- **List order.** Every rule and every dedicated final shows a weight on one network; the highest weight in force sets the level (6 = assembling machine 3 … 1 = foundry). Machines and recipes of a lower level are held while a higher level is in force. The level rises at once and falls only after ${LEVEL_HOLD / 60} s without a makeable product at that level.`,
@@ -115,6 +120,31 @@ export async function render(d, audit, proven, p, report, out) {
     L.push(`### Skip and return, one outside input withheld from a cold start (reduced caps)`, '', '| Withheld | Products that need it | Everything else at its cap after (min) | After it returned: all at cap after (min) |', '| --- | --- | ---: | ---: |');
     for (const input of INPUT_ORDER) { const s = S['skip:' + input]; if (!s) continue; const [a, r] = s.phases; L.push(`| ${input} | ${report.dependents[input].length === m.products.length ? 'all' : report.dependents[input].map(short).join(', ')} | ${a.mode === 'ticks' ? `nothing can be made (${min(a.ticks)} min, nothing made)` : min(a.ticks)} | ${min(r.ticks)} |`); }
     L.push('', `In the withheld phase the mall must hold every cap that does not need the input for two minutes while the dependent products stay short; then the input returns and every cap must be reached.`, '');
+    const handbackRow = (name, v) => { const ph = v.phases, last = ph.at(-1), mid = ph[2];
+      return [name.startsWith('outage') ? `${name.split(':')[1] === 'all' ? 'every input' : name.split(':')[1]} cut for ${name.split(':')[2]} minutes, every chest emptied` : `${ph[1]?.name.split(';')[0]}; then ${mid?.name.split(':')[0].replace(' still cut', ' still cut')}`, v.caps, v.passed ? 'passed' : 'FAILED',
+        name.startsWith('outage') ? '–' : mid ? (mid.endedBy === 'caps' ? `refilled after ${num(mid.minutes)} min` : mid.endedBy === 'ticks' ? `waited ${num(mid.minutes)} min` : `NOT refilled in ${num(mid.minutes)} min`) : '–',
+        last ? (last.endedBy === 'caps' ? `every cap reached ${num(last.minutes)} min after` : `NOT filled: ${last.productsShort} products short after ${num(last.minutes)} min`) : 'stopped',
+        last?.holding?.U2 ? `${last.holding.U2.recipe === 'none' ? 'no recipe' : last.holding.U2.recipe}, ${last.holding.U2.waiting} waiting to leave` : '–']; };
+    const handbackNames = [...(m.nativeProtocol.handbackScenarios || []), ...(m.nativeProtocol.outageScenarios || [])].filter(n => S[n]);
+    if (handbackNames.length) {
+      L.push('### Hand-back and outages', '',
+        `A universal machine that has loaded part of a recipe and cannot finish it drops the recipe after its give-up time when something of a higher rank is wanted, and hands back what it holds. Each hand-back row: a product is taken with an entrance cut, so the machine stands part-loaded; then a higher product is taken. Where the higher product does not need the cut entrance it must be refilled with the entrance still cut. Each outage row: every chest emptied and the entrance cut for twenty minutes, then a fill.`, '',
+        '| Scenario | Caps | Verdict | Higher product | After the entrance returned | U2 at the end |', '| --- | --- | --- | --- | --- | --- |');
+      for (const n of handbackNames) L.push(`| ${handbackRow(n, scenarioSummary(S[n])).join(' | ')} |`);
+      L.push('');
+    }
+    if (before) {
+      const B = before.scenarios, jam = B['handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt'], stuck = jam?.phases[2];
+      L.push(`### The string published before this one, \`${BEFORE.sha.slice(0, 8)}…\`, in the same scenarios`, '',
+        `That string had no buffer chest: U2's two output arms dropped straight onto the ring. **It jams when U2 drops a part-loaded foundry recipe.** The way there: tungsten carbide runs out while foundries are being made, so U2 stands with the carbide it could get, 50 steel, 30 circuits and 20 refined concrete; the ring is refilled to its limits meanwhile; then express belts, underground belts or splitters are wanted. After five minutes U2 drops the foundry recipe and its arms put the load back on the ring until the lane is full. What is left stays in U2, and a foundry that still holds something takes no new recipe.`,
+        stuck ? `Measured on that string at reduced caps: ${stuck.endedBy === 'caps' ? 'refilled' : `express belts not refilled in ${num(stuck.minutes)} minutes`}; U2 at the end: ${stuck.holding?.U2?.recipe === 'none' ? 'no recipe' : stuck.holding?.U2?.recipe}, ${stuck.holding?.U2?.waiting} items waiting to leave, ${stuck.onRing} items on the ring; and after the tungsten carbide returned it stood for another ${num(jam.phases[3].minutes)} minutes with ${jam.phases[3].productsShort} products short. It does not clear by itself.` : '', '',
+        '| Scenario | Caps | Verdict | Higher product | After the entrance returned | U2 at the end |', '| --- | --- | --- | --- | --- | --- |');
+      for (const n of handbackNames) if (B[n]) L.push(`| ${handbackRow(n, B[n]).join(' | ')} |`);
+      const byHand = B['recover:empty-by-hand'], takeAll = B['recover:take-all'];
+      L.push('', `From \`${BEFORE.file}\` (\`${before.nativeCommand}\` on that string). It did not jam in the twenty-minute outages, in U1's hand-backs (U1 stands inside the ring and hands back onto the other lane, which has room) or when U2 dropped a part-loaded underground belt recipe (what it hands back there is what the belts it turns to are made of).`,
+        byHand ? `Clearing it, tested on that string: with U2 jammed, everything it held was taken out by hand (${byHand.phases[3]?.emptiedByHand?.U2} items): ${byHand.phases[3]?.endedBy === 'caps' ? `express belts were refilled ${num(byHand.phases[3].minutes)} minutes later and every cap was reached ${num(byHand.phases[4].minutes)} minutes after the tungsten carbide returned` : 'it did NOT recover'}.` : '',
+        takeAll ? `Emptying every chest instead (so that the other machines use up what crowds the ring): ${takeAll.phases[3]?.endedBy === 'caps' ? `it cleared; everything that does not need tungsten carbide was refilled after ${num(takeAll.phases[3].minutes)} minutes` : `it did NOT clear in ${num(takeAll.phases[3]?.minutes)} minutes`}.` : '', '');
+    }
     const all = Object.values(S);
     const sum = Object.fromEntries(Object.entries(S).map(([k, v]) => [k, scenarioSummary(v)]));
     const fluidRow = (v, withJoins) => v ? [v.passed ? 'passed' : 'FAILED', v.foreignFluids.length ? v.foreignFluids.map(f => `${f.held} in the ${f.network} pipes from minute ${num(f.firstTick / 3600)} for ${num(f.ticks / 3600)} min`).join('; ') : 'none', ...(withJoins ? [v.joinedBoxes.length ? v.joinedBoxes.map(j => `${j.machine} on ${j.recipe}: its ${j.box} box on a ${j.joinedTo} pipe (${j.seconds} s)`).join('; ') : 'none'] : []),
@@ -131,7 +161,7 @@ export async function render(d, audit, proven, p, report, out) {
     if (earlier) {
       const E = earlier.scenarios, stuck = Object.entries(E).filter(([, v]) => v.phases.length && v.phases.at(-1).endedBy !== 'caps' && !v.matrix).map(([k]) => k);
       const leak = Object.values(E).flatMap(v => v.foreignFluids)[0], stone = E['late:stone-exit']?.foreignFluids?.[0];
-      L.push(`### The string published before this one, \`${EARLIER.sha.slice(0, 8)}…\`, in the same scenarios`, '',
+      L.push(`### An earlier string, \`${EARLIER.sha.slice(0, 8)}…\`, in the fluid scenarios`, '',
         `That string had the molten copper pipe directly on the second input port of the steel foundry. Whenever that foundry cast steel, its one molten iron box was joined to the iron trunk on one port and to the copper pipes on the other. When it stopped casting steel with the iron trunk full and the copper pipes empty, the game pushed the molten iron left in the box (up to 330) into the copper pipes. After that the copper lava foundry could not put molten copper into its own pipes, no cable was cast, and the mall stood still for good.`,
         stone ? `The plain way to get there: **the stone exit not connected**. The stone belt fills, both lava foundries stop with their output full, cable casting empties the copper pipes while the iron trunk stays full, and the next time the steel foundry lets go of its recipe the iron goes in. Measured on that string: molten iron in the copper pipes ${num(stone.firstTick / 3600)} minutes after a cold start (${stone.peak} units; at that moment the lava foundries were: ${Object.entries(stone.lavaFoundries || {}).map(([k, v]) => `${k} ${v.replaceAll('_', ' ')}`).join(', ')}; the iron trunk held ${Object.entries(stone.networks || {}).filter(([k]) => k.startsWith('molten-iron')).map(([, v]) => `${v.amount} of ${v.capacity}`).join()}), still there ${num(stone.ticks / 3600)} minutes later, and after the stone exit was connected no product was ever made again.` : '', '',
         '| Scenario | Verdict | Foreign fluid | Fluid box joined to two fluids | Afterwards |', '| --- | --- | --- | --- | --- |');
@@ -165,7 +195,8 @@ export async function render(d, audit, proven, p, report, out) {
   // ---- behaviours and limits
   L.push('## Things to know', '',
     `- The asteroid collector and crusher recipes exist only once a space platform has been created. On Vulcanus that is always the case.`,
-    `- A universal machine that has started loading a recipe keeps it until the craft is done; if the input it is waiting for never comes, it gives the recipe up after ${STALL.U1 / 3600} minutes (U1) or ${STALL.U2 / 3600} minutes (U2) and hands the loaded items back to the ring.`,
+    `- A universal machine that has started loading a recipe keeps it until the craft is done; if the input it is waiting for never comes and something of a higher rank is wanted, it gives the recipe up after ${STALL.U1 / 3600} minutes (U1) or ${STALL.U2 / 3600} minutes (U2). U1 hands the loaded items back to the ring, U2 into its buffer chest.`,
+    `- The buffer chest can hold intermediates for a long time when the ring is at its limits. They count as stock and are used first when the ring has room.`,
     `- Tiny recipes can run one craft over their cap (an arm's second item is a full set). The extra rides the ring, counts as stock and goes into the chest after the next collection.`,
     `- Kit items enter the kit chest only while no assembling machine 3 is wanted.`,
     `- Collecting from a chest reopens that product's level; lower groups pause until it is full again.`,
@@ -183,6 +214,19 @@ export async function render(d, audit, proven, p, report, out) {
     '- **A level that falls at once**: lower groups slipped in during the seconds a kit item waited for processing units.',
     '- **Sharing by reserve instead of strict order**, and **dedicated machines for every recipe** (about 55 machines): not built; estimated only.', '');
   if (explorations.length) L.push('Kept exploration reports: ' + explorations.map(e => `\`${e.file}\``).join(', ') + '.', '');
+  L.push(`## If you already placed the string before this one (\`${BEFORE.sha.slice(0, 8)}…\`)`, '',
+    '**How to recognise the jam.** U2 is the foundry in the south-west corner with the lubricant tank beside it.', '',
+    '1. U2 shows no recipe and does nothing, although express belts, underground belts or splitters are below their caps.',
+    '2. Open it: its output or trash slots hold tungsten carbide, steel, circuits or refined concrete. The two arms above its right half stand still with their hands full.',
+    '3. The ring is crowded with the same things: far more tungsten carbide than the 8 it normally carries.', '',
+    '**How to clear it by hand.**', '',
+    '1. Open U2 and take out everything it holds, slots and trash. It takes a recipe again within seconds.',
+    '2. Pick the surplus tungsten carbide off the ring, or simply restore the tungsten carbide supply: the next foundry uses it up.',
+    '3. It can happen again whenever U2 has to drop a part-loaded foundry recipe, so treat this as first aid.', '',
+    '**How to get the fix without rebuilding.** This string differs from that one only around U2:', '',
+    `1. Remove the two bulk inserters above the right half of U2 (tiles ${tile({ x: 10.5, y: 11.5 })} and ${tile({ x: 11.5, y: 11.5 })}) and the decider combinator at U2's top-left corner (tiles ${tile({ x: 5.5, y: 12.5 })} and ${tile({ x: 6.5, y: 12.5 })}).`,
+    `2. Place this blueprint exactly on top of the old one. Robots add the buffer chest at ${tile(d.blueprint.blueprint.entities[m.buffer.chest - 1].position)}, the arm from U2 into it, the arm from it onto the ring, seven combinators and their wires. Nothing else moves; entrances, chests and caps stay where they are.`,
+    `3. ${placedOver ? (placedOver.passed ? `Tested natively: this string placed over that one after removing those ${placedOver.placedOver.removedFirst.length} entities (${placedOver.placedOver.added} entities added). Every circuit net came out whole, the hand-back that jammed the old string passed and a fill from empty reached every cap. The test places the blueprint by script, the way a blueprint is placed over standing entities; a player's own paste in a running game with stock on the ring was not exercised.` : `Tested natively and it did NOT come out right (${Object.values(placedOver.scenarios).flatMap(v => v.failures).slice(0, 2).join('; ')}). Take the mall down and place this string instead.`) : 'Not tested: whether placing over the old one also adds the wires between entities that were already there. If U2 does not come back to life, take the mall down and place this string.'}`, '');
   L.push(`## If you already placed the earlier string (\`${EARLIER.sha.slice(0, 8)}…\`)`, '',
     '**How to tell it is contaminated.** Hold the pointer over the pipes (or turn on the detailed view, Alt):', '',
     '1. The copper pipes are the two pipes directly under the west lava foundry (the one set to molten copper) and the three pipes on top of the cable foundry. They must show molten copper or nothing. If they show **molten iron**, that is the fault.',

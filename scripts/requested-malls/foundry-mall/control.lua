@@ -284,15 +284,32 @@ script.on_init(function()
   t.bonus = {stack=force.inserter_stack_size_bonus, bulk=force.bulk_inserter_capacity_bonus}
   local inventory = game.create_inventory(1)
   inventory[1].set_stack{name='blueprint'}
+  if T.upgrade then
+    -- An earlier string already stands: it is built whole, the entities this string no longer has are taken away as a
+    -- player would, and then this string is placed exactly on top of it.
+    if inventory[1].import_stack(T.upgrade.blueprint) ~= 0 then fail('earlier blueprint import') end
+    local old = inventory[1].build_blueprint{surface=surface, force=force, position={0, 0}, build_mode=defines.build_mode.forced}
+    for _, ghost in pairs(old) do local _, entity = ghost.revive{raise_revive=true} if not entity then fail('earlier blueprint revival') end end
+    local furnace = surface.find_entities_filtered{name='electric-furnace', force=force}[1]
+    local removed = 0
+    for _, r in ipairs(T.upgrade.remove) do
+      local e = surface.find_entity(r.name, {r.x + furnace.position.x - T.upgrade.anchor.x, r.y + furnace.position.y - T.upgrade.anchor.y})
+      if e then e.destroy() removed = removed + 1 end
+    end
+    record(t, 'placed over the earlier string: the entities this string no longer has were removed first', removed == #T.upgrade.remove, {removed=removed, listed=#T.upgrade.remove})
+    inventory[1].clear() inventory[1].set_stack{name='blueprint'}
+  end
   if inventory[1].import_stack(T.blueprint) ~= 0 then fail('exact blueprint import') end
   -- T.entities, the ports and the power pole are given as they lie in the placement under test (the runner turns or
   -- mirrors them); the game itself turns the blueprint (build direction), a mirror image is its own string
   local ghosts = inventory[1].build_blueprint{surface=surface, force=force, position={0, 0}, build_mode=defines.build_mode.forced, direction=T.place and T.place.direction or defines.direction.north}
-  record(t, 'every blueprint entity became a ghost', #ghosts == #T.entities, {ghosts=#ghosts, entities=#T.entities})
+  if T.upgrade then record(t, 'placed over the earlier string: exactly the missing entities became ghosts', #ghosts == T.upgrade.added, {ghosts=#ghosts, missing=T.upgrade.added})
+  else record(t, 'every blueprint entity became a ghost', #ghosts == #T.entities, {ghosts=#ghosts, entities=#T.entities}) end
   inventory.destroy()
   -- offset: the brick furnace (the only electric furnace)
   local anchorSpec for _, spec in ipairs(T.entities) do if spec.name == 'electric-furnace' then anchorSpec = spec end end
   local anchor for _, g in pairs(ghosts) do if g.ghost_name == 'electric-furnace' then anchor = g end end
+  if not anchor and T.upgrade then anchor = surface.find_entities_filtered{name='electric-furnace', force=force}[1] end
   if not anchor then fail('anchor ghost missing') end
   local dx, dy = anchor.position.x - anchorSpec.position.x, anchor.position.y - anchorSpec.position.y
   t.offset = {x=dx, y=dy}
@@ -302,7 +319,7 @@ script.on_init(function()
   for _, spec in ipairs(T.entities) do
     local key = place_key(spec.name, spec.position.x, spec.position.y)
     local g = t.byPlace[key]
-    if g then t.ghosts[spec.entity_number] = g t.byPlace[key] = spec.entity_number else unplaced[#unplaced + 1] = spec.entity_number end
+    if g then t.ghosts[spec.entity_number] = g t.byPlace[key] = spec.entity_number elseif not T.upgrade then unplaced[#unplaced + 1] = spec.entity_number end
   end
   record(t, 'every ghost lies where the placement under test expects it', #unplaced == 0, unplaced)
   if #unplaced > 0 then fail('ghosts not where expected ' .. helpers.table_to_json(unplaced)) end
@@ -380,6 +397,12 @@ local function begin_phase(t, tick)
   if spec.except then t.current.skip = {} for _, n in ipairs(spec.except) do t.current.skip[n] = true end end
   set_power(t, not (ph.withholdSet and ph.withholdSet.power))
   if spec.stop then ph.stopped = spec.stop for _, m in ipairs(M.machines) do for _, role in ipairs(spec.stop) do if m.role == role then t.entities[m.entity].disabled_by_script = true end end end end
+  -- what a player does who opens a machine and takes out everything it holds
+  if spec.emptyByHand then ph.emptiedByHand = {} for _, s in ipairs(t.switching) do for _, role in ipairs(spec.emptyByHand) do if s.role == role then
+    local n = 0
+    for _, id in ipairs{defines.inventory.crafter_input, defines.inventory.crafter_output, defines.inventory.assembling_machine_dump} do local inv = s.entity.get_inventory(id) if inv then n = n + inv.get_item_count() inv.clear() end end
+    ph.emptiedByHand[role] = n
+  end end end end
   -- what the flush button of a pipe does, for every pipe run that holds a fluid not its own (used to test the first-aid steps on an earlier string)
   if spec.flush then ph.flushed = {} for _, w in ipairs(t.watch) do if w.segment and w.entity.valid then local f = w.entity.get_fluid_segment_fluid(w.index) if f and f.name ~= w.expected then ph.flushed[#ph.flushed + 1] = {network=w.expected, held=f.name, amount=f.amount} w.entity.clear_fluid_segment_fluid(w.index) end end end end
   if spec.setCaps then for name, value in pairs(spec.setCaps) do if not set_cap(t, name, value) then record(t, 'cap edit found ' .. name, false) end end ph.setCaps = spec.setCaps end
@@ -394,6 +417,15 @@ end
 local function end_phase(t, tick, why)
   local ph, spec = t.current.record, t.current.spec
   ph.finish = tick ph.ticks = tick - ph.start ph.endedBy = why
+  -- what each recipe-switching machine holds at the end of the phase (its recipe, what is loaded, what waits to be taken away)
+  ph.holding = {}
+  for _, s in ipairs(t.switching) do
+    local r, e, held = s.entity.get_recipe(), s.entity, {recipe='none', loaded=0, waiting=0, status=status_name(s.entity)}
+    if r then held.recipe = r.name end
+    held.loaded = e.get_inventory(defines.inventory.crafter_input).get_item_count()
+    for _, id in ipairs{defines.inventory.crafter_output, defines.inventory.assembling_machine_dump} do local inv = e.get_inventory(id) if inv then held.waiting = held.waiting + inv.get_item_count() end end
+    ph.holding[s.role] = held
+  end
   if spec.stop then for _, m in ipairs(M.machines) do for _, role in ipairs(spec.stop) do if m.role == role then t.entities[m.entity].disabled_by_script = false end end end end
   ph.stock = stock(t)
   -- finished products that are not in a chest: on the ring, or made by a machine beyond its cap
@@ -802,6 +834,12 @@ script.on_nth_tick(60, function(event)
     if spec.mode == 'until_caps' then
       if at_caps(t, counts, cur.skip) then cur.full = (cur.full or 0) + 1 else cur.full = 0 end
       if cur.full >= (spec.settleSeconds or 5) then finished = 'caps' end
+    elseif spec.mode == 'until_loading' then
+      -- the phase ends when a recipe-switching machine holds the named recipe, is not crafting and has at least so many ingredients loaded
+      for _, s in ipairs(t.switching) do if s.role == spec.loading.role then
+        local r = s.entity.get_recipe()
+        if r and r.name == spec.loading.recipe and not s.entity.is_crafting() and s.entity.get_inventory(defines.inventory.crafter_input).get_item_count() >= spec.loading.min then finished = 'loading' end
+      end end
     end
     if tick % 600 == 0 then
       if tick % T.samplingTicks == 0 then

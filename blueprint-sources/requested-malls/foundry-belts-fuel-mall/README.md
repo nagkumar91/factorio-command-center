@@ -25,7 +25,7 @@ Rocket fuel: the cap is 10 stacks of 20 (the stack size in the pinned prototypes
 
 - **Products**: the assembling machine 3 stack and all 16 items of the platform kit, with the kit's share of fast inserters.
 - **Machines**: the steel and low density structure foundry, the separate plate foundry (one foundry now casts plate, gear, stick, concrete and steel), three of the four advanced circuit machines, one of the two circuit machines, both speed module machines, the processing unit, engine, electric engine and foundation machines, the assembling machine 1 → 2 → 3 line, the rocket silo machine and the battery plant. Mall part now: 5 foundries (were 7), 6 assembling machines 3 (were 19), no chemical plant (was 1).
-- **Control**: 67 combinators (were 103): no kit rules, no silo loader, no level-gated arms.
+- **Control**: 67 combinators (were 107): no kit rules, no silo loader, no level-gated arms.
 - **Belts and pipes**: the brick belt, the calcite belt and the molten copper manifold. Calcite and a little stone now ride the ring; the copper lava foundry sits against the cable foundry, the iron lava foundry against the casting foundry.
 - **An input that is no longer needed by the mall part**: sulfuric acid (it was only for processing units and batteries). The acid entrance here feeds the rocket fuel section only.
 - **A new input**: coal, for the rocket fuel section. Its calcite is a second calcite entrance, on the coal belt's other lane.
@@ -38,7 +38,7 @@ Rocket fuel: the cap is 10 stacks of 20 (the stack size in the pinned prototypes
 | Mall part (rows 0 to 16) | **578** | 34 × 17 | 273 |
 | Rocket fuel section (rows 17 to 26) | **340** | 34 × 10 | 130 |
 | Together | **918** | 34 × 27 | 403 |
-| The big foundry mall | 1056 | 32 × 33 | 443 |
+| The big foundry mall | 1056 | 32 × 33 | 450 |
 | The stand-alone rocket fuel supply | 340 | 34 × 10 | 129 |
 
 The mall part is 55% of the big foundry mall. Mall and fuel together are 66% of the two blueprints placed separately, and smaller than the big foundry mall alone. The rectangle has no empty row or column: both parts are 34 wide and touch.
@@ -143,7 +143,7 @@ F foundry · R oil refinery · A assembling machine 3 · C chemical plant · K f
 
 ## Measured natively
 
-Every figure below is from `native-report.json` (40 scenarios, each its own headless game on a Vulcanus surface from a fresh import of this string). **Full caps**: the fills from empty, the rate scenario and the rocket fuel scenarios. **Reduced caps** (a tenth of each cap, at least 2): refill, outage and recovery, hold, cap edits, single refills, the withheld-input scenarios and every fluid-safety scenario. A reduced-cap time is not a full-stack time.
+Every figure below is from `native-report.json` (42 scenarios, each its own headless game on a Vulcanus surface from a fresh import of this string). **Full caps**: the fills from empty, the rate scenario and the rocket fuel scenarios. **Reduced caps** (a tenth of each cap, at least 2): refill, outage and recovery, hold, cap edits, single refills, the withheld-input scenarios and every fluid-safety scenario. A reduced-cap time is not a full-stack time.
 
 ### Fill from empty at the published caps: 179.8 minutes
 
@@ -226,6 +226,21 @@ In each of these no other chest changed.
 | caps | caps lowered, those products collected | 2.9 | every cap reached |
 | caps | caps restored | 4.5 | every cap reached |
 
+### Hand-back: U2 part-loaded with the foundry recipe, then express belts taken (reduced caps, then full caps)
+
+| Scenario | Phase | Minutes | Ended by |
+| --- | --- | ---: | --- |
+| handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt | fill from empty | 43.8 | every cap reached |
+| handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt | foundry taken with tungsten-carbide cut; until U2 holds a part-loaded foundry | 0.0 | LIMIT |
+| handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt | express-transport-belt taken, tungsten-carbide still cut: U2 must drop foundry and refill express-transport-belt | 7.7 | every cap reached |
+| handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt | after tungsten-carbide returned | 2.9 | every cap reached |
+| handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt:10:full | fill from empty | 179.8 | every cap reached |
+| handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt:10:full | foundry taken with tungsten-carbide cut; until U2 holds a part-loaded foundry | 0.0 | LIMIT |
+| handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt:10:full | express-transport-belt taken, tungsten-carbide still cut: U2 must drop foundry and refill express-transport-belt | 22.0 | every cap reached |
+| handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt:10:full | after tungsten-carbide returned | 23.0 | every cap reached |
+
+With tungsten carbide cut U2 cannot finish the foundry recipe; when express belts are taken it drops the recipe after its give-up time, hands what it holds into the buffer chest and refills the belts with the carbide still cut.
+
 Hold: for one hour at full stock no chest changed (the rocket fuel chest included) and the final machines crafted 0 times.
 
 ### Skip and return, one entrance withheld from a cold start (reduced caps)
@@ -295,11 +310,11 @@ A mirror image is written by the test as its own string (positions and direction
 
 ### Against the big foundry mall, same products
 
-The big mall reaches these products after its assembling machine 3 stack and its kit; here they are the whole list. Its measured full fill: express belts at cap after 236.7 min, foundries after 334.8 min, of which the first 151.3 min are assembling machine 3 and the kit. Here: express belts after 92.1 min, foundries after 179.8 min.
+The big mall reaches these products after its assembling machine 3 stack and its kit; here they are the whole list. Its measured full fill: express belts at cap after 234.7 min, foundries after 341.3 min, of which the first 150.7 min are assembling machine 3 and the kit. Here: express belts after 92.1 min, foundries after 179.8 min.
 
 ### Harness speed
 
-Scenarios ran side by side at 437, 449, 453, 454, 454, 455, 455, 456, 457, 458, 459, 459, 461, 461, 461, 462, 463, 463, 464, 465, 465, 465, 466, 466, 468, 468, 468, 468, 470, 471, 471, 474, 476, 477, 478, 480, 483, 515, 648, 665 times real time; 876 s of wall time in all for 62 game hours.
+Scenarios ran side by side at 470, 473, 473, 477, 479, 480, 480, 480, 481, 481, 482, 482, 483, 484, 487, 488, 488, 488, 489, 489, 491, 491, 492, 492, 495, 495, 495, 498, 499, 500, 501, 504, 504, 508, 508, 513, 517, 520, 525, 554, 693, 707 times real time; 881 s of wall time in all for 66.7 game hours.
 
 ## Bill from the recipes (expected values, productivity counted)
 

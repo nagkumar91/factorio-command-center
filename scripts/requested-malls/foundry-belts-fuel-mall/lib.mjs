@@ -32,6 +32,9 @@ export const PROTOCOL = Object.freeze({
   buildStepTicks: 20, buildGapTicks: 36000, robotLimitTicks: 108000, latePowerTicks: 18000, blockedStoneTicks: 216000, cutTicks: 36000, stopTicks: 54000,
   thinSupply: { lava: 100, calcite: 12 }, thinTicks: 216000,
   placements: ['rot90', 'rot180', 'rot270', 'flipH', 'flipV'],
+  // hand-back: the belt foundry part-loaded with the foundry recipe (tungsten carbide cut), then express belts taken; it must drop the recipe into its buffer chest and refill the belts
+  handbackScenarios: ['handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt', 'handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt:10:full'],
+  handbackLoadLimitTicks: 72000, handbackLimitTicks: 648000,
   // where the test stands its own things, in blueprint tiles (all outside the footprint)
   fixtures: { roboport: { x: 42, y: 12 }, robotChests: [{ x: 40.5, y: 15.5 }, { x: 41.5, y: 15.5 }, { x: 42.5, y: 15.5 }, { x: 43.5, y: 15.5 }], matrixDrivers: { x: -4.5, y: 1.5 } },
   // the rocket fuel section: its entrances at the figures on their panels, measured over thirty minutes
@@ -40,4 +43,4 @@ export const PROTOCOL = Object.freeze({
 });
 export const FLUID_SCENARIOS = ['ports', ...PROTOCOL.buildOrders.map(n => 'build:' + n), 'late:power', 'late:stone-exit', 'thin:lava', 'thin:calcite', 'starve:supply', 'starve:foundry', ...PROTOCOL.placements.map(n => 'place:' + n)];
 export const FUEL_SCENARIOS = ['fill:no-fuel', 'fuel:idle', 'fuel:filling', 'both:emptied'];
-export const QUALIFICATION = ['fill', 'rate', 'hold', 'caps', 'single', ...PROTOCOL.withheldInputs.map(n => 'skip:' + n), ...FUEL_SCENARIOS, ...FLUID_SCENARIOS];
+export const QUALIFICATION = ['fill', 'rate', 'hold', 'caps', 'single', ...PROTOCOL.withheldInputs.map(n => 'skip:' + n), ...FUEL_SCENARIOS, ...FLUID_SCENARIOS, ...PROTOCOL.handbackScenarios];

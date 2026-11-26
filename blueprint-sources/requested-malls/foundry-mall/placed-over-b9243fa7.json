@@ -1,0 +1,224 @@
+{
+  "schema": 1,
+  "kind": "summary of an exploration run of the foundry mall validator",
+  "blueprintSha256": "a8265e7f0c7c0ff3fa824a3f790b9034b5aa408eb9483f0c2bde031c2ee0ee8c",
+  "placedOver": {
+    "blueprintSha256": "b9243fa7ff6b0d164538d99c3d96d0315ed15feb018d74e40ab6da068f83134c",
+    "removedFirst": [
+      {
+        "name": "bulk-inserter",
+        "x": 10.5,
+        "y": 11.5
+      },
+      {
+        "name": "bulk-inserter",
+        "x": 11.5,
+        "y": 11.5
+      },
+      {
+        "name": "decider-combinator",
+        "x": 6,
+        "y": 12.5
+      }
+    ],
+    "added": 10
+  },
+  "gameVersion": "2.1.25",
+  "nativeControlSha256": "77af27b512133ac1168398d89dbdc0a73e294ee147f68e00de1e86269eac15d7",
+  "runnerSha256": "7ba7ab7e4e8cbb600c69a1b1e68258567ffe6871a53911b8cfc5153e2657ade2",
+  "nativeCommand": "node scripts/requested-malls/foundry-mall/validate.mjs --explore --scenario handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt,fill --caps reduced",
+  "passed": true,
+  "limitTicks": 1728000,
+  "scenarios": {
+    "handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt": {
+      "passed": true,
+      "caps": "reduced",
+      "failures": [],
+      "simulatedTicks": 553980,
+      "foreignFluids": [],
+      "joinedBoxes": [],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill from empty",
+          "minutes": 141.1,
+          "endedBy": "caps",
+          "holding": {
+            "U1": {
+              "recipe": "wooden-chest",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            },
+            "U2": {
+              "recipe": "iron-ore-melting",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            }
+          },
+          "onRing": 344,
+          "productsShort": 0
+        },
+        {
+          "name": "foundry taken with tungsten-carbide cut; until U2 holds a part-loaded foundry",
+          "minutes": 0.1,
+          "endedBy": "loading",
+          "holding": {
+            "U1": {
+              "recipe": "refined-concrete",
+              "loaded": 9,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            },
+            "U2": {
+              "recipe": "foundry",
+              "loaded": 15,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            }
+          },
+          "onRing": 320,
+          "productsShort": 1
+        },
+        {
+          "name": "express-transport-belt taken, tungsten-carbide still cut: U2 must drop foundry and refill express-transport-belt",
+          "minutes": 7.9,
+          "endedBy": "caps",
+          "holding": {
+            "U1": {
+              "recipe": "wooden-chest",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            },
+            "U2": {
+              "recipe": "iron-ore-melting",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            }
+          },
+          "onRing": 357,
+          "productsShort": 1
+        },
+        {
+          "name": "after tungsten-carbide returned",
+          "minutes": 4.9,
+          "endedBy": "caps",
+          "holding": {
+            "U1": {
+              "recipe": "wooden-chest",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            },
+            "U2": {
+              "recipe": "iron-ore-melting",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            }
+          },
+          "onRing": 347,
+          "productsShort": 0
+        }
+      ]
+    },
+    "fill": {
+      "passed": true,
+      "caps": "reduced",
+      "failures": [],
+      "simulatedTicks": 1320720,
+      "foreignFluids": [],
+      "joinedBoxes": [],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill from empty",
+          "minutes": 141.1,
+          "endedBy": "caps",
+          "holding": {
+            "U1": {
+              "recipe": "wooden-chest",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            },
+            "U2": {
+              "recipe": "iron-ore-melting",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            }
+          },
+          "onRing": 344,
+          "productsShort": 0
+        },
+        {
+          "name": "refill after complete collection",
+          "minutes": 109.5,
+          "endedBy": "caps",
+          "holding": {
+            "U1": {
+              "recipe": "wooden-chest",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            },
+            "U2": {
+              "recipe": "iron-ore-melting",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            }
+          },
+          "onRing": 321,
+          "productsShort": 0
+        },
+        {
+          "name": "five-minute outage of every input",
+          "minutes": 5,
+          "endedBy": "ticks",
+          "holding": {
+            "U1": {
+              "recipe": "cargo-landing-pad",
+              "loaded": 113,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            },
+            "U2": {
+              "recipe": "iron-ore-melting",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            }
+          },
+          "onRing": 197,
+          "productsShort": 21
+        },
+        {
+          "name": "recovery after the outage",
+          "minutes": 111.4,
+          "endedBy": "caps",
+          "holding": {
+            "U1": {
+              "recipe": "wooden-chest",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            },
+            "U2": {
+              "recipe": "iron-ore-melting",
+              "loaded": 0,
+              "waiting": 0,
+              "status": "item_ingredient_shortage"
+            }
+          },
+          "onRing": 329,
+          "productsShort": 0
+        }
+      ]
+    }
+  }
+}

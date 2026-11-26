@@ -4,8 +4,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { HERE, PUBLISHED, PROTOCOL, QUALIFICATION, FLUID_SCENARIOS, scenarioSummary, prototypes, readJson, sha, decode, exists } from '../scripts/requested-malls/foundry-mall/lib.mjs';
-import { EARLIER } from '../scripts/requested-malls/foundry-mall/readme.mjs';
+import { HERE, PUBLISHED, PROTOCOL, QUALIFICATION, FLUID_SCENARIOS, HANDBACK_SCENARIOS, scenarioSummary, prototypes, readJson, sha, decode, exists } from '../scripts/requested-malls/foundry-mall/lib.mjs';
+import { EARLIER, BEFORE } from '../scripts/requested-malls/foundry-mall/readme.mjs';
 import { design, LEVEL, RING_ARM_CAPS, RING_RULE_CAPS } from '../scripts/requested-malls/foundry-mall/design.mjs';
 import { loadKit, products, fullBill, expand, OUTSIDE, route } from '../scripts/requested-malls/foundry-mall/bill.mjs';
 import { auditBlueprint } from '../scripts/requested-malls/foundry-mall/audit.mjs';
@@ -81,6 +81,7 @@ test('caps: one combinator, positive numbers, every product once; chests declare
   assert.equal(caps.find(f => f.name === 'fast-inserter').count, 50);
   assert.deepEqual(manifest.outputs.flatMap(o => o.items).sort(), manifest.products.map(v => v.item).sort());
   assert.equal(es.filter(e => e.name === 'passive-provider-chest').length, 5);
+  assert.equal(es.filter(e => e.name === 'steel-chest').length, 2, 'the brick stock and the belt foundry\'s buffer');
 });
 
 test('control program: levels follow the list, every product has a rule at its level, lane limits fit', () => {
@@ -120,9 +121,9 @@ test('fluid ports: no machine has two ports of one kind on the pipes of two flui
   assert.deepEqual(refused.checks.find(c => c.name.startsWith('No machine has two ports of one kind')).detail.map(v => [v.machine, v.kind, [...v.fluids].sort()]), [['caster-S', 'input', ['molten-copper', 'molten-iron']]]);
 });
 
-test('same ports, chests, caps combinator and footprint as the string published before', () => {
+test('same ports, chests, caps combinator and footprint as the strings published before', () => {
   assert.equal(`${manifest.footprint.width} x ${manifest.footprint.height}`, '32 x 33');
-  assert.equal(manifest.footprint.entities, 443);
+  assert.equal(manifest.footprint.entities, 450);
   const b = manifest.footprint.bounds, tile = v => [Math.floor(v.x) - b.left, Math.floor(v.y) - b.top];
   assert.deepEqual(manifest.ports.map(v => [v.id, ...tile(v.position)]), [['IN-1', 0, 2], ['IN-2', 0, 0], ['OUT-STONE', 0, 1], ['IN-3', 29, 4], ['IN-4', 6, 32], ['IN-5', 29, 31], ['IN-6', 19, 32], ['IN-7', 23, 32]]);
   assert.deepEqual(manifest.outputs.map(v => [v.id, ...tile(v.position)]), [['OUT-1', 13, 28], ['OUT-2', 14, 28], ['OUT-3', 20, 28], ['OUT-4', 21, 28], ['OUT-5', 22, 28]]);
@@ -135,7 +136,7 @@ test('stored native report: for exactly this string, every scenario passed, list
   assert.equal(report.gameVersion, '2.1.25');
   const names = QUALIFICATION;
   assert.deepEqual(Object.keys(report.scenarios).sort(), [...names].sort());
-  for (const n of names) { const s = report.scenarios[n]; assert.equal(s.passed, true, n); assert.equal(s.blueprintSha256, manifest.candidateSha256, n); assert.equal(s.surface, 'vulcanus'); assert.equal(s.pressure, 4000); assert.equal(s.capsName, n === 'fill' || n === 'rate' ? 'full' : 'reduced', n); }
+  for (const n of names) { const s = report.scenarios[n]; assert.equal(s.passed, true, n); assert.equal(s.blueprintSha256, manifest.candidateSha256, n); assert.equal(s.surface, 'vulcanus'); assert.equal(s.pressure, 4000); assert.equal(s.capsName, n === 'fill' || n === 'rate' || n.endsWith(':full') ? 'full' : 'reduced', n); }
   const fill = report.scenarios.fill.phases[0];
   assert.deepEqual(fill.caps, manifest.caps, 'the fill ran at the published caps');
   assert.equal(fill.endedBy, 'caps');
@@ -198,4 +199,42 @@ test('the string published before fails the same fluid scenarios (stored summary
   // first aid on that string: connecting the stone exit alone does not help; flushing the copper pipes does
   const aid = earlier.scenarios['recover:flush'].phases;
   assert.equal(aid[1].productsShort, manifest.products.length); assert.deepEqual(aid[2].flushed.map(v => [v.network, v.held]), [['molten-copper', 'molten-iron']]); assert.equal(aid[2].endedBy, 'caps');
+});
+
+test('belt foundry buffer: the audit refuses the belt foundry with an output arm straight onto the ring', () => {
+  const es = decode(committed).blueprint.entities, b = manifest.buffer;
+  assert.equal(es[b.chest - 1].name, 'steel-chest');
+  assert.deepEqual(manifest.arms.filter(a => a.from === manifest.controllers.U2.machine).map(a => a.to), [b.chest]);
+  for (const r of manifest.rules.filter(v => v.machine === 'U2')) for (const v of [...p.recipes[r.recipe].ingredients.filter(x => x.type === 'item'), ...p.recipes[r.recipe].results]) assert(b.itemLimits[v.name] > 0, v.name + ' has a limit');
+  // the arrangement that was published before: the feed arm turned so that it drops on the ring instead of into the chest
+  const badManifest = structuredClone(manifest), feed = badManifest.arms.find(a => a.entity === b.feed);
+  delete feed.to; feed.role = 'switching output';
+  const refused = auditBlueprint(decode(committed), badManifest, p);
+  assert(refused.errors.some(e => e.startsWith('Belt foundry buffer')) || refused.errors.some(e => e.startsWith('Every arm picks up and drops')));
+});
+
+test('stored native report: hand-backs and outages pass; the string published before jams in the foundry hand-back (stored summary of that run)', { skip: !report && 'no native report stored yet' }, async () => {
+  const sum = Object.fromEntries(HANDBACK_SCENARIOS.map(n => [n, scenarioSummary(report.scenarios[n])]));
+  for (const [n, v] of Object.entries(sum)) { assert.equal(v.passed, true, n); assert.equal(v.phases.at(-1).endedBy, 'caps', n); assert.notEqual(v.phases.at(-1).holding.U2.recipe, 'none', n); }
+  const jam = 'handback:U2:foundry:foundry:tungsten-carbide:express-transport-belt';
+  for (const n of [jam, jam + ':10:full', 'handback:U2:foundry:foundry:tungsten-carbide:express-splitter']) { const mid = sum[n].phases[2]; assert.equal(mid.endedBy, 'caps', n + ': the higher product is refilled with tungsten carbide still cut'); assert(mid.minutes < 30, n); }
+  assert.equal(report.scenarios[jam + ':10:full'].capsName, 'full');
+  const before = await readJson(path.join(PUBLISHED, BEFORE.file));
+  assert.equal(before.blueprintSha256, BEFORE.sha);
+  assert.notEqual(before.blueprintSha256, manifest.candidateSha256);
+  assert.deepEqual(Object.keys(before.scenarios).sort(), [...HANDBACK_SCENARIOS, 'recover:empty-by-hand', 'recover:take-all'].sort());
+  // on that string: U2 without a recipe, items it cannot hand back, express belts never refilled, and still so after the carbide returned
+  for (const n of [jam, jam + ':10:full', 'handback:U2:foundry:foundry:tungsten-carbide:express-splitter']) {
+    const v = before.scenarios[n];
+    assert.equal(v.passed, false, n);
+    assert.equal(v.phases[2].endedBy, 'limit', n); assert.equal(v.phases[3].endedBy, 'limit', n);
+    assert.deepEqual([v.phases[3].holding.U2.recipe, v.phases[3].holding.U2.waiting > 0], ['none', true], n);
+  }
+  // it did not jam in the outages, in U1's hand-backs or in U2's other hand-back
+  for (const n of HANDBACK_SCENARIOS.filter(x => !x.includes('U2:foundry'))) assert.equal(before.scenarios[n].passed, true, n);
+  // first aid on that string: emptied by hand, U2 works again
+  const byHand = before.scenarios['recover:empty-by-hand'].phases;
+  assert(byHand[3].emptiedByHand.U2 > 0); assert.equal(byHand[3].endedBy, 'caps'); assert.equal(byHand[4].endedBy, 'caps');
+  const readme = await fs.readFile(path.join(PUBLISHED, 'README.md'), 'utf8');
+  assert(readme.includes('### Hand-back and outages') && readme.includes(`If you already placed the string before this one (\`${BEFORE.sha.slice(0, 8)}…\`)`));
 });

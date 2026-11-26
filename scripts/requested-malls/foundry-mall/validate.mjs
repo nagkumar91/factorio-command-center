@@ -57,6 +57,15 @@ const capSets = { full: FULL, reduced: REDUCED };
 // Which products need which outside input (from the pinned recipes).
 const needs = Object.fromEntries(manifest.products.map(v => [v.key, bill.needsOf ? bill.needsOf(p, v) : Object.keys(bill.expand(p, { [v.item]: 1 }).outside)]));
 const dependents = input => manifest.products.filter(v => needs[v.key].includes(input)).map(v => v.key);
+// --upgrade-from <folder>: this string is placed over the earlier string in that folder (its blueprint.txt), after the
+// entities the earlier one has and this one has not are removed. Exploration only.
+let upgrade;
+if (explore && option('--upgrade-from')) {
+  const old = decode((await fs.readFile(path.join(path.resolve(option('--upgrade-from')), 'blueprint.txt'), 'utf8')).trim()), key = e => `${e.name}@${e.position.x},${e.position.y}`;
+  const mine = new Set(bp.blueprint.entities.map(key)), theirs = new Set(old.blueprint.entities.map(key)), furnace = old.blueprint.entities.find(e => e.name === 'electric-furnace');
+  upgrade = { blueprint: (await fs.readFile(path.join(path.resolve(option('--upgrade-from')), 'blueprint.txt'), 'utf8')).trim(), blueprintSha256: sha((await fs.readFile(path.join(path.resolve(option('--upgrade-from')), 'blueprint.txt'), 'utf8')).trim()), anchor: furnace.position,
+    remove: old.blueprint.entities.filter(e => !mine.has(key(e))).map(e => ({ name: e.name, x: e.position.x, y: e.position.y })), added: bp.blueprint.entities.filter(e => !theirs.has(key(e))).length };
+}
 const QUIET = Object.fromEntries((protocol.quietRoles || ['U1', 'U2', 'rocket-silo', 'assembling-machine-3', 'assembling-machine-2', 'assembling-machine-1', 'space-platform-foundation', 'processing-unit', 'speed-module', 'electric-engine-unit', 'engine-unit', 'battery']).map(r => [r, true]));
 const FIXTURES = protocol.fixtures || { roboport: { x: -8, y: -2 }, robotChests: [{ x: -9.5, y: 1.5 }, { x: -8.5, y: 1.5 }, { x: -7.5, y: 1.5 }, { x: -6.5, y: 1.5 }], matrixDrivers: { x: -5.5, y: 1.5 } };
 const SETTLE = protocol.settleSeconds;
@@ -143,6 +152,36 @@ function scenario(name) {
     { name: `thin ${input} from a cold start`, mode: 'ticks', ticks: protocol.thinTicks, thin: { [input]: protocol.thinSupply[input] }, collectEvery: 60, expect: 'never' },
     fill(`fill after ${input} came in full`) ] }; }
   if (name.startsWith('place:')) return { caps: 'reduced', place: name.slice(6), phases: [fill('fill from empty')] };
+  // Hand-back. A universal machine is caught with a recipe part loaded that it cannot finish (an entrance is cut), then
+  // a product of a higher rank is taken, so after its give-up time it drops the recipe and hands what it holds back to
+  // the ring. Where the higher product does not need the cut entrance it must then be refilled with the entrance
+  // still cut; where it does, the machine is given its give-up time and five minutes. Then the entrance returns.
+  //   handback:<machine>:<recipe>:<product taken first>:<entrance cut, or a+b>:<higher product taken>[:<items loaded before the second take>[:full|reduced]]
+  // first aid on a string that jams: the first hand-back scenario, then either the machine is emptied by hand or every chest is emptied
+  const firstAid = { 'recover:empty-by-hand': 'empty', 'recover:take-all': 'take-all' }[name], then = firstAid;
+  if (firstAid) name = (protocol.handbackScenarios || [])[0];
+  if (name.startsWith('handback:')) {
+    const [, role, recipe, low, cut, high, min = '10', caps = 'reduced'] = name.split(':'), withhold = cut.split('+'), taken = high.split('+');
+    const cutNeeded = withhold.flatMap(dependents), makeable = taken.every(k => !cutNeeded.includes(k));
+    const giveUp = manifest.controllers[role].stallTicks;
+    return { caps: explore && option('--caps') ? option('--caps') : caps, phases: [
+      fill('fill from empty'),
+      { name: `${low} taken with ${withhold.join(' and ')} cut; until ${role} holds a part-loaded ${recipe}`, mode: 'until_loading', limit: protocol.handbackLoadLimitTicks || 72000, collectAtStart: [low], loading: { role, recipe, min: Number(min) }, withhold, expect: 'never' },
+      makeable ? { name: `${taken.join(' and ')} taken, ${withhold.join(' and ')} still cut: ${role} must drop ${recipe} and refill ${taken.join(' and ')}`, mode: 'until_caps', limit: protocol.handbackLimitTicks || 648000, collectAtStart: taken, withhold, except: [...new Set([low, ...cutNeeded])], expect: 'caps_except', settleSeconds: SETTLE }
+        : { name: `${taken.join(' and ')} taken, ${withhold.join(' and ')} still cut, ${Math.round((giveUp + 18000) / 3600)} minutes: ${role} drops ${recipe}`, mode: 'ticks', ticks: giveUp + 18000, collectAtStart: taken, withhold, expect: 'never' },
+      ...(then === 'empty' ? [{ name: `${role} emptied by hand`, mode: 'until_caps', limit: protocol.handbackLimitTicks || 648000, withhold, emptyByHand: [role], except: [...new Set([low, ...cutNeeded])], expect: 'caps_except', settleSeconds: SETTLE }] : []),
+      ...(then === 'take-all' ? [{ name: 'every chest emptied', mode: 'until_caps', limit: protocol.handbackLimitTicks || 648000, withhold, collectAtStart: true, except: [...new Set([low, ...cutNeeded])], expect: 'caps_except', settleSeconds: SETTLE }] : []),
+      fill(`after ${withhold.join(' and ')} returned`, { limit: protocol.handbackLimitTicks || 648000 }) ] };
+  }
+  // an entrance (or all) cut for so many minutes with every chest emptied at the start of the cut, then a fill
+  //   outage:<entrance or all>:<minutes>[:full|reduced]
+  if (name.startsWith('outage:')) {
+    const [, cut, minutes, caps = 'reduced'] = name.split(':'), withhold = cut === 'all' ? OUTSIDE : cut.split('+');
+    return { caps: explore && option('--caps') ? option('--caps') : caps, phases: [
+      fill('fill from empty'),
+      { name: `${cut === 'all' ? 'every input' : withhold.join(' and ')} cut for ${minutes} minutes, every chest emptied`, mode: 'ticks', ticks: Number(minutes) * 3600, collectAtStart: true, withhold, expect: 'never' },
+      fill('recovery after the cut') ] };
+  }
   if (name === 'cost') return { caps: 'full', phases: [{ name: 'script cost', mode: 'ticks', ticks: Number(option('--ticks') || 36000) }] };
   if (name === 'custom') return JSON.parse(option('--phases'));
   assert.fail('unknown scenario ' + name);
@@ -235,7 +274,7 @@ async function run(name) {
   const configuration = {
     schema: 2, scenario: name, capsName, startCaps: capSets[capsName], blueprintSha256: manifest.candidateSha256, prototypeSha256: manifest.prototypeSha256, nativeControlSha256: sha(control), runnerSha256,
     gameVersion: manifest.requiredGameVersion, activeMods: versions, blueprint: placed.blueprint, entities: placed.entities, manifest: placed.manifest, technologyClosure: manifest.technologyClosure,
-    ...(placed.place ? { place: placed.place } : {}), ...(sc.build ? { build: sc.build } : {}), ...(sc.robots ? { robots: sc.robots } : {}), ...(sc.matrix ? { matrix: sc.matrix } : {}),
+    ...(placed.place ? { place: placed.place } : {}), ...(upgrade ? { upgrade } : {}), ...(sc.build ? { build: sc.build } : {}), ...(sc.robots ? { robots: sc.robots } : {}), ...(sc.matrix ? { matrix: sc.matrix } : {}),
     recipePrototypes: Object.fromEntries(manifest.recipes.map(n => [n, { ingredients: p.recipes[n].ingredients, results: p.recipes[n].results }])),
     fluidTemperature: Object.fromEntries(Object.values(p.fluids).map(f => [f.name, f.default_temperature])),
     externalPowerWatts: protocol.externalPowerWatts, samplingTicks: protocol.samplingTicks, phases: sc.phases,
@@ -279,7 +318,7 @@ const started = Date.now();
 const reports = Object.fromEntries(await Promise.all(names.map(async name => {
   // an exploration keeps the other scenarios when one instance stops with an error; a qualifying run does not
   const r = await run(name).catch(e => { if (!explore) throw e; return { scenario: name, passed: false, failures: ['the instance stopped: ' + String(e.message).split('\n').slice(0, 3).join(' | ').slice(0, 600)], phases: [], caps: {}, crashed: true }; });
-  console.log(JSON.stringify({ scenario: name, caps: r.capsName, passed: r.passed, failures: r.failures, ticks: r.actualTicks, activeWallSeconds: r.activeWallSeconds, ups: r.activeUpdatesPerSecond, xRealTime: r.timesRealTime, phases: r.phases.map(ph => ({ name: ph.name, minutes: minutes(ph.ticks), endedBy: ph.endedBy, levels: Object.fromEntries(Object.entries(ph.levelTicks).map(([k, v]) => [k, minutes(v)])), reached: Object.fromEntries(Object.entries(ph.reached).sort((a, b) => a[1] - b[1]).map(([k, v]) => [k, minutes(v)])), short: Object.fromEntries(Object.entries(ph.stock).filter(([k, v]) => v < (ph.caps || r.caps)[k])), switches: ph.switches, peak: ph.peak, gatedActive: ph.gatedActive })), ringPeakTotal: r.ringPeakTotal, ringBound: r.ringBound, construction: r.construction && { ...r.construction, deferred: (r.construction.deferred || []).length }, fluidFaults: r.fluidFaults, portJoins: r.portJoins, matrix: r.matrix && { cases: r.matrix.cases, leaks: r.matrix.leaks, joins: r.matrix.joins } }));
+  console.log(JSON.stringify({ scenario: name, caps: r.capsName, passed: r.passed, failures: r.failures, ticks: r.actualTicks, activeWallSeconds: r.activeWallSeconds, ups: r.activeUpdatesPerSecond, xRealTime: r.timesRealTime, phases: r.phases.map(ph => ({ name: ph.name, minutes: minutes(ph.ticks), endedBy: ph.endedBy, levels: Object.fromEntries(Object.entries(ph.levelTicks).map(([k, v]) => [k, minutes(v)])), reached: Object.fromEntries(Object.entries(ph.reached).sort((a, b) => a[1] - b[1]).map(([k, v]) => [k, minutes(v)])), short: Object.fromEntries(Object.entries(ph.stock).filter(([k, v]) => v < (ph.caps || r.caps)[k])), switches: ph.switches, peak: ph.peak, gatedActive: ph.gatedActive })), ringPeakTotal: r.ringPeakTotal, ringBound: r.ringBound, holding: r.phases.at(-1)?.holding, ringAtEnd: r.phases.at(-1)?.ringAtEnd && Object.values(r.phases.at(-1).ringAtEnd).reduce((a, b) => a + b, 0), construction: r.construction && { ...r.construction, deferred: (r.construction.deferred || []).length }, fluidFaults: r.fluidFaults, portJoins: r.portJoins, matrix: r.matrix && { cases: r.matrix.cases, leaks: r.matrix.leaks, joins: r.matrix.joins } }));
   return [name, r];
 })));
 const passed = names.every(n => reports[n].passed);
@@ -291,7 +330,7 @@ const merged = {
   scenarios: Object.fromEntries(names.map(n => [n, reports[n]])),
 };
 await fs.writeFile(path.join(root, 'native-report.json'), json(merged));
-if (explore && option('--evidence')) await fs.writeFile(path.resolve(option('--evidence')), json({ schema: 1, kind: 'summary of an exploration run of the foundry mall validator', blueprintSha256: manifest.candidateSha256, gameVersion: versions.base, nativeControlSha256: sha(control), runnerSha256, nativeCommand: merged.nativeCommand.replace(/--(source|evidence) \S+ ?/g, '').trim(), passed, limitTicks: protocol.fillLimitTicks, scenarios: Object.fromEntries(names.map(n => [n, scenarioSummary(reports[n])])) }));
+if (explore && option('--evidence')) await fs.writeFile(path.resolve(option('--evidence')), json({ schema: 1, kind: 'summary of an exploration run of the foundry mall validator', blueprintSha256: manifest.candidateSha256, ...(upgrade ? { placedOver: { blueprintSha256: upgrade.blueprintSha256, removedFirst: upgrade.remove, added: upgrade.added } } : {}), gameVersion: versions.base, nativeControlSha256: sha(control), runnerSha256, nativeCommand: merged.nativeCommand.replace(/--(source|evidence|upgrade-from) \S+ ?/g, '').trim(), passed, limitTicks: protocol.fillLimitTicks, scenarios: Object.fromEntries(names.map(n => [n, scenarioSummary(reports[n])])) }));
 if (explore) {
   if (option('--keep')) await fs.writeFile(path.join(source, `exploration-${option('--keep')}-report.json`), json(merged));
 } else {
