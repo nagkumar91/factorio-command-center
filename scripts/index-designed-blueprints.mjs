@@ -290,6 +290,23 @@ for(const id of ['coal-plastic-lubricant','tungsten-carbide','rocket-fuel']){
    'Native test on a Vulcanus surface with only the technology closure researched: rates with the exits drained, exit blocks and release, a five-minute outage of every input and recovery, one fluid per pipe network checked once a second. Power by substations; connect the outside network to the labelled entry substation.']});
 }
 
+// Vulcanus circuits (26 November 2026), user-requested supply blueprints that make one kind of circuit each from lava and calcite with
+// foundries inside: electronic circuits, advanced circuits (plus plastic), processing units (plus plastic and sulfuric acid). Each member is
+// registered only from its own passing native report for the exact string; the figures shown are that report's measured ones.
+for(const id of ['electronic-circuits','advanced-circuits','processing-units']){
+ const dir='blueprint-sources/vulcanus-circuits/'+id,m=await read(dir+'/manifest.json').catch(()=>null),reportFile=dir+'/native-report.json',proof=m&&await read(reportFile).catch(()=>null);
+ if(!m||!proof||proof.passed!==true||proof.blueprintSha256!==m.candidateSha256){console.warn('Not registered (no exact-hash passing native report): vulcanus-circuits/'+id);continue;}
+ const th=proof.measured.throttled,ge=proof.measured.generous,product=m.outputPorts.find(o=>o.product),stone=m.outputPorts.find(o=>o.byproduct),n=v=>Number(v.toFixed(1)),word=product.item.replaceAll('-',' ')+'s';
+ await register({file:dir+'/blueprint.txt',info:{name:`${word[0].toUpperCase()+word.slice(1)} from lava · ${m.target.toLocaleString('en-US')} a minute`,blueprintSha256:m.candidateSha256,
+  inputs:m.inputPorts.map(p=>({item:p.item,entity:p.entity,side:p.side,perMinute:n(th.drawPerMinute[p.item])})),
+  outputs:[{item:product.item,entity:product.entity,side:product.side,perMinute:n(th.productPerMinute)},{item:'stone',entity:stone.entity,side:stone.side,perMinute:n(th.stonePerMinute)}],footprint:m.footprint},
+  category:'Supplies · Vulcanus circuits',purpose:'Supply production',sourceCollection:collection,inputs:m.inputPorts.map(p=>p.item),outputs:m.products,
+  proof:{passed:proof.passed,blueprintSha256:proof.blueprintSha256,gameVersion:proof.gameVersion,outputsPerMinute:{[product.item]:th.productPerMinute},footprint:m.footprint,scenarios:Object.fromEntries(proof.measured.scenarios.map(s=>[s.scenario,{passed:s.passed,length:s.length,gameMinutes:s.gameMinutes}]))},report:reportFile,version:proof.gameVersion,
+  setup:[`Vulcanus. Makes ${word} on one belt exit (${product.side}) from ${m.inputPorts.map(p=>p.item.replaceAll('-',' ')+(p.kind==='pipe'?' by pipe':' on a belt')).join(', ')}. ${m.machines.filter(v=>v.name==='foundry').length} foundries melt the lava and cast iron plate and copper cable inside; ${m.machines.filter(v=>v.name==='assembling-machine-3').length} assembling machines 3 make the circuits. No modules, beacons, circuit network or robots.`,
+   `Measured over 30 minutes with every entrance offered exactly its panel figure: ${n(th.productPerMinute)} ${word} a minute from ${m.inputPorts.map(p=>p.item+' '+n(th.drawPerMinute[p.item])+'/min').join(', ')}; with every entrance offered more: ${n(ge.productPerMinute)} a minute. Stone is a by-product (${n(th.stonePerMinute)} a minute at the target) and leaves on its own belt exit (${stone.side}), which must be carried away.`,
+   `Native test on a Vulcanus surface with only the technology closure researched, ${proof.measured.scenarios.length} scenarios: rates, both exits blocked and released, outage, every input late, no power, piecemeal construction in seven orders, lava and calcite cuts, each lava foundry group stopped, placed turned and mirrored; every pipe run read every tick for a foreign fluid. Power by substations: connect the labelled one.`]});
+}
+
 // Foundry mall (Vulcanus): lava and calcite in, six groups of products kept at their caps in five passive provider chests,
 // made in list order. Registered only with a passing native report for the exact string; the rates shown are that report's
 // measured ones (each group collected alone at full caps, the groups above it full).

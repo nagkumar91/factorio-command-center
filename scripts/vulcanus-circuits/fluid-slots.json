@@ -1,0 +1,1234 @@
+{
+ "schema": 1,
+ "gameVersion": "2.1.25",
+ "surface": "vulcanus",
+ "pressure": 4000,
+ "method": "scripts/vulcanus-circuits/probes/ports.mjs: each machine and fixed recipe imported from a blueprint in every direction, unmirrored and mirrored; get_fluid_box_pipe_connections of every fluid box with a filter (offsets of the tile a pipe must occupy, from the machine centre), read again with a pipe on every tile around the machine (joined). A recipe with one fluid ingredient joins both input ports into one box, and one fluid product leaves by both output ports. unfilteredBoxesInert: no box without a filter joined any ring pipe (the unused ports of a casting foundry and of a machine without a fluid recipe connect to nothing). leftover: a casting foundry filled through the pipe on one input port (kept full, or left empty) has its recipe taken away; what the empty pipe on its other input port holds afterwards. output: a lava foundry after one minute with a pipe on one output port or on both. flips: the direction and mirroring LuaEntity.flip leaves each machine with; a machine whose recipe has no fluid refuses the flip (flips.refused).",
+ "research": {
+  "technologies": 48,
+  "inserterStackSizeBonus": 0,
+  "bulkInserterCapacityBonus": 1
+ },
+ "notes": [],
+ "unfilteredBoxesInert": {
+  "foundry|molten-iron-from-lava": true,
+  "foundry|molten-copper-from-lava": true,
+  "foundry|casting-iron": true,
+  "foundry|casting-copper-cable": true,
+  "assembling-machine-3|processing-unit": true,
+  "assembling-machine-3|electronic-circuit": true,
+  "assembling-machine-3|advanced-circuit": true
+ },
+ "leftover": [
+  {
+   "recipe": "casting-copper-cable",
+   "fedPipeKeptFull": true,
+   "machineHeldBefore": {
+    "molten-copper": 30
+   },
+   "fedPipeBefore": {
+    "molten-copper": 100
+   },
+   "emptyPipeBefore": {},
+   "machineHeldAfter": {},
+   "fedPipeAfter": {
+    "molten-copper": 100
+   },
+   "emptyPipeAfter": {
+    "molten-copper": 30
+   }
+  },
+  {
+   "recipe": "casting-copper-cable",
+   "fedPipeKeptFull": false,
+   "machineHeldBefore": {
+    "molten-copper": 30
+   },
+   "fedPipeBefore": {
+    "molten-copper": 70
+   },
+   "emptyPipeBefore": {},
+   "machineHeldAfter": {},
+   "fedPipeAfter": {
+    "molten-copper": 100
+   },
+   "emptyPipeAfter": {}
+  },
+  {
+   "recipe": "casting-iron",
+   "fedPipeKeptFull": true,
+   "machineHeldBefore": {
+    "molten-iron": 220
+   },
+   "fedPipeBefore": {
+    "molten-iron": 100
+   },
+   "emptyPipeBefore": {},
+   "machineHeldAfter": {},
+   "fedPipeAfter": {
+    "molten-iron": 100
+   },
+   "emptyPipeAfter": {
+    "molten-iron": 100
+   }
+  },
+  {
+   "recipe": "casting-iron",
+   "fedPipeKeptFull": false,
+   "machineHeldBefore": {
+    "molten-iron": 100
+   },
+   "fedPipeBefore": {},
+   "emptyPipeBefore": {},
+   "machineHeldAfter": {},
+   "fedPipeAfter": {
+    "molten-iron": 100
+   },
+   "emptyPipeAfter": {}
+  }
+ ],
+ "output": [
+  {
+   "pipesOnBothOutputPorts": false,
+   "crafts": 3,
+   "machineHolds": {
+    "lava": 2000
+   },
+   "westPipe": {
+    "molten-copper": 2.99
+   },
+   "eastPipe": null
+  },
+  {
+   "pipesOnBothOutputPorts": true,
+   "crafts": 3,
+   "machineHolds": {
+    "lava": 2000
+   },
+   "westPipe": {
+    "molten-copper": 2.93
+   },
+   "eastPipe": {
+    "molten-copper": 13.36
+   }
+  }
+ ],
+ "slots": {
+  "foundry|molten-iron-from-lava": {
+   "d0": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-iron",
+     "flow": "output",
+     "targets": [
+      [
+       -1,
+       -3
+      ],
+      [
+       1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d4": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       -3,
+       -1
+      ],
+      [
+       -3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-iron",
+     "flow": "output",
+     "targets": [
+      [
+       3,
+       -1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d8": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       -3
+      ],
+      [
+       -1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-iron",
+     "flow": "output",
+     "targets": [
+      [
+       1,
+       3
+      ],
+      [
+       -1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d12": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-iron",
+     "flow": "output",
+     "targets": [
+      [
+       -3,
+       1
+      ],
+      [
+       -3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d0M": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       3
+      ],
+      [
+       -1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-iron",
+     "flow": "output",
+     "targets": [
+      [
+       1,
+       -3
+      ],
+      [
+       -1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d4M": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       -3,
+       1
+      ],
+      [
+       -3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-iron",
+     "flow": "output",
+     "targets": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d8M": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       -3
+      ],
+      [
+       1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-iron",
+     "flow": "output",
+     "targets": [
+      [
+       -1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d12M": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       3,
+       -1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-iron",
+     "flow": "output",
+     "targets": [
+      [
+       -3,
+       -1
+      ],
+      [
+       -3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ]
+  },
+  "foundry|molten-copper-from-lava": {
+   "d0": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-copper",
+     "flow": "output",
+     "targets": [
+      [
+       -1,
+       -3
+      ],
+      [
+       1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d4": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       -3,
+       -1
+      ],
+      [
+       -3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-copper",
+     "flow": "output",
+     "targets": [
+      [
+       3,
+       -1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d8": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       -3
+      ],
+      [
+       -1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-copper",
+     "flow": "output",
+     "targets": [
+      [
+       1,
+       3
+      ],
+      [
+       -1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d12": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-copper",
+     "flow": "output",
+     "targets": [
+      [
+       -3,
+       1
+      ],
+      [
+       -3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d0M": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       3
+      ],
+      [
+       -1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-copper",
+     "flow": "output",
+     "targets": [
+      [
+       1,
+       -3
+      ],
+      [
+       -1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d4M": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       -3,
+       1
+      ],
+      [
+       -3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-copper",
+     "flow": "output",
+     "targets": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d8M": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       -3
+      ],
+      [
+       1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-copper",
+     "flow": "output",
+     "targets": [
+      [
+       -1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d12M": [
+    {
+     "fluid": "lava",
+     "flow": "input",
+     "targets": [
+      [
+       3,
+       -1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    },
+    {
+     "fluid": "molten-copper",
+     "flow": "output",
+     "targets": [
+      [
+       -3,
+       -1
+      ],
+      [
+       -3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ]
+  },
+  "foundry|casting-iron": {
+   "d0": [
+    {
+     "fluid": "molten-iron",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d4": [
+    {
+     "fluid": "molten-iron",
+     "flow": "input",
+     "targets": [
+      [
+       -3,
+       -1
+      ],
+      [
+       -3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d8": [
+    {
+     "fluid": "molten-iron",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       -3
+      ],
+      [
+       -1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d12": [
+    {
+     "fluid": "molten-iron",
+     "flow": "input",
+     "targets": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d0M": [
+    {
+     "fluid": "molten-iron",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       3
+      ],
+      [
+       -1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d4M": [
+    {
+     "fluid": "molten-iron",
+     "flow": "input",
+     "targets": [
+      [
+       -3,
+       1
+      ],
+      [
+       -3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d8M": [
+    {
+     "fluid": "molten-iron",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       -3
+      ],
+      [
+       1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d12M": [
+    {
+     "fluid": "molten-iron",
+     "flow": "input",
+     "targets": [
+      [
+       3,
+       -1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ]
+  },
+  "foundry|casting-copper-cable": {
+   "d0": [
+    {
+     "fluid": "molten-copper",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       3
+      ],
+      [
+       1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d4": [
+    {
+     "fluid": "molten-copper",
+     "flow": "input",
+     "targets": [
+      [
+       -3,
+       -1
+      ],
+      [
+       -3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d8": [
+    {
+     "fluid": "molten-copper",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       -3
+      ],
+      [
+       -1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d12": [
+    {
+     "fluid": "molten-copper",
+     "flow": "input",
+     "targets": [
+      [
+       3,
+       1
+      ],
+      [
+       3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d0M": [
+    {
+     "fluid": "molten-copper",
+     "flow": "input",
+     "targets": [
+      [
+       1,
+       3
+      ],
+      [
+       -1,
+       3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d4M": [
+    {
+     "fluid": "molten-copper",
+     "flow": "input",
+     "targets": [
+      [
+       -3,
+       1
+      ],
+      [
+       -3,
+       -1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d8M": [
+    {
+     "fluid": "molten-copper",
+     "flow": "input",
+     "targets": [
+      [
+       -1,
+       -3
+      ],
+      [
+       1,
+       -3
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ],
+   "d12M": [
+    {
+     "fluid": "molten-copper",
+     "flow": "input",
+     "targets": [
+      [
+       3,
+       -1
+      ],
+      [
+       3,
+       1
+      ]
+     ],
+     "joined": [
+      true,
+      true
+     ]
+    }
+   ]
+  },
+  "assembling-machine-3|processing-unit": {
+   "d0": [
+    {
+     "fluid": "sulfuric-acid",
+     "flow": "input",
+     "targets": [
+      [
+       0,
+       -2
+      ]
+     ],
+     "joined": [
+      true
+     ]
+    }
+   ],
+   "d4": [
+    {
+     "fluid": "sulfuric-acid",
+     "flow": "input",
+     "targets": [
+      [
+       2,
+       0
+      ]
+     ],
+     "joined": [
+      true
+     ]
+    }
+   ],
+   "d8": [
+    {
+     "fluid": "sulfuric-acid",
+     "flow": "input",
+     "targets": [
+      [
+       0,
+       2
+      ]
+     ],
+     "joined": [
+      true
+     ]
+    }
+   ],
+   "d12": [
+    {
+     "fluid": "sulfuric-acid",
+     "flow": "input",
+     "targets": [
+      [
+       -2,
+       0
+      ]
+     ],
+     "joined": [
+      true
+     ]
+    }
+   ],
+   "d0M": [
+    {
+     "fluid": "sulfuric-acid",
+     "flow": "input",
+     "targets": [
+      [
+       0,
+       -2
+      ]
+     ],
+     "joined": [
+      true
+     ]
+    }
+   ],
+   "d4M": [
+    {
+     "fluid": "sulfuric-acid",
+     "flow": "input",
+     "targets": [
+      [
+       2,
+       0
+      ]
+     ],
+     "joined": [
+      true
+     ]
+    }
+   ],
+   "d8M": [
+    {
+     "fluid": "sulfuric-acid",
+     "flow": "input",
+     "targets": [
+      [
+       0,
+       2
+      ]
+     ],
+     "joined": [
+      true
+     ]
+    }
+   ],
+   "d12M": [
+    {
+     "fluid": "sulfuric-acid",
+     "flow": "input",
+     "targets": [
+      [
+       -2,
+       0
+      ]
+     ],
+     "joined": [
+      true
+     ]
+    }
+   ]
+  },
+  "assembling-machine-3|electronic-circuit": {
+   "d0": [],
+   "d0M": []
+  },
+  "assembling-machine-3|advanced-circuit": {
+   "d0": [],
+   "d0M": []
+  }
+ },
+ "flips": {
+  "foundry": {
+   "horizontal": {
+    "d0": "d0M",
+    "d4": "d12M",
+    "d8": "d8M",
+    "d12": "d4M",
+    "d0M": "d0",
+    "d4M": "d12",
+    "d8M": "d8",
+    "d12M": "d4"
+   },
+   "vertical": {
+    "d0": "d8M",
+    "d4": "d4M",
+    "d8": "d0M",
+    "d12": "d12M",
+    "d0M": "d8",
+    "d4M": "d4",
+    "d8M": "d0",
+    "d12M": "d12"
+   }
+  },
+  "assembling-machine-3": {
+   "horizontal": {
+    "d0": "d0",
+    "d4": "d12",
+    "d8": "d8",
+    "d12": "d4",
+    "d0M": "d0",
+    "d4M": "d12",
+    "d8M": "d8",
+    "d12M": "d4"
+   },
+   "vertical": {
+    "d0": "d8",
+    "d4": "d4",
+    "d8": "d0",
+    "d12": "d12",
+    "d0M": "d8",
+    "d4M": "d4",
+    "d8M": "d0",
+    "d12M": "d12"
+   }
+  },
+  "refused": [
+   "assembling-machine-3|advanced-circuit",
+   "assembling-machine-3|electronic-circuit"
+  ]
+ }
+}

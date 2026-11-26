@@ -1,0 +1,3210 @@
+{
+  "schema": 1,
+  "family": "vulcanus-circuits",
+  "id": "electronic-circuits",
+  "revision": 1,
+  "candidateSha256": "099932f57dd9e2c2757089a0e64b4b1aeb42d43e8e4b0161cd9edf3209ae53b3",
+  "requiredGameVersion": "2.1.25",
+  "surface": "vulcanus",
+  "prototypeSha256": "e557057787f68fbb443666dcebd7fb204e3e91ac621ba623d3477ff925bcab90",
+  "fluidSlotsSha256": "1f0f7ac18d033e42ce19a5ad35f97072b1a0d1d63ef43fc122de921759d56651",
+  "intendedUse": "electronic circuits on a belt from lava and calcite; molten iron and copper, plates and cable are made inside",
+  "products": [
+    "electronic-circuit"
+  ],
+  "product": "electronic-circuit",
+  "target": 1200,
+  "exitCarries": "a red belt carries 1,800 a minute (900 a lane); the two bands load one lane each, 600 a minute a lane at the target",
+  "equipment": {
+    "machines": [
+      "foundry",
+      "assembling-machine-3"
+    ],
+    "inserters": {
+      "fast-inserter": 1,
+      "bulk-inserter": 2,
+      "long-handed-inserter": 1
+    },
+    "power": "substation",
+    "modules": 0,
+    "beacons": 0,
+    "quality": "normal",
+    "circuitNetwork": false
+  },
+  "footprint": {
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 74,
+      "bottom": 13
+    },
+    "width": 74,
+    "height": 13,
+    "area": 962,
+    "includes": "all entities: machines, arms, belts, pipes, substations and panels; the outside supply and the belts and pipes a player connects are not counted",
+    "counts": {
+      "assembling-machine-3": 12,
+      "bulk-inserter": 58,
+      "display-panel": 5,
+      "fast-inserter": 4,
+      "fast-transport-belt": 82,
+      "fast-underground-belt": 24,
+      "foundry": 16,
+      "pipe": 75,
+      "pipe-to-ground": 16,
+      "substation": 5,
+      "transport-belt": 2,
+      "underground-belt": 4
+    },
+    "entities": 303
+  },
+  "inputPorts": [
+    {
+      "id": "IN-1",
+      "item": "lava",
+      "kind": "pipe",
+      "side": "west",
+      "flow": "east",
+      "entity": 5,
+      "tile": {
+        "x": 0,
+        "y": 3
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 3
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -2,
+          "y": 3
+        },
+        {
+          "x": -3,
+          "y": 3
+        }
+      ],
+      "panel": 299,
+      "label": "IN: lava 18670/min",
+      "perMinute": 18670
+    },
+    {
+      "id": "IN-2",
+      "item": "calcite",
+      "kind": "belt",
+      "side": "west",
+      "flow": "east",
+      "entity": 42,
+      "tile": {
+        "x": 0,
+        "y": 6
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 6
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -2,
+          "y": 6
+        },
+        {
+          "x": -3,
+          "y": 6
+        }
+      ],
+      "panel": 300,
+      "label": "IN: calcite 38/min",
+      "perMinute": 38
+    }
+  ],
+  "outputPorts": [
+    {
+      "id": "OUT-1",
+      "item": "electronic-circuit",
+      "kind": "belt",
+      "side": "east",
+      "flow": "east",
+      "entity": 275,
+      "tile": {
+        "x": 73,
+        "y": 6
+      },
+      "externalContact": {
+        "x": 74,
+        "y": 6
+      },
+      "vector": [
+        1,
+        0
+      ],
+      "approach": [
+        {
+          "x": 75,
+          "y": 6
+        },
+        {
+          "x": 76,
+          "y": 6
+        }
+      ],
+      "panel": 301,
+      "label": "OUT: electronic-circuit 1200/min",
+      "perMinute": 1200,
+      "product": true
+    },
+    {
+      "id": "OUT-STONE",
+      "item": "stone",
+      "kind": "belt",
+      "side": "west",
+      "flow": "west",
+      "entity": 58,
+      "tile": {
+        "x": 0,
+        "y": 7
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 7
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -2,
+          "y": 7
+        },
+        {
+          "x": -3,
+          "y": 7
+        }
+      ],
+      "panel": 302,
+      "label": "OUT: stone 680/min",
+      "perMinute": 680,
+      "byproduct": true
+    }
+  ],
+  "power": {
+    "entry": 67,
+    "panel": 303,
+    "label": "POWER: connect this substation",
+    "externalPole": {
+      "x": -5,
+      "y": 10
+    },
+    "poles": [
+      67,
+      124,
+      176,
+      226,
+      262
+    ]
+  },
+  "machines": [
+    {
+      "entity": 1,
+      "name": "foundry",
+      "recipe": "molten-copper-from-lava",
+      "role": "lava foundry (molten copper)",
+      "group": "copper-lava",
+      "tile": {
+        "x": 4,
+        "y": 0
+      },
+      "direction": 4
+    },
+    {
+      "entity": 2,
+      "name": "foundry",
+      "recipe": "molten-iron-from-lava",
+      "role": "lava foundry (molten iron)",
+      "group": "iron-lava",
+      "tile": {
+        "x": 4,
+        "y": 8
+      },
+      "direction": 4
+    },
+    {
+      "entity": 3,
+      "name": "foundry",
+      "recipe": "molten-copper-from-lava",
+      "role": "lava foundry (molten copper)",
+      "group": "copper-lava",
+      "tile": {
+        "x": 10,
+        "y": 0
+      },
+      "direction": 12
+    },
+    {
+      "entity": 4,
+      "name": "foundry",
+      "recipe": "molten-iron-from-lava",
+      "role": "lava foundry (molten iron)",
+      "group": "iron-lava",
+      "tile": {
+        "x": 10,
+        "y": 8
+      },
+      "direction": 12
+    },
+    {
+      "entity": 79,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "foundry (iron plate)",
+      "group": "cast-iron",
+      "tile": {
+        "x": 18,
+        "y": 0
+      },
+      "direction": 4
+    },
+    {
+      "entity": 80,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "foundry (iron plate)",
+      "group": "cast-iron",
+      "tile": {
+        "x": 18,
+        "y": 8
+      },
+      "direction": 4
+    },
+    {
+      "entity": 83,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "foundry (iron plate)",
+      "group": "cast-iron",
+      "tile": {
+        "x": 23,
+        "y": 0
+      },
+      "direction": 12
+    },
+    {
+      "entity": 84,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "foundry (iron plate)",
+      "group": "cast-iron",
+      "tile": {
+        "x": 23,
+        "y": 8
+      },
+      "direction": 12
+    },
+    {
+      "entity": 98,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "foundry (iron plate)",
+      "group": "cast-iron",
+      "tile": {
+        "x": 29,
+        "y": 0
+      },
+      "direction": 4
+    },
+    {
+      "entity": 99,
+      "name": "foundry",
+      "recipe": "casting-iron",
+      "role": "foundry (iron plate)",
+      "group": "cast-iron",
+      "tile": {
+        "x": 29,
+        "y": 8
+      },
+      "direction": 4
+    },
+    {
+      "entity": 102,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "foundry (copper cable)",
+      "group": "cast-cable",
+      "tile": {
+        "x": 38,
+        "y": 0
+      },
+      "direction": 0
+    },
+    {
+      "entity": 103,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "foundry (copper cable)",
+      "group": "cast-cable",
+      "tile": {
+        "x": 38,
+        "y": 8
+      },
+      "direction": 8
+    },
+    {
+      "entity": 104,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 34,
+        "y": 2
+      },
+      "direction": 0
+    },
+    {
+      "entity": 105,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 34,
+        "y": 8
+      },
+      "direction": 0
+    },
+    {
+      "entity": 114,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 44,
+        "y": 2
+      },
+      "direction": 0
+    },
+    {
+      "entity": 115,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 44,
+        "y": 8
+      },
+      "direction": 0
+    },
+    {
+      "entity": 154,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "foundry (copper cable)",
+      "group": "cast-cable",
+      "tile": {
+        "x": 51,
+        "y": 0
+      },
+      "direction": 0
+    },
+    {
+      "entity": 155,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "foundry (copper cable)",
+      "group": "cast-cable",
+      "tile": {
+        "x": 51,
+        "y": 8
+      },
+      "direction": 8
+    },
+    {
+      "entity": 156,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 47,
+        "y": 2
+      },
+      "direction": 0
+    },
+    {
+      "entity": 157,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 47,
+        "y": 8
+      },
+      "direction": 0
+    },
+    {
+      "entity": 166,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 57,
+        "y": 2
+      },
+      "direction": 0
+    },
+    {
+      "entity": 167,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 57,
+        "y": 8
+      },
+      "direction": 0
+    },
+    {
+      "entity": 204,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "foundry (copper cable)",
+      "group": "cast-cable",
+      "tile": {
+        "x": 64,
+        "y": 0
+      },
+      "direction": 0
+    },
+    {
+      "entity": 205,
+      "name": "foundry",
+      "recipe": "casting-copper-cable",
+      "role": "foundry (copper cable)",
+      "group": "cast-cable",
+      "tile": {
+        "x": 64,
+        "y": 8
+      },
+      "direction": 8
+    },
+    {
+      "entity": 206,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 60,
+        "y": 2
+      },
+      "direction": 0
+    },
+    {
+      "entity": 207,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 60,
+        "y": 8
+      },
+      "direction": 0
+    },
+    {
+      "entity": 216,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 70,
+        "y": 2
+      },
+      "direction": 0
+    },
+    {
+      "entity": 217,
+      "name": "assembling-machine-3",
+      "recipe": "electronic-circuit",
+      "role": "assembling machine 3 (electronic circuit)",
+      "group": "electronic-circuit",
+      "tile": {
+        "x": 70,
+        "y": 8
+      },
+      "direction": 0
+    }
+  ],
+  "groups": {
+    "copper-lava": [
+      1,
+      3
+    ],
+    "iron-lava": [
+      2,
+      4
+    ],
+    "cast-iron": [
+      79,
+      80,
+      83,
+      84,
+      98,
+      99
+    ],
+    "cast-cable": [
+      102,
+      103,
+      154,
+      155,
+      204,
+      205
+    ],
+    "electronic-circuit": [
+      104,
+      105,
+      114,
+      115,
+      156,
+      157,
+      166,
+      167,
+      206,
+      207,
+      216,
+      217
+    ]
+  },
+  "routes": [
+    {
+      "inserter": 59,
+      "kind": "fast-inserter",
+      "hand": 1,
+      "filter": "calcite",
+      "from": {
+        "line": "calcite",
+        "belt": 45
+      },
+      "to": {
+        "entity": 1
+      },
+      "label": "calcite belt -> lava foundry (molten copper)"
+    },
+    {
+      "inserter": 60,
+      "kind": "fast-inserter",
+      "hand": 1,
+      "filter": "calcite",
+      "from": {
+        "line": "calcite",
+        "belt": 45
+      },
+      "to": {
+        "entity": 2
+      },
+      "label": "calcite belt -> lava foundry (molten iron)"
+    },
+    {
+      "inserter": 61,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "filter": "stone",
+      "from": {
+        "entity": 1
+      },
+      "to": {
+        "line": "stone",
+        "belt": 52
+      },
+      "label": "lava foundry (molten copper) -> stone belt"
+    },
+    {
+      "inserter": 62,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "filter": "stone",
+      "from": {
+        "entity": 2
+      },
+      "to": {
+        "line": "stone",
+        "belt": 52
+      },
+      "label": "lava foundry (molten iron) -> stone belt"
+    },
+    {
+      "inserter": 63,
+      "kind": "fast-inserter",
+      "hand": 1,
+      "filter": "calcite",
+      "from": {
+        "line": "calcite",
+        "belt": 47
+      },
+      "to": {
+        "entity": 3
+      },
+      "label": "calcite belt -> lava foundry (molten copper)"
+    },
+    {
+      "inserter": 64,
+      "kind": "fast-inserter",
+      "hand": 1,
+      "filter": "calcite",
+      "from": {
+        "line": "calcite",
+        "belt": 47
+      },
+      "to": {
+        "entity": 4
+      },
+      "label": "calcite belt -> lava foundry (molten iron)"
+    },
+    {
+      "inserter": 65,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "filter": "stone",
+      "from": {
+        "entity": 3
+      },
+      "to": {
+        "line": "stone",
+        "belt": 48
+      },
+      "label": "lava foundry (molten copper) -> stone belt"
+    },
+    {
+      "inserter": 66,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "filter": "stone",
+      "from": {
+        "entity": 4
+      },
+      "to": {
+        "line": "stone",
+        "belt": 48
+      },
+      "label": "lava foundry (molten iron) -> stone belt"
+    },
+    {
+      "inserter": 81,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 79
+      },
+      "to": {
+        "line": "plates",
+        "belt": 253
+      },
+      "label": "iron plate foundry -> plate belt"
+    },
+    {
+      "inserter": 82,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 80
+      },
+      "to": {
+        "line": "plates",
+        "belt": 253
+      },
+      "label": "iron plate foundry -> plate belt"
+    },
+    {
+      "inserter": 85,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 83
+      },
+      "to": {
+        "line": "plates",
+        "belt": 256
+      },
+      "label": "iron plate foundry -> plate belt"
+    },
+    {
+      "inserter": 86,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 84
+      },
+      "to": {
+        "line": "plates",
+        "belt": 256
+      },
+      "label": "iron plate foundry -> plate belt"
+    },
+    {
+      "inserter": 100,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 98
+      },
+      "to": {
+        "line": "plates",
+        "belt": 261
+      },
+      "label": "iron plate foundry -> plate belt"
+    },
+    {
+      "inserter": 101,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 99
+      },
+      "to": {
+        "line": "plates",
+        "belt": 261
+      },
+      "label": "iron plate foundry -> plate belt"
+    },
+    {
+      "inserter": 106,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 102
+      },
+      "to": {
+        "entity": 104
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 107,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 102
+      },
+      "to": {
+        "entity": 104
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 108,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 103
+      },
+      "to": {
+        "entity": 105
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 109,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 103
+      },
+      "to": {
+        "entity": 105
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 110,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 128
+      },
+      "to": {
+        "entity": 104
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 111,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 128
+      },
+      "to": {
+        "entity": 105
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 112,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 104
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 139
+      },
+      "label": "electronic circuit machine -> circuit belt (top)"
+    },
+    {
+      "inserter": 113,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 105
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 147
+      },
+      "label": "electronic circuit machine -> circuit belt (bottom)"
+    },
+    {
+      "inserter": 116,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 102
+      },
+      "to": {
+        "entity": 114
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 117,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 102
+      },
+      "to": {
+        "entity": 114
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 118,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 103
+      },
+      "to": {
+        "entity": 115
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 119,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 103
+      },
+      "to": {
+        "entity": 115
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 120,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 133
+      },
+      "to": {
+        "entity": 114
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 121,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 133
+      },
+      "to": {
+        "entity": 115
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 122,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 114
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 144
+      },
+      "label": "electronic circuit machine -> circuit belt (top)"
+    },
+    {
+      "inserter": 123,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 115
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 152
+      },
+      "label": "electronic circuit machine -> circuit belt (bottom)"
+    },
+    {
+      "inserter": 158,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 154
+      },
+      "to": {
+        "entity": 156
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 159,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 154
+      },
+      "to": {
+        "entity": 156
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 160,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 155
+      },
+      "to": {
+        "entity": 157
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 161,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 155
+      },
+      "to": {
+        "entity": 157
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 162,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 178
+      },
+      "to": {
+        "entity": 156
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 163,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 178
+      },
+      "to": {
+        "entity": 157
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 164,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 156
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 189
+      },
+      "label": "electronic circuit machine -> circuit belt (top)"
+    },
+    {
+      "inserter": 165,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 157
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 197
+      },
+      "label": "electronic circuit machine -> circuit belt (bottom)"
+    },
+    {
+      "inserter": 168,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 154
+      },
+      "to": {
+        "entity": 166
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 169,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 154
+      },
+      "to": {
+        "entity": 166
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 170,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 155
+      },
+      "to": {
+        "entity": 167
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 171,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 155
+      },
+      "to": {
+        "entity": 167
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 172,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 183
+      },
+      "to": {
+        "entity": 166
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 173,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 183
+      },
+      "to": {
+        "entity": 167
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 174,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 166
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 194
+      },
+      "label": "electronic circuit machine -> circuit belt (top)"
+    },
+    {
+      "inserter": 175,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 167
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 202
+      },
+      "label": "electronic circuit machine -> circuit belt (bottom)"
+    },
+    {
+      "inserter": 208,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 204
+      },
+      "to": {
+        "entity": 206
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 209,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 204
+      },
+      "to": {
+        "entity": 206
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 210,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 205
+      },
+      "to": {
+        "entity": 207
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 211,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 205
+      },
+      "to": {
+        "entity": 207
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 212,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 228
+      },
+      "to": {
+        "entity": 206
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 213,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 228
+      },
+      "to": {
+        "entity": 207
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 214,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 206
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 238
+      },
+      "label": "electronic circuit machine -> circuit belt (top)"
+    },
+    {
+      "inserter": 215,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 207
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 246
+      },
+      "label": "electronic circuit machine -> circuit belt (bottom)"
+    },
+    {
+      "inserter": 218,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 204
+      },
+      "to": {
+        "entity": 216
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 219,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 204
+      },
+      "to": {
+        "entity": 216
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 220,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 205
+      },
+      "to": {
+        "entity": 217
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 221,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 205
+      },
+      "to": {
+        "entity": 217
+      },
+      "label": "cable foundry -> electronic circuit machine (copper cable)"
+    },
+    {
+      "inserter": 222,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 233
+      },
+      "to": {
+        "entity": 216
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 223,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "line": "plates",
+        "belt": 233
+      },
+      "to": {
+        "entity": 217
+      },
+      "label": "plate belt -> electronic circuit machine (iron plate)"
+    },
+    {
+      "inserter": 224,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 216
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 243
+      },
+      "label": "electronic circuit machine -> circuit belt (top)"
+    },
+    {
+      "inserter": 225,
+      "kind": "bulk-inserter",
+      "hand": 2,
+      "from": {
+        "entity": 217
+      },
+      "to": {
+        "line": "circuits",
+        "belt": 251
+      },
+      "label": "electronic circuit machine -> circuit belt (bottom)"
+    }
+  ],
+  "beltLines": [
+    {
+      "name": "calcite",
+      "items": [
+        "calcite"
+      ],
+      "entities": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ]
+    },
+    {
+      "name": "stone",
+      "items": [
+        "stone"
+      ],
+      "entities": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58
+      ]
+    },
+    {
+      "name": "plates",
+      "items": [
+        "iron-plate"
+      ],
+      "entities": [
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        253,
+        254,
+        255,
+        256,
+        257,
+        258,
+        259,
+        260,
+        261
+      ]
+    },
+    {
+      "name": "circuits",
+      "items": [
+        "electronic-circuit"
+      ],
+      "entities": [
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        272,
+        273,
+        274,
+        275
+      ]
+    }
+  ],
+  "machineBoxes": {
+    "1": [
+      {
+        "fluid": "lava",
+        "flow": "input",
+        "targets": [
+          [
+            -3,
+            -1
+          ],
+          [
+            -3,
+            1
+          ]
+        ]
+      },
+      {
+        "fluid": "molten-copper",
+        "flow": "output",
+        "targets": [
+          [
+            3,
+            -1
+          ],
+          [
+            3,
+            1
+          ]
+        ]
+      }
+    ],
+    "2": [
+      {
+        "fluid": "lava",
+        "flow": "input",
+        "targets": [
+          [
+            -3,
+            -1
+          ],
+          [
+            -3,
+            1
+          ]
+        ]
+      },
+      {
+        "fluid": "molten-iron",
+        "flow": "output",
+        "targets": [
+          [
+            3,
+            -1
+          ],
+          [
+            3,
+            1
+          ]
+        ]
+      }
+    ],
+    "3": [
+      {
+        "fluid": "lava",
+        "flow": "input",
+        "targets": [
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            -1
+          ]
+        ]
+      },
+      {
+        "fluid": "molten-copper",
+        "flow": "output",
+        "targets": [
+          [
+            -3,
+            1
+          ],
+          [
+            -3,
+            -1
+          ]
+        ]
+      }
+    ],
+    "4": [
+      {
+        "fluid": "lava",
+        "flow": "input",
+        "targets": [
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            -1
+          ]
+        ]
+      },
+      {
+        "fluid": "molten-iron",
+        "flow": "output",
+        "targets": [
+          [
+            -3,
+            1
+          ],
+          [
+            -3,
+            -1
+          ]
+        ]
+      }
+    ],
+    "79": [
+      {
+        "fluid": "molten-iron",
+        "flow": "input",
+        "targets": [
+          [
+            -3,
+            -1
+          ],
+          [
+            -3,
+            1
+          ]
+        ]
+      }
+    ],
+    "80": [
+      {
+        "fluid": "molten-iron",
+        "flow": "input",
+        "targets": [
+          [
+            -3,
+            -1
+          ],
+          [
+            -3,
+            1
+          ]
+        ]
+      }
+    ],
+    "83": [
+      {
+        "fluid": "molten-iron",
+        "flow": "input",
+        "targets": [
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            -1
+          ]
+        ]
+      }
+    ],
+    "84": [
+      {
+        "fluid": "molten-iron",
+        "flow": "input",
+        "targets": [
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            -1
+          ]
+        ]
+      }
+    ],
+    "98": [
+      {
+        "fluid": "molten-iron",
+        "flow": "input",
+        "targets": [
+          [
+            -3,
+            -1
+          ],
+          [
+            -3,
+            1
+          ]
+        ]
+      }
+    ],
+    "99": [
+      {
+        "fluid": "molten-iron",
+        "flow": "input",
+        "targets": [
+          [
+            -3,
+            -1
+          ],
+          [
+            -3,
+            1
+          ]
+        ]
+      }
+    ],
+    "102": [
+      {
+        "fluid": "molten-copper",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            3
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      }
+    ],
+    "103": [
+      {
+        "fluid": "molten-copper",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            -3
+          ],
+          [
+            -1,
+            -3
+          ]
+        ]
+      }
+    ],
+    "104": [],
+    "105": [],
+    "114": [],
+    "115": [],
+    "154": [
+      {
+        "fluid": "molten-copper",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            3
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      }
+    ],
+    "155": [
+      {
+        "fluid": "molten-copper",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            -3
+          ],
+          [
+            -1,
+            -3
+          ]
+        ]
+      }
+    ],
+    "156": [],
+    "157": [],
+    "166": [],
+    "167": [],
+    "204": [
+      {
+        "fluid": "molten-copper",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            3
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      }
+    ],
+    "205": [
+      {
+        "fluid": "molten-copper",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            -3
+          ],
+          [
+            -1,
+            -3
+          ]
+        ]
+      }
+    ],
+    "206": [],
+    "207": [],
+    "216": [],
+    "217": []
+  },
+  "unusedPorts": {
+    "1": [],
+    "2": [],
+    "3": [],
+    "4": [],
+    "79": [
+      [
+        3,
+        -1
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "80": [
+      [
+        3,
+        -1
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "83": [
+      [
+        -3,
+        -1
+      ],
+      [
+        -3,
+        1
+      ]
+    ],
+    "84": [
+      [
+        -3,
+        -1
+      ],
+      [
+        -3,
+        1
+      ]
+    ],
+    "98": [
+      [
+        3,
+        -1
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "99": [
+      [
+        3,
+        -1
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "102": [
+      [
+        -1,
+        -3
+      ],
+      [
+        1,
+        -3
+      ]
+    ],
+    "103": [
+      [
+        -1,
+        3
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "104": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "105": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "114": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "115": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "154": [
+      [
+        -1,
+        -3
+      ],
+      [
+        1,
+        -3
+      ]
+    ],
+    "155": [
+      [
+        -1,
+        3
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "156": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "157": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "166": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "167": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "204": [
+      [
+        -1,
+        -3
+      ],
+      [
+        1,
+        -3
+      ]
+    ],
+    "205": [
+      [
+        -1,
+        3
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "206": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "207": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "216": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "217": [
+      [
+        0,
+        -2
+      ],
+      [
+        0,
+        2
+      ]
+    ]
+  },
+  "fluidOf": {
+    "5": "lava",
+    "6": "lava",
+    "7": "lava",
+    "8": "lava",
+    "9": "lava",
+    "10": "lava",
+    "11": "lava",
+    "12": "lava",
+    "13": "lava",
+    "14": "lava",
+    "15": "lava",
+    "16": "lava",
+    "17": "lava",
+    "18": "lava",
+    "19": "lava",
+    "20": "lava",
+    "21": "lava",
+    "22": "lava",
+    "23": "lava",
+    "24": "lava",
+    "25": "lava",
+    "26": "lava",
+    "27": "lava",
+    "28": "lava",
+    "29": "lava",
+    "30": "lava",
+    "31": "lava",
+    "32": "molten-copper",
+    "33": "molten-copper",
+    "34": "molten-copper",
+    "35": "molten-copper",
+    "36": "molten-copper",
+    "37": "molten-iron",
+    "38": "molten-iron",
+    "39": "molten-iron",
+    "40": "molten-iron",
+    "41": "molten-iron",
+    "68": "molten-iron",
+    "69": "molten-iron",
+    "70": "molten-iron",
+    "71": "molten-iron",
+    "72": "molten-iron",
+    "73": "molten-iron",
+    "74": "molten-iron",
+    "75": "molten-iron",
+    "76": "molten-iron",
+    "77": "molten-iron",
+    "78": "molten-iron",
+    "87": "molten-iron",
+    "88": "molten-iron",
+    "89": "molten-iron",
+    "90": "molten-iron",
+    "91": "molten-iron",
+    "92": "molten-iron",
+    "93": "molten-iron",
+    "94": "molten-iron",
+    "95": "molten-iron",
+    "96": "molten-iron",
+    "97": "molten-iron",
+    "135": "molten-copper",
+    "136": "molten-copper",
+    "137": "molten-copper",
+    "185": "molten-copper",
+    "186": "molten-copper",
+    "187": "molten-copper",
+    "234": "molten-copper",
+    "235": "molten-copper",
+    "236": "molten-copper",
+    "276": "molten-copper",
+    "277": "molten-copper",
+    "278": "molten-copper",
+    "279": "molten-copper",
+    "280": "molten-copper",
+    "281": "molten-copper",
+    "282": "molten-copper",
+    "283": "molten-copper",
+    "284": "molten-copper",
+    "285": "molten-copper",
+    "286": "molten-copper",
+    "287": "molten-copper",
+    "288": "molten-copper",
+    "289": "molten-copper",
+    "290": "molten-copper",
+    "291": "molten-copper",
+    "292": "molten-copper",
+    "293": "molten-copper",
+    "294": "molten-copper",
+    "295": "molten-iron",
+    "296": "molten-iron",
+    "297": "molten-iron",
+    "298": "molten-iron"
+  },
+  "fluidComponents": [
+    {
+      "id": 1,
+      "fluid": "lava",
+      "entities": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 0,
+          "fluid": "lava",
+          "flow": "input"
+        },
+        {
+          "entity": 2,
+          "box": 0,
+          "fluid": "lava",
+          "flow": "input"
+        },
+        {
+          "entity": 3,
+          "box": 0,
+          "fluid": "lava",
+          "flow": "input"
+        },
+        {
+          "entity": 4,
+          "box": 0,
+          "fluid": "lava",
+          "flow": "input"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "fluid": "molten-copper",
+      "entities": [
+        1,
+        3,
+        32,
+        33,
+        34,
+        35,
+        36,
+        102,
+        103,
+        135,
+        136,
+        137,
+        154,
+        155,
+        185,
+        186,
+        187,
+        204,
+        205,
+        234,
+        235,
+        236,
+        276,
+        277,
+        278,
+        279,
+        280,
+        281,
+        282,
+        283,
+        284,
+        285,
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 1,
+          "fluid": "molten-copper",
+          "flow": "output"
+        },
+        {
+          "entity": 3,
+          "box": 1,
+          "fluid": "molten-copper",
+          "flow": "output"
+        },
+        {
+          "entity": 102,
+          "box": 0,
+          "fluid": "molten-copper",
+          "flow": "input"
+        },
+        {
+          "entity": 103,
+          "box": 0,
+          "fluid": "molten-copper",
+          "flow": "input"
+        },
+        {
+          "entity": 154,
+          "box": 0,
+          "fluid": "molten-copper",
+          "flow": "input"
+        },
+        {
+          "entity": 155,
+          "box": 0,
+          "fluid": "molten-copper",
+          "flow": "input"
+        },
+        {
+          "entity": 204,
+          "box": 0,
+          "fluid": "molten-copper",
+          "flow": "input"
+        },
+        {
+          "entity": 205,
+          "box": 0,
+          "fluid": "molten-copper",
+          "flow": "input"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "fluid": "molten-iron",
+      "entities": [
+        2,
+        4,
+        37,
+        38,
+        39,
+        40,
+        41,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        83,
+        84,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        295,
+        296,
+        297,
+        298
+      ],
+      "boxes": [
+        {
+          "entity": 2,
+          "box": 1,
+          "fluid": "molten-iron",
+          "flow": "output"
+        },
+        {
+          "entity": 4,
+          "box": 1,
+          "fluid": "molten-iron",
+          "flow": "output"
+        },
+        {
+          "entity": 79,
+          "box": 0,
+          "fluid": "molten-iron",
+          "flow": "input"
+        },
+        {
+          "entity": 80,
+          "box": 0,
+          "fluid": "molten-iron",
+          "flow": "input"
+        },
+        {
+          "entity": 83,
+          "box": 0,
+          "fluid": "molten-iron",
+          "flow": "input"
+        },
+        {
+          "entity": 84,
+          "box": 0,
+          "fluid": "molten-iron",
+          "flow": "input"
+        },
+        {
+          "entity": 98,
+          "box": 0,
+          "fluid": "molten-iron",
+          "flow": "input"
+        },
+        {
+          "entity": 99,
+          "box": 0,
+          "fluid": "molten-iron",
+          "flow": "input"
+        }
+      ]
+    }
+  ],
+  "technologyClosure": [
+    "electronics",
+    "steam-power",
+    "automation-science-pack",
+    "steel-processing",
+    "logistic-science-pack",
+    "advanced-material-processing",
+    "automation",
+    "automation-2",
+    "concrete",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "flammables",
+    "plastics",
+    "advanced-circuit",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "advanced-oil-processing",
+    "rocket-fuel",
+    "processing-unit",
+    "lubricant",
+    "electric-engine",
+    "battery",
+    "robotics",
+    "logistic-robotics",
+    "low-density-structure",
+    "advanced-material-processing-2",
+    "rocket-silo",
+    "space-platform",
+    "space-science-pack",
+    "space-platform-thruster",
+    "planet-discovery-vulcanus",
+    "calcite-processing",
+    "tungsten-carbide",
+    "foundry",
+    "logistics",
+    "logistics-2",
+    "fast-inserter",
+    "bulk-inserter",
+    "electric-energy-distribution-1",
+    "electric-energy-distribution-2",
+    "modules",
+    "speed-module",
+    "productivity-module",
+    "railway",
+    "production-science-pack",
+    "automation-3",
+    "circuit-network"
+  ],
+  "requirements": [
+    {
+      "recipe": "electronic-circuit",
+      "technology": "electronics"
+    },
+    {
+      "recipe": "foundry",
+      "technology": "foundry"
+    },
+    {
+      "recipe": "pipe",
+      "technology": "steam-power"
+    },
+    {
+      "recipe": "pipe-to-ground",
+      "technology": "steam-power"
+    },
+    {
+      "recipe": "underground-belt",
+      "technology": "logistics"
+    },
+    {
+      "recipe": "fast-transport-belt",
+      "technology": "logistics-2"
+    },
+    {
+      "recipe": "fast-underground-belt",
+      "technology": "logistics-2"
+    },
+    {
+      "recipe": "fast-inserter",
+      "technology": "fast-inserter"
+    },
+    {
+      "recipe": "bulk-inserter",
+      "technology": "bulk-inserter"
+    },
+    {
+      "recipe": "substation",
+      "technology": "electric-energy-distribution-2"
+    },
+    {
+      "recipe": "assembling-machine-3",
+      "technology": "automation-3"
+    },
+    {
+      "recipe": "display-panel",
+      "technology": "circuit-network"
+    },
+    {
+      "recipe": "molten-copper-from-lava",
+      "technology": "foundry"
+    },
+    {
+      "recipe": "molten-iron-from-lava",
+      "technology": "foundry"
+    },
+    {
+      "recipe": "casting-iron",
+      "technology": "foundry"
+    },
+    {
+      "recipe": "casting-copper-cable",
+      "technology": "foundry"
+    }
+  ],
+  "sizing": {
+    "target": {
+      "electronic-circuit": 1200
+    },
+    "productivity": 1.5,
+    "need": {
+      "ec": 1200,
+      "ac": 0,
+      "pu": 0,
+      "cable": 3600,
+      "plate": 1200,
+      "cableCrafts": 1200,
+      "plateCrafts": 400,
+      "moltenCopper": 6000,
+      "moltenIron": 8000,
+      "copperLavaCrafts": 16,
+      "ironLavaCrafts": 21.333333333333332,
+      "lava": 18666.666666666664,
+      "calcite": 37.33333333333333,
+      "stone": 680,
+      "plastic": 0,
+      "acid": 0
+    },
+    "machines": [
+      {
+        "recipe": "molten-copper-from-lava",
+        "count": 2,
+        "craftsNeeded": 16,
+        "craftsEach": 15,
+        "why": "one would make 5,625 molten copper a minute of the 6,000 needed"
+      },
+      {
+        "recipe": "molten-iron-from-lava",
+        "count": 2,
+        "craftsNeeded": 21.333333333333332,
+        "craftsEach": 15,
+        "why": "one would make 5,625 molten iron a minute of the 8,000 needed"
+      },
+      {
+        "recipe": "casting-iron",
+        "count": 6,
+        "craftsNeeded": 400,
+        "craftsEach": 75,
+        "why": "5.33 needed"
+      },
+      {
+        "recipe": "casting-copper-cable",
+        "count": 6,
+        "craftsNeeded": 1200,
+        "craftsEach": 240,
+        "why": "exactly 5 needed; the sixth is the spare, because five would have to cast without ever pausing"
+      },
+      {
+        "recipe": "electronic-circuit",
+        "count": 12,
+        "craftsNeeded": 1200,
+        "craftsEach": 150,
+        "why": "8 needed; each cable foundry hands its cable to two machines directly, so six foundries carry twelve, each at two thirds of its speed"
+      }
+    ],
+    "panel": {
+      "lava": 18670,
+      "calcite": 38,
+      "stone": 680
+    }
+  },
+  "status": {
+    "static": "static-audit.json",
+    "native": "native-report.json; qualified only when that report passed for candidateSha256"
+  },
+  "nativeProtocol": {
+    "seed": 21026,
+    "externalPowerWatts": 400000000,
+    "floorShare": 0.95,
+    "warmupTicks": 54000,
+    "measureTicks": 108000,
+    "blockTicks": 54000,
+    "stoppedMinutes": 5,
+    "outageTicks": 18000,
+    "coldTicks": 72000,
+    "reachLimitTicks": 108000,
+    "holdTicks": 36000,
+    "latePowerTicks": 18000,
+    "blockedStoneTicks": 216000,
+    "cutTicks": 36000,
+    "stopTicks": 54000,
+    "buildStepTicks": 20,
+    "buildPerStep": 2,
+    "buildGapTicks": 36000,
+    "buildOrders": [
+      "shuffle-1",
+      "shuffle-2",
+      "shuffle-3",
+      "pipes-first",
+      "machines-first",
+      "copper-lava-last",
+      "iron-lava-last"
+    ],
+    "placements": [
+      "rot90",
+      "rot180",
+      "rot270",
+      "flipH",
+      "flipV"
+    ],
+    "maxResearch": {
+      "stack": 2,
+      "bulk": 11
+    },
+    "surface": "vulcanus (game.planets.vulcanus.create_surface; ground set to volcanic-ash-flats, natural entities removed, only the chunks under the blueprint kept)",
+    "research": "exactly manifest.technologyClosure, nothing else: bulk inserter capacity bonus 1, inserter stack size bonus 0 (research:max sets them to the values of all seven capacity researches)",
+    "feed": "belts: items put on the entrance belt (generous: one item a lane every tick the belt has room; throttled: a credit of perMinute/3600 a tick, capped at 8, one item a credit on alternating lanes); pipes: fluid put into one outside pipe touching the entrance (generous: kept full; throttled: perMinute/3600 a tick plus what was refused, capped at one second)",
+    "draw": "a belt is placed beyond every exit, the way a player connects one, and emptied every four ticks; a blocked or unconnected exit is the same belt left alone",
+    "reach": "a phase that waits for the rate ends when the trailing minute of the product exit reaches 95% of the target; its limit is a failure",
+    "acceptance": "In every scenario: no pipe ever holds a fluid other than its network's (every fluid segment read every tick, every machine fluid box every five ticks), no machine box is joined to a pipe of another fluid, no unused port is joined to anything, no belt line carries an undeclared item and the exits give only their own item; the imported blueprint is exactly the string. Full length: from empty, 15 minutes of warm-up then 30 minutes measured at 95% of the target or more, once with every entrance offered more than it can take and once with every entrance offered exactly its panel figure; each input withheld from a cold start for 20 minutes and then supplied; the stone exit left unconnected for an hour and then connected. Goal-ended: with the product exit blocked for 15 minutes nothing crafts in the last five and the rate returns when it is released; the same with the stone exit; a five-minute outage of every input; five minutes without power; built a few entities at a time in three shuffled orders, pipes first, machines first and with either lava foundry group ten minutes late, supply and power live; lava and calcite cut for ten minutes each and each lava foundry group stopped for fifteen; placed turned in each direction and mirrored on each axis; and with every inserter capacity research done. After each of these the exit reaches the rate and then holds 95% of the target over ten measured minutes."
+  },
+  "measured": {
+    "target": 1200,
+    "floor": 1140,
+    "generous": {
+      "productPerMinute": 1350,
+      "stonePerMinute": 764.7,
+      "measuredMinutes": 30,
+      "drawPerMinute": {
+        "lava": 21016.7,
+        "calcite": 42.1
+      },
+      "productByMinute": {
+        "least": 1350,
+        "most": 1350
+      },
+      "groups": {
+        "copper-lava": {
+          "machines": 2,
+          "craftsPerMinute": 27.1,
+          "workingShare": 0.6
+        },
+        "iron-lava": {
+          "machines": 2,
+          "craftsPerMinute": 35.9,
+          "workingShare": 0.8
+        },
+        "cast-iron": {
+          "machines": 6,
+          "craftsPerMinute": 675,
+          "workingShare": 1
+        },
+        "cast-cable": {
+          "machines": 6,
+          "craftsPerMinute": 2025.1,
+          "workingShare": 0.93
+        },
+        "electronic-circuit": {
+          "machines": 12,
+          "craftsPerMinute": 1350,
+          "workingShare": 0.89
+        }
+      },
+      "madePerMinute": {
+        "calcite": 0,
+        "stone": 765,
+        "iron-plate": 1350,
+        "copper-cable": 4050.1,
+        "electronic-circuit": 1350,
+        "lava": 0,
+        "molten-copper": 6766.7,
+        "molten-iron": 8975
+      }
+    },
+    "throttled": {
+      "productPerMinute": 1199.57,
+      "stonePerMinute": 680.07,
+      "measuredMinutes": 30,
+      "drawPerMinute": {
+        "lava": 18670,
+        "calcite": 38
+      },
+      "productByMinute": {
+        "least": 1143,
+        "most": 1256
+      },
+      "groups": {
+        "copper-lava": {
+          "machines": 2,
+          "craftsPerMinute": 24,
+          "workingShare": 0.53
+        },
+        "iron-lava": {
+          "machines": 2,
+          "craftsPerMinute": 32,
+          "workingShare": 0.71
+        },
+        "cast-iron": {
+          "machines": 6,
+          "craftsPerMinute": 600.1,
+          "workingShare": 0.86
+        },
+        "cast-cable": {
+          "machines": 6,
+          "craftsPerMinute": 1799.7,
+          "workingShare": 0.83
+        },
+        "electronic-circuit": {
+          "machines": 12,
+          "craftsPerMinute": 1199.8,
+          "workingShare": 0.6
+        }
+      },
+      "madePerMinute": {
+        "calcite": 0,
+        "stone": 680,
+        "iron-plate": 1200.1,
+        "copper-cable": 3599.4,
+        "electronic-circuit": 1199.8,
+        "lava": 0,
+        "molten-copper": 6000,
+        "molten-iron": 8000
+      }
+    },
+    "scenarios": [
+      {
+        "scenario": "rate:generous",
+        "length": "full",
+        "description": "from empty: 15 minutes of warm-up, then 30 minutes measured, every entrance offered more than it can take",
+        "passed": true,
+        "gameMinutes": 45,
+        "reached": [],
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "rate:throttled",
+        "length": "full",
+        "description": "from empty: 15 minutes of warm-up, then 30 minutes measured, every entrance offered exactly its panel figure",
+        "passed": true,
+        "gameMinutes": 45,
+        "reached": [],
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "blocks",
+        "length": "goal-ended",
+        "description": "product exit blocked and released, stone exit blocked and released, five-minute outage of every input",
+        "passed": true,
+        "gameMinutes": 49.5,
+        "reached": [
+          {
+            "phase": "reach the rate from empty",
+            "seconds": 78
+          },
+          {
+            "phase": "product exit released",
+            "seconds": 60
+          },
+          {
+            "phase": "stone exit released",
+            "seconds": 60
+          },
+          {
+            "phase": "recovery after the outage",
+            "seconds": 73
+          }
+        ],
+        "holdPerMinute": 1349.6,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": [
+          {
+            "phase": "product exit blocked",
+            "stoppedCleanly": true
+          },
+          {
+            "phase": "stone exit blocked",
+            "stoppedCleanly": true
+          }
+        ]
+      },
+      {
+        "scenario": "cold:lava",
+        "length": "full",
+        "description": "lava withheld from a cold start for 20 minutes, then supplied (also: lava connected late)",
+        "passed": true,
+        "gameMinutes": 31.2,
+        "reached": [
+          {
+            "phase": "after lava was supplied",
+            "seconds": 74
+          }
+        ],
+        "holdPerMinute": 1349.7,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "cold:calcite",
+        "length": "full",
+        "description": "calcite withheld from a cold start for 20 minutes, then supplied (also: calcite connected late)",
+        "passed": true,
+        "gameMinutes": 31.3,
+        "reached": [
+          {
+            "phase": "after calcite was supplied",
+            "seconds": 78
+          }
+        ],
+        "holdPerMinute": 1350.1,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "build:shuffle-1",
+        "length": "goal-ended",
+        "description": "built a few entities at a time in a seeded shuffled order",
+        "passed": true,
+        "gameMinutes": 12.1,
+        "reached": [
+          {
+            "phase": "reach the rate after piecemeal construction",
+            "seconds": 74
+          }
+        ],
+        "holdPerMinute": 1349.9,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "builtInMinutes": 0.8,
+        "deferred": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "build:shuffle-2",
+        "length": "goal-ended",
+        "description": "built a few entities at a time in a seeded shuffled order",
+        "passed": true,
+        "gameMinutes": 12,
+        "reached": [
+          {
+            "phase": "reach the rate after piecemeal construction",
+            "seconds": 71
+          }
+        ],
+        "holdPerMinute": 1349.8,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "builtInMinutes": 0.8,
+        "deferred": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "build:shuffle-3",
+        "length": "goal-ended",
+        "description": "built a few entities at a time in a seeded shuffled order",
+        "passed": true,
+        "gameMinutes": 12.1,
+        "reached": [
+          {
+            "phase": "reach the rate after piecemeal construction",
+            "seconds": 73
+          }
+        ],
+        "holdPerMinute": 1349.7,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "builtInMinutes": 0.8,
+        "deferred": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "build:pipes-first",
+        "length": "goal-ended",
+        "description": "built a few entities at a time, every pipe first",
+        "passed": true,
+        "gameMinutes": 12.1,
+        "reached": [
+          {
+            "phase": "reach the rate after piecemeal construction",
+            "seconds": 73
+          }
+        ],
+        "holdPerMinute": 1349.9,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "builtInMinutes": 0.8,
+        "deferred": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "build:machines-first",
+        "length": "goal-ended",
+        "description": "built a few entities at a time, machines and substations first",
+        "passed": true,
+        "gameMinutes": 12.1,
+        "reached": [
+          {
+            "phase": "reach the rate after piecemeal construction",
+            "seconds": 76
+          }
+        ],
+        "holdPerMinute": 1349.7,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "builtInMinutes": 0.8,
+        "deferred": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "build:copper-lava-last",
+        "length": "goal-ended",
+        "description": "built a few entities at a time; the molten copper lava foundries arrive ten minutes after everything else",
+        "passed": true,
+        "gameMinutes": 21.8,
+        "reached": [
+          {
+            "phase": "reach the rate after piecemeal construction",
+            "seconds": 60
+          }
+        ],
+        "holdPerMinute": 1368.6,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "builtInMinutes": 10.8,
+        "deferred": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "build:iron-lava-last",
+        "length": "goal-ended",
+        "description": "built a few entities at a time; the molten iron lava foundries arrive ten minutes after everything else",
+        "passed": true,
+        "gameMinutes": 22.1,
+        "reached": [
+          {
+            "phase": "reach the rate after piecemeal construction",
+            "seconds": 74
+          }
+        ],
+        "holdPerMinute": 1349,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "builtInMinutes": 10.8,
+        "deferred": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "late:power",
+        "length": "goal-ended",
+        "description": "everything connected, no power for five minutes",
+        "passed": true,
+        "gameMinutes": 16.2,
+        "reached": [
+          {
+            "phase": "after power arrived",
+            "seconds": 74
+          }
+        ],
+        "holdPerMinute": 1349.8,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "late:stone-exit",
+        "length": "full",
+        "description": "stone exit not connected for an hour, then connected",
+        "passed": true,
+        "gameMinutes": 71.3,
+        "reached": [
+          {
+            "phase": "after the stone exit was connected",
+            "seconds": 79
+          }
+        ],
+        "holdPerMinute": 1349.9,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": [
+          {
+            "phase": "stone exit not connected for an hour",
+            "stoppedCleanly": true
+          }
+        ]
+      },
+      {
+        "scenario": "starve:supply",
+        "length": "goal-ended",
+        "description": "in mid-run lava cut for ten minutes, then calcite cut for ten minutes",
+        "passed": true,
+        "gameMinutes": 33.8,
+        "reached": [
+          {
+            "phase": "reach the rate from empty",
+            "seconds": 78
+          },
+          {
+            "phase": "after lava returned",
+            "seconds": 73
+          },
+          {
+            "phase": "after calcite returned",
+            "seconds": 76
+          }
+        ],
+        "holdPerMinute": 1349.8,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "starve:foundry",
+        "length": "goal-ended",
+        "description": "in mid-run one molten metal runs dry while the other is full: each lava foundry group stopped for fifteen minutes in turn",
+        "passed": true,
+        "gameMinutes": 43.5,
+        "reached": [
+          {
+            "phase": "reach the rate from empty",
+            "seconds": 78
+          },
+          {
+            "phase": "after the molten copper lava foundries restarted",
+            "seconds": 60
+          },
+          {
+            "phase": "after the molten iron lava foundries restarted",
+            "seconds": 69
+          }
+        ],
+        "holdPerMinute": 1348.7,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "place:rot90",
+        "length": "shortened",
+        "description": "placed turned a quarter clockwise",
+        "passed": true,
+        "gameMinutes": 11.3,
+        "reached": [
+          {
+            "phase": "reach the rate from empty",
+            "seconds": 78
+          }
+        ],
+        "holdPerMinute": 1350.1,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "place:rot180",
+        "length": "shortened",
+        "description": "placed turned a half",
+        "passed": true,
+        "gameMinutes": 11.3,
+        "reached": [
+          {
+            "phase": "reach the rate from empty",
+            "seconds": 78
+          }
+        ],
+        "holdPerMinute": 1350.1,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "place:rot270",
+        "length": "shortened",
+        "description": "placed turned three quarters",
+        "passed": true,
+        "gameMinutes": 11.3,
+        "reached": [
+          {
+            "phase": "reach the rate from empty",
+            "seconds": 78
+          }
+        ],
+        "holdPerMinute": 1350.1,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "place:flipH",
+        "length": "shortened",
+        "description": "placed mirrored left to right",
+        "passed": true,
+        "gameMinutes": 11.3,
+        "reached": [
+          {
+            "phase": "reach the rate from empty",
+            "seconds": 78
+          }
+        ],
+        "holdPerMinute": 1350.1,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "place:flipV",
+        "length": "shortened",
+        "description": "placed mirrored top to bottom",
+        "passed": true,
+        "gameMinutes": 11.3,
+        "reached": [
+          {
+            "phase": "reach the rate from empty",
+            "seconds": 78
+          }
+        ],
+        "holdPerMinute": 1350.1,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      },
+      {
+        "scenario": "research:max",
+        "length": "shortened",
+        "description": "every inserter capacity research done (the pinned hand sizes must hold)",
+        "passed": true,
+        "gameMinutes": 11.3,
+        "reached": [
+          {
+            "phase": "reach the rate from empty",
+            "seconds": 78
+          }
+        ],
+        "holdPerMinute": 1350.1,
+        "foreignFluids": 0,
+        "joinedBoxes": 0,
+        "stopped": []
+      }
+    ]
+  }
+}
