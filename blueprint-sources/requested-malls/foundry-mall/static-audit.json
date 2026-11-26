@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checksTotal": 48,
+  "checksTotal": 52,
   "checks": [
     {
       "name": "Every entity name is in the pinned prototypes and in the allowed set",
@@ -106,7 +106,86 @@
       "detail": []
     },
     {
-      "name": "A pump stands between the water tank and the gear foundry (nothing flows back into the water pipes)",
+      "name": "No machine is mirrored (its fluid ports lie as the pinned prototype says)",
+      "passed": true
+    },
+    {
+      "name": "No machine has two ports of one kind on pipes of different fluids (a second fluid comes through a pump on the port)",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Every machine fluid port touches the fluid it is meant to (and nothing else touches a port)",
+      "passed": true,
+      "detail": {
+        "molten-copper": {
+          "input": [
+            "lava"
+          ],
+          "output": [
+            "molten-copper",
+            "pump:molten-copper"
+          ]
+        },
+        "molten-iron": {
+          "input": [
+            "lava"
+          ],
+          "output": [
+            "molten-iron"
+          ]
+        },
+        "iron-plate": {
+          "input": [
+            "molten-iron"
+          ]
+        },
+        "caster-S": {
+          "input": [
+            "molten-iron",
+            "pump:molten-copper"
+          ]
+        },
+        "caster-D": {
+          "input": [
+            "molten-copper"
+          ]
+        },
+        "caster-G": {
+          "input": [
+            "molten-iron",
+            "pump:water"
+          ]
+        },
+        "U1": {
+          "input": [
+            "water"
+          ]
+        },
+        "electric-engine-unit": {
+          "input": [
+            "lubricant"
+          ]
+        },
+        "U2": {
+          "input": [
+            "lubricant"
+          ]
+        },
+        "processing-unit": {
+          "input": [
+            "sulfuric-acid"
+          ]
+        },
+        "battery": {
+          "input": [
+            "sulfuric-acid"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Each pump stands directly between its source and the foundry port it feeds (nothing flows back through it)",
       "passed": true
     },
     {
@@ -133,8 +212,8 @@
       "name": "The molten-iron pipes form one network",
       "passed": true,
       "detail": {
-        "connected": 17,
-        "declared": 17
+        "connected": 16,
+        "declared": 16
       }
     },
     {
@@ -169,7 +248,7 @@
       "name": "Every circuit wire joins two members of the same net and is within reach",
       "passed": true,
       "detail": {
-        "wires": 450
+        "wires": 452
       }
     },
     {
@@ -201,6 +280,10 @@
     },
     {
       "name": "Each switching machine has a parking recipe: an idle rule (casting foundries) or a park decider (U1, U2)",
+      "passed": true
+    },
+    {
+      "name": "The recipe wire of U1 and U2 is never without a recipe: \"parked\" is also raised on the tick a craft ends with the pick to park",
       "passed": true
     },
     {
@@ -260,9 +343,9 @@
     "foundry": 7,
     "long-handed-inserter": 2,
     "passive-provider-chest": 5,
-    "pipe": 41,
+    "pipe": 40,
     "pipe-to-ground": 14,
-    "pump": 1,
+    "pump": 2,
     "selector-combinator": 6,
     "steel-chest": 1,
     "storage-tank": 2,

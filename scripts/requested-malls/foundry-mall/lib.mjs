@@ -29,6 +29,27 @@ export const PROTOCOL = Object.freeze({
   singleRefills: ['assembling-machine-3', 'fast-inserter (kit)', 'fast-inserter', 'express-transport-belt', 'express-underground-belt', 'express-splitter', 'bulk-inserter', 'electric-mining-drill', 'foundry'],
   withheldInputs: ['plastic-bar', 'tungsten-carbide', 'sulfuric-acid', 'lubricant', 'water', 'calcite', 'lava'],
   fullCapScenarios: ['fill (its first phase)', 'rate'],
+  // Fluid safety (all at reduced caps). ports: every recipe change of every recipe-switching foundry with each network
+  // on its ports full or empty. build: the blueprint goes up piece by piece with supply and power already connected.
+  // starve: an input, or one lava foundry, is cut in mid-run. place: the blueprint turned or mirrored.
+  matrixCaseTicks: 160, matrixRecipes: { U2: ['iron-ore-melting', 'transport-belt', 'express-transport-belt', 'foundry'] },
+  matrixNetworks: { 'caster-S': ['molten-iron', 'molten-copper'], 'caster-D': ['molten-copper', 'molten-iron'], 'caster-G': ['molten-iron', 'water'], U2: ['lubricant'] },
+  buildOrders: ['shuffle-1', 'shuffle-2', 'shuffle-3', 'pipes-first', 'machines-first', 'combinators-last', 'copper-foundry-last', 'iron-foundry-last', 'robots-25', 'robots-200'],
+  buildStepTicks: 20, buildGapTicks: 36000, robotLimitTicks: 108000, latePowerTicks: 18000, blockedStoneTicks: 216000, cutTicks: 36000, stopTicks: 54000,
+  thinSupply: { lava: 100, calcite: 12 }, thinTicks: 216000,
+  placements: ['rot90', 'rot180', 'rot270', 'flipH', 'flipV'],
   targetRate: null,
-  acceptance: 'At the published caps every product reaches its cap from empty in list order and keeps flowing while all chests are emptied every second. At reduced caps (a tenth, at least 2) the mall refills after complete collection, recovers after a five-minute outage of every input, holds full stock for an hour without a craft and refills, follows cap edits, and with each outside input withheld from a cold start still fills every product that does not need it and the rest after the input returns. Imported blueprint unchanged in every scenario.',
+  acceptance: 'In every scenario no pipe, tank or pump ever holds a foreign fluid (every fluid segment read every tick), no fluid box of a machine is ever joined to the pipes of two fluids except through a pump, and no recipe-switching machine ever holds a recipe none of its rules asks for. At reduced caps the mall fills every cap after being built piece by piece in ten orders (two of them by construction robots) with supply and power connected, after five minutes without power, after an hour with the stone exit blocked, after an hour of thin lava or thin calcite, after lava, calcite or either lava foundry was cut in mid-run, and when placed turned or mirrored; and no recipe change of a recipe-switching foundry puts a fluid into another network, whichever of its networks are empty. At the published caps every product reaches its cap from empty in list order and keeps flowing while all chests are emptied every second. At reduced caps (a tenth, at least 2) the mall refills after complete collection, recovers after a five-minute outage of every input, holds full stock for an hour without a craft and refills, follows cap edits, and with each outside input withheld from a cold start still fills every product that does not need it and the rest after the input returns. Imported blueprint unchanged in every scenario.',
 });
+
+// The scenarios of a qualifying run, by name.
+export const FLUID_SCENARIOS = ['ports', ...PROTOCOL.buildOrders.map(n => 'build:' + n), 'late:power', 'late:stone-exit', 'thin:lava', 'thin:calcite', 'starve:supply', 'starve:foundry', ...PROTOCOL.placements.map(n => 'place:' + n)];
+export const QUALIFICATION = ['fill', 'rate', 'hold', 'caps', 'single', ...PROTOCOL.withheldInputs.map(n => 'skip:' + n), ...FLUID_SCENARIOS];
+
+// What one scenario's report says about fluids and construction, in short (an empty Lua table arrives as {}).
+const list = v => (Array.isArray(v) ? v : []);
+export const scenarioSummary = r => ({ passed: r.passed, crashed: r.crashed || undefined, caps: r.capsName, failures: r.failures, simulatedTicks: r.actualTicks, placement: r.placement, construction: r.construction && { ...r.construction, deferred: list(r.construction.deferred).length },
+  foreignFluids: list(r.fluidFaults).map(f => ({ network: f.expected, held: f.found, firstTick: f.tick, phase: f.phase, ticks: f.ticks, peak: Math.round(f.peak), lastTick: f.lastTick, recipes: f.recipes, lavaFoundries: f.lavaFoundries, networks: f.networks })),
+  joinedBoxes: list(r.portJoins).map(j => ({ machine: j.machine, recipe: j.recipe, box: j.box, joinedTo: j.joinedTo, seconds: j.seconds })), strayRecipes: list(r.strayRecipes),
+  ...(r.matrix ? { matrix: { cases: r.matrix.cases, leaks: list(r.matrix.leaks).map(k => ({ machine: k.machine, from: k.from, to: k.to, empty: Object.entries(k.state).filter(([, full]) => !full).map(([n]) => n), foreign: k.foreign })), joins: list(r.matrix.joins).map(j => ({ machine: j.machine, recipe: j.recipe, box: j.box, joinedTo: j.joinedTo })) } } : {}),
+  phases: list(r.phases).map(ph => ({ name: ph.name, minutes: Math.round(ph.ticks / 360) / 10, endedBy: ph.endedBy, ...(ph.flushed ? { flushed: list(ph.flushed).map(v => ({ ...v, amount: Math.round(v.amount) })) } : {}), productsShort: Object.entries(ph.stock || {}).filter(([k, v]) => v < (ph.caps || r.caps)[k]).length })) });

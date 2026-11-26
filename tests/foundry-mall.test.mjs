@@ -4,7 +4,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { HERE, PUBLISHED, PROTOCOL, prototypes, readJson, sha, decode, exists } from '../scripts/requested-malls/foundry-mall/lib.mjs';
+import { HERE, PUBLISHED, PROTOCOL, QUALIFICATION, FLUID_SCENARIOS, scenarioSummary, prototypes, readJson, sha, decode, exists } from '../scripts/requested-malls/foundry-mall/lib.mjs';
+import { EARLIER } from '../scripts/requested-malls/foundry-mall/readme.mjs';
 import { design, LEVEL, RING_ARM_CAPS, RING_RULE_CAPS } from '../scripts/requested-malls/foundry-mall/design.mjs';
 import { loadKit, products, fullBill, expand, OUTSIDE, route } from '../scripts/requested-malls/foundry-mall/bill.mjs';
 import { auditBlueprint } from '../scripts/requested-malls/foundry-mall/audit.mjs';
@@ -102,11 +103,37 @@ test('ports and labels: seven entrances, one stone exit, one power connection', 
   for (const v of [...ports.inputs, ...ports.exits]) assert(es[v.panel - 1].name === 'display-panel' && es[v.panel - 1].text === v.label);
 });
 
+test('fluid ports: no machine has two ports of one kind on the pipes of two fluids; a pump stands on each second-fluid port', () => {
+  const es = decode(committed).blueprint.entities, audit = auditBlueprint(decode(committed), manifest, p);
+  const named = name => audit.checks.find(c => c.name.startsWith(name));
+  assert.equal(named('No machine has two ports of one kind').passed, true);
+  assert.equal(named('Each pump stands directly between').passed, true);
+  assert.deepEqual(manifest.pumps.map(v => [v.fluid, manifest.machines.find(x => x.entity === v.to).role]), [['molten-copper', 'caster-S'], ['water', 'caster-G']]);
+  assert.equal(es.filter(e => e.name === 'pump').length, 2);
+  // the joint that was published before: the copper pump replaced by two plain pipes. The audit must refuse it.
+  const bad = structuredClone(decode(committed)), pump = bad.blueprint.entities[manifest.pumps[0].entity - 1], next = bad.blueprint.entities.length + 1;
+  Object.assign(pump, { name: 'pipe', position: { x: pump.position.x, y: pump.position.y - 0.5 } }); delete pump.direction;
+  bad.blueprint.entities.push({ entity_number: next, name: 'pipe', position: { x: pump.position.x, y: pump.position.y + 1 } });
+  const badManifest = structuredClone(manifest); badManifest.fluids['molten-copper'].push(next); badManifest.pumps = badManifest.pumps.slice(1);
+  const refused = auditBlueprint(bad, badManifest, p);
+  assert(refused.errors.some(e => e.startsWith('No machine has two ports of one kind')), 'the earlier joint fails the static audit');
+  assert.deepEqual(refused.checks.find(c => c.name.startsWith('No machine has two ports of one kind')).detail.map(v => [v.machine, v.kind, [...v.fluids].sort()]), [['caster-S', 'input', ['molten-copper', 'molten-iron']]]);
+});
+
+test('same ports, chests, caps combinator and footprint as the string published before', () => {
+  assert.equal(`${manifest.footprint.width} x ${manifest.footprint.height}`, '32 x 33');
+  assert.equal(manifest.footprint.entities, 443);
+  const b = manifest.footprint.bounds, tile = v => [Math.floor(v.x) - b.left, Math.floor(v.y) - b.top];
+  assert.deepEqual(manifest.ports.map(v => [v.id, ...tile(v.position)]), [['IN-1', 0, 2], ['IN-2', 0, 0], ['OUT-STONE', 0, 1], ['IN-3', 29, 4], ['IN-4', 6, 32], ['IN-5', 29, 31], ['IN-6', 19, 32], ['IN-7', 23, 32]]);
+  assert.deepEqual(manifest.outputs.map(v => [v.id, ...tile(v.position)]), [['OUT-1', 13, 28], ['OUT-2', 14, 28], ['OUT-3', 20, 28], ['OUT-4', 21, 28], ['OUT-5', 22, 28]]);
+  assert.deepEqual(tile(manifest.capsCombinator.position), [13, 30]);
+});
+
 test('stored native report: for exactly this string, every scenario passed, list order measured at full caps', { skip: !report && 'no native report stored yet' }, async () => {
   assert.equal(report.blueprintSha256, manifest.candidateSha256, 'the report is for the committed string');
   assert.equal(report.passed, true);
   assert.equal(report.gameVersion, '2.1.25');
-  const names = ['fill', 'rate', 'hold', 'caps', 'single', ...PROTOCOL.withheldInputs.map(n => 'skip:' + n)];
+  const names = QUALIFICATION;
   assert.deepEqual(Object.keys(report.scenarios).sort(), [...names].sort());
   for (const n of names) { const s = report.scenarios[n]; assert.equal(s.passed, true, n); assert.equal(s.blueprintSha256, manifest.candidateSha256, n); assert.equal(s.surface, 'vulcanus'); assert.equal(s.pressure, 4000); assert.equal(s.capsName, n === 'fill' || n === 'rate' ? 'full' : 'reduced', n); }
   const fill = report.scenarios.fill.phases[0];
@@ -132,9 +159,43 @@ test('stored native report: for exactly this string, every scenario passed, list
     assert.equal(ph.stock[key], ph.caps[key]);
     assert.equal(report.scenarios.single.checks.find(c => c.name === `single refill: ${key}: no other stock moved`).passed, true);
   }
+  // fluid safety: nothing foreign anywhere, ever; no joined box; no stray recipe; the mall fills after every disturbance
+  const sum = Object.fromEntries(Object.entries(report.scenarios).map(([k, v]) => [k, scenarioSummary(v)]));
+  for (const [n, v] of Object.entries(sum)) {
+    assert.deepEqual(v.foreignFluids, [], n); assert.deepEqual(v.joinedBoxes, [], n); assert.deepEqual(v.strayRecipes, [], n);
+    assert(report.scenarios[n].segmentsWatched >= 8, n + ' reads every fluid segment');
+    if (FLUID_SCENARIOS.includes(n) && !v.matrix) assert.equal(v.phases.at(-1).endedBy, 'caps', n + ' ends with every cap reached');
+  }
+  const cases = Object.entries(PROTOCOL.matrixNetworks).reduce((k, [role, nets]) => { const r = (PROTOCOL.matrixRecipes[role] || [...new Set(manifest.rules.filter(x => x.machine === role).map(x => x.recipe))]).length; return k + r * (r - 1) * 2 ** nets.length; }, 0);
+  assert.equal(sum.ports.matrix.cases, cases); assert.deepEqual(sum.ports.matrix.leaks, []); assert.deepEqual(sum.ports.matrix.joins, []);
+  assert.equal(report.scenarios.ports.checks.find(c => c.name.startsWith('port matrix: all')).passed, true);
+  for (const n of PROTOCOL.buildOrders) { const c = sum['build:' + n].construction; assert.equal(c.mode, n.startsWith('robots') ? 'robots' : 'script', n); assert(c.ticks > 0); }
+  assert(sum['build:copper-foundry-last'].construction.ticks > PROTOCOL.buildGapTicks);
+  for (const n of PROTOCOL.placements) { const pl = sum['place:' + n].placement; assert.equal(pl.name, n); assert.equal(pl.mirrored, n.startsWith('flip')); assert.equal(pl.blueprintSha256 === manifest.candidateSha256, !n.startsWith('flip'), n); }
+  assert.deepEqual(FLUID_SCENARIOS.filter(n => !sum[n]), []);
   const status = await readJson(path.join(PUBLISHED, 'native-status.json'));
   assert.equal(status.candidateSha256, manifest.candidateSha256);
   assert.equal(status.status, 'passed');
   const readme = await fs.readFile(path.join(PUBLISHED, 'README.md'), 'utf8');
-  assert(readme.includes(manifest.candidateSha256) && readme.includes('**qualified**') && readme.includes('Reduced caps'));
+  assert(readme.includes(manifest.candidateSha256) && readme.includes('**qualified**') && readme.includes('Reduced caps') && readme.includes('### Fluid safety (reduced caps)') && readme.includes('If you already placed the earlier string'));
+});
+
+test('the string published before fails the same fluid scenarios (stored summary of that run)', { skip: !report && 'no native report stored yet' }, async () => {
+  const earlier = await readJson(path.join(PUBLISHED, EARLIER.file));
+  assert.equal(earlier.blueprintSha256, EARLIER.sha);
+  assert.notEqual(earlier.blueprintSha256, manifest.candidateSha256);
+  assert.equal(earlier.passed, false);
+  assert.deepEqual(Object.keys(earlier.scenarios).sort(), [...FLUID_SCENARIOS, 'recover:flush'].sort());
+  // the open joint in every scenario; molten iron in the copper pipes in the matrix and with the stone exit blocked; stuck for good there
+  for (const [n, v] of Object.entries(earlier.scenarios)) { assert.equal(v.passed, false, n); if (n !== 'recover:flush') assert.equal(report.scenarios[n].passed, true, n); }
+  const joint = v => (v.matrix ? v.matrix.joins : v.joinedBoxes).some(j => j.machine === 'caster-S' && j.recipe === 'casting-steel' && j.box === 'molten-iron' && j.joinedTo === 'molten-copper');
+  for (const [n, v] of Object.entries(earlier.scenarios)) assert(joint(v), n);
+  assert.deepEqual(earlier.scenarios.ports.matrix.leaks.map(k => [k.machine, k.from, k.empty.join()]).sort(), [['caster-S', 'casting-steel', 'molten-copper'], ['caster-S', 'casting-steel', 'molten-copper']]);
+  const stone = earlier.scenarios['late:stone-exit'];
+  assert.deepEqual(stone.foreignFluids.map(f => [f.network, f.held]), [['molten-copper', 'molten-iron']]);
+  assert.notEqual(stone.phases.at(-1).endedBy, 'caps'); assert.equal(stone.phases.at(-1).productsShort, manifest.products.length);
+  assert.equal(scenarioSummary(report.scenarios['late:stone-exit']).phases.at(-1).endedBy, 'caps');
+  // first aid on that string: connecting the stone exit alone does not help; flushing the copper pipes does
+  const aid = earlier.scenarios['recover:flush'].phases;
+  assert.equal(aid[1].productsShort, manifest.products.length); assert.deepEqual(aid[2].flushed.map(v => [v.network, v.held]), [['molten-copper', 'molten-iron']]); assert.equal(aid[2].endedBy, 'caps');
 });

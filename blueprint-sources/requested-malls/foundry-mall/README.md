@@ -1,6 +1,6 @@
 # Foundry mall · lava and calcite in, six groups of products out, in list order
 
-Status: **qualified** (full native protocol, `native-report.json`). Blueprint SHA-256 `7977ee595dd543c191177381ddd3ad0867650e1227e8562379da6a043aa188ed`. Factorio 2.1.25 Space Age, Vulcanus, vanilla, normal quality, no modules, no beacons.
+Status: **qualified** (full native protocol, `native-report.json`). Blueprint SHA-256 `b9243fa7ff6b0d164538d99c3d96d0315ed15feb018d74e40ab6da068f83134c`. Factorio 2.1.25 Space Age, Vulcanus, vanilla, normal quality, no modules, no beacons.
 
 One blueprint for Vulcanus. Foundries turn lava and calcite into molten iron and molten copper and cast plates, steel, gears, pipes, sticks, cable, low density structures and concrete; assembling machines 3 make the rest. Everything is kept at a cap in five passive provider chests on the south edge, and made **in the order of the list**: a group lower on the list waits while a group above it has something it can make.
 
@@ -43,9 +43,9 @@ Tiles are counted from the blueprint's top-left tile (column, row).
 
 | Port | What | Kind | Tile | Side | For one full fill (recipes) | Used in the measured full fill |
 | --- | --- | --- | --- | --- | ---: | ---: |
-| IN-1 | lava | pipe | (0, 2) | west | 508163 | 950000 |
-| IN-2 | calcite | belt | (0, 0) | west | 1016 | 1900 |
-| OUT-STONE | stone | belt | (0, 1) | west | 16101 | 28747 |
+| IN-1 | lava | pipe | (0, 2) | west | 508163 | 949000 |
+| IN-2 | calcite | belt | (0, 0) | west | 1016 | 1898 |
+| OUT-STONE | stone | belt | (0, 1) | west | 16101 | 28721 |
 | IN-3 | water | pipe | (29, 4) | east | 14222 | 16800 |
 | IN-4 | lubricant | pipe | (6, 32) | south | 8563 | 9425 |
 | IN-5 | sulfuric-acid | pipe | (29, 31) | east | 1650 | 1970 |
@@ -53,7 +53,7 @@ Tiles are counted from the blueprint's top-left tile (column, row).
 | IN-7 | tungsten-carbide | belt | (23, 32) | south | 667 | 850 |
 
 - **Power**: connect the substation at tile (3, 8) (panel "POWER: connect this substation"). Four substations power everything. Idle draw is small; with all foundries working it reaches about 25 MW.
-- **Stone** is a by-product of every lava craft. The bricks the bill needs are made inside (a five-stack brick stock); the rest leaves on the belt of OUT-STONE and must be taken away (run that belt to an inserter over lava). If the exit backs up, the two lava foundries stop and so does everything else. About 93% of the stone is surplus: there is nothing in this bill to spend it on.
+- **Stone** is a by-product of every lava craft. The bricks the bill needs are made inside (a five-stack brick stock); the rest leaves on the belt of OUT-STONE and must be taken away (run that belt to an inserter over lava). If the exit backs up, the two lava foundries stop and so does everything else; it carries on once the belt moves again (tested for an hour of blockage). About 93% of the stone is surplus: there is nothing in this bill to spend it on.
 - **Water and lubricant** each pass a storage tank the control reads; a fluid counts as present above 500. The tanks take 25,000 each when first connected.
 - **Other inputs needed** besides lava and calcite: plastic bar, tungsten carbide (foundries only), sulfuric acid (processing units, batteries), lubricant (electric engines, express belts, foundries), water (concrete, refined concrete). No oil or tungsten chain is inside.
 
@@ -72,6 +72,7 @@ Tiles are counted from the blueprint's top-left tile (column, row).
 ## How it works
 
 - **Casting core.** Two foundries make molten copper and molten iron from lava and calcite; pipes carry both to four casting foundries next to the ring. One casts iron plate. One casts steel or low density structures. One casts cable (handed straight to the two circuit machines) or copper plate. One casts gears, pipes, sticks, concrete or steel. The last three take their recipe from the circuit network.
+- **Fluid ports.** In 2.1.25 a recipe with one fluid ingredient uses both input ports of a foundry as one box, and when that recipe is taken away the game pushes what is left in the box back out through either port, into any pipe that will take it. An empty pipe takes anything. So no machine here has two ports of one kind on the pipes of two fluids. The two foundries that need a second fluid get it through a pump standing directly on that port, and a pump lets nothing back: molten copper for low density structures (pump at tile (7, 9), fed straight from one output port of the copper lava foundry; its other output port feeds the pipes of the cable foundry) and water for concrete (pump at tile (25, 9)).
 - **One ring** of 98 red belt tiles carries every intermediate and finished item. An arm that adds an item works only while the ring holds fewer than that item's limit; a recipe-switching machine is told to make an item only while the stock in sight is below its limit.
 - **Two universal machines.** U1 (assembling machine 3) makes 18 recipes: the small kit items, inserters, drills and refined concrete. U2 (a foundry, lubricant on its fluid box) makes the three belt tiers and the foundry, with the foundry's +50% on each. One decider per recipe ("rule") says when that recipe is wanted and makeable; a selector picks the highest; the machine takes the recipe from the circuit. A never-fed shadow machine reads out the recipe's ingredients so the input arms load exactly one craft. A recipe is changed only on the tick a craft finishes or while the machine is parked.
 - **Dedicated machines** for the high-volume chain: 2 electronic circuit, 4 advanced circuit, 2 speed module, processing unit, engine, electric engine, foundation, the assembling machine 1 → 2 → 3 line, the rocket silo (loads exactly one craft), a battery plant and the brick furnace.
@@ -90,7 +91,7 @@ Footprint **32 × 33 = 1056 tiles**, 443 entities.
 
 Machines: 7 foundries, 19 assembling machines 3 (two of them shadows that never craft), 1 chemical plant, 1 electric furnace. Control: 76 decider, 21 arithmetic, 6 selector and 15 constant combinators.
 
-Bill of materials: 21 arithmetic-combinator, 19 assembling-machine-3, 43 bulk-inserter, 1 chemical-plant, 15 constant-combinator, 76 decider-combinator, 15 display-panel, 1 electric-furnace, 34 fast-inserter, 135 fast-transport-belt, 7 foundry, 2 long-handed-inserter, 5 passive-provider-chest, 41 pipe, 14 pipe-to-ground, 1 pump, 6 selector-combinator, 1 steel-chest, 2 storage-tank, 4 substation. Red belts and fast, bulk and long-handed inserters only; hand sizes are pinned (fast 1, bulk 2), so the mall behaves the same whatever inserter capacity is researched.
+Bill of materials: 21 arithmetic-combinator, 19 assembling-machine-3, 43 bulk-inserter, 1 chemical-plant, 15 constant-combinator, 76 decider-combinator, 15 display-panel, 1 electric-furnace, 34 fast-inserter, 135 fast-transport-belt, 7 foundry, 2 long-handed-inserter, 5 passive-provider-chest, 40 pipe, 14 pipe-to-ground, 2 pump, 6 selector-combinator, 1 steel-chest, 2 storage-tank, 4 substation. Red belts and fast, bulk and long-handed inserters only; hand sizes are pinned (fast 1, bulk 2), so the mall behaves the same whatever inserter capacity is researched.
 
 Research needed (55 technologies in the closure), among them: foundry, automation 3, logistics 3, bulk inserter, rocket silo, space platform (the asteroid collector and crusher recipes), advanced combinators (the selector combinator), electric energy distribution 2.
 
@@ -103,8 +104,8 @@ Research needed (55 technologies in the closure), among them: foundry, automatio
  -11 KKK.FFFFFFFFFFddddddds=TTTdd.!..
  -10 i.!.FFFFFFFFFFddddd.SS=TTTdddd..
   -9 B.SSFFFFFFFFFFddddd.SS=TTTdddd..
-  -8 i.SS=u.=u=====u....u=u=..pu=dd..
-  -7 v...=..=u=.....u===...u..p.=....
+  -8 i.SS.=up.=====.u=.....=..p..dd..
+  -7 v...=u.pu=...=u.===u=uu..pu=....
   -6 vFFFFFFFFFFsasaFFFFFas.sFFFFFa..
   -5 vFFFFFFFFFFsasaFFFFFascsFFFFFa..
   -4 vFFFFFFFFFFAAAbFFFFFbAAAFFFFF...
@@ -134,7 +135,7 @@ F foundry · A assembling machine 3 · C chemical plant · K furnace · T tank �
 
 ## Measured natively
 
-Every figure below is from `native-report.json` (12 scenarios, each its own headless game on a Vulcanus surface from a fresh import of this string). **Full caps**: the fill from empty and the rate scenario. **Reduced caps** (a tenth of each cap, at least 2; the silo, pad and starter pack stay at 1): refill, outage and recovery, hold, cap edits, single refills and the seven withheld-input scenarios. A reduced-cap time is not a full-stack time.
+Every figure below is from `native-report.json` (34 scenarios, each its own headless game on a Vulcanus surface from a fresh import of this string). **Full caps**: the fill from empty and the rate scenario. **Reduced caps** (a tenth of each cap, at least 2; the silo, pad and starter pack stay at 1): refill, outage and recovery, hold, cap edits, single refills, the seven withheld-input scenarios and every fluid-safety scenario. A reduced-cap time is not a full-stack time.
 
 ### Fill from empty at the published caps: 334.9 minutes
 
@@ -166,7 +167,7 @@ Every figure below is from `native-report.json` (12 scenarios, each its own head
 | foundry | 6 | 20 | 334.8 |
 
 Minutes each level was in force: assembling machine 3 52.3, white-pack platform kit 100.6, express belts 85.2, inserters 60.3, electric mining drill 13.4, foundry 23.1. Level-gated arms enabled against the level: 0 ticks.
-Used: lava 950000, calcite 1900, plastic-bar 4824, tungsten-carbide 850, sulfuric-acid 1970, lubricant 9425, water 16800; molten iron 569250, molten copper 143250; stone made 31365, used 2616, left by the exit 28747.
+Used: lava 949000, calcite 1898, plastic-bar 4824, tungsten-carbide 850, sulfuric-acid 1970, lubricant 9425, water 16800; molten iron 568500, molten copper 143250; stone made 31335, used 2614, left by the exit 28721.
 Left on the ring when the last chest filled (finished products not in a chest): 2 express-underground-belt, 3 fast-inserter, 4 assembling-machine-2, 2 assembling-machine-3, 8 space-platform-foundation.
 
 ### Rates (full caps)
@@ -175,12 +176,12 @@ After a full fill, one group at a time has its products taken out of its chest e
 
 | Measured window | Products per minute | lava | calcite | plastic-bar | tungsten-carbide | sulfuric-acid | lubricant | water | stone out |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| every chest emptied | assembling machine 3 1 | 2266.7 | 4.5 | 41.3 | 0 | 0 | 0 | 0 | 81.2 |
-| group 2 (white-pack platform kit) | assembling machine 2 3.5, fast inserter (kit) 2.37, electric furnace 0.63, platform foundation 1.3 | 6733.3 | 13.5 | 20.1 | 0 | 17.2 | 65.5 | 196.7 | 186.2 |
+| every chest emptied | assembling machine 3 1 | 2316.7 | 4.6 | 41.3 | 0 | 0 | 0 | 0 | 82.5 |
+| group 2 (white-pack platform kit) | assembling machine 2 3.5, fast inserter (kit) 2.37, electric furnace 0.63, platform foundation 1.3 | 6733.3 | 13.5 | 20.1 | 0 | 17.2 | 65.5 | 196.7 | 186.7 |
 | group 3 (express belts) | express transport belt 5.43 | 900 | 1.8 | 0 | 0 | 0 | 73.3 | 0 | 26.3 |
-| group 4 (inserters) | fast inserter 3.47 | 350 | 0.7 | 0 | 0 | 0 | 0 | 0 | 11.7 |
-| group 5 (electric mining drill) | electric mining drill 3.63 | 833.3 | 1.7 | 0 | 0 | 0 | 0 | 0 | 25.8 |
-| group 6 (foundry) | foundry 0.9 | 3366.7 | 6.7 | 0 | 36.7 | 0 | 14.7 | 366.7 | 81.2 |
+| group 4 (inserters) | fast inserter 3.47 | 350 | 0.7 | 0 | 0 | 0 | 0 | 0 | 12.2 |
+| group 5 (electric mining drill) | electric mining drill 3.63 | 833.3 | 1.7 | 0 | 0 | 0 | 0 | 0 | 26.8 |
+| group 6 (foundry) | foundry 0.9 | 3333.3 | 6.7 | 0 | 36.7 | 0 | 14.7 | 366.7 | 80.2 |
 
 Inputs are what the machines consumed per minute in the window (production statistics): the draw each entrance has to meet.
 
@@ -188,13 +189,13 @@ Inputs are what the machines consumed per minute in the window (production stati
 
 | Product | Taken | Back at cap after (min) | lava | calcite | plastic | carbide | acid | lubricant | water |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| assembling-machine-3 | 5 | 1.0 | 500 | 1 | 30 | 0 | 0 | 0 | 0 |
-| fast-inserter (kit) | 2 | 2.3 | 8000 | 16 | 96 | 0 | 0 | 0 | 0 |
-| fast-inserter | 5 | 3.8 | 2500 | 5 | 82 | 0 | 0 | 0 | 0 |
+| assembling-machine-3 | 5 | 1.0 | 2000 | 4 | 30 | 0 | 0 | 0 | 0 |
+| fast-inserter (kit) | 2 | 2.3 | 6500 | 13 | 96 | 0 | 0 | 0 | 0 |
+| fast-inserter | 5 | 3.8 | 3000 | 6 | 82 | 0 | 0 | 0 | 0 |
 | express-transport-belt | 10 | 2.7 | 1500 | 3 | 0 | 0 | 0 | 160 | 0 |
 | express-underground-belt | 5 | 1.8 | 2500 | 5 | 0 | 0 | 0 | 40 | 0 |
-| express-splitter | 5 | 3.0 | 4000 | 8 | 78 | 0 | 0 | 320 | 0 |
-| bulk-inserter | 5 | 4.5 | 2000 | 4 | 8 | 0 | 0 | 0 | 0 |
+| express-splitter | 5 | 3.0 | 3500 | 7 | 78 | 0 | 0 | 320 | 0 |
+| bulk-inserter | 5 | 4.5 | 3500 | 7 | 8 | 0 | 0 | 0 | 0 |
 | electric-mining-drill | 5 | 3.2 | 1500 | 3 | 0 | 0 | 0 | 0 | 0 |
 | foundry | 2 | 4.2 | 9000 | 18 | 0 | 100 | 0 | 40 | 1100 |
 
@@ -207,7 +208,7 @@ Draw is the total consumed during that refill; it includes topping the ring back
 | fill | fill from empty | 334.9 | every cap reached |
 | fill | refill after complete collection | 115.2 | every cap reached |
 | fill | five-minute outage of every input | 5.0 | fixed length |
-| fill | recovery after the outage | 110.7 | every cap reached |
+| fill | recovery after the outage | 110.6 | every cap reached |
 | hold | fill from empty | 134.8 | every cap reached |
 | hold | settle at full stock | 10.0 | fixed length |
 | hold | one-hour hold at full stock | 60.0 | fixed length |
@@ -225,8 +226,8 @@ Cap edits (written into the caps combinator by script, as a player would): raise
 
 | Withheld | Products that need it | Everything else at its cap after (min) | After it returned: all at cap after (min) |
 | --- | --- | ---: | ---: |
-| lava | all | nothing can be made (15.0 min, nothing made) | 135.8 |
-| calcite | all | nothing can be made (15.0 min, nothing made) | 145.5 |
+| lava | all | nothing can be made (15.0 min, nothing made) | 139.5 |
+| calcite | all | nothing can be made (15.0 min, nothing made) | 137.6 |
 | plastic-bar | assembling machine 3, rocket silo, cargo landing pad, platform starter pack, asteroid collector, crusher, electric furnace, passive provider chest, substation, express splitter, bulk inserter | 78.3 | 99.5 |
 | tungsten-carbide | foundry | 133.9 | 3.6 |
 | sulfuric-acid | rocket silo, cargo landing pad, platform starter pack, asteroid collector, accumulator | 107.9 | 73.1 |
@@ -235,12 +236,79 @@ Cap edits (written into the caps combinator by script, as a player would): raise
 
 In the withheld phase the mall must hold every cap that does not need the input for two minutes while the dependent products stay short; then the input returns and every cap must be reached.
 
+### Fluid safety (reduced caps)
+
+These scenarios place and feed the mall the way a player does rather than the way a test does. In all of them, as in every other scenario, every fluid segment and pump is read every tick and every machine fluid box every second.
+
+| Scenario | What is done | Verdict | Foreign fluid | Afterwards |
+| --- | --- | --- | --- | --- |
+| ports | Port matrix: every recipe change of every recipe-switching foundry, with each network on its ports full or empty | passed | none | 192 recipe changes, 0 put a fluid into another network |
+| build:shuffle-1 | Built one entity every 20 ticks in a shuffled order, supply and power already connected (built in 2.5 min) | passed | none | every cap reached 136.5 min after |
+| build:shuffle-2 | Same, second shuffle (built in 2.5 min) | passed | none | every cap reached 140.1 min after |
+| build:shuffle-3 | Same, third shuffle (built in 2.5 min) | passed | none | every cap reached 133.3 min after |
+| build:pipes-first | Built piecemeal, all pipes, tanks and pumps first (built in 2.5 min) | passed | none | every cap reached 135.7 min after |
+| build:machines-first | Built piecemeal, machines and substations first (built in 2.5 min) | passed | none | every cap reached 143.1 min after |
+| build:combinators-last | Built piecemeal, every combinator last (built in 2.5 min) | passed | none | every cap reached 138.5 min after |
+| build:copper-foundry-last | Built piecemeal; the molten copper foundry arrives ten minutes after everything else (built in 12.5 min) | passed | none | every cap reached 139.6 min after |
+| build:iron-foundry-last | Built piecemeal; the molten iron foundry arrives ten minutes after everything else (built in 12.5 min) | passed | none | every cap reached 137.5 min after |
+| build:robots-25 | Built by 25 of the game's own construction robots from a ghost blueprint (built in 5 min) | passed | none | every cap reached 133.6 min after |
+| build:robots-200 | Built by 200 construction robots from a ghost blueprint (built in 0.6 min) | passed | none | every cap reached 137.2 min after |
+| late:power | Everything connected, no power for five minutes | passed | none | every cap reached 136.7 min after |
+| late:stone-exit | Stone exit not connected for an hour (the stone belt fills), then connected | passed | none | every cap reached 129 min after |
+| thin:lava | Lava at 100 a second for an hour (the two lava foundries take 250), then in full | passed | none | every cap reached 137.5 min after |
+| thin:calcite | Calcite at 12 a minute for an hour (they take 30), then in full | passed | none | every cap reached 133 min after |
+| starve:supply | After a fill: every chest emptied and lava cut for ten minutes; then the same with calcite | passed | none | every cap reached 107.7 min after |
+| starve:foundry | After a fill: every chest emptied and the molten copper foundry stopped for fifteen minutes; then the same with the molten iron foundry | passed | none | every cap reached 116.3 min after |
+| place:rot90 | Placed turned a quarter clockwise | passed | none | every cap reached 134.9 min after |
+| place:rot180 | Placed turned a half | passed | none | every cap reached 134.9 min after |
+| place:rot270 | Placed turned three quarters | passed | none | every cap reached 134.9 min after |
+| place:flipH | Placed mirrored left to right | passed | none | every cap reached 141.4 min after |
+| place:flipV | Placed mirrored top to bottom | passed | none | every cap reached 141.4 min after |
+
+Port matrix: 192 cases. Each one sets a recipe on one recipe-switching foundry through its own red wire (taken off the mall's selector and put on a test combinator for this scenario), fills or empties the networks on its ports, asks for another recipe and reads every segment for two seconds. Fluid put into another network: 0 cases. Fluid box joined to the pipes of two fluids: 0.
+Piecemeal construction: the game refused no entity for fluid reasons in any order (it has no such rule: an empty pipe run accepts whichever fluid arrives first). A mirror image is written by the test as its own string (positions and directions mirrored, the mirror flag set on foundries and the chemical plant, the tanks on their other diagonal), because the game has no script call that flips a blueprint; the game's own flip key was not exercised. Turning is done by the game.
+
+### The string published before this one, `7977ee59…`, in the same scenarios
+
+That string had the molten copper pipe directly on the second input port of the steel foundry. Whenever that foundry cast steel, its one molten iron box was joined to the iron trunk on one port and to the copper pipes on the other. When it stopped casting steel with the iron trunk full and the copper pipes empty, the game pushed the molten iron left in the box (up to 330) into the copper pipes. After that the copper lava foundry could not put molten copper into its own pipes, no cable was cast, and the mall stood still for good.
+The plain way to get there: **the stone exit not connected**. The stone belt fills, both lava foundries stop with their output full, cable casting empties the copper pipes while the iron trunk stays full, and the next time the steel foundry lets go of its recipe the iron goes in. Measured on that string: molten iron in the copper pipes 3.5 minutes after a cold start (330 units; at that moment the lava foundries were: molten-copper full output, molten-iron full output; the iron trunk held 1700 of 1700), still there 236.5 minutes later, and after the stone exit was connected no product was ever made again.
+
+| Scenario | Verdict | Foreign fluid | Fluid box joined to two fluids | Afterwards |
+| --- | --- | --- | --- | --- |
+| ports | FAILED | molten-iron in the molten-copper pipes from minute 0.4 for 0.1 min | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (474 s) | 192 recipe changes, 2 put a fluid into another network |
+| build:shuffle-1 | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1128 s) | every cap reached 136.5 min after |
+| build:shuffle-2 | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1160 s) | every cap reached 141 min after |
+| build:shuffle-3 | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1123 s) | every cap reached 133.3 min after |
+| build:pipes-first | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1133 s) | every cap reached 135.7 min after |
+| build:machines-first | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1155 s) | every cap reached 143.1 min after |
+| build:combinators-last | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1129 s) | every cap reached 138.5 min after |
+| build:copper-foundry-last | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1037 s) | every cap reached 141.3 min after |
+| build:iron-foundry-last | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1128 s) | every cap reached 143.1 min after |
+| build:robots-25 | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1131 s) | every cap reached 136.8 min after |
+| build:robots-200 | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1113 s) | every cap reached 132.8 min after |
+| late:power | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1434 s) | every cap reached 136.7 min after |
+| late:stone-exit | FAILED | molten-iron in the molten-copper pipes from minute 3.5 for 236.5 min | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (28 s) | NOT filled: 24 products short after 180 min |
+| thin:lava | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1259 s) | every cap reached 132.4 min after |
+| thin:calcite | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1219 s) | every cap reached 137.7 min after |
+| starve:supply | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (3262 s) | every cap reached 105 min after |
+| starve:foundry | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (3057 s) | every cap reached 112.8 min after |
+| place:rot90 | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1110 s) | every cap reached 134.9 min after |
+| place:rot180 | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1110 s) | every cap reached 134.9 min after |
+| place:rot270 | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1110 s) | every cap reached 134.9 min after |
+| place:flipH | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1133 s) | every cap reached 141.4 min after |
+| place:flipV | FAILED | none | caster-S on casting-steel: its molten-iron box on a molten-copper pipe (1133 s) | every cap reached 141.4 min after |
+
+First aid, tested on that string (`recover:flush`): after the hour of blocked stone the exit was connected and nothing else done: 24 of 24 products still short 20 minutes later. Then the pipe run holding the wrong fluid was emptied, as the flush button of a pipe does (330 molten-iron out of the molten-copper pipes): every cap was reached 139.2 minutes after. The flush was done by script; the button itself was not pressed.
+
+From `published-7977ee59-fluid-scenarios.json` (`node scripts/requested-malls/foundry-mall/validate.mjs --explore --skip-audit --limit 648000 --scenario ports,build:shuffle-1,build:shuffle-2,build:shuffle-3,build:pipes-first,build:machines-first,build:combinators-last,build:copper-foundry-last,build:iron-foundry-last,build:robots-25,build:robots-200,late:power,late:stone-exit,thin:lava,thin:calcite,starve:supply,starve:foundry,place:rot90,place:rot180,place:rot270,place:flipH,place:flipV,recover:flush` on the earlier string, fill limit 180 minutes). On that string the open joint shows in every scenario; molten iron actually crossed where the copper pipes were empty at the wrong moment (ports, late:stone-exit, recover:flush), and the mall never filled again in late:stone-exit. Molten copper in the iron pipes was not produced by any scenario: on that string no single box ever joined copper to the iron trunk.
+
 ### Checks in every scenario
 
 - Import: every entity at its position and direction, every recipe or circuit recipe control, every arm's hand size, filters and conditions, every combinator's parameters, every circuit net as one network with no two nets joined, one electric network.
 - Chests: no chest ever held an item it does not declare (held in all).
-- Pipes: every pipe, underground pipe and tank carried only its own fluid, sampled every ten seconds (held in all).
-- Ring: peak 397 items against a bound of 540 (75% of both lanes); static lane limits inner 334, outer 84 of 360 per lane.
+- Fluids: every fluid segment (pipes, underground pipes, tanks) and both pumps read every tick, 8 readings a tick: no foreign fluid, ever (held in all). Every machine's fluid boxes read every second: none joined to the pipes of two fluids except through a pump (held in all).
+- Recipes: every recipe-switching machine read every 10 ticks: it never held a recipe none of its rules asks for (held in all).
+- Ring: peak 432 items against a bound of 540 (75% of both lanes); static lane limits inner 334, outer 84 of 360 per lane.
 - Level gate: 0 ticks with a gated arm enabled against the level, over all scenarios.
 
 ### Switching machines in the full fill
@@ -250,14 +318,14 @@ In the withheld phase the mall must hold every cap that does not need the input 
 | caster-S | 655 | iron-ore-melting 292.3, casting-steel 36.5, casting-low-density-structure 5.8, changing 0.3 |
 | caster-D | 1310 | changing 253.2, casting-copper-cable 81.3, casting-copper 0.4 |
 | caster-G | 1978 | iron-ore-melting 245.9, casting-steel 27.3, concrete-from-molten-iron 21.8, casting-iron-gear-wheel 19.1, changing 18.7, casting-pipe 1.9, casting-iron-stick 0.2 |
-| U1 | 140 | wooden-chest 200.4, bulk-inserter 30.3, space-platform-starter-pack 22.1, refined-concrete 22.0, fast-inserter 19.3, inserter 16.0, electric-mining-drill 11.4, cargo-landing-pad 4.3, solar-panel 2.3, asteroid-collector 2.1, accumulator 1.8, changing 0.8, crusher 0.5, electric-furnace 0.4, passive-provider-chest 0.3, decider-combinator 0.3, steel-chest 0.2, substation 0.1, arithmetic-combinator 0.1, constant-combinator 0.1 |
-| U2 | 203 | iron-ore-melting 234.0, express-underground-belt 20.7, foundry 17.7, express-transport-belt 13.1, express-splitter 12.0, fast-underground-belt 8.6, fast-splitter 7.9, splitter 5.6, fast-transport-belt 5.6, transport-belt 4.1, underground-belt 3.8, changing 1.8 |
+| U1 | 139 | wooden-chest 200.4, bulk-inserter 30.3, space-platform-starter-pack 22.1, refined-concrete 22.0, fast-inserter 19.3, inserter 16.0, electric-mining-drill 11.4, cargo-landing-pad 4.3, solar-panel 2.3, asteroid-collector 2.1, accumulator 1.8, changing 0.8, crusher 0.5, electric-furnace 0.4, passive-provider-chest 0.3, decider-combinator 0.3, steel-chest 0.2, substation 0.1, arithmetic-combinator 0.1, constant-combinator 0.1 |
+| U2 | 200 | iron-ore-melting 234.0, express-underground-belt 20.7, foundry 17.7, express-transport-belt 13.1, express-splitter 12.0, fast-underground-belt 8.6, fast-splitter 7.9, splitter 5.6, fast-transport-belt 5.6, transport-belt 4.1, underground-belt 3.8, changing 1.8 |
 
 "iron-ore-melting" and "wooden-chest" are the parking recipes: recipes the machine can never start, held while it has nothing to make.
 
 ### Harness speed
 
-Scenarios ran side by side at 533, 535, 535, 542, 547, 548, 553, 556, 557, 558, 563, 586 times real time; 254 s of wall time in all for 58.3 game hours.
+Scenarios ran side by side at 320, 335, 341, 343, 344, 345, 345, 346, 346, 347, 348, 348, 352, 353, 355, 358, 360, 361, 366, 366, 372, 373, 374, 391, 391, 392, 396, 396, 401, 406, 418, 432, 439, 458 times real time; 439 s of wall time in all for 118.1 game hours.
 
 ## Bill from the recipes (expected values, productivity counted)
 
@@ -280,6 +348,7 @@ The measured fill uses more than this: the ring, the machines' input buffers and
 - Tiny recipes can run one craft over their cap (an arm's second item is a full set). The extra rides the ring, counts as stock and goes into the chest after the next collection.
 - Kit items enter the kit chest only while no assembling machine 3 is wanted.
 - Collecting from a chest reopens that product's level; lower groups pause until it is full again.
+- Connect the stone exit. A stone belt that cannot move stops the two lava foundries, and with them everything; nothing is harmed and the mall carries on when the belt moves again.
 - The brick stock (5 stacks) is filled from surplus stone whenever metal is cast, so concrete can be made later when little stone is flowing.
 
 ## Tried and rejected (native exploration, not kept as strings)
@@ -289,19 +358,42 @@ The measured fill uses more than this: the ring, the machines' input buffers and
 - **Counting what a switching machine has loaded as ring stock** for the casting rules: the caster stopped at the limit while the landing pad still waited for 180 concrete.
 - **A 78-tile ring**: the inner lane filled at about 300 items and everything stopped; the ring is folded twice at its east end for 20 more tiles.
 - **The water pipe straight into the gear foundry**: when that foundry changes recipe, its leftover molten iron flows out into any connected pipe that will take it; with water not yet connected it filled the water tank with molten iron, and water could never enter. A pump now stands between the tank and the foundry.
-- **Casting copper plate in the steel foundry**: with empty pipes the game gave the molten copper the first fluid box, which is plumbed for iron; molten copper ended in the iron pipes.
+- **The molten copper pipe straight into the steel foundry** (published as `7977ee59…` and withdrawn): the same fault with molten iron and the copper pipes; see the section on that string above. A pump now stands on that port too, and the static audit refuses any machine with two ports of one kind on the pipes of two fluids.
+- **A recipe wire that is empty for one tick while a universal machine parks**: a machine that reads its own contents takes them as its recipe for that tick (the belt foundry showed casting-iron-gear-wheel for one tick). Harmless on these pipes, closed anyway.
+- **Casting copper plate in the steel foundry**: a one-fluid recipe uses both input ports as one box, so the molten copper box sat on the iron trunk as well; molten copper ended in the iron pipes.
 - **A level that falls at once**: lower groups slipped in during the seconds a kit item waited for processing units.
 - **Sharing by reserve instead of strict order**, and **dedicated machines for every recipe** (about 55 machines): not built; estimated only.
 
 Kept exploration reports: `exploration-max-inserter-capacity-report.json`.
+
+## If you already placed the earlier string (`7977ee59…`)
+
+**How to tell it is contaminated.** Hold the pointer over the pipes (or turn on the detailed view, Alt):
+
+1. The copper pipes are the two pipes directly under the west lava foundry (the one set to molten copper) and the three pipes on top of the cable foundry. They must show molten copper or nothing. If they show **molten iron**, that is the fault.
+2. The signs around it: the copper lava foundry stands still with its output full, the cable foundry waits for molten copper, the two circuit machines wait for cable, and nothing new arrives in the chests.
+3. Look at the iron pipes too (the row under the east lava foundry and the pipe above each of the other casting foundries): they must show molten iron or nothing. No test put molten copper there, but look.
+
+**How to clear it without rebuilding.**
+
+1. Click one of the copper pipes that shows molten iron. In the window that opens, press the flush (bin) button next to the fluid. That empties the whole connected run of pipes, underground pieces included; you need to do it once.
+2. If the iron pipes show molten copper, do the same on one iron pipe.
+3. Connect the stone exit (the belt on the north-west corner marked "OUT: surplus stone") to something that takes the stone away. A stone belt that cannot move is what sets the fault off.
+4. Molten copper returns and the mall carries on (tested: see the first-aid line under the table of the earlier string). On the earlier string it can happen again whenever the copper pipes run empty, so treat this as first aid.
+
+**How to fix it for good.** Use this string instead. Only two rows of pipes and two combinator settings differ, everything else is on the same tiles:
+
+1. Remove every pipe and underground pipe on tile rows 8 and 9 (the two rows between the lava foundries and the casting foundries). The water pump in those rows can stay.
+2. Place this blueprint exactly on top of the old one. Robots put in the new pump (column 7, rows 8 and 9) and the pipes and underground pipes of those two rows. Nothing else moves; chests, caps and entrances stay where they are. That is the whole fluid fix.
+3. Two combinator settings and two wires also differ (they close a one-tick recipe gap that does no harm on these pipes). Placing the blueprint over the old one was not tested for carrying those over; to be sure of having them, take the old mall down and place this one.
 
 ## Reproduce
 
 ```
 node scripts/requested-malls/foundry-mall/generate.mjs      # writes this folder from the pinned prototypes
 node scripts/requested-malls/foundry-mall/audit.mjs         # static audit
-node scripts/requested-malls/foundry-mall/validate.mjs      # full native protocol (needs the game), about three minutes
+node scripts/requested-malls/foundry-mall/validate.mjs      # full native protocol (needs the game): 34 headless games, a few minutes on ten cores
 ```
 
-Static audit: passed, 48 checks. Prototypes pinned from a private `--dump-data` of Factorio 2.1.25 (`scripts/requested-malls/foundry-mall/prototypes.json`).
+Static audit: passed, 52 checks. Prototypes pinned from a private `--dump-data` of Factorio 2.1.25 (`scripts/requested-malls/foundry-mall/prototypes.json`).
 

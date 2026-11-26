@@ -156,18 +156,27 @@ export function design(p, kit, options = {}) {
   arm('fast-inserter', -1, -8, N, 'brick chest to belt', { items: ['stone-brick'] });
   const brickBelt = []; for (let y = -7; y <= -2; y++) brickBelt.push(belt(-1, y, S));
   arm('fast-inserter', -1, -1, N, 'brick to ring', { items: ['stone-brick'], cap: 'stone-brick' });
-  // manifold: copper
-  const copperPipes = [pipe(6, -8), pipe(6, -7), ptg(7, -7, W), ptg(14, -7, E), pipe(15, -7), pipe(16, -7), pipe(17, -7)];
-  // manifold: iron trunk on row -8 with hops over the copper pipes, drops on row -7
-  const ironPipes = [pipe(11, -8), pipe(10, -8), pipe(9, -8), pipe(8, -8), pipe(8, -7), ptg(7, -8, E), ptg(4, -8, W), pipe(3, -8), pipe(3, -7),
-    pipe(12, -8), ptg(13, -8, W), ptg(18, -8, E), pipe(19, -8), ptg(20, -8, W), ptg(25, -8, E), pipe(26, -8), pipe(26, -7)];
+  // Fluid ports. A recipe with one fluid ingredient uses BOTH input ports of a foundry as one box (measured in 2.1:
+  // the two boxes are joined), and a recipe with one fluid product uses both output ports. When such a recipe is
+  // taken away, what is left in the box is pushed back out through either port into any pipe that will take it,
+  // and an empty pipe takes anything. So no machine here has two ports of the same kind on pipes of different fluids:
+  // where a foundry needs a second fluid (molten copper for low density structures, water for concrete) that port
+  // is fed by a pump standing directly on it, and a pump lets nothing back.
+  // manifold: copper. The copper lava foundry's two output ports are one box: the east port feeds the pump on the
+  // steel/LDS foundry's copper port, the west port feeds the line (under the iron trunk) to the cable foundry.
+  const copperPump = add('pump', 6, -8, { direction: S });
+  const copperPipes = [copperPump, pipe(4, -8), ptg(5, -8, W), ptg(14, -8, E), pipe(15, -8), pipe(15, -7), pipe(16, -7), pipe(17, -7)];
+  // manifold: iron trunk on row -8 under the iron lava foundry, everything else of it on row -7 (hops under the copper pump, the cable foundry's copper pipes and the water pump)
+  const ironPipes = [pipe(11, -8), pipe(10, -8), pipe(9, -8), pipe(8, -8), pipe(8, -7), ptg(7, -7, E), ptg(4, -7, W), pipe(3, -7),
+    pipe(12, -8), pipe(12, -7), ptg(13, -7, W), ptg(18, -7, E), pipe(19, -7), ptg(20, -7, W), ptg(25, -7, E), pipe(26, -7)];
   // water: entrance on the east edge, tank, the gear foundry's second box, and a hop under the casting band and the ring to the core
   // A pump stands between the tank and the gear foundry's water box. When a foundry changes recipe, the molten iron
   // left in it flows out through any connected pipe that will take it, and an empty water pipe will (measured: with
   // water not yet connected the tank filled with molten iron). A pump lets nothing back.
   const waterTank = add('storage-tank', 22, -11);
   const waterPipes = []; for (let x = 28; x >= 22; x--) waterPipes.push(pipe(x, -12));
-  waterPipes.push(add('pump', 24, -8, { direction: S }), pipe(21, -11), pipe(21, -10), pipe(21, -9), pipe(21, -8), ptg(21, -7, N), ptg(21, 2, S), pipe(21, 3));
+  const waterPump = add('pump', 24, -8, { direction: S });
+  waterPipes.push(waterPump, pipe(21, -11), pipe(21, -10), pipe(21, -9), pipe(21, -8), ptg(21, -7, N), ptg(21, 2, S), pipe(21, 3));
   join('GREEN', GREEN, waterTank);
   // casting band
   const plates = machine('foundry', 0, -6, 'iron-plate', { direction: S, recipe: 'casting-iron' });
@@ -421,8 +430,12 @@ export function design(p, kit, options = {}) {
     const hold = decider(...cells.hold, [[atom(P_, 'R', '=', 0), atom(B_, 'R', '=', 0), atom(T_, 'R', '<', stall), atom(EACH, 'R', '≥', REAL_WEIGHT)]], [...pass('R'), { signal: H_, copy_count_from_input: false, constant: 1 }]);
     // ticks the recipe has been held since the last finished craft (its own decider: a copied count inside an each-decider is the each signal's)
     const timer = decider(...cells.timer, [[atom(H_, 'R', '>', 0), atom(P_, 'R', '=', 0), atom(T_, 'R', '<', 1000000)]], [{ signal: T_, copy_count_from_input: true, networks: networks('R') }, { signal: T_, copy_count_from_input: false, constant: 1 }]);
-    const boot = decider(...cells.boot, [[atom(EVERYTHING, 'R', '<', REAL_WEIGHT)]], [{ signal: B_, copy_count_from_input: false, constant: 1 }]);
-    join('NEW-' + name, GREEN, take, 'in');
+    // "parked": no real recipe is in force, or a craft has just finished and the pick is to park. The second term
+    // closes a one-tick hole: without it the recipe wire carried no recipe for one tick while the machine went from a
+    // recipe to parking, and a machine that reads its own contents takes them as its recipe for that tick (measured:
+    // the belt foundry showed casting-iron-gear-wheel for one tick when it parked with gear wheels left in it).
+    const boot = decider(...cells.boot, [[atom(EVERYTHING, 'R', '<', REAL_WEIGHT)], [atom(P_, 'R', '>', 0), atom(recipe(IDLE[m.name]), 'G', '>', 0)]], [{ signal: B_, copy_count_from_input: false, constant: 1 }]);
+    join('NEW-' + name, GREEN, take, 'in'); join('NEW-' + name, GREEN, boot, 'in');
     for (const [e, side] of [[take, 'in'], [take, 'out'], [hold, 'in'], [hold, 'out'], [timer, 'in'], [timer, 'out'], [boot, 'in'], [boot, 'out'], [m, 'io']]) join(SET, RED, e, side);
     const copy = decider(...cells.copy, [[atom(EACH, 'R', '<', IDLE_WEIGHT)]], pass('R'));
     join(SET, RED, copy, 'in'); join('LOOSE', RED, copy, 'out');
@@ -572,7 +585,7 @@ export function design(p, kit, options = {}) {
   for (const [name, limit] of Object.entries(armCaps)) { const a = M.arms.find(v => v.ringCap === name); laneOf[name] = insideLoop(entities[a.entity - 1]) ? 'outer' : 'inner'; laneLimits[laneOf[name]] += limit; }
   for (const [name, limit] of Object.entries(ruleCaps)) { const rule = RULES.find(v => !v.idle && p.recipes[v.r].results.some(x => x.name === name)); laneOf[name] = rule.m === 'U1' ? 'outer' : 'inner'; laneLimits[laneOf[name]] += limit; }
   const manifest = {
-    schema: 1, id: 'foundry-mall', revision: 1, candidateSha256: hash, requiredGameVersion: p.gameVersion, prototypeSha256: options.prototypeSha256, surface: 'vulcanus',
+    schema: 1, id: 'foundry-mall', revision: 2, candidateSha256: hash, requiredGameVersion: p.gameVersion, prototypeSha256: options.prototypeSha256, surface: 'vulcanus',
     intendedUse: 'on-demand mall on Vulcanus from lava and calcite: assembling machine 3, the white-pack platform kit, express belts, fast and bulk inserters, electric mining drills and foundries, each kept at its cap in passive provider chests, made in that order',
     groups: GROUP_NAMES.map((name, i) => ({ group: i + 1, name, level: LEVEL[i + 1], products: PRODUCTS.filter(v => v.group === i + 1).map(v => v.key) })),
     products: PRODUCTS, caps: CAPS, kitShare: KIT_SHARE, capSignals: Object.fromEntries(PRODUCTS.map(v => [v.key, capSignal(v).name])),
@@ -586,7 +599,8 @@ export function design(p, kit, options = {}) {
     ring: { belts: ring.map(e => e.entity_number), reader: reader.entity_number, tiles: ringBelts, turnTiles, laneCapacity, bound: Math.floor(laneCapacity * 2 * 0.75), laneLimits, laneOf },
     lines: { calcite: calciteBelt.map(e => e.entity_number), stone: stoneBelt.map(e => e.entity_number), brick: brickBelt.map(e => e.entity_number), plastic: plasticBelt.map(e => e.entity_number), carbide: carbideBelt.map(e => e.entity_number) },
     fluids: { lava: lava.map(e => e.entity_number), 'molten-copper': copperPipes.map(e => e.entity_number), 'molten-iron': ironPipes.map(e => e.entity_number), water: [waterTank, ...waterPipes].map(e => e.entity_number), lubricant: [lubTank, ...lubPipes].map(e => e.entity_number), 'sulfuric-acid': acidPipes.map(e => e.entity_number) },
-    tanks: { water: waterTank.entity_number, lubricant: lubTank.entity_number }, brickChest: { entity: brickChest.entity_number, stacks: BRICK_STACKS },
+    tanks: { water: waterTank.entity_number, lubricant: lubTank.entity_number },
+    pumps: [{ entity: copperPump.entity_number, fluid: 'molten-copper', from: moltenCopper.entity_number, to: steelFoundry.entity_number }, { entity: waterPump.entity_number, fluid: 'water', from: waterTank.entity_number, to: gearFoundry.entity_number }], brickChest: { entity: brickChest.entity_number, stacks: BRICK_STACKS },
     silo: { machine: silo.entity_number, need: siloNeed, needs: siloNeeds.entity_number, filter: siloFilter.entity_number, timer: siloTimer.entity_number, arms: siloArms.map(a => a.entity_number) },
     casterCopies, idleRecipes: IDLE, idleWeight: IDLE_WEIGHT, realWeight: REAL_WEIGHT,
     levelHoldTicks: LEVEL_HOLD,

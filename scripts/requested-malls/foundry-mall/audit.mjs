@@ -82,9 +82,37 @@ export function auditBlueprint(object, m, p) {
   const linked = (a, b) => reach.get(a).includes(b) && reach.get(b).includes(a);
   const mixed = []; for (const a of fluidEntities) for (const b of reach.get(a.entity_number)) if (linked(a.entity_number, b) && fluidOf.get(a.entity_number) !== fluidOf.get(b)) mixed.push([a.entity_number, b]);
   check('No pipe of one fluid connects to a pipe of another', mixed.length === 0, mixed.slice(0, 6));
-  check('A pump stands between the water tank and the gear foundry (nothing flows back into the water pipes)', (() => { const pump = es.find(e => e.name === 'pump'); return pump && count('pump') === 1 && fluidOf.get(pump.entity_number) === 'water' && tileOf.get(`${Math.floor(pump.position.x)},${Math.floor(pump.position.y + 1.5)}`)?.name === 'foundry' && tileOf.get(`${Math.floor(pump.position.x)},${Math.floor(pump.position.y - 1.5)}`)?.name === 'storage-tank'; })());
+  // ---- machine fluid ports. A one-fluid recipe joins a machine's two input ports (or its two output ports) into one
+  // box, and a recipe change pushes what is left in a box out through any of its ports. So the ports of one kind of a
+  // machine may touch the pipes of one fluid only; a second fluid reaches the machine through a pump standing on the port.
+  const rot = ([x, y], d) => { for (let k = 0; k < (d || 0); k += 4) [x, y] = [-y, x]; return [x, y]; };
+  const portsOf = e => (p.entities[e.name].fluid_boxes || []).flatMap((fb, i) => fb.pipe_connections.map(c => {
+    const [ox, oy] = rot(c.position, e.direction), facing = ((c.direction || 0) + (e.direction || 0)) % 16;
+    const at = { x: Math.floor(e.position.x + ox), y: Math.floor(e.position.y + oy) }, target = { x: at.x + vector[facing][0], y: at.y + vector[facing][1] };
+    const other = tileOf.get(`${target.x},${target.y}`);
+    const joined = other && fluidOf.has(other.entity_number) && targets(other).some(q => q.x === at.x && q.y === at.y) ? other : null;
+    return { box: i + 1, kind: fb.production_type, tile: at, target, neighbour: joined?.entity_number ?? null, via: joined?.name ?? null, fluid: joined ? fluidOf.get(joined.entity_number) : null };
+  }));
+  const fluidMachines = es.filter(e => ['foundry', 'assembling-machine-3', 'chemical-plant'].includes(e.name));
+  check('No machine is mirrored (its fluid ports lie as the pinned prototype says)', es.every(e => !e.mirror));
+  const portTable = fluidMachines.map(e => ({ entity: e.entity_number, role: m.machines.find(v => v.entity === e.entity_number)?.role, ports: portsOf(e) })).filter(v => v.ports.some(q => q.neighbour));
+  const twoFluids = [];
+  for (const v of portTable) for (const kind of ['input', 'output']) {
+    const direct = new Set(v.ports.filter(q => q.kind === kind && q.neighbour && q.via !== 'pump').map(q => q.fluid));
+    if (direct.size > 1) twoFluids.push({ machine: v.role, entity: v.entity, kind, fluids: [...direct] });
+  }
+  check('No machine has two ports of one kind on pipes of different fluids (a second fluid comes through a pump on the port)', twoFluids.length === 0, twoFluids);
+  const expectedPorts = { 'molten-copper': { input: ['lava'], output: ['molten-copper', 'pump:molten-copper'] }, 'molten-iron': { input: ['lava'], output: ['molten-iron'] }, 'iron-plate': { input: ['molten-iron'] }, 'caster-S': { input: ['molten-iron', 'pump:molten-copper'] },
+    'caster-D': { input: ['molten-copper'] }, 'caster-G': { input: ['molten-iron', 'pump:water'] }, U2: { input: ['lubricant'] }, U1: { input: ['water'] }, 'electric-engine-unit': { input: ['lubricant'] }, 'processing-unit': { input: ['sulfuric-acid'] }, battery: { input: ['sulfuric-acid'] } };
+  const portsSeen = Object.fromEntries(portTable.map(v => [v.role, Object.fromEntries(['input', 'output'].map(kind => [kind, [...new Set(v.ports.filter(q => q.kind === kind && q.neighbour).map(q => (q.via === 'pump' ? 'pump:' : '') + q.fluid))].sort()]).filter(([, list]) => list.length))]));
+  check('Every machine fluid port touches the fluid it is meant to (and nothing else touches a port)', JSON.stringify(portsSeen) === JSON.stringify(Object.fromEntries(Object.keys(portsSeen).map(k => [k, Object.fromEntries(Object.entries(expectedPorts[k] || {}).map(([kind, list]) => [kind, [...list].sort()]))]))) && Object.keys(expectedPorts).every(k => portsSeen[k]), portsSeen);
+  const pumps = es.filter(e => e.name === 'pump');
+  check('Each pump stands directly between its source and the foundry port it feeds (nothing flows back through it)', pumps.length === (m.pumps || []).length && (m.pumps || []).every(v => { const e = get(v.entity), [dx, dy] = vector[e.direction || 0]; return e?.name === 'pump' && fluidOf.get(v.entity) === v.fluid && tileOf.get(`${Math.floor(e.position.x + dx * 1.5)},${Math.floor(e.position.y + dy * 1.5)}`)?.entity_number === v.to && tileOf.get(`${Math.floor(e.position.x - dx * 1.5)},${Math.floor(e.position.y - dy * 1.5)}`)?.entity_number === v.from; }));
   check('Every underground pipe has exactly one partner within ten tiles', fluidEntities.filter(e => e.name === 'pipe-to-ground').every(e => e.partner && get(e.partner).partner === e.entity_number));
-  for (const [fluid, list] of Object.entries(m.fluids)) {
+  // a pump fed straight from a machine's port is on no pipe network of its own
+  const loosePumps = new Set((m.pumps || []).filter(v => !fluidOf.has(v.from)).map(v => v.entity));
+  for (const [fluid, all] of Object.entries(m.fluids)) {
+    const list = all.filter(id => !loosePumps.has(id));
     const seen = new Set([list[0]]), queue = [list[0]];
     while (queue.length) { const a = queue.pop(); for (const b of reach.get(a)) if (linked(a, b) && !seen.has(b)) { seen.add(b); queue.push(b); } }
     check(`The ${fluid} pipes form one network`, seen.size === list.length, { connected: seen.size, declared: list.length });
@@ -118,6 +146,10 @@ export function auditBlueprint(object, m, p) {
   check('Every product has a rule or flag at its group level', m.products.every(v => m.rules.some(r => r.recipe === v.item && r.level === m.groups[v.group - 1].level)), m.products.filter(v => !m.rules.some(r => r.recipe === v.item)).map(v => v.key));
   check('Every level weight sits in its level band', m.rules.filter(r => r.level).every(r => Math.floor(r.weight / 100000) === r.level));
   check('Each switching machine has a parking recipe: an idle rule (casting foundries) or a park decider (U1, U2)', ['caster-S', 'caster-D', 'caster-G'].every(n => m.rules.some(r => r.machine === n && r.idle)) && Object.values(m.controllers).every(c => c.park && c.idleRecipe));
+  check('The recipe wire of U1 and U2 is never without a recipe: "parked" is also raised on the tick a craft ends with the pick to park', Object.entries(m.controllers).every(([name, c]) => {
+    const conditions = get(c.boot).control_behavior.decider_conditions.conditions, onNew = m.nets['NEW-' + name].members.some(([id, connector]) => id === c.boot && connector === 2);
+    return onNew && conditions.length === 3 && conditions[1].compare_type === 'or' && conditions[1].first_signal.name === 'signal-P' && conditions[2].compare_type === 'and' && conditions[2].first_signal.type === 'recipe' && conditions[2].first_signal.name === c.idleRecipe && conditions[2].first_signal_networks.green && !conditions[2].first_signal_networks.red;
+  }));
   const capsFilters = get(m.capsCombinator.entity).control_behavior.sections.sections[0].filters;
   check('The caps combinator holds every cap, the kit chest\'s fast inserters as signal K', products.every(n => capsFilters.find(f => f.name === m.capSignals[n])?.count === m.caps[n]) && m.capSignals['fast-inserter (kit)'] === 'signal-K' && capsFilters.length === products.length);
   check('Every stock has exactly one chest; only fast inserters are in two (kit chest and inserter chest)', m.stock.length === products.length && m.stock.every(s => m.outputs.find(o => o.id === s.output)?.chest === s.chest && m.outputs.find(o => o.id === s.output).items.includes(s.item)) && m.outputs.flatMap(o => o.items).length === products.length && JSON.stringify(m.stock.filter(s => s.item === 'fast-inserter').map(s => s.output)) === '["OUT-2","OUT-4"]');

@@ -1,0 +1,1084 @@
+{
+  "schema": 1,
+  "kind": "summary of an exploration run of the foundry mall validator",
+  "blueprintSha256": "7977ee595dd543c191177381ddd3ad0867650e1227e8562379da6a043aa188ed",
+  "gameVersion": "2.1.25",
+  "nativeControlSha256": "0cfa262bb593ffe3a713e4b14e89e5c57b5b94d23d032df4d834495bd9ca9010",
+  "runnerSha256": "e513092460d8cbc4cf7e4c4d26ee7772d01558667c101e109710cb1f863ededb",
+  "nativeCommand": "node scripts/requested-malls/foundry-mall/validate.mjs --explore --skip-audit --limit 648000 --scenario ports,build:shuffle-1,build:shuffle-2,build:shuffle-3,build:pipes-first,build:machines-first,build:combinators-last,build:copper-foundry-last,build:iron-foundry-last,build:robots-25,build:robots-200,late:power,late:stone-exit,thin:lava,thin:calcite,starve:supply,starve:foundry,place:rot90,place:rot180,place:rot270,place:flipH,place:flipV,recover:flush",
+  "passed": false,
+  "limitTicks": 648000,
+  "scenarios": {
+    "ports": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no pipe, tank or pump ever held a foreign fluid (every fluid segment read every tick)",
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)",
+        "port matrix: no recipe change put a fluid into another network",
+        "port matrix: no fluid box of a recipe-switching foundry is joined to the pipes of two fluids"
+      ],
+      "simulatedTicks": 30840,
+      "foreignFluids": [
+        {
+          "network": "molten-copper",
+          "held": "molten-iron",
+          "firstTick": 1491,
+          "phase": "port matrix",
+          "ticks": 222,
+          "peak": 314,
+          "lastTick": 2241,
+          "recipes": {
+            "caster-S": "none",
+            "caster-D": "none",
+            "caster-G": "none",
+            "U1": "inserter",
+            "U2": "none"
+          },
+          "lavaFoundries": {
+            "molten-copper": "item_ingredient_shortage",
+            "molten-iron": "item_ingredient_shortage"
+          },
+          "networks": {
+            "lava #120": {
+              "holds": "nothing",
+              "amount": 0,
+              "capacity": 800
+            },
+            "molten-copper #145": {
+              "holds": "molten-iron",
+              "amount": 313,
+              "capacity": 700
+            },
+            "molten-iron #152": {
+              "holds": "molten-iron",
+              "amount": 1696,
+              "capacity": 1700
+            },
+            "water #169": {
+              "holds": "water",
+              "amount": 26500,
+              "capacity": 26500
+            },
+            "lubricant #256": {
+              "holds": "lubricant",
+              "amount": 25600,
+              "capacity": 25600
+            },
+            "sulfuric-acid #307": {
+              "holds": "nothing",
+              "amount": 0,
+              "capacity": 600
+            }
+          }
+        }
+      ],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 474
+        }
+      ],
+      "strayRecipes": [],
+      "matrix": {
+        "cases": 192,
+        "leaks": [
+          {
+            "machine": "caster-S",
+            "from": "casting-steel",
+            "to": "casting-low-density-structure",
+            "empty": [
+              "molten-copper"
+            ],
+            "foreign": [
+              {
+                "network": "molten-copper",
+                "found": "molten-iron",
+                "amount": 313.9999942779541,
+                "afterTicks": 10,
+                "entity": 145
+              }
+            ]
+          },
+          {
+            "machine": "caster-S",
+            "from": "casting-steel",
+            "to": "iron-ore-melting",
+            "empty": [
+              "molten-copper"
+            ],
+            "foreign": [
+              {
+                "network": "molten-copper",
+                "found": "molten-iron",
+                "amount": 310,
+                "afterTicks": 10,
+                "entity": 145
+              }
+            ]
+          }
+        ],
+        "joins": [
+          {
+            "machine": "caster-S",
+            "recipe": "casting-steel",
+            "box": "molten-iron",
+            "joinedTo": "molten-copper"
+          }
+        ]
+      },
+      "phases": [
+        {
+          "name": "port matrix",
+          "minutes": 8.6,
+          "endedBy": "ticks",
+          "productsShort": 24
+        }
+      ]
+    },
+    "build:shuffle-1": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 500340,
+      "construction": {
+        "mode": "script",
+        "order": "shuffle-1",
+        "ticks": 8860,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1128
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after piecemeal construction",
+          "minutes": 136.5,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "build:shuffle-2": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 516360,
+      "construction": {
+        "mode": "script",
+        "order": "shuffle-2",
+        "ticks": 8860,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1160
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after piecemeal construction",
+          "minutes": 141,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "build:shuffle-3": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 488700,
+      "construction": {
+        "mode": "script",
+        "order": "shuffle-3",
+        "ticks": 8860,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1123
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after piecemeal construction",
+          "minutes": 133.3,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "build:pipes-first": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 497220,
+      "construction": {
+        "mode": "script",
+        "order": "pipes-first",
+        "ticks": 8860,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1133
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after piecemeal construction",
+          "minutes": 135.7,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "build:machines-first": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 524040,
+      "construction": {
+        "mode": "script",
+        "order": "machines-first",
+        "ticks": 8860,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1155
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after piecemeal construction",
+          "minutes": 143.1,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "build:combinators-last": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 507540,
+      "construction": {
+        "mode": "script",
+        "order": "combinators-last",
+        "ticks": 8860,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1129
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after piecemeal construction",
+          "minutes": 138.5,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "build:copper-foundry-last": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 553680,
+      "construction": {
+        "mode": "script",
+        "order": "copper-foundry-last",
+        "ticks": 44880,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1037
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after piecemeal construction",
+          "minutes": 141.3,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "build:iron-foundry-last": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 559980,
+      "construction": {
+        "mode": "script",
+        "order": "iron-foundry-last",
+        "ticks": 44880,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1128
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after piecemeal construction",
+          "minutes": 143.1,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "build:robots-25": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 510780,
+      "construction": {
+        "mode": "robots",
+        "robots": 25,
+        "ticks": 18180,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1131
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after construction by robots",
+          "minutes": 136.8,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "build:robots-200": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 480300,
+      "construction": {
+        "mode": "robots",
+        "robots": 200,
+        "ticks": 2130,
+        "deferred": 0
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1113
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill after construction by robots",
+          "minutes": 132.8,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "late:power": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 510000,
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1434
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "no power for five minutes",
+          "minutes": 5,
+          "endedBy": "ticks",
+          "productsShort": 24
+        },
+        {
+          "name": "fill after power arrived",
+          "minutes": 136.7,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "late:stone-exit": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "fill after the stone exit was connected: finished within its tick limit",
+        "fill after the stone exit was connected: every product is at its cap",
+        "no pipe, tank or pump ever held a foreign fluid (every fluid segment read every tick)",
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 864000,
+      "foreignFluids": [
+        {
+          "network": "molten-copper",
+          "held": "molten-iron",
+          "firstTick": 12455,
+          "phase": "stone exit blocked for an hour",
+          "ticks": 851546,
+          "peak": 330,
+          "lastTick": 864000,
+          "recipes": {
+            "caster-S": "none",
+            "caster-D": "casting-copper-cable",
+            "caster-G": "none",
+            "U1": "wooden-chest",
+            "U2": "iron-ore-melting"
+          },
+          "lavaFoundries": {
+            "molten-copper": "full_output",
+            "molten-iron": "full_output"
+          },
+          "networks": {
+            "lava #120": {
+              "holds": "lava",
+              "amount": 800,
+              "capacity": 800
+            },
+            "molten-copper #145": {
+              "holds": "molten-iron",
+              "amount": 330,
+              "capacity": 700
+            },
+            "molten-iron #152": {
+              "holds": "molten-iron",
+              "amount": 1700,
+              "capacity": 1700
+            },
+            "water #169": {
+              "holds": "water",
+              "amount": 26500,
+              "capacity": 26500
+            },
+            "lubricant #256": {
+              "holds": "lubricant",
+              "amount": 25600,
+              "capacity": 25600
+            },
+            "sulfuric-acid #307": {
+              "holds": "sulfuric-acid",
+              "amount": 600,
+              "capacity": 600
+            }
+          }
+        }
+      ],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 28
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "stone exit blocked for an hour",
+          "minutes": 60,
+          "endedBy": "ticks",
+          "productsShort": 24
+        },
+        {
+          "name": "fill after the stone exit was connected",
+          "minutes": 180,
+          "endedBy": "limit",
+          "productsShort": 24
+        }
+      ]
+    },
+    "thin:lava": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)",
+        "no recipe-switching machine ever held a recipe none of its rules asks for (read every 10 ticks)"
+      ],
+      "simulatedTicks": 692700,
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1259
+        }
+      ],
+      "strayRecipes": [
+        {
+          "machine": "U2",
+          "recipe": "casting-iron-gear-wheel",
+          "tick": 580310,
+          "phase": "fill after lava came in full"
+        }
+      ],
+      "phases": [
+        {
+          "name": "thin lava from a cold start",
+          "minutes": 60,
+          "endedBy": "ticks",
+          "productsShort": 24
+        },
+        {
+          "name": "fill after lava came in full",
+          "minutes": 132.4,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "thin:calcite": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)",
+        "no recipe-switching machine ever held a recipe none of its rules asks for (read every 10 ticks)"
+      ],
+      "simulatedTicks": 711720,
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1219
+        }
+      ],
+      "strayRecipes": [
+        {
+          "machine": "U2",
+          "recipe": "casting-iron-gear-wheel",
+          "tick": 596160,
+          "phase": "fill after calcite came in full"
+        }
+      ],
+      "phases": [
+        {
+          "name": "thin calcite from a cold start",
+          "minutes": 60,
+          "endedBy": "ticks",
+          "productsShort": 24
+        },
+        {
+          "name": "fill after calcite came in full",
+          "minutes": 137.7,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "starve:supply": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)",
+        "no recipe-switching machine ever held a recipe none of its rules asks for (read every 10 ticks)"
+      ],
+      "simulatedTicks": 1322760,
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 3262
+        }
+      ],
+      "strayRecipes": [
+        {
+          "machine": "U2",
+          "recipe": "casting-iron-gear-wheel",
+          "tick": 379310,
+          "phase": "fill from empty"
+        }
+      ],
+      "phases": [
+        {
+          "name": "fill from empty",
+          "minutes": 134.9,
+          "endedBy": "caps",
+          "productsShort": 0
+        },
+        {
+          "name": "lava cut for ten minutes, every chest emptied",
+          "minutes": 10,
+          "endedBy": "ticks",
+          "productsShort": 22
+        },
+        {
+          "name": "recovery after the lava cut",
+          "minutes": 107.6,
+          "endedBy": "caps",
+          "productsShort": 0
+        },
+        {
+          "name": "calcite cut for ten minutes, every chest emptied",
+          "minutes": 10,
+          "endedBy": "ticks",
+          "productsShort": 18
+        },
+        {
+          "name": "recovery after the calcite cut",
+          "minutes": 105,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "starve:foundry": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)",
+        "no recipe-switching machine ever held a recipe none of its rules asks for (read every 10 ticks)"
+      ],
+      "simulatedTicks": 1384440,
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 3057
+        }
+      ],
+      "strayRecipes": [
+        {
+          "machine": "U2",
+          "recipe": "casting-iron-gear-wheel",
+          "tick": 379310,
+          "phase": "fill from empty"
+        }
+      ],
+      "phases": [
+        {
+          "name": "fill from empty",
+          "minutes": 134.9,
+          "endedBy": "caps",
+          "productsShort": 0
+        },
+        {
+          "name": "molten copper foundry stopped for fifteen minutes, every chest emptied",
+          "minutes": 15,
+          "endedBy": "ticks",
+          "productsShort": 21
+        },
+        {
+          "name": "recovery after the molten copper stop",
+          "minutes": 106.9,
+          "endedBy": "caps",
+          "productsShort": 0
+        },
+        {
+          "name": "molten iron foundry stopped for fifteen minutes, every chest emptied",
+          "minutes": 15,
+          "endedBy": "ticks",
+          "productsShort": 22
+        },
+        {
+          "name": "recovery after the molten iron stop",
+          "minutes": 112.8,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "place:rot90": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)",
+        "no recipe-switching machine ever held a recipe none of its rules asks for (read every 10 ticks)"
+      ],
+      "simulatedTicks": 485460,
+      "placement": {
+        "name": "rot90",
+        "direction": 4,
+        "mirrored": false,
+        "blueprintSha256": "7977ee595dd543c191177381ddd3ad0867650e1227e8562379da6a043aa188ed"
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1110
+        }
+      ],
+      "strayRecipes": [
+        {
+          "machine": "U2",
+          "recipe": "casting-iron-gear-wheel",
+          "tick": 379310,
+          "phase": "fill from empty"
+        }
+      ],
+      "phases": [
+        {
+          "name": "fill from empty",
+          "minutes": 134.9,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "place:rot180": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)",
+        "no recipe-switching machine ever held a recipe none of its rules asks for (read every 10 ticks)"
+      ],
+      "simulatedTicks": 485460,
+      "placement": {
+        "name": "rot180",
+        "direction": 8,
+        "mirrored": false,
+        "blueprintSha256": "7977ee595dd543c191177381ddd3ad0867650e1227e8562379da6a043aa188ed"
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1110
+        }
+      ],
+      "strayRecipes": [
+        {
+          "machine": "U2",
+          "recipe": "casting-iron-gear-wheel",
+          "tick": 379310,
+          "phase": "fill from empty"
+        }
+      ],
+      "phases": [
+        {
+          "name": "fill from empty",
+          "minutes": 134.9,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "place:rot270": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)",
+        "no recipe-switching machine ever held a recipe none of its rules asks for (read every 10 ticks)"
+      ],
+      "simulatedTicks": 485460,
+      "placement": {
+        "name": "rot270",
+        "direction": 12,
+        "mirrored": false,
+        "blueprintSha256": "7977ee595dd543c191177381ddd3ad0867650e1227e8562379da6a043aa188ed"
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1110
+        }
+      ],
+      "strayRecipes": [
+        {
+          "machine": "U2",
+          "recipe": "casting-iron-gear-wheel",
+          "tick": 379310,
+          "phase": "fill from empty"
+        }
+      ],
+      "phases": [
+        {
+          "name": "fill from empty",
+          "minutes": 134.9,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "place:flipH": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 508980,
+      "placement": {
+        "name": "flipH",
+        "direction": 0,
+        "mirrored": true,
+        "blueprintSha256": "3af49d8dc99b1c9da481e8d5805f86879cbb84ad2198bf1209a2091cdfc88a9c"
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1133
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill from empty",
+          "minutes": 141.4,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "place:flipV": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 508980,
+      "placement": {
+        "name": "flipV",
+        "direction": 0,
+        "mirrored": true,
+        "blueprintSha256": "7cad462429a08cb0e69feaa08d8d94d4ff59d0591d35a291ee956ce45d633b39"
+      },
+      "foreignFluids": [],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 1133
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "fill from empty",
+          "minutes": 141.4,
+          "endedBy": "caps",
+          "productsShort": 0
+        }
+      ]
+    },
+    "recover:flush": {
+      "passed": false,
+      "caps": "reduced",
+      "failures": [
+        "no pipe, tank or pump ever held a foreign fluid (every fluid segment read every tick)",
+        "no fluid box of a machine was ever joined to the pipes of two fluids except through a pump (read every second)"
+      ],
+      "simulatedTicks": 789000,
+      "foreignFluids": [
+        {
+          "network": "molten-copper",
+          "held": "molten-iron",
+          "firstTick": 12455,
+          "phase": "stone exit blocked for an hour",
+          "ticks": 275546,
+          "peak": 330,
+          "lastTick": 288000,
+          "recipes": {
+            "caster-S": "none",
+            "caster-D": "casting-copper-cable",
+            "caster-G": "none",
+            "U1": "wooden-chest",
+            "U2": "iron-ore-melting"
+          },
+          "lavaFoundries": {
+            "molten-copper": "full_output",
+            "molten-iron": "full_output"
+          },
+          "networks": {
+            "lava #120": {
+              "holds": "lava",
+              "amount": 800,
+              "capacity": 800
+            },
+            "molten-copper #145": {
+              "holds": "molten-iron",
+              "amount": 330,
+              "capacity": 700
+            },
+            "molten-iron #152": {
+              "holds": "molten-iron",
+              "amount": 1700,
+              "capacity": 1700
+            },
+            "water #169": {
+              "holds": "water",
+              "amount": 26500,
+              "capacity": 26500
+            },
+            "lubricant #256": {
+              "holds": "lubricant",
+              "amount": 25600,
+              "capacity": 25600
+            },
+            "sulfuric-acid #307": {
+              "holds": "sulfuric-acid",
+              "amount": 600,
+              "capacity": 600
+            }
+          }
+        }
+      ],
+      "joinedBoxes": [
+        {
+          "machine": "caster-S",
+          "recipe": "casting-steel",
+          "box": "molten-iron",
+          "joinedTo": "molten-copper",
+          "seconds": 650
+        }
+      ],
+      "strayRecipes": [],
+      "phases": [
+        {
+          "name": "stone exit blocked for an hour",
+          "minutes": 60,
+          "endedBy": "ticks",
+          "productsShort": 24
+        },
+        {
+          "name": "stone exit connected, nothing flushed, twenty minutes",
+          "minutes": 20,
+          "endedBy": "ticks",
+          "productsShort": 24
+        },
+        {
+          "name": "fill after every pipe run holding a foreign fluid was flushed",
+          "minutes": 139.2,
+          "endedBy": "caps",
+          "flushed": [
+            {
+              "network": "molten-copper",
+              "held": "molten-iron",
+              "amount": 330
+            }
+          ],
+          "productsShort": 0
+        }
+      ]
+    }
+  }
+}
