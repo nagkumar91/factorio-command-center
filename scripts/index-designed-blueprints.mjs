@@ -293,6 +293,23 @@ for(const id of ['coal-plastic-lubricant','tungsten-carbide','rocket-fuel']){
    'Native test on a Vulcanus surface with only the technology closure researched: rates with the exits drained, exit blocks and release, a five-minute outage of every input and recovery, one fluid per pipe network checked once a second. Power by substations; connect the outside network to the labelled entry substation.']});
 }
 
+// Vulcanus plastic-only supply (27 November 2026): plastic bars as the only product, from coal (belt) and petroleum gas (pipe). Registered only
+// from its own passing native report for the exact string; the figures shown are that report's measured ones.
+{
+ const id='plastic-only',dir='blueprint-sources/vulcanus-supplies/'+id,m=await read(dir+'/manifest.json'),reportFile=dir+'/native-report.json',proof=await read(reportFile).catch(()=>null);
+ if(!proof||proof.passed!==true||proof.blueprintSha256!==m.candidateSha256)console.warn('Not registered (no exact-hash passing native report): '+id);
+ else{
+  const th=proof.measured.steady.throttled,n=v=>Number(v.toFixed(1));
+  await register({file:dir+'/blueprint.txt',info:{name:'Plastic only · 60 a minute',blueprintSha256:m.candidateSha256,
+   inputs:m.inputPorts.map(p=>({item:p.item,entity:p.entity,side:p.side,perMinute:n(th.inputsPerMinute[p.item])})),
+   outputs:m.outputPorts.map(o=>({item:o.item,entity:o.entity,side:o.side,perMinute:n(th.outputsPerMinute[o.item])})),footprint:proof.footprint},
+   category:'Supplies · Vulcanus',purpose:'Supply production',sourceCollection:collection,inputs:m.inputPorts.map(p=>p.item),outputs:m.products,
+   proof:{...proof,outputsPerMinute:proof.measured.outputsPerMinute},report:reportFile,version:proof.gameVersion,
+   setup:[`Makes plastic bars and nothing else on one belt exit (east edge) from coal (belt, east edge) and petroleum gas (pipe, west edge) in one chemical plant; no lubricant and no other output. Measured over 30 minutes with every input offered exactly its panel figure: ${n(th.outputsPerMinute['plastic-bar'])} plastic bars a minute from ${m.inputPorts.map(p=>p.item+' '+n(th.inputsPerMinute[p.item])+'/min').join(', ')}.`,
+    'Native test on a Vulcanus surface with only the technology closure researched, three scenarios: steady rate with the exit blocked and released; coal withheld 20 minutes then supplied; petroleum gas withheld 20 minutes then supplied. One fluid per pipe network checked once a second. Power by one substation; connect the outside network to the labelled entry substation.']});
+ }
+}
+
 // Vulcanus circuits (26 November 2026), user-requested supply blueprints that make one kind of circuit each from lava and calcite with
 // foundries inside: electronic circuits, advanced circuits (plus plastic), processing units (plus plastic and sulfuric acid). Each member is
 // registered only from its own passing native report for the exact string; the figures shown are that report's measured ones.

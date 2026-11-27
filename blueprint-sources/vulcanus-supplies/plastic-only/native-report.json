@@ -1,0 +1,2861 @@
+{
+  "schema": 2,
+  "passed": true,
+  "failures": {
+    "throttled": {},
+    "coal withheld": {},
+    "gas withheld": {}
+  },
+  "blueprintSha256": "0a1e72b362120745e12618e39b684c118a09364d9e5a6e833f6161bc4fe3a900",
+  "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+  "fluidSlotsSha256": "31e11b1740a63e84996b36575f20c9d9dcccfd26f764a1a7b32a07f783cf5198",
+  "gameVersion": "2.1.25",
+  "activeMods": {
+    "base": "2.1.25",
+    "elevated-rails": "2.1.25",
+    "quality": "2.1.25",
+    "recycler": "2.1.25",
+    "space-age": "2.1.25"
+  },
+  "nativeControlSha256": "340ef411827a6c36faec94cef81fa0c0c873ebcba93c0f38c4eaa225b25f982a",
+  "runnerSha256": "aa8f7c9c24e1b5b09c16d7cca3f41ab1bd72b9a091de28766038ef4b18bd2ad6",
+  "scenarioSha256": "e948f1375614d08843c9d54748356b8d13615defb4fa7a92aed736c1e0e7c68e",
+  "nativeCommand": "node scripts/vulcanus-supplies/validate.mjs plastic-only",
+  "protocol": {
+    "seed": 21025,
+    "externalPowerWatts": 10000000,
+    "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+    "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+    "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+    "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+  },
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "automation",
+    "steel-processing",
+    "logistic-science-pack",
+    "automation-2",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "plastics",
+    "logistics",
+    "logistics-2",
+    "fast-inserter",
+    "electric-energy-distribution-1",
+    "advanced-circuit",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "electric-energy-distribution-2",
+    "circuit-network"
+  ],
+  "footprint": {
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 6,
+      "bottom": 5
+    },
+    "width": 6,
+    "height": 5,
+    "area": 30,
+    "includes": "all entities, panels, substation, belts and the gas pipe; external supply excluded",
+    "counts": {
+      "chemical-plant": 1,
+      "display-panel": 4,
+      "fast-inserter": 2,
+      "fast-transport-belt": 4,
+      "pipe": 1,
+      "substation": 1
+    },
+    "entities": 13
+  },
+  "runs": {
+    "throttled": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000,
+            "gravity": 40
+          }
+        },
+        {
+          "name": "every ghost lies where the placement under test expects it",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "display panel visible #10",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #11",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #12",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #13",
+          "passed": true
+        },
+        {
+          "name": "every entity imported at its exact position, direction, mirroring and type",
+          "passed": true,
+          "detail": {
+            "entities": 13
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 13
+          }
+        },
+        {
+          "name": "recipe preserved #1 plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #1",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #1",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> plastic plant (coal)",
+          "passed": true
+        },
+        {
+          "name": "plastic plant -> exit belt (plastic bars)",
+          "passed": true
+        },
+        {
+          "name": "every machine fluid box has exactly the connection tiles of the static model",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "clear approach IN-1",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-2",
+          "passed": true
+        },
+        {
+          "name": "clear approach OUT-1",
+          "passed": true
+        },
+        {
+          "name": "all machines and arms have actual native power connections on the one network of the power connection",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "the substations form one copper network",
+          "passed": true
+        },
+        {
+          "name": "the pipes, undergrounds and machine boxes form exactly the static fluid networks, one fluid each",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "every outside fixture pipe joins the segment of its entrance or exit pipe",
+          "passed": true
+        },
+        {
+          "name": "every fluid connection the game made is one of the static model, and none is missing",
+          "passed": true,
+          "detail": {
+            "connections": 1,
+            "missing": {},
+            "extra": {}
+          }
+        },
+        {
+          "name": "only the entrance and exit pipes connect to anything outside the blueprint",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "no pipe opening faces a machine port the recipe does not use",
+          "passed": true,
+          "detail": {
+            "unusedPortTiles": 2,
+            "facing": {}
+          }
+        },
+        {
+          "name": "warm-up: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "warm-up: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: OUT-1 at least 57 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 57
+          }
+        },
+        {
+          "name": "steady: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: every machine crafted",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: OUT-1 at most 0 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 0,
+            "ceiling": 0
+          }
+        },
+        {
+          "name": "exit blocked: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no machine crafted in the last 5 minutes",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no machine working at the end",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: OUT-1 at least 57 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 57
+          }
+        },
+        {
+          "name": "release: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: OUT-1 back to 95% of 60 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "recycler": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "0a1e72b362120745e12618e39b684c118a09364d9e5a6e833f6161bc4fe3a900",
+      "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+      "configurationSha256": "6b8f873008417fdf45010ddec54ca5b270e556be515c2ff71134b66389d91f6a",
+      "nativeControlSha256": "340ef411827a6c36faec94cef81fa0c0c873ebcba93c0f38c4eaa225b25f982a",
+      "actualTicks": 270000,
+      "scenario": {
+        "name": "throttled",
+        "description": "every entrance offered exactly the figure on its panel: warm-up, steady, exit blocked, released"
+      },
+      "protocol": {
+        "seed": 21025,
+        "externalPowerWatts": 10000000,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+        "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+      },
+      "phases": [
+        {
+          "name": "warm-up",
+          "minutes": 15,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 15,
+          "feed": {
+            "IN-1": 30,
+            "IN-2": 600
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 29.933333333333334,
+              "measured": 29.933333333333334
+            },
+            "IN-2": {
+              "phase": 599.9999999960263,
+              "measured": 599.9999999960263
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 59.8,
+              "measured": 59.8
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 29.933333333333334,
+            "IN-2": 598.6666666666666
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 29,
+                "IN-2": 599.9999999403954
+              },
+              "drawn": {
+                "OUT-1": 57
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 449,
+              "productsPerMinute": 29.933333333333334,
+              "productsInLastMinutes": 449,
+              "statusSamples": {
+                "item_ingredient_shortage": 451,
+                "working": 449
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "steady",
+          "minutes": 30,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 30,
+          "feed": {
+            "IN-1": 30,
+            "IN-2": 600
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 30,
+              "measured": 30
+            },
+            "IN-2": {
+              "phase": 600,
+              "measured": 600
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 60,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 30,
+            "IN-2": 600
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 900,
+              "productsPerMinute": 30,
+              "productsInLastMinutes": 900,
+              "statusSamples": {
+                "working": 900,
+                "item_ingredient_shortage": 900
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "exit blocked",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": 30,
+            "IN-2": 600
+          },
+          "draw": {
+            "OUT-1": "none"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 1.5333333333333334,
+              "measured": 0
+            },
+            "IN-2": {
+              "phase": 26.66666667064031,
+              "measured": 0
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 0,
+              "measured": 0
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0.4666666666666667,
+            "IN-2": 9.333333333333334
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 400.00000005960464
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0
+              },
+              "drawn": {}
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 7,
+              "productsPerMinute": 0.4666666666666667,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "working": 7,
+                "item_ingredient_shortage": 6,
+                "full_output": 887
+              },
+              "statusAtEnd": "full_output"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "tailFed_IN-1": 0,
+          "tailFed_IN-2": 0
+        },
+        {
+          "name": "release",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": 30,
+            "IN-2": 600
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 30.466666666666665,
+              "measured": 30
+            },
+            "IN-2": {
+              "phase": 600.0444444417953,
+              "measured": 600
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 62.733333333333334,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 30.866666666666667,
+            "IN-2": 617.3333333333334
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 37,
+                "IN-2": 600.6666666269302
+              },
+              "drawn": {
+                "OUT-1": 101
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 463,
+              "productsPerMinute": 30.866666666666667,
+              "productsInLastMinutes": 463,
+              "statusSamples": {
+                "working": 464,
+                "fluid_ingredient_shortage": 436
+              },
+              "statusAtEnd": "working"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 60,
+              "share": 0.95,
+              "secondsToReach": 60
+            }
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "coal belt -> plastic plant (coal)",
+          "inserter": 5,
+          "pickup": {
+            "y": 0.5,
+            "x": 1.5
+          },
+          "drop": {
+            "y": 0.5,
+            "x": -0.69921875
+          }
+        },
+        {
+          "label": "plastic plant -> exit belt (plastic bars)",
+          "inserter": 8,
+          "pickup": {
+            "y": 1.5,
+            "x": -0.5
+          },
+          "drop": {
+            "y": 1.5,
+            "x": 1.69921875
+          }
+        }
+      ],
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000,
+        "gravity": 40
+      },
+      "blueprintEntityCount": 13,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 6,
+          "bottom": 5
+        },
+        "width": 6,
+        "height": 5,
+        "area": 30,
+        "includes": "all entities, panels, substation, belts and the gas pipe; external supply excluded",
+        "counts": {
+          "chemical-plant": 1,
+          "display-panel": 4,
+          "fast-inserter": 2,
+          "fast-transport-belt": 4,
+          "pipe": 1,
+          "substation": 1
+        },
+        "entities": 13
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "automation",
+        "steel-processing",
+        "logistic-science-pack",
+        "automation-2",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "plastics",
+        "logistics",
+        "logistics-2",
+        "fast-inserter",
+        "electric-energy-distribution-1",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 0.984,
+        "benchmark": 11.441
+      },
+      "activeWallSeconds": 10.309,
+      "updatesPerSecond": 26191
+    },
+    "coal withheld": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000,
+            "gravity": 40
+          }
+        },
+        {
+          "name": "every ghost lies where the placement under test expects it",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "display panel visible #10",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #11",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #12",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #13",
+          "passed": true
+        },
+        {
+          "name": "every entity imported at its exact position, direction, mirroring and type",
+          "passed": true,
+          "detail": {
+            "entities": 13
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 13
+          }
+        },
+        {
+          "name": "recipe preserved #1 plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #1",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #1",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> plastic plant (coal)",
+          "passed": true
+        },
+        {
+          "name": "plastic plant -> exit belt (plastic bars)",
+          "passed": true
+        },
+        {
+          "name": "every machine fluid box has exactly the connection tiles of the static model",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "clear approach IN-1",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-2",
+          "passed": true
+        },
+        {
+          "name": "clear approach OUT-1",
+          "passed": true
+        },
+        {
+          "name": "all machines and arms have actual native power connections on the one network of the power connection",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "the substations form one copper network",
+          "passed": true
+        },
+        {
+          "name": "the pipes, undergrounds and machine boxes form exactly the static fluid networks, one fluid each",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "every outside fixture pipe joins the segment of its entrance or exit pipe",
+          "passed": true
+        },
+        {
+          "name": "every fluid connection the game made is one of the static model, and none is missing",
+          "passed": true,
+          "detail": {
+            "connections": 1,
+            "missing": {},
+            "extra": {}
+          }
+        },
+        {
+          "name": "only the entrance and exit pipes connect to anything outside the blueprint",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "no pipe opening faces a machine port the recipe does not use",
+          "passed": true,
+          "detail": {
+            "unusedPortTiles": 2,
+            "facing": {}
+          }
+        },
+        {
+          "name": "coal withheld: OUT-1 at most 0 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 0,
+            "ceiling": 0
+          }
+        },
+        {
+          "name": "coal withheld: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "coal withheld: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "coal supplied: OUT-1 at least 57 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 57
+          }
+        },
+        {
+          "name": "coal supplied: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "coal supplied: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "coal supplied: OUT-1 back to 95% of 60 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "recycler": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "0a1e72b362120745e12618e39b684c118a09364d9e5a6e833f6161bc4fe3a900",
+      "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+      "configurationSha256": "c5d8fc5ee5667f9d0cecd6acf74c16f2440a95c5de41dcd685631fee0665c331",
+      "nativeControlSha256": "340ef411827a6c36faec94cef81fa0c0c873ebcba93c0f38c4eaa225b25f982a",
+      "actualTicks": 126000,
+      "scenario": {
+        "name": "coal withheld",
+        "description": "cold start; coal withheld for 20 minutes (every other entrance at its panel figure), then supplied"
+      },
+      "protocol": {
+        "seed": 21025,
+        "externalPowerWatts": 10000000,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+        "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+      },
+      "phases": [
+        {
+          "name": "coal withheld",
+          "minutes": 20,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 20,
+          "feed": {
+            "IN-1": "none",
+            "IN-2": 600
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 0,
+              "measured": 0
+            },
+            "IN-2": {
+              "phase": 14,
+              "measured": 14
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 0,
+              "measured": 0
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-2": 280
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "item_ingredient_shortage": 1200
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "coal supplied",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": 30,
+            "IN-2": 600
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 29.933333333333334,
+              "measured": 30
+            },
+            "IN-2": {
+              "phase": 598.6666666666666,
+              "measured": 600
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 59.8,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 29.933333333333334,
+            "IN-2": 598.6666666666666
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 29,
+                "IN-2": 580
+              },
+              "drawn": {
+                "OUT-1": 57
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 449,
+              "productsPerMinute": 29.933333333333334,
+              "productsInLastMinutes": 449,
+              "statusSamples": {
+                "item_ingredient_shortage": 451,
+                "working": 449
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 60,
+              "share": 0.95,
+              "secondsToReach": 60
+            }
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "coal belt -> plastic plant (coal)",
+          "inserter": 5,
+          "pickup": {
+            "y": 0.5,
+            "x": 1.5
+          },
+          "drop": {
+            "y": 0.5,
+            "x": -0.69921875
+          }
+        },
+        {
+          "label": "plastic plant -> exit belt (plastic bars)",
+          "inserter": 8,
+          "pickup": {
+            "y": 1.5,
+            "x": -0.5
+          },
+          "drop": {
+            "y": 1.5,
+            "x": 1.69921875
+          }
+        }
+      ],
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000,
+        "gravity": 40
+      },
+      "blueprintEntityCount": 13,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 6,
+          "bottom": 5
+        },
+        "width": 6,
+        "height": 5,
+        "area": 30,
+        "includes": "all entities, panels, substation, belts and the gas pipe; external supply excluded",
+        "counts": {
+          "chemical-plant": 1,
+          "display-panel": 4,
+          "fast-inserter": 2,
+          "fast-transport-belt": 4,
+          "pipe": 1,
+          "substation": 1
+        },
+        "entities": 13
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "automation",
+        "steel-processing",
+        "logistic-science-pack",
+        "automation-2",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "plastics",
+        "logistics",
+        "logistics-2",
+        "fast-inserter",
+        "electric-energy-distribution-1",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 0.995,
+        "benchmark": 2.926
+      },
+      "activeWallSeconds": 1.816,
+      "updatesPerSecond": 69383
+    },
+    "gas withheld": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000,
+            "gravity": 40
+          }
+        },
+        {
+          "name": "every ghost lies where the placement under test expects it",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "display panel visible #10",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #11",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #12",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #13",
+          "passed": true
+        },
+        {
+          "name": "every entity imported at its exact position, direction, mirroring and type",
+          "passed": true,
+          "detail": {
+            "entities": 13
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 13
+          }
+        },
+        {
+          "name": "recipe preserved #1 plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #1",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #1",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> plastic plant (coal)",
+          "passed": true
+        },
+        {
+          "name": "plastic plant -> exit belt (plastic bars)",
+          "passed": true
+        },
+        {
+          "name": "every machine fluid box has exactly the connection tiles of the static model",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "clear approach IN-1",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-2",
+          "passed": true
+        },
+        {
+          "name": "clear approach OUT-1",
+          "passed": true
+        },
+        {
+          "name": "all machines and arms have actual native power connections on the one network of the power connection",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "the substations form one copper network",
+          "passed": true
+        },
+        {
+          "name": "the pipes, undergrounds and machine boxes form exactly the static fluid networks, one fluid each",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "every outside fixture pipe joins the segment of its entrance or exit pipe",
+          "passed": true
+        },
+        {
+          "name": "every fluid connection the game made is one of the static model, and none is missing",
+          "passed": true,
+          "detail": {
+            "connections": 1,
+            "missing": {},
+            "extra": {}
+          }
+        },
+        {
+          "name": "only the entrance and exit pipes connect to anything outside the blueprint",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "no pipe opening faces a machine port the recipe does not use",
+          "passed": true,
+          "detail": {
+            "unusedPortTiles": 2,
+            "facing": {}
+          }
+        },
+        {
+          "name": "petroleum-gas withheld: OUT-1 at most 0 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 0,
+            "ceiling": 0
+          }
+        },
+        {
+          "name": "petroleum-gas withheld: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "petroleum-gas withheld: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "petroleum-gas supplied: OUT-1 at least 57 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 60,
+            "floor": 57
+          }
+        },
+        {
+          "name": "petroleum-gas supplied: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "petroleum-gas supplied: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "petroleum-gas supplied: OUT-1 back to 95% of 60 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "recycler": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "0a1e72b362120745e12618e39b684c118a09364d9e5a6e833f6161bc4fe3a900",
+      "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+      "configurationSha256": "8d26289dfbdaf83d85aaaa994b11cadd513f75f3bf6a836b028d40c532aa3d6a",
+      "nativeControlSha256": "340ef411827a6c36faec94cef81fa0c0c873ebcba93c0f38c4eaa225b25f982a",
+      "actualTicks": 126000,
+      "scenario": {
+        "name": "petroleum-gas withheld",
+        "description": "cold start; petroleum-gas withheld for 20 minutes (every other entrance at its panel figure), then supplied"
+      },
+      "protocol": {
+        "seed": 21025,
+        "externalPowerWatts": 10000000,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+        "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+      },
+      "phases": [
+        {
+          "name": "petroleum-gas withheld",
+          "minutes": 20,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 20,
+          "feed": {
+            "IN-1": 30,
+            "IN-2": "none"
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 0.95,
+              "measured": 0.95
+            },
+            "IN-2": {
+              "phase": 0,
+              "measured": 0
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 0,
+              "measured": 0
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 19
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0
+              },
+              "drawn": {
+                "OUT-1": 0
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "item_ingredient_shortage": 2,
+                "fluid_ingredient_shortage": 1198
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "petroleum-gas supplied",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": 30,
+            "IN-2": 600
+          },
+          "draw": {
+            "OUT-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 29.933333333333334,
+              "measured": 30
+            },
+            "IN-2": {
+              "phase": 599.9999999960263,
+              "measured": 600
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 59.86666666666667,
+              "measured": 60
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 29.933333333333334,
+            "IN-2": 598.6666666666666
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 29,
+                "IN-2": 599.9999999403954
+              },
+              "drawn": {
+                "OUT-1": 58
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 30,
+                "IN-2": 600
+              },
+              "drawn": {
+                "OUT-1": 60
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 449,
+              "productsPerMinute": 29.933333333333334,
+              "productsInLastMinutes": 449,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 451,
+                "working": 449
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 60,
+              "share": 0.95,
+              "secondsToReach": 60
+            }
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "coal belt -> plastic plant (coal)",
+          "inserter": 5,
+          "pickup": {
+            "y": 0.5,
+            "x": 1.5
+          },
+          "drop": {
+            "y": 0.5,
+            "x": -0.69921875
+          }
+        },
+        {
+          "label": "plastic plant -> exit belt (plastic bars)",
+          "inserter": 8,
+          "pickup": {
+            "y": 1.5,
+            "x": -0.5
+          },
+          "drop": {
+            "y": 1.5,
+            "x": 1.69921875
+          }
+        }
+      ],
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000,
+        "gravity": 40
+      },
+      "blueprintEntityCount": 13,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 6,
+          "bottom": 5
+        },
+        "width": 6,
+        "height": 5,
+        "area": 30,
+        "includes": "all entities, panels, substation, belts and the gas pipe; external supply excluded",
+        "counts": {
+          "chemical-plant": 1,
+          "display-panel": 4,
+          "fast-inserter": 2,
+          "fast-transport-belt": 4,
+          "pipe": 1,
+          "substation": 1
+        },
+        "entities": 13
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "automation",
+        "steel-processing",
+        "logistic-science-pack",
+        "automation-2",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "plastics",
+        "logistics",
+        "logistics-2",
+        "fast-inserter",
+        "electric-energy-distribution-1",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 0.997,
+        "benchmark": 4.113
+      },
+      "activeWallSeconds": 2.962,
+      "updatesPerSecond": 42539
+    }
+  },
+  "measured": {
+    "phases": {
+      "throttled": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "plastic-bar": 59.8
+          },
+          "inputsPerMinute": {
+            "coal": 29.9,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 29.9,
+            "petroleum-gas": 598.7
+          }
+        },
+        "steady": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "plastic-bar": 60
+          },
+          "inputsPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "petroleum-gas": 0
+          },
+          "consumedPerMinute": {
+            "coal": 0.5,
+            "petroleum-gas": 9.3
+          }
+        },
+        "release": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 60
+          },
+          "inputsPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 30.9,
+            "petroleum-gas": 617.3
+          },
+          "recoverySeconds": {
+            "plastic-bar": 60
+          }
+        }
+      },
+      "coal withheld": {
+        "coal withheld": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "petroleum-gas": 14
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "petroleum-gas": 0
+          }
+        },
+        "coal supplied": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 60
+          },
+          "inputsPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 29.9,
+            "petroleum-gas": 598.7
+          },
+          "recoverySeconds": {
+            "plastic-bar": 60
+          }
+        }
+      },
+      "gas withheld": {
+        "petroleum-gas withheld": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "coal": 1,
+            "petroleum-gas": 0
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "petroleum-gas": 0
+          }
+        },
+        "petroleum-gas supplied": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 60
+          },
+          "inputsPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 29.9,
+            "petroleum-gas": 598.7
+          },
+          "recoverySeconds": {
+            "plastic-bar": 60
+          }
+        }
+      }
+    },
+    "steady": {
+      "throttled": {
+        "outputsPerMinute": {
+          "plastic-bar": 60
+        },
+        "inputsPerMinute": {
+          "coal": 30,
+          "petroleum-gas": 600
+        }
+      }
+    },
+    "outputsPerMinute": {
+      "plastic-bar": 60
+    },
+    "inputsPerMinute": {
+      "coal": 30,
+      "petroleum-gas": 600
+    }
+  }
+}

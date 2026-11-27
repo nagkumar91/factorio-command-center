@@ -1,0 +1,526 @@
+{
+  "schema": 1,
+  "id": "plastic-only",
+  "revision": 1,
+  "candidateSha256": "0a1e72b362120745e12618e39b684c118a09364d9e5a6e833f6161bc4fe3a900",
+  "requiredGameVersion": "2.1.25",
+  "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+  "fluidSlotsSha256": "31e11b1740a63e84996b36575f20c9d9dcccfd26f764a1a7b32a07f783cf5198",
+  "memberFluidSlotsSha256": "0414851c2b9211616fcb9d99d33cb38f44fcc8c5d02ebd6132f14342e9014e6c",
+  "intendedUse": "plastic bars on one belt exit and nothing else, from coal on a belt and petroleum gas by pipe",
+  "products": [
+    "plastic-bar"
+  ],
+  "targets": {
+    "plastic-bar": 60
+  },
+  "equipment": {
+    "machines": [
+      "chemical-plant"
+    ],
+    "inserter": "fast-inserter",
+    "transport": "fast-transport-belt",
+    "power": "substation",
+    "modules": 0,
+    "beacons": 0,
+    "quality": "normal"
+  },
+  "footprint": {
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 6,
+      "bottom": 5
+    },
+    "width": 6,
+    "height": 5,
+    "area": 30,
+    "includes": "all entities, panels, substation, belts and the gas pipe; external supply excluded",
+    "counts": {
+      "chemical-plant": 1,
+      "display-panel": 4,
+      "fast-inserter": 2,
+      "fast-transport-belt": 4,
+      "pipe": 1,
+      "substation": 1
+    },
+    "entities": 13
+  },
+  "inputPorts": [
+    {
+      "id": "IN-1",
+      "item": "coal",
+      "kind": "belt",
+      "side": "east",
+      "flow": "west",
+      "entity": 3,
+      "tile": {
+        "x": 5,
+        "y": 2
+      },
+      "externalContact": {
+        "x": 6,
+        "y": 2
+      },
+      "vector": [
+        1,
+        0
+      ],
+      "approach": [
+        {
+          "x": 6,
+          "y": 2
+        },
+        {
+          "x": 7,
+          "y": 2
+        },
+        {
+          "x": 8,
+          "y": 2
+        }
+      ],
+      "panel": 10,
+      "label": "IN: coal 30/min",
+      "perMinute": 30
+    },
+    {
+      "id": "IN-2",
+      "item": "petroleum-gas",
+      "kind": "pipe",
+      "side": "west",
+      "flow": "east",
+      "entity": 2,
+      "tile": {
+        "x": 0,
+        "y": 4
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 4
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -2,
+          "y": 4
+        },
+        {
+          "x": -3,
+          "y": 4
+        },
+        {
+          "x": -4,
+          "y": 4
+        }
+      ],
+      "panel": 11,
+      "label": "IN: petroleum-gas 600/min",
+      "perMinute": 600
+    }
+  ],
+  "outputPorts": [
+    {
+      "id": "OUT-1",
+      "item": "plastic-bar",
+      "kind": "belt",
+      "side": "east",
+      "flow": "east",
+      "entity": 7,
+      "tile": {
+        "x": 5,
+        "y": 3
+      },
+      "externalContact": {
+        "x": 6,
+        "y": 3
+      },
+      "vector": [
+        1,
+        0
+      ],
+      "approach": [
+        {
+          "x": 6,
+          "y": 3
+        },
+        {
+          "x": 7,
+          "y": 3
+        },
+        {
+          "x": 8,
+          "y": 3
+        }
+      ],
+      "panel": 12,
+      "label": "OUT: plastic-bar 60/min",
+      "perMinute": 60
+    }
+  ],
+  "power": {
+    "entry": 9,
+    "panel": 13,
+    "label": "POWER: connect substation",
+    "externalPole": {
+      "x": 9,
+      "y": 1
+    },
+    "poles": [
+      9
+    ]
+  },
+  "machines": [
+    {
+      "entity": 1,
+      "name": "chemical-plant",
+      "recipe": "plastic-bar",
+      "role": "plastic",
+      "tile": {
+        "x": 0,
+        "y": 1
+      },
+      "direction": 8,
+      "mirror": false
+    }
+  ],
+  "roles": {
+    "1": "plastic"
+  },
+  "routes": [
+    {
+      "inserter": 5,
+      "label": "coal belt -> plastic plant (coal)",
+      "sourceBelts": [
+        4
+      ],
+      "destEntity": 1
+    },
+    {
+      "inserter": 8,
+      "label": "plastic plant -> exit belt (plastic bars)",
+      "sourceEntity": 1,
+      "destBelts": [
+        6
+      ]
+    }
+  ],
+  "machineBoxes": {
+    "1": [
+      {
+        "fluid": "petroleum-gas",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            2
+          ],
+          [
+            -1,
+            2
+          ]
+        ]
+      }
+    ]
+  },
+  "machineFluids": {
+    "1": [
+      "petroleum-gas"
+    ]
+  },
+  "fluidOf": {
+    "2": "petroleum-gas"
+  },
+  "fluidComponents": [
+    {
+      "id": 1,
+      "fluid": "petroleum-gas",
+      "entities": [
+        1,
+        2
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 0,
+          "fluid": "petroleum-gas",
+          "flow": "input"
+        }
+      ]
+    }
+  ],
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "automation",
+    "steel-processing",
+    "logistic-science-pack",
+    "automation-2",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "plastics",
+    "logistics",
+    "logistics-2",
+    "fast-inserter",
+    "electric-energy-distribution-1",
+    "advanced-circuit",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "electric-energy-distribution-2",
+    "circuit-network"
+  ],
+  "requirements": [
+    {
+      "recipe": "plastic-bar",
+      "technology": "plastics"
+    },
+    {
+      "recipe": "chemical-plant",
+      "technology": "oil-processing"
+    },
+    {
+      "recipe": "pipe",
+      "technology": "steam-power"
+    },
+    {
+      "recipe": "fast-transport-belt",
+      "technology": "logistics-2"
+    },
+    {
+      "recipe": "fast-inserter",
+      "technology": "fast-inserter"
+    },
+    {
+      "recipe": "substation",
+      "technology": "electric-energy-distribution-2"
+    },
+    {
+      "recipe": "display-panel",
+      "technology": "circuit-network"
+    }
+  ],
+  "sizing": {
+    "targets": {
+      "plastic-bar": 60
+    },
+    "requiredCraftsPerMinute": {
+      "plastic-bar": 30
+    },
+    "craftsPerMinuteEach": {
+      "plastic-bar": 60
+    },
+    "machinesNeeded": {
+      "plastic-bar": 1
+    },
+    "perMinute": {
+      "coal": 30,
+      "petroleum-gas": 600
+    },
+    "maxPlasticPerMinute": 120,
+    "onSite": {
+      "craftsPerMinute": {
+        "simple-coal-liquefaction": 24,
+        "heavy-oil-cracking": 30,
+        "light-oil-cracking": 30
+      },
+      "machines": {
+        "oil-refinery": 2,
+        "heavy-oil-cracking": 1,
+        "light-oil-cracking": 1
+      },
+      "perMinute": {
+        "coal": 270,
+        "calcite": 48,
+        "sulfuric-acid": 600,
+        "water": 1800
+      }
+    }
+  },
+  "status": {
+    "static": "static-audit.json",
+    "native": "native-report.json; qualified only when that report passed for candidateSha256"
+  },
+  "fluidEdges": [
+    [
+      1,
+      2
+    ]
+  ],
+  "unusedPorts": [
+    {
+      "entity": 1,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        }
+      ]
+    }
+  ],
+  "measured": {
+    "phases": {
+      "throttled": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "plastic-bar": 59.8
+          },
+          "inputsPerMinute": {
+            "coal": 29.9,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 29.9,
+            "petroleum-gas": 598.7
+          }
+        },
+        "steady": {
+          "measuredMinutes": 30,
+          "outputsPerMinute": {
+            "plastic-bar": 60
+          },
+          "inputsPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "petroleum-gas": 0
+          },
+          "consumedPerMinute": {
+            "coal": 0.5,
+            "petroleum-gas": 9.3
+          }
+        },
+        "release": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 60
+          },
+          "inputsPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 30.9,
+            "petroleum-gas": 617.3
+          },
+          "recoverySeconds": {
+            "plastic-bar": 60
+          }
+        }
+      },
+      "coal withheld": {
+        "coal withheld": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "coal": 0,
+            "petroleum-gas": 14
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "petroleum-gas": 0
+          }
+        },
+        "coal supplied": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 60
+          },
+          "inputsPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 29.9,
+            "petroleum-gas": 598.7
+          },
+          "recoverySeconds": {
+            "plastic-bar": 60
+          }
+        }
+      },
+      "gas withheld": {
+        "petroleum-gas withheld": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "coal": 1,
+            "petroleum-gas": 0
+          },
+          "consumedPerMinute": {
+            "coal": 0,
+            "petroleum-gas": 0
+          }
+        },
+        "petroleum-gas supplied": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 60
+          },
+          "inputsPerMinute": {
+            "coal": 30,
+            "petroleum-gas": 600
+          },
+          "consumedPerMinute": {
+            "coal": 29.9,
+            "petroleum-gas": 598.7
+          },
+          "recoverySeconds": {
+            "plastic-bar": 60
+          }
+        }
+      }
+    },
+    "steady": {
+      "throttled": {
+        "outputsPerMinute": {
+          "plastic-bar": 60
+        },
+        "inputsPerMinute": {
+          "coal": 30,
+          "petroleum-gas": 600
+        }
+      }
+    },
+    "outputsPerMinute": {
+      "plastic-bar": 60
+    },
+    "inputsPerMinute": {
+      "coal": 30,
+      "petroleum-gas": 600
+    }
+  },
+  "outputsPerMinute": {
+    "plastic-bar": 60
+  },
+  "inputsPerMinute": {
+    "coal": 30,
+    "petroleum-gas": 600
+  }
+}
