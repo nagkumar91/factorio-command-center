@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "member": "plastic-v2",
+  "gameVersion": "2.1.25",
+  "provenance": {
+    "method": "Same raw dump as ../prototypes.json; only the recipes and items that file lacks",
+    "rawSha256": "289d0de81102a710f16fc989a5df399facdef91c100901da87e5e69b4d911495",
+    "familyPrototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810"
+  },
+  "recipes": {
+    "advanced-oil-processing": {
+      "type": "recipe",
+      "name": "advanced-oil-processing",
+      "categories": [
+        "oil-processing"
+      ],
+      "enabled": false,
+      "energy_required": 5,
+      "ingredients": [
+        {
+          "type": "fluid",
+          "name": "water",
+          "amount": 50
+        },
+        {
+          "type": "fluid",
+          "name": "crude-oil",
+          "amount": 100
+        }
+      ],
+      "results": [
+        {
+          "type": "fluid",
+          "name": "heavy-oil",
+          "amount": 25
+        },
+        {
+          "type": "fluid",
+          "name": "light-oil",
+          "amount": 45
+        },
+        {
+          "type": "fluid",
+          "name": "petroleum-gas",
+          "amount": 55
+        }
+      ]
+    },
+    "empty-crude-oil-barrel": {
+      "type": "recipe",
+      "name": "empty-crude-oil-barrel",
+      "categories": [
+        "crafting-with-fluid"
+      ],
+      "enabled": false,
+      "energy_required": 0.2,
+      "ingredients": [
+        {
+          "type": "item",
+          "name": "crude-oil-barrel",
+          "amount": 1,
+          "ignored_by_stats": 1
+        }
+      ],
+      "results": [
+        {
+          "type": "fluid",
+          "name": "crude-oil",
+          "amount": 50,
+          "ignored_by_stats": 50
+        },
+        {
+          "type": "item",
+          "name": "barrel",
+          "amount": 1,
+          "ignored_by_stats": 1
+        }
+      ]
+    },
+    "empty-water-barrel": {
+      "type": "recipe",
+      "name": "empty-water-barrel",
+      "categories": [
+        "crafting-with-fluid"
+      ],
+      "enabled": false,
+      "energy_required": 0.2,
+      "ingredients": [
+        {
+          "type": "item",
+          "name": "water-barrel",
+          "amount": 1,
+          "ignored_by_stats": 1
+        }
+      ],
+      "results": [
+        {
+          "type": "fluid",
+          "name": "water",
+          "amount": 50,
+          "ignored_by_stats": 50
+        },
+        {
+          "type": "item",
+          "name": "barrel",
+          "amount": 1,
+          "ignored_by_stats": 1
+        }
+      ]
+    },
+    "passive-provider-chest": {
+      "type": "recipe",
+      "name": "passive-provider-chest",
+      "categories": [
+        "crafting"
+      ],
+      "enabled": false,
+      "ingredients": [
+        {
+          "type": "item",
+          "name": "steel-chest",
+          "amount": 1
+        },
+        {
+          "type": "item",
+          "name": "electronic-circuit",
+          "amount": 3
+        },
+        {
+          "type": "item",
+          "name": "advanced-circuit",
+          "amount": 1
+        }
+      ],
+      "results": [
+        {
+          "type": "item",
+          "name": "passive-provider-chest",
+          "amount": 1
+        }
+      ]
+    }
+  },
+  "entities": {
+    "passive-provider-chest": {
+      "circuit_wire_max_distance": 9,
+      "collision_box": [
+        [
+          -0.35,
+          -0.35
+        ],
+        [
+          0.35,
+          0.35
+        ]
+      ],
+      "name": "passive-provider-chest",
+      "selection_box": [
+        [
+          -0.5,
+          -0.5
+        ],
+        [
+          0.5,
+          0.5
+        ]
+      ],
+      "surface_conditions": [
+        {
+          "property": "gravity",
+          "min": 0.1
+        }
+      ],
+      "type": "logistic-container"
+    }
+  },
+  "items": {
+    "crude-oil-barrel": {
+      "name": "crude-oil-barrel",
+      "stack_size": 10
+    },
+    "water-barrel": {
+      "name": "water-barrel",
+      "stack_size": 10
+    },
+    "barrel": {
+      "name": "barrel",
+      "stack_size": 10
+    }
+  },
+  "fluids": {
+    "crude-oil": {
+      "name": "crude-oil",
+      "default_temperature": 25
+    }
+  }
+}

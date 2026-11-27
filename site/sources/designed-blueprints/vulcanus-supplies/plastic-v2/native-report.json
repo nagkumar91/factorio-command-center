@@ -1,0 +1,4296 @@
+{
+  "schema": 2,
+  "passed": true,
+  "failures": {
+    "throttled": {},
+    "crude-oil-barrel withheld": {},
+    "water-barrel withheld": {}
+  },
+  "blueprintSha256": "453fb60b8c93c0d5b0f53b8fab661b0ccfeb76626f533348d4a6dbbd41ba2eba",
+  "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+  "fluidSlotsSha256": "31e11b1740a63e84996b36575f20c9d9dcccfd26f764a1a7b32a07f783cf5198",
+  "memberPrototypeSha256": "9b2d4427daf1bfb6930aee4d8d0d4e225e529eb79c2cdbdc02ba2929c9dd4d12",
+  "memberFluidSlotsSha256": "ac5766513dadc806557b2bcc454744245a50e3cf051d583fb0affc33bd0c855a",
+  "gameVersion": "2.1.25",
+  "activeMods": {
+    "base": "2.1.25",
+    "elevated-rails": "2.1.25",
+    "quality": "2.1.25",
+    "recycler": "2.1.25",
+    "space-age": "2.1.25"
+  },
+  "nativeControlSha256": "fb18dbe92dba65eab16628fdbf5c25ba4fcfa8591dd4c7382407bea71399795f",
+  "runnerSha256": "aa8f7c9c24e1b5b09c16d7cca3f41ab1bd72b9a091de28766038ef4b18bd2ad6",
+  "scenarioSha256": "a4b4875ed19dabea7feda9393f94847d527169cd94bc8a2f5a266d77275f8481",
+  "nativeCommand": "node scripts/vulcanus-supplies/validate.mjs plastic-v2",
+  "protocol": {
+    "seed": 21025,
+    "externalPowerWatts": 10000000,
+    "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+    "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+    "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+    "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+  },
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "automation",
+    "steel-processing",
+    "logistic-science-pack",
+    "automation-2",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "plastics",
+    "advanced-circuit",
+    "modules",
+    "speed-module",
+    "productivity-module",
+    "advanced-material-processing",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "advanced-material-processing-2",
+    "logistics",
+    "logistics-2",
+    "railway",
+    "production-science-pack",
+    "advanced-oil-processing",
+    "lubricant",
+    "electric-engine",
+    "automation-3",
+    "fast-inserter",
+    "battery",
+    "robotics",
+    "construction-robotics",
+    "electric-energy-distribution-1",
+    "electric-energy-distribution-2",
+    "circuit-network"
+  ],
+  "footprint": {
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 10,
+      "bottom": 18
+    },
+    "width": 10,
+    "height": 18,
+    "area": 180,
+    "includes": "all entities, panels, substations, belts, pipes, underground pipes and the empty-barrel chest; external supply excluded",
+    "counts": {
+      "assembling-machine-3": 2,
+      "chemical-plant": 3,
+      "display-panel": 6,
+      "fast-inserter": 5,
+      "fast-transport-belt": 22,
+      "long-handed-inserter": 1,
+      "oil-refinery": 1,
+      "passive-provider-chest": 1,
+      "pipe": 20,
+      "pipe-to-ground": 10,
+      "substation": 2
+    },
+    "entities": 73
+  },
+  "runs": {
+    "throttled": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000,
+            "gravity": 40
+          }
+        },
+        {
+          "name": "every ghost lies where the placement under test expects it",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "display panel visible #68",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #69",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #70",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #71",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #72",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #73",
+          "passed": true
+        },
+        {
+          "name": "every entity imported at its exact position, direction, mirroring and type",
+          "passed": true,
+          "detail": {
+            "entities": 73
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 73
+          }
+        },
+        {
+          "name": "recipe preserved #1 advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #1",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #1",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #2 heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #2",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #2",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #3 plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #3",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #3",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #4 empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #4",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #4",
+          "passed": true,
+          "detail": {
+            "speed": 1.25
+          }
+        },
+        {
+          "name": "recipe preserved #5 light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #5",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #5",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #6 empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #6",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #6",
+          "passed": true,
+          "detail": {
+            "speed": 1.25
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> plastic plant (coal)",
+          "passed": true
+        },
+        {
+          "name": "plastic plant -> exit belt (plastic bars)",
+          "passed": true
+        },
+        {
+          "name": "crude barrel belt -> crude barrel assembler (long-handed, over the free tile (3,9))",
+          "passed": true
+        },
+        {
+          "name": "water barrel belt -> water barrel assembler",
+          "passed": true
+        },
+        {
+          "name": "water barrel assembler -> empty barrel chest",
+          "passed": true
+        },
+        {
+          "name": "crude barrel assembler -> empty barrel chest",
+          "passed": true
+        },
+        {
+          "name": "every machine fluid box has exactly the connection tiles of the static model",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "clear approach IN-1",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-2",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-3",
+          "passed": true
+        },
+        {
+          "name": "clear approach OUT-1",
+          "passed": true
+        },
+        {
+          "name": "all machines and arms have actual native power connections on the one network of the power connection",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "the substations form one copper network",
+          "passed": true
+        },
+        {
+          "name": "the pipes, undergrounds and machine boxes form exactly the static fluid networks, one fluid each",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "every outside fixture pipe joins the segment of its entrance or exit pipe",
+          "passed": true
+        },
+        {
+          "name": "every fluid connection the game made is one of the static model, and none is missing",
+          "passed": true,
+          "detail": {
+            "connections": 40,
+            "missing": {},
+            "extra": {}
+          }
+        },
+        {
+          "name": "only the entrance and exit pipes connect to anything outside the blueprint",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "no pipe opening faces a machine port the recipe does not use",
+          "passed": true,
+          "detail": {
+            "unusedPortTiles": 4,
+            "facing": {}
+          }
+        },
+        {
+          "name": "warm-up: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "warm-up: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: OUT-1 at least 109.25 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 115.2,
+            "floor": 109.25
+          }
+        },
+        {
+          "name": "steady: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "steady: every machine crafted",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: OUT-1 at most 0 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 0,
+            "ceiling": 0
+          }
+        },
+        {
+          "name": "exit blocked: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no machine crafted in the last 3 minutes",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "exit blocked: no machine working at the end",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: OUT-1 at least 109.25 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 120,
+            "floor": 109.25
+          }
+        },
+        {
+          "name": "release: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "release: OUT-1 back to 95% of 115 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "recycler": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "453fb60b8c93c0d5b0f53b8fab661b0ccfeb76626f533348d4a6dbbd41ba2eba",
+      "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+      "configurationSha256": "d4add142fb3e40ecf28de02230a640c22a9d84db0f05b2de63133f4c01e1717d",
+      "nativeControlSha256": "fb18dbe92dba65eab16628fdbf5c25ba4fcfa8591dd4c7382407bea71399795f",
+      "actualTicks": 180000,
+      "scenario": {
+        "name": "throttled",
+        "description": "every entrance offered exactly the figure on its panel: warm-up, steady, plastic exit blocked, released"
+      },
+      "protocol": {
+        "seed": 21025,
+        "externalPowerWatts": 10000000,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+        "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+      },
+      "phases": [
+        {
+          "name": "warm-up",
+          "minutes": 15,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 15,
+          "feed": {
+            "IN-1": 23.6,
+            "IN-2": 31.3,
+            "IN-3": 58
+          },
+          "draw": {
+            "OUT-1": "all",
+            "BUF-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 23.533333333333335,
+              "measured": 23.533333333333335
+            },
+            "IN-2": {
+              "phase": 31.266666666666666,
+              "measured": 31.266666666666666
+            },
+            "IN-3": {
+              "phase": 57.93333333333333,
+              "measured": 57.93333333333333
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 112.66666666666667,
+              "measured": 112.66666666666667
+            },
+            "BUF-1": {
+              "phase": 54.666666666666664,
+              "measured": 54.666666666666664
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0,
+            "IN-3": 56.46666666666667
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 52,
+                "OUT-1": 76
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 118
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 114
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "refinery",
+              "recipe": "advanced-oil-processing",
+              "products": 175,
+              "productsPerMinute": 11.666666666666666,
+              "productsInLastMinutes": 175,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 22,
+                "working": 878
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "heavy-cracking",
+              "recipe": "heavy-oil-cracking",
+              "products": 109,
+              "productsPerMinute": 7.266666666666667,
+              "productsInLastMinutes": 109,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 679,
+                "working": 221
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 3,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 846,
+              "productsPerMinute": 56.4,
+              "productsInLastMinutes": 846,
+              "statusSamples": {
+                "item_ingredient_shortage": 3,
+                "fluid_ingredient_shortage": 50,
+                "working": 847
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 4,
+              "role": "crude-barrels",
+              "recipe": "empty-crude-oil-barrel",
+              "products": 352,
+              "productsPerMinute": 23.466666666666665,
+              "productsInLastMinutes": 352,
+              "statusSamples": {
+                "item_ingredient_shortage": 846,
+                "working": 54
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            },
+            {
+              "entity": 5,
+              "role": "light-cracking",
+              "recipe": "light-oil-cracking",
+              "products": 367,
+              "productsPerMinute": 24.466666666666665,
+              "productsInLastMinutes": 367,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 161,
+                "working": 739
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 6,
+              "role": "water-barrels",
+              "recipe": "empty-water-barrel",
+              "products": 469,
+              "productsPerMinute": 31.266666666666666,
+              "productsInLastMinutes": 469,
+              "statusSamples": {
+                "item_ingredient_shortage": 832,
+                "working": 68
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "steady",
+          "minutes": 15,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 15,
+          "feed": {
+            "IN-1": 23.6,
+            "IN-2": 31.3,
+            "IN-3": 58
+          },
+          "draw": {
+            "OUT-1": "all",
+            "BUF-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 23.6,
+              "measured": 23.6
+            },
+            "IN-2": {
+              "phase": 31.333333333333332,
+              "measured": 31.333333333333332
+            },
+            "IN-3": {
+              "phase": 58,
+              "measured": 58
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 115.2,
+              "measured": 115.2
+            },
+            "BUF-1": {
+              "phase": 54.93333333333333,
+              "measured": 54.93333333333333
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0,
+            "IN-3": 57.6
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 117
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "refinery",
+              "recipe": "advanced-oil-processing",
+              "products": 177,
+              "productsPerMinute": 11.8,
+              "productsInLastMinutes": 177,
+              "statusSamples": {
+                "working": 885,
+                "fluid_ingredient_shortage": 15
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "heavy-cracking",
+              "recipe": "heavy-oil-cracking",
+              "products": 111,
+              "productsPerMinute": 7.4,
+              "productsInLastMinutes": 111,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 677,
+                "working": 223
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 3,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 864,
+              "productsPerMinute": 57.6,
+              "productsInLastMinutes": 864,
+              "statusSamples": {
+                "working": 864,
+                "fluid_ingredient_shortage": 36
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 4,
+              "role": "crude-barrels",
+              "recipe": "empty-crude-oil-barrel",
+              "products": 354,
+              "productsPerMinute": 23.6,
+              "productsInLastMinutes": 354,
+              "statusSamples": {
+                "item_ingredient_shortage": 846,
+                "working": 54
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            },
+            {
+              "entity": 5,
+              "role": "light-cracking",
+              "recipe": "light-oil-cracking",
+              "products": 377,
+              "productsPerMinute": 25.133333333333333,
+              "productsInLastMinutes": 377,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 146,
+                "working": 754
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 6,
+              "role": "water-barrels",
+              "recipe": "empty-water-barrel",
+              "products": 469,
+              "productsPerMinute": 31.266666666666666,
+              "productsInLastMinutes": 469,
+              "statusSamples": {
+                "item_ingredient_shortage": 827,
+                "working": 73
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "exit blocked",
+          "minutes": 10,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 5,
+          "feed": {
+            "IN-1": 23.6,
+            "IN-2": 31.3,
+            "IN-3": 58
+          },
+          "draw": {
+            "OUT-1": "none",
+            "BUF-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 12.2,
+              "measured": 0.8
+            },
+            "IN-2": {
+              "phase": 9.7,
+              "measured": 0
+            },
+            "IN-3": {
+              "phase": 4.3,
+              "measured": 0
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 0,
+              "measured": 0
+            },
+            "BUF-1": {
+              "phase": 12.5,
+              "measured": 0
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0,
+            "IN-3": 0.8
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 43
+              },
+              "drawn": {
+                "BUF-1": 55
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 56
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 14
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 4,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 4,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "refinery",
+              "recipe": "advanced-oil-processing",
+              "products": 17,
+              "productsPerMinute": 1.7,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "working": 87,
+                "fluid_ingredient_shortage": 2,
+                "full_output": 511
+              },
+              "statusAtEnd": "full_output"
+            },
+            {
+              "entity": 2,
+              "role": "heavy-cracking",
+              "recipe": "heavy-oil-cracking",
+              "products": 10,
+              "productsPerMinute": 1,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 580,
+                "working": 20
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 3,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 9,
+              "productsPerMinute": 0.9,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "working": 8,
+                "full_output": 592
+              },
+              "statusAtEnd": "full_output"
+            },
+            {
+              "entity": 4,
+              "role": "crude-barrels",
+              "recipe": "empty-crude-oil-barrel",
+              "products": 51,
+              "productsPerMinute": 5.1,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "item_ingredient_shortage": 120,
+                "working": 7,
+                "full_output": 473
+              },
+              "statusAtEnd": "full_output"
+            },
+            {
+              "entity": 5,
+              "role": "light-cracking",
+              "recipe": "light-oil-cracking",
+              "products": 39,
+              "productsPerMinute": 3.9,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "working": 77,
+                "fluid_ingredient_shortage": 11,
+                "full_output": 512
+              },
+              "statusAtEnd": "full_output"
+            },
+            {
+              "entity": 6,
+              "role": "water-barrels",
+              "recipe": "empty-water-barrel",
+              "products": 74,
+              "productsPerMinute": 7.4,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "item_ingredient_shortage": 129,
+                "working": 11,
+                "full_output": 460
+              },
+              "statusAtEnd": "full_output"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "tailFed_IN-1": 0,
+          "tailFed_IN-2": 0,
+          "tailFed_IN-3": 0
+        },
+        {
+          "name": "release",
+          "minutes": 10,
+          "measuredFromMinute": 3,
+          "measuredMinutes": 7,
+          "feed": {
+            "IN-1": 23.6,
+            "IN-2": 31.3,
+            "IN-3": 58
+          },
+          "draw": {
+            "OUT-1": "all",
+            "BUF-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 23.6,
+              "measured": 24
+            },
+            "IN-2": {
+              "phase": 31.3,
+              "measured": 31.857142857142858
+            },
+            "IN-3": {
+              "phase": 58.5,
+              "measured": 58
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 121.2,
+              "measured": 120
+            },
+            "BUF-1": {
+              "phase": 54.9,
+              "measured": 55.857142857142854
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0,
+            "IN-3": 59.8
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 20,
+                "IN-2": 26,
+                "IN-3": 61
+              },
+              "drawn": {
+                "BUF-1": 46,
+                "OUT-1": 132
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 33,
+                "IN-3": 60
+              },
+              "drawn": {
+                "BUF-1": 57,
+                "OUT-1": 120
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 120
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 120
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 120
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 33,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 57,
+                "OUT-1": 120
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 120
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 120
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 120
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 120
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "refinery",
+              "recipe": "advanced-oil-processing",
+              "products": 118,
+              "productsPerMinute": 11.8,
+              "productsInLastMinutes": 118,
+              "statusSamples": {
+                "full_output": 10,
+                "working": 590
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "heavy-cracking",
+              "recipe": "heavy-oil-cracking",
+              "products": 74,
+              "productsPerMinute": 7.4,
+              "productsInLastMinutes": 74,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 395,
+                "working": 205
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 3,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 597,
+              "productsPerMinute": 59.7,
+              "productsInLastMinutes": 597,
+              "statusSamples": {
+                "full_output": 2,
+                "working": 598
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 4,
+              "role": "crude-barrels",
+              "recipe": "empty-crude-oil-barrel",
+              "products": 236,
+              "productsPerMinute": 23.6,
+              "productsInLastMinutes": 236,
+              "statusSamples": {
+                "full_output": 365,
+                "item_ingredient_shortage": 235
+              },
+              "statusAtEnd": "full_output"
+            },
+            {
+              "entity": 5,
+              "role": "light-cracking",
+              "recipe": "light-oil-cracking",
+              "products": 250,
+              "productsPerMinute": 25,
+              "productsInLastMinutes": 250,
+              "statusSamples": {
+                "full_output": 9,
+                "working": 502,
+                "fluid_ingredient_shortage": 89
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 6,
+              "role": "water-barrels",
+              "recipe": "empty-water-barrel",
+              "products": 313,
+              "productsPerMinute": 31.3,
+              "productsInLastMinutes": 313,
+              "statusSamples": {
+                "full_output": 495,
+                "item_ingredient_shortage": 93,
+                "working": 12
+              },
+              "statusAtEnd": "full_output"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 115,
+              "share": 0.95,
+              "secondsToReach": 60
+            }
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "coal belt -> plastic plant (coal)",
+          "inserter": 45,
+          "pickup": {
+            "y": -7.5,
+            "x": 1.5
+          },
+          "drop": {
+            "y": -5.30078125,
+            "x": 1.5
+          }
+        },
+        {
+          "label": "plastic plant -> exit belt (plastic bars)",
+          "inserter": 48,
+          "pickup": {
+            "y": -5.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": -7.69921875,
+            "x": 2.5
+          }
+        },
+        {
+          "label": "crude barrel belt -> crude barrel assembler (long-handed, over the free tile (3,9))",
+          "inserter": 61,
+          "pickup": {
+            "y": 8.5,
+            "x": 3.5
+          },
+          "drop": {
+            "y": 4.30078125,
+            "x": 3.5
+          }
+        },
+        {
+          "label": "water barrel belt -> water barrel assembler",
+          "inserter": 62,
+          "pickup": {
+            "y": 7.5,
+            "x": -2.5
+          },
+          "drop": {
+            "y": 5.30078125,
+            "x": -2.5
+          }
+        },
+        {
+          "label": "water barrel assembler -> empty barrel chest",
+          "inserter": 64,
+          "pickup": {
+            "y": 5.5,
+            "x": -1.5
+          },
+          "drop": {
+            "y": 5.5,
+            "x": 0.69921875
+          }
+        },
+        {
+          "label": "crude barrel assembler -> empty barrel chest",
+          "inserter": 65,
+          "pickup": {
+            "y": 5.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": 5.5,
+            "x": 0.30078125
+          }
+        }
+      ],
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000,
+        "gravity": 40
+      },
+      "blueprintEntityCount": 73,
+      "fixtureEntityCount": 2,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 10,
+          "bottom": 18
+        },
+        "width": 10,
+        "height": 18,
+        "area": 180,
+        "includes": "all entities, panels, substations, belts, pipes, underground pipes and the empty-barrel chest; external supply excluded",
+        "counts": {
+          "assembling-machine-3": 2,
+          "chemical-plant": 3,
+          "display-panel": 6,
+          "fast-inserter": 5,
+          "fast-transport-belt": 22,
+          "long-handed-inserter": 1,
+          "oil-refinery": 1,
+          "passive-provider-chest": 1,
+          "pipe": 20,
+          "pipe-to-ground": 10,
+          "substation": 2
+        },
+        "entities": 73
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "automation",
+        "steel-processing",
+        "logistic-science-pack",
+        "automation-2",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "plastics",
+        "advanced-circuit",
+        "modules",
+        "speed-module",
+        "productivity-module",
+        "advanced-material-processing",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-material-processing-2",
+        "logistics",
+        "logistics-2",
+        "railway",
+        "production-science-pack",
+        "advanced-oil-processing",
+        "lubricant",
+        "electric-engine",
+        "automation-3",
+        "fast-inserter",
+        "battery",
+        "robotics",
+        "construction-robotics",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 5.669,
+        "benchmark": 20.5
+      },
+      "activeWallSeconds": 16.181,
+      "updatesPerSecond": 11124
+    },
+    "crude-oil-barrel withheld": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000,
+            "gravity": 40
+          }
+        },
+        {
+          "name": "every ghost lies where the placement under test expects it",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "display panel visible #68",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #69",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #70",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #71",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #72",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #73",
+          "passed": true
+        },
+        {
+          "name": "every entity imported at its exact position, direction, mirroring and type",
+          "passed": true,
+          "detail": {
+            "entities": 73
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 73
+          }
+        },
+        {
+          "name": "recipe preserved #1 advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #1",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #1",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #2 heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #2",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #2",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #3 plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #3",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #3",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #4 empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #4",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #4",
+          "passed": true,
+          "detail": {
+            "speed": 1.25
+          }
+        },
+        {
+          "name": "recipe preserved #5 light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #5",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #5",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #6 empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #6",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #6",
+          "passed": true,
+          "detail": {
+            "speed": 1.25
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> plastic plant (coal)",
+          "passed": true
+        },
+        {
+          "name": "plastic plant -> exit belt (plastic bars)",
+          "passed": true
+        },
+        {
+          "name": "crude barrel belt -> crude barrel assembler (long-handed, over the free tile (3,9))",
+          "passed": true
+        },
+        {
+          "name": "water barrel belt -> water barrel assembler",
+          "passed": true
+        },
+        {
+          "name": "water barrel assembler -> empty barrel chest",
+          "passed": true
+        },
+        {
+          "name": "crude barrel assembler -> empty barrel chest",
+          "passed": true
+        },
+        {
+          "name": "every machine fluid box has exactly the connection tiles of the static model",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "clear approach IN-1",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-2",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-3",
+          "passed": true
+        },
+        {
+          "name": "clear approach OUT-1",
+          "passed": true
+        },
+        {
+          "name": "all machines and arms have actual native power connections on the one network of the power connection",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "the substations form one copper network",
+          "passed": true
+        },
+        {
+          "name": "the pipes, undergrounds and machine boxes form exactly the static fluid networks, one fluid each",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "every outside fixture pipe joins the segment of its entrance or exit pipe",
+          "passed": true
+        },
+        {
+          "name": "every fluid connection the game made is one of the static model, and none is missing",
+          "passed": true,
+          "detail": {
+            "connections": 40,
+            "missing": {},
+            "extra": {}
+          }
+        },
+        {
+          "name": "only the entrance and exit pipes connect to anything outside the blueprint",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "no pipe opening faces a machine port the recipe does not use",
+          "passed": true,
+          "detail": {
+            "unusedPortTiles": 4,
+            "facing": {}
+          }
+        },
+        {
+          "name": "crude-oil-barrel withheld: OUT-1 at most 0 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 0,
+            "ceiling": 0
+          }
+        },
+        {
+          "name": "crude-oil-barrel withheld: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "crude-oil-barrel withheld: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "crude-oil-barrel supplied: OUT-1 at least 109.25 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 114.9,
+            "floor": 109.25
+          }
+        },
+        {
+          "name": "crude-oil-barrel supplied: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "crude-oil-barrel supplied: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "crude-oil-barrel supplied: OUT-1 back to 95% of 115 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 73
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "recycler": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "453fb60b8c93c0d5b0f53b8fab661b0ccfeb76626f533348d4a6dbbd41ba2eba",
+      "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+      "configurationSha256": "6b07ee4c568b2d766ebf1d1ea611627746cc65151a6155b24d8f867e57960505",
+      "nativeControlSha256": "fb18dbe92dba65eab16628fdbf5c25ba4fcfa8591dd4c7382407bea71399795f",
+      "actualTicks": 126000,
+      "scenario": {
+        "name": "crude-oil-barrel withheld",
+        "description": "cold start; crude-oil-barrel withheld for 20 minutes (every other entrance at its panel figure), then supplied"
+      },
+      "protocol": {
+        "seed": 21025,
+        "externalPowerWatts": 10000000,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+        "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+      },
+      "phases": [
+        {
+          "name": "crude-oil-barrel withheld",
+          "minutes": 20,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 20,
+          "feed": {
+            "IN-1": "none",
+            "IN-2": 31.3,
+            "IN-3": 58
+          },
+          "draw": {
+            "OUT-1": "all",
+            "BUF-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 0,
+              "measured": 0
+            },
+            "IN-2": {
+              "phase": 2.9,
+              "measured": 2.9
+            },
+            "IN-3": {
+              "phase": 3.3,
+              "measured": 3.3
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 0,
+              "measured": 0
+            },
+            "BUF-1": {
+              "phase": 1.7,
+              "measured": 1.7
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0,
+            "IN-3": 0
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-2": 31,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 30,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 27,
+                "IN-3": 9
+              },
+              "drawn": {
+                "BUF-1": 4,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-2": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "refinery",
+              "recipe": "advanced-oil-processing",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 1200
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 2,
+              "role": "heavy-cracking",
+              "recipe": "heavy-oil-cracking",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 1200
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 3,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "item_ingredient_shortage": 3,
+                "fluid_ingredient_shortage": 1197
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 4,
+              "role": "crude-barrels",
+              "recipe": "empty-crude-oil-barrel",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "item_ingredient_shortage": 1200
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            },
+            {
+              "entity": 5,
+              "role": "light-cracking",
+              "recipe": "light-oil-cracking",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 1200
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 6,
+              "role": "water-barrels",
+              "recipe": "empty-water-barrel",
+              "products": 34,
+              "productsPerMinute": 1.7,
+              "productsInLastMinutes": 34,
+              "statusSamples": {
+                "item_ingredient_shortage": 60,
+                "working": 6,
+                "full_output": 1134
+              },
+              "statusAtEnd": "full_output"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "crude-oil-barrel supplied",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": 23.6,
+            "IN-2": 31.3,
+            "IN-3": 58
+          },
+          "draw": {
+            "OUT-1": "all",
+            "BUF-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 23.533333333333335,
+              "measured": 23.6
+            },
+            "IN-2": {
+              "phase": 30.933333333333334,
+              "measured": 31.3
+            },
+            "IN-3": {
+              "phase": 56.6,
+              "measured": 57.5
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 112.93333333333334,
+              "measured": 114.9
+            },
+            "BUF-1": {
+              "phase": 54.4,
+              "measured": 54.9
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0,
+            "IN-3": 56.6
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 26,
+                "IN-3": 44
+              },
+              "drawn": {
+                "BUF-1": 48,
+                "OUT-1": 84
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 30,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 30,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 54,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 30,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 53,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 115
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 114
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "refinery",
+              "recipe": "advanced-oil-processing",
+              "products": 175,
+              "productsPerMinute": 11.666666666666666,
+              "productsInLastMinutes": 175,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 22,
+                "working": 878
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "heavy-cracking",
+              "recipe": "heavy-oil-cracking",
+              "products": 109,
+              "productsPerMinute": 7.266666666666667,
+              "productsInLastMinutes": 109,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 679,
+                "working": 221
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 3,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 848,
+              "productsPerMinute": 56.53333333333333,
+              "productsInLastMinutes": 848,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 51,
+                "working": 849
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 4,
+              "role": "crude-barrels",
+              "recipe": "empty-crude-oil-barrel",
+              "products": 352,
+              "productsPerMinute": 23.466666666666665,
+              "productsInLastMinutes": 352,
+              "statusSamples": {
+                "item_ingredient_shortage": 846,
+                "working": 54
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            },
+            {
+              "entity": 5,
+              "role": "light-cracking",
+              "recipe": "light-oil-cracking",
+              "products": 369,
+              "productsPerMinute": 24.6,
+              "productsInLastMinutes": 369,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 158,
+                "working": 742
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 6,
+              "role": "water-barrels",
+              "recipe": "empty-water-barrel",
+              "products": 464,
+              "productsPerMinute": 30.933333333333334,
+              "productsInLastMinutes": 464,
+              "statusSamples": {
+                "full_output": 721,
+                "working": 68,
+                "item_ingredient_shortage": 111
+              },
+              "statusAtEnd": "full_output"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 115,
+              "share": 0.95,
+              "secondsToReach": 73
+            }
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "coal belt -> plastic plant (coal)",
+          "inserter": 45,
+          "pickup": {
+            "y": -7.5,
+            "x": 1.5
+          },
+          "drop": {
+            "y": -5.30078125,
+            "x": 1.5
+          }
+        },
+        {
+          "label": "plastic plant -> exit belt (plastic bars)",
+          "inserter": 48,
+          "pickup": {
+            "y": -5.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": -7.69921875,
+            "x": 2.5
+          }
+        },
+        {
+          "label": "crude barrel belt -> crude barrel assembler (long-handed, over the free tile (3,9))",
+          "inserter": 61,
+          "pickup": {
+            "y": 8.5,
+            "x": 3.5
+          },
+          "drop": {
+            "y": 4.30078125,
+            "x": 3.5
+          }
+        },
+        {
+          "label": "water barrel belt -> water barrel assembler",
+          "inserter": 62,
+          "pickup": {
+            "y": 7.5,
+            "x": -2.5
+          },
+          "drop": {
+            "y": 5.30078125,
+            "x": -2.5
+          }
+        },
+        {
+          "label": "water barrel assembler -> empty barrel chest",
+          "inserter": 64,
+          "pickup": {
+            "y": 5.5,
+            "x": -1.5
+          },
+          "drop": {
+            "y": 5.5,
+            "x": 0.69921875
+          }
+        },
+        {
+          "label": "crude barrel assembler -> empty barrel chest",
+          "inserter": 65,
+          "pickup": {
+            "y": 5.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": 5.5,
+            "x": 0.30078125
+          }
+        }
+      ],
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000,
+        "gravity": 40
+      },
+      "blueprintEntityCount": 73,
+      "fixtureEntityCount": 2,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 10,
+          "bottom": 18
+        },
+        "width": 10,
+        "height": 18,
+        "area": 180,
+        "includes": "all entities, panels, substations, belts, pipes, underground pipes and the empty-barrel chest; external supply excluded",
+        "counts": {
+          "assembling-machine-3": 2,
+          "chemical-plant": 3,
+          "display-panel": 6,
+          "fast-inserter": 5,
+          "fast-transport-belt": 22,
+          "long-handed-inserter": 1,
+          "oil-refinery": 1,
+          "passive-provider-chest": 1,
+          "pipe": 20,
+          "pipe-to-ground": 10,
+          "substation": 2
+        },
+        "entities": 73
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "automation",
+        "steel-processing",
+        "logistic-science-pack",
+        "automation-2",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "plastics",
+        "advanced-circuit",
+        "modules",
+        "speed-module",
+        "productivity-module",
+        "advanced-material-processing",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-material-processing-2",
+        "logistics",
+        "logistics-2",
+        "railway",
+        "production-science-pack",
+        "advanced-oil-processing",
+        "lubricant",
+        "electric-engine",
+        "automation-3",
+        "fast-inserter",
+        "battery",
+        "robotics",
+        "construction-robotics",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 5.01,
+        "benchmark": 17.258
+      },
+      "activeWallSeconds": 13.081,
+      "updatesPerSecond": 9632
+    },
+    "water-barrel withheld": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000,
+            "gravity": 40
+          }
+        },
+        {
+          "name": "every ghost lies where the placement under test expects it",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "display panel visible #68",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #69",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #70",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #71",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #72",
+          "passed": true
+        },
+        {
+          "name": "display panel visible #73",
+          "passed": true
+        },
+        {
+          "name": "every entity imported at its exact position, direction, mirroring and type",
+          "passed": true,
+          "detail": {
+            "entities": 73
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 73
+          }
+        },
+        {
+          "name": "recipe preserved #1 advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin advanced-oil-processing",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #1",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #1",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #2 heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin heavy-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #2",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #2",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #3 plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin plastic-bar",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #3",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #3",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #4 empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin empty-crude-oil-barrel",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #4",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #4",
+          "passed": true,
+          "detail": {
+            "speed": 1.25
+          }
+        },
+        {
+          "name": "recipe preserved #5 light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin light-oil-cracking",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #5",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #5",
+          "passed": true,
+          "detail": {
+            "speed": 1
+          }
+        },
+        {
+          "name": "recipe preserved #6 empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin empty-water-barrel",
+          "passed": true
+        },
+        {
+          "name": "cold machine and no modules #6",
+          "passed": true
+        },
+        {
+          "name": "crafting speed matches the pin #6",
+          "passed": true,
+          "detail": {
+            "speed": 1.25
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "coal belt -> plastic plant (coal)",
+          "passed": true
+        },
+        {
+          "name": "plastic plant -> exit belt (plastic bars)",
+          "passed": true
+        },
+        {
+          "name": "crude barrel belt -> crude barrel assembler (long-handed, over the free tile (3,9))",
+          "passed": true
+        },
+        {
+          "name": "water barrel belt -> water barrel assembler",
+          "passed": true
+        },
+        {
+          "name": "water barrel assembler -> empty barrel chest",
+          "passed": true
+        },
+        {
+          "name": "crude barrel assembler -> empty barrel chest",
+          "passed": true
+        },
+        {
+          "name": "every machine fluid box has exactly the connection tiles of the static model",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "clear approach IN-1",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-2",
+          "passed": true
+        },
+        {
+          "name": "clear approach IN-3",
+          "passed": true
+        },
+        {
+          "name": "clear approach OUT-1",
+          "passed": true
+        },
+        {
+          "name": "all machines and arms have actual native power connections on the one network of the power connection",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "the substations form one copper network",
+          "passed": true
+        },
+        {
+          "name": "the pipes, undergrounds and machine boxes form exactly the static fluid networks, one fluid each",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "every outside fixture pipe joins the segment of its entrance or exit pipe",
+          "passed": true
+        },
+        {
+          "name": "every fluid connection the game made is one of the static model, and none is missing",
+          "passed": true,
+          "detail": {
+            "connections": 40,
+            "missing": {},
+            "extra": {}
+          }
+        },
+        {
+          "name": "only the entrance and exit pipes connect to anything outside the blueprint",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "no pipe opening faces a machine port the recipe does not use",
+          "passed": true,
+          "detail": {
+            "unusedPortTiles": 4,
+            "facing": {}
+          }
+        },
+        {
+          "name": "water-barrel withheld: OUT-1 at most 0 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 0,
+            "ceiling": 0
+          }
+        },
+        {
+          "name": "water-barrel withheld: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "water-barrel withheld: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "water-barrel supplied: OUT-1 at least 109.25 per minute",
+          "passed": true,
+          "detail": {
+            "measured": 115.4,
+            "floor": 109.25
+          }
+        },
+        {
+          "name": "water-barrel supplied: no pipe, underground or machine ever held a fluid other than its network's",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "water-barrel supplied: no exit ever held anything but its own product",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "name": "water-barrel supplied: OUT-1 back to 95% of 115 within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 96
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "recycler": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "453fb60b8c93c0d5b0f53b8fab661b0ccfeb76626f533348d4a6dbbd41ba2eba",
+      "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+      "configurationSha256": "1f9a0a0b296d9287d924cbcbe338eff03e15948e5246f35dc1c5acbc5ec26e09",
+      "nativeControlSha256": "fb18dbe92dba65eab16628fdbf5c25ba4fcfa8591dd4c7382407bea71399795f",
+      "actualTicks": 126000,
+      "scenario": {
+        "name": "water-barrel withheld",
+        "description": "cold start; water-barrel withheld for 20 minutes (every other entrance at its panel figure), then supplied"
+      },
+      "protocol": {
+        "seed": 21025,
+        "externalPowerWatts": 10000000,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "belts: items put on the entrance belt (generous: both lanes kept full; throttled: a credit of perMinute/3600 per tick, capped at 8, one item per credit on alternating lanes); pipes: fluid put into one outside pipe (generous: kept full; throttled: perMinute/3600 per tick plus the refused carry, capped at one second)",
+        "draw": "belt exits: everything on the exit tile removed every four ticks, or a per-minute credit; pipe exits: fluid removed from one outside pipe every tick (all, or perMinute/3600 plus the unmet carry, capped at one second)"
+      },
+      "phases": [
+        {
+          "name": "water-barrel withheld",
+          "minutes": 20,
+          "measuredFromMinute": 0,
+          "measuredMinutes": 20,
+          "feed": {
+            "IN-1": 23.6,
+            "IN-2": "none",
+            "IN-3": 58
+          },
+          "draw": {
+            "OUT-1": "all",
+            "BUF-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 4.45,
+              "measured": 4.45
+            },
+            "IN-2": {
+              "phase": 0,
+              "measured": 0
+            },
+            "IN-3": {
+              "phase": 3.3,
+              "measured": 3.3
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 0,
+              "measured": 0
+            },
+            "BUF-1": {
+              "phase": 0.85,
+              "measured": 0.85
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0,
+            "IN-3": 0
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 17,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-3": 9
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 19,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 0,
+                "IN-3": 0
+              },
+              "drawn": {
+                "BUF-1": 0,
+                "OUT-1": 0
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "refinery",
+              "recipe": "advanced-oil-processing",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 1200
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 2,
+              "role": "heavy-cracking",
+              "recipe": "heavy-oil-cracking",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 1200
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 3,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "item_ingredient_shortage": 3,
+                "fluid_ingredient_shortage": 1197
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 4,
+              "role": "crude-barrels",
+              "recipe": "empty-crude-oil-barrel",
+              "products": 17,
+              "productsPerMinute": 0.85,
+              "productsInLastMinutes": 17,
+              "statusSamples": {
+                "item_ingredient_shortage": 44,
+                "working": 1,
+                "full_output": 1155
+              },
+              "statusAtEnd": "full_output"
+            },
+            {
+              "entity": 5,
+              "role": "light-cracking",
+              "recipe": "light-oil-cracking",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 1200
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 6,
+              "role": "water-barrels",
+              "recipe": "empty-water-barrel",
+              "products": 0,
+              "productsPerMinute": 0,
+              "productsInLastMinutes": 0,
+              "statusSamples": {
+                "item_ingredient_shortage": 1200
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {}
+        },
+        {
+          "name": "water-barrel supplied",
+          "minutes": 15,
+          "measuredFromMinute": 5,
+          "measuredMinutes": 10,
+          "feed": {
+            "IN-1": 23.6,
+            "IN-2": 31.3,
+            "IN-3": 58
+          },
+          "draw": {
+            "OUT-1": "all",
+            "BUF-1": "all"
+          },
+          "fedPerMinute": {
+            "IN-1": {
+              "phase": 23.933333333333334,
+              "measured": 24
+            },
+            "IN-2": {
+              "phase": 31.266666666666666,
+              "measured": 31.3
+            },
+            "IN-3": {
+              "phase": 56.53333333333333,
+              "measured": 57.7
+            }
+          },
+          "drawnPerMinute": {
+            "OUT-1": {
+              "phase": 112.86666666666666,
+              "measured": 115.4
+            },
+            "BUF-1": {
+              "phase": 55.06666666666667,
+              "measured": 55.3
+            }
+          },
+          "consumedPerMinute": {
+            "IN-1": 0,
+            "IN-2": 0,
+            "IN-3": 56.53333333333333
+          },
+          "perMinute": [
+            {
+              "fed": {
+                "IN-1": 23,
+                "IN-2": 31,
+                "IN-3": 41
+              },
+              "drawn": {
+                "BUF-1": 52,
+                "OUT-1": 78
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 113
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 117
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 56,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 116
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 32,
+                "IN-3": 58
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 114
+              }
+            },
+            {
+              "fed": {
+                "IN-1": 24,
+                "IN-2": 31,
+                "IN-3": 57
+              },
+              "drawn": {
+                "BUF-1": 55,
+                "OUT-1": 115
+              }
+            }
+          ],
+          "machines": [
+            {
+              "entity": 1,
+              "role": "refinery",
+              "recipe": "advanced-oil-processing",
+              "products": 179,
+              "productsPerMinute": 11.933333333333334,
+              "productsInLastMinutes": 179,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 4,
+                "working": 896
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 2,
+              "role": "heavy-cracking",
+              "recipe": "heavy-oil-cracking",
+              "products": 111,
+              "productsPerMinute": 7.4,
+              "productsInLastMinutes": 111,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 678,
+                "working": 222
+              },
+              "statusAtEnd": "fluid_ingredient_shortage"
+            },
+            {
+              "entity": 3,
+              "role": "plastic",
+              "recipe": "plastic-bar",
+              "products": 847,
+              "productsPerMinute": 56.46666666666667,
+              "productsInLastMinutes": 847,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 52,
+                "working": 848
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 4,
+              "role": "crude-barrels",
+              "recipe": "empty-crude-oil-barrel",
+              "products": 358,
+              "productsPerMinute": 23.866666666666667,
+              "productsInLastMinutes": 358,
+              "statusSamples": {
+                "full_output": 541,
+                "item_ingredient_shortage": 359
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            },
+            {
+              "entity": 5,
+              "role": "light-cracking",
+              "recipe": "light-oil-cracking",
+              "products": 359,
+              "productsPerMinute": 23.933333333333334,
+              "productsInLastMinutes": 359,
+              "statusSamples": {
+                "fluid_ingredient_shortage": 177,
+                "working": 723
+              },
+              "statusAtEnd": "working"
+            },
+            {
+              "entity": 6,
+              "role": "water-barrels",
+              "recipe": "empty-water-barrel",
+              "products": 469,
+              "productsPerMinute": 31.266666666666666,
+              "productsInLastMinutes": 469,
+              "statusSamples": {
+                "item_ingredient_shortage": 832,
+                "working": 68
+              },
+              "statusAtEnd": "item_ingredient_shortage"
+            }
+          ],
+          "mixedSeconds": 0,
+          "mixedDetail": {},
+          "foreign": {},
+          "recovery": {
+            "OUT-1": {
+              "target": 115,
+              "share": 0.95,
+              "secondsToReach": 96
+            }
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "coal belt -> plastic plant (coal)",
+          "inserter": 45,
+          "pickup": {
+            "y": -7.5,
+            "x": 1.5
+          },
+          "drop": {
+            "y": -5.30078125,
+            "x": 1.5
+          }
+        },
+        {
+          "label": "plastic plant -> exit belt (plastic bars)",
+          "inserter": 48,
+          "pickup": {
+            "y": -5.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": -7.69921875,
+            "x": 2.5
+          }
+        },
+        {
+          "label": "crude barrel belt -> crude barrel assembler (long-handed, over the free tile (3,9))",
+          "inserter": 61,
+          "pickup": {
+            "y": 8.5,
+            "x": 3.5
+          },
+          "drop": {
+            "y": 4.30078125,
+            "x": 3.5
+          }
+        },
+        {
+          "label": "water barrel belt -> water barrel assembler",
+          "inserter": 62,
+          "pickup": {
+            "y": 7.5,
+            "x": -2.5
+          },
+          "drop": {
+            "y": 5.30078125,
+            "x": -2.5
+          }
+        },
+        {
+          "label": "water barrel assembler -> empty barrel chest",
+          "inserter": 64,
+          "pickup": {
+            "y": 5.5,
+            "x": -1.5
+          },
+          "drop": {
+            "y": 5.5,
+            "x": 0.69921875
+          }
+        },
+        {
+          "label": "crude barrel assembler -> empty barrel chest",
+          "inserter": 65,
+          "pickup": {
+            "y": 5.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": 5.5,
+            "x": 0.30078125
+          }
+        }
+      ],
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000,
+        "gravity": 40
+      },
+      "blueprintEntityCount": 73,
+      "fixtureEntityCount": 2,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 10,
+          "bottom": 18
+        },
+        "width": 10,
+        "height": 18,
+        "area": 180,
+        "includes": "all entities, panels, substations, belts, pipes, underground pipes and the empty-barrel chest; external supply excluded",
+        "counts": {
+          "assembling-machine-3": 2,
+          "chemical-plant": 3,
+          "display-panel": 6,
+          "fast-inserter": 5,
+          "fast-transport-belt": 22,
+          "long-handed-inserter": 1,
+          "oil-refinery": 1,
+          "passive-provider-chest": 1,
+          "pipe": 20,
+          "pipe-to-ground": 10,
+          "substation": 2
+        },
+        "entities": 73
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "automation",
+        "steel-processing",
+        "logistic-science-pack",
+        "automation-2",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "plastics",
+        "advanced-circuit",
+        "modules",
+        "speed-module",
+        "productivity-module",
+        "advanced-material-processing",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-material-processing-2",
+        "logistics",
+        "logistics-2",
+        "railway",
+        "production-science-pack",
+        "advanced-oil-processing",
+        "lubricant",
+        "electric-engine",
+        "automation-3",
+        "fast-inserter",
+        "battery",
+        "robotics",
+        "construction-robotics",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 5.056,
+        "benchmark": 17.178
+      },
+      "activeWallSeconds": 12.844,
+      "updatesPerSecond": 9810
+    }
+  },
+  "measured": {
+    "phases": {
+      "throttled": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "plastic-bar": 112.67
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 23.5,
+            "water-barrel": 31.3,
+            "coal": 57.9
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 56.5
+          }
+        },
+        "steady": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "plastic-bar": 115.2
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 23.6,
+            "water-barrel": 31.3,
+            "coal": 58
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 57.6
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 0.8,
+            "water-barrel": 0,
+            "coal": 0
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 0.8
+          }
+        },
+        "release": {
+          "measuredMinutes": 7,
+          "outputsPerMinute": {
+            "plastic-bar": 120
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 24,
+            "water-barrel": 31.9,
+            "coal": 58
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 59.8
+          },
+          "recoverySeconds": {
+            "plastic-bar": 60
+          }
+        }
+      },
+      "crude-oil-barrel withheld": {
+        "crude-oil-barrel withheld": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 2.9,
+            "coal": 3.3
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 0
+          }
+        },
+        "crude-oil-barrel supplied": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 114.9
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 23.6,
+            "water-barrel": 31.3,
+            "coal": 57.5
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 56.6
+          },
+          "recoverySeconds": {
+            "plastic-bar": 73
+          }
+        }
+      },
+      "water-barrel withheld": {
+        "water-barrel withheld": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 4.5,
+            "water-barrel": 0,
+            "coal": 3.3
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 0
+          }
+        },
+        "water-barrel supplied": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 115.4
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 24,
+            "water-barrel": 31.3,
+            "coal": 57.7
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 56.5
+          },
+          "recoverySeconds": {
+            "plastic-bar": 96
+          }
+        }
+      }
+    },
+    "steady": {
+      "throttled": {
+        "outputsPerMinute": {
+          "plastic-bar": 115.2
+        },
+        "inputsPerMinute": {
+          "crude-oil-barrel": 23.6,
+          "water-barrel": 31.3,
+          "coal": 58
+        }
+      }
+    },
+    "outputsPerMinute": {
+      "plastic-bar": 115.2
+    },
+    "inputsPerMinute": {
+      "crude-oil-barrel": 23.6,
+      "water-barrel": 31.3,
+      "coal": 58
+    }
+  }
+}

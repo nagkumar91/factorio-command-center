@@ -1,0 +1,1318 @@
+{
+  "schema": 1,
+  "id": "plastic-v2",
+  "revision": 1,
+  "candidateSha256": "453fb60b8c93c0d5b0f53b8fab661b0ccfeb76626f533348d4a6dbbd41ba2eba",
+  "requiredGameVersion": "2.1.25",
+  "prototypeSha256": "a8a722dd54abc37387d0f12b4f11ca1ded402526d1675e2c3d6443c9d8572810",
+  "fluidSlotsSha256": "31e11b1740a63e84996b36575f20c9d9dcccfd26f764a1a7b32a07f783cf5198",
+  "memberPrototypeSha256": "9b2d4427daf1bfb6930aee4d8d0d4e225e529eb79c2cdbdc02ba2929c9dd4d12",
+  "memberFluidSlotsSha256": "ac5766513dadc806557b2bcc454744245a50e3cf051d583fb0affc33bd0c855a",
+  "intendedUse": "plastic bars on one belt exit and nothing else, from crude oil barrels, water barrels and coal on belts, by advanced oil processing and oil cracking",
+  "products": [
+    "plastic-bar"
+  ],
+  "targets": {
+    "plastic-bar": 115
+  },
+  "equipment": {
+    "machines": [
+      "oil-refinery",
+      "chemical-plant",
+      "assembling-machine-3"
+    ],
+    "inserter": "fast-inserter",
+    "transport": "fast-transport-belt",
+    "power": "substation",
+    "modules": 0,
+    "beacons": 0,
+    "quality": "normal"
+  },
+  "footprint": {
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 10,
+      "bottom": 18
+    },
+    "width": 10,
+    "height": 18,
+    "area": 180,
+    "includes": "all entities, panels, substations, belts, pipes, underground pipes and the empty-barrel chest; external supply excluded",
+    "counts": {
+      "assembling-machine-3": 2,
+      "chemical-plant": 3,
+      "display-panel": 6,
+      "fast-inserter": 5,
+      "fast-transport-belt": 22,
+      "long-handed-inserter": 1,
+      "oil-refinery": 1,
+      "passive-provider-chest": 1,
+      "pipe": 20,
+      "pipe-to-ground": 10,
+      "substation": 2
+    },
+    "entities": 73
+  },
+  "inputPorts": [
+    {
+      "id": "IN-1",
+      "item": "crude-oil-barrel",
+      "kind": "belt",
+      "side": "west",
+      "flow": "east",
+      "entity": 49,
+      "tile": {
+        "x": 0,
+        "y": 17
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 17
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -1,
+          "y": 17
+        },
+        {
+          "x": -2,
+          "y": 17
+        },
+        {
+          "x": -3,
+          "y": 17
+        }
+      ],
+      "panel": 68,
+      "label": "IN: crude-oil-barrel 23.6/min",
+      "perMinute": 23.6
+    },
+    {
+      "id": "IN-2",
+      "item": "water-barrel",
+      "kind": "belt",
+      "side": "west",
+      "flow": "east",
+      "entity": 58,
+      "tile": {
+        "x": 0,
+        "y": 16
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 16
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -1,
+          "y": 16
+        },
+        {
+          "x": -2,
+          "y": 16
+        },
+        {
+          "x": -3,
+          "y": 16
+        }
+      ],
+      "panel": 69,
+      "label": "IN: water-barrel 31.3/min",
+      "perMinute": 31.3
+    },
+    {
+      "id": "IN-3",
+      "item": "coal",
+      "kind": "belt",
+      "side": "west",
+      "flow": "east",
+      "entity": 37,
+      "tile": {
+        "x": 0,
+        "y": 0
+      },
+      "externalContact": {
+        "x": -1,
+        "y": 0
+      },
+      "vector": [
+        -1,
+        0
+      ],
+      "approach": [
+        {
+          "x": -1,
+          "y": 0
+        },
+        {
+          "x": -2,
+          "y": 0
+        },
+        {
+          "x": -3,
+          "y": 0
+        }
+      ],
+      "panel": 70,
+      "label": "IN: coal 58/min",
+      "perMinute": 58
+    }
+  ],
+  "outputPorts": [
+    {
+      "id": "OUT-1",
+      "item": "plastic-bar",
+      "kind": "belt",
+      "side": "north",
+      "flow": "north",
+      "entity": 47,
+      "tile": {
+        "x": 7,
+        "y": 0
+      },
+      "externalContact": {
+        "x": 7,
+        "y": -1
+      },
+      "vector": [
+        0,
+        -1
+      ],
+      "approach": [
+        {
+          "x": 7,
+          "y": -1
+        },
+        {
+          "x": 7,
+          "y": -2
+        },
+        {
+          "x": 7,
+          "y": -3
+        }
+      ],
+      "panel": 71,
+      "label": "OUT: plastic-bar 115/min",
+      "perMinute": 115
+    }
+  ],
+  "power": {
+    "entry": 66,
+    "panel": 73,
+    "label": "POWER: connect substation",
+    "externalPole": {
+      "x": 13,
+      "y": 3
+    },
+    "poles": [
+      66,
+      67
+    ]
+  },
+  "machines": [
+    {
+      "entity": 1,
+      "name": "oil-refinery",
+      "recipe": "advanced-oil-processing",
+      "role": "refinery",
+      "tile": {
+        "x": 5,
+        "y": 7
+      },
+      "direction": 0,
+      "mirror": false
+    },
+    {
+      "entity": 2,
+      "name": "chemical-plant",
+      "recipe": "heavy-oil-cracking",
+      "role": "heavy-cracking",
+      "tile": {
+        "x": 3,
+        "y": 4
+      },
+      "direction": 8,
+      "mirror": true
+    },
+    {
+      "entity": 3,
+      "name": "chemical-plant",
+      "recipe": "plastic-bar",
+      "role": "plastic",
+      "tile": {
+        "x": 6,
+        "y": 3
+      },
+      "direction": 4,
+      "mirror": false
+    },
+    {
+      "entity": 4,
+      "name": "assembling-machine-3",
+      "recipe": "empty-crude-oil-barrel",
+      "role": "crude-barrels",
+      "tile": {
+        "x": 7,
+        "y": 12
+      },
+      "direction": 8,
+      "mirror": false
+    },
+    {
+      "entity": 5,
+      "name": "chemical-plant",
+      "recipe": "light-oil-cracking",
+      "role": "light-cracking",
+      "tile": {
+        "x": 1,
+        "y": 8
+      },
+      "direction": 0,
+      "mirror": true
+    },
+    {
+      "entity": 6,
+      "name": "assembling-machine-3",
+      "recipe": "empty-water-barrel",
+      "role": "water-barrels",
+      "tile": {
+        "x": 1,
+        "y": 12
+      },
+      "direction": 12,
+      "mirror": false
+    }
+  ],
+  "roles": {
+    "1": "refinery",
+    "2": "heavy-cracking",
+    "3": "plastic",
+    "4": "crude-barrels",
+    "5": "light-cracking",
+    "6": "water-barrels"
+  },
+  "routes": [
+    {
+      "inserter": 45,
+      "label": "coal belt -> plastic plant (coal)",
+      "sourceBelts": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "destEntity": 3
+    },
+    {
+      "inserter": 48,
+      "label": "plastic plant -> exit belt (plastic bars)",
+      "sourceEntity": 3,
+      "destBelts": [
+        46,
+        47
+      ]
+    },
+    {
+      "inserter": 61,
+      "label": "crude barrel belt -> crude barrel assembler (long-handed, over the free tile (3,9))",
+      "sourceBelts": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "destEntity": 4
+    },
+    {
+      "inserter": 62,
+      "label": "water barrel belt -> water barrel assembler",
+      "sourceBelts": [
+        58,
+        59,
+        60
+      ],
+      "destEntity": 6
+    },
+    {
+      "inserter": 64,
+      "label": "water barrel assembler -> empty barrel chest",
+      "sourceEntity": 6,
+      "destEntity": 63
+    },
+    {
+      "inserter": 65,
+      "label": "crude barrel assembler -> empty barrel chest",
+      "sourceEntity": 4,
+      "destEntity": 63
+    }
+  ],
+  "machineBoxes": {
+    "1": [
+      {
+        "fluid": "water",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            3
+          ]
+        ]
+      },
+      {
+        "fluid": "crude-oil",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            3
+          ]
+        ]
+      },
+      {
+        "fluid": "heavy-oil",
+        "flow": "output",
+        "targets": [
+          [
+            -2,
+            -3
+          ]
+        ]
+      },
+      {
+        "fluid": "light-oil",
+        "flow": "output",
+        "targets": [
+          [
+            0,
+            -3
+          ]
+        ]
+      },
+      {
+        "fluid": "petroleum-gas",
+        "flow": "output",
+        "targets": [
+          [
+            2,
+            -3
+          ]
+        ]
+      }
+    ],
+    "2": [
+      {
+        "fluid": "water",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            2
+          ]
+        ]
+      },
+      {
+        "fluid": "heavy-oil",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            2
+          ]
+        ]
+      },
+      {
+        "fluid": "light-oil",
+        "flow": "output",
+        "targets": [
+          [
+            -1,
+            -2
+          ],
+          [
+            1,
+            -2
+          ]
+        ]
+      }
+    ],
+    "3": [
+      {
+        "fluid": "petroleum-gas",
+        "flow": "input",
+        "targets": [
+          [
+            2,
+            -1
+          ],
+          [
+            2,
+            1
+          ]
+        ]
+      }
+    ],
+    "4": [
+      {
+        "fluid": "crude-oil",
+        "flow": "output",
+        "targets": [
+          [
+            0,
+            -2
+          ]
+        ]
+      }
+    ],
+    "5": [
+      {
+        "fluid": "water",
+        "flow": "input",
+        "targets": [
+          [
+            1,
+            -2
+          ]
+        ]
+      },
+      {
+        "fluid": "light-oil",
+        "flow": "input",
+        "targets": [
+          [
+            -1,
+            -2
+          ]
+        ]
+      },
+      {
+        "fluid": "petroleum-gas",
+        "flow": "output",
+        "targets": [
+          [
+            1,
+            2
+          ],
+          [
+            -1,
+            2
+          ]
+        ]
+      }
+    ],
+    "6": [
+      {
+        "fluid": "water",
+        "flow": "output",
+        "targets": [
+          [
+            2,
+            0
+          ]
+        ]
+      }
+    ]
+  },
+  "machineFluids": {
+    "1": [
+      "water",
+      "crude-oil",
+      "heavy-oil",
+      "light-oil",
+      "petroleum-gas"
+    ],
+    "2": [
+      "water",
+      "heavy-oil",
+      "light-oil"
+    ],
+    "3": [
+      "petroleum-gas"
+    ],
+    "4": [
+      "crude-oil"
+    ],
+    "5": [
+      "water",
+      "light-oil",
+      "petroleum-gas"
+    ],
+    "6": [
+      "water"
+    ]
+  },
+  "fluidOf": {
+    "7": "water",
+    "8": "water",
+    "9": "water",
+    "10": "water",
+    "11": "water",
+    "12": "water",
+    "13": "light-oil",
+    "14": "light-oil",
+    "15": "light-oil",
+    "16": "light-oil",
+    "17": "light-oil",
+    "18": "light-oil",
+    "19": "petroleum-gas",
+    "20": "petroleum-gas",
+    "21": "petroleum-gas",
+    "22": "petroleum-gas",
+    "23": "petroleum-gas",
+    "24": "petroleum-gas",
+    "25": "petroleum-gas",
+    "26": "petroleum-gas",
+    "27": "water",
+    "28": "water",
+    "29": "light-oil",
+    "30": "light-oil",
+    "31": "light-oil",
+    "32": "light-oil",
+    "33": "petroleum-gas",
+    "34": "petroleum-gas",
+    "35": "petroleum-gas",
+    "36": "petroleum-gas"
+  },
+  "fluidComponents": [
+    {
+      "id": 1,
+      "fluid": "water",
+      "entities": [
+        1,
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        27,
+        28
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 0,
+          "fluid": "water",
+          "flow": "input"
+        },
+        {
+          "entity": 2,
+          "box": 0,
+          "fluid": "water",
+          "flow": "input"
+        },
+        {
+          "entity": 5,
+          "box": 0,
+          "fluid": "water",
+          "flow": "input"
+        },
+        {
+          "entity": 6,
+          "box": 0,
+          "fluid": "water",
+          "flow": "output"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "fluid": "crude-oil",
+      "entities": [
+        1,
+        4
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 1,
+          "fluid": "crude-oil",
+          "flow": "input"
+        },
+        {
+          "entity": 4,
+          "box": 0,
+          "fluid": "crude-oil",
+          "flow": "output"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "fluid": "heavy-oil",
+      "entities": [
+        1,
+        2
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 2,
+          "fluid": "heavy-oil",
+          "flow": "output"
+        },
+        {
+          "entity": 2,
+          "box": 1,
+          "fluid": "heavy-oil",
+          "flow": "input"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "fluid": "light-oil",
+      "entities": [
+        1,
+        2,
+        5,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        29,
+        30,
+        31,
+        32
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 3,
+          "fluid": "light-oil",
+          "flow": "output"
+        },
+        {
+          "entity": 2,
+          "box": 2,
+          "fluid": "light-oil",
+          "flow": "output"
+        },
+        {
+          "entity": 5,
+          "box": 1,
+          "fluid": "light-oil",
+          "flow": "input"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "fluid": "petroleum-gas",
+      "entities": [
+        1,
+        3,
+        5,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        33,
+        34,
+        35,
+        36
+      ],
+      "boxes": [
+        {
+          "entity": 1,
+          "box": 4,
+          "fluid": "petroleum-gas",
+          "flow": "output"
+        },
+        {
+          "entity": 3,
+          "box": 0,
+          "fluid": "petroleum-gas",
+          "flow": "input"
+        },
+        {
+          "entity": 5,
+          "box": 2,
+          "fluid": "petroleum-gas",
+          "flow": "output"
+        }
+      ]
+    }
+  ],
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "automation",
+    "steel-processing",
+    "logistic-science-pack",
+    "automation-2",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "plastics",
+    "advanced-circuit",
+    "modules",
+    "speed-module",
+    "productivity-module",
+    "advanced-material-processing",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "advanced-material-processing-2",
+    "logistics",
+    "logistics-2",
+    "railway",
+    "production-science-pack",
+    "advanced-oil-processing",
+    "lubricant",
+    "electric-engine",
+    "automation-3",
+    "fast-inserter",
+    "battery",
+    "robotics",
+    "construction-robotics",
+    "electric-energy-distribution-1",
+    "electric-energy-distribution-2",
+    "circuit-network"
+  ],
+  "requirements": [
+    {
+      "recipe": "plastic-bar",
+      "technology": "plastics"
+    },
+    {
+      "recipe": "oil-refinery",
+      "technology": "oil-processing"
+    },
+    {
+      "recipe": "chemical-plant",
+      "technology": "oil-processing"
+    },
+    {
+      "recipe": "assembling-machine-3",
+      "technology": "automation-3"
+    },
+    {
+      "recipe": "pipe",
+      "technology": "steam-power"
+    },
+    {
+      "recipe": "pipe-to-ground",
+      "technology": "steam-power"
+    },
+    {
+      "recipe": "fast-transport-belt",
+      "technology": "logistics-2"
+    },
+    {
+      "recipe": "fast-inserter",
+      "technology": "fast-inserter"
+    },
+    {
+      "recipe": "long-handed-inserter",
+      "technology": "automation"
+    },
+    {
+      "recipe": "passive-provider-chest",
+      "technology": "construction-robotics"
+    },
+    {
+      "recipe": "substation",
+      "technology": "electric-energy-distribution-2"
+    },
+    {
+      "recipe": "display-panel",
+      "technology": "circuit-network"
+    },
+    {
+      "recipe": "advanced-oil-processing",
+      "technology": "advanced-oil-processing"
+    },
+    {
+      "recipe": "heavy-oil-cracking",
+      "technology": "advanced-oil-processing"
+    },
+    {
+      "recipe": "empty-crude-oil-barrel",
+      "technology": "fluid-handling"
+    },
+    {
+      "recipe": "light-oil-cracking",
+      "technology": "advanced-oil-processing"
+    },
+    {
+      "recipe": "empty-water-barrel",
+      "technology": "fluid-handling"
+    }
+  ],
+  "sizing": {
+    "target": 115,
+    "crudeFluidPerBarrel": 50,
+    "gasPerAopTotal": 97.5,
+    "requiredCraftsPerMinute": {
+      "plastic-bar": 57.5,
+      "advanced-oil-processing": 11.794871794871796,
+      "heavy-oil-cracking": 7.371794871794872,
+      "light-oil-cracking": 25.064102564102566,
+      "empty-crude-oil-barrel": 23.589743589743595,
+      "empty-water-barrel": 31.256410256410263
+    },
+    "craftsPerMinuteEach": {
+      "plastic-bar": 60,
+      "advanced-oil-processing": 12,
+      "heavy-oil-cracking": 30,
+      "light-oil-cracking": 30,
+      "empty-crude-oil-barrel": 375,
+      "empty-water-barrel": 375
+    },
+    "machinesNeeded": {
+      "plastic-bar": 1,
+      "advanced-oil-processing": 1,
+      "heavy-oil-cracking": 1,
+      "light-oil-cracking": 1,
+      "empty-crude-oil-barrel": 1,
+      "empty-water-barrel": 1
+    },
+    "utilization": {
+      "plastic-bar": 0.9583333333333334,
+      "advanced-oil-processing": 0.982905982905983,
+      "heavy-oil-cracking": 0.24572649572649574,
+      "light-oil-cracking": 0.8354700854700855,
+      "empty-crude-oil-barrel": 0.06290598290598291,
+      "empty-water-barrel": 0.08335042735042737
+    },
+    "perMinute": {
+      "coal": 57.5,
+      "crude-oil-barrel": 23.589743589743595,
+      "water-barrel": 31.256410256410263,
+      "waterFluid": 1562.8205128205132
+    },
+    "waterBy": {
+      "advanced-oil-processing": 589.7435897435898,
+      "heavy-oil-cracking": 221.15384615384616,
+      "light-oil-cracking": 751.923076923077
+    },
+    "crudePerMinute": 1179.4871794871797,
+    "maxPlasticPerMinute": 116.99999999999999,
+    "crudeFluid": "crude-oil",
+    "emptyBarrelsPerMinute": 54.846153846153854,
+    "barrelsPerSecondOneMachine": 6.25,
+    "plasticPerCrudeBarrel": 4.874999999999999
+  },
+  "status": {
+    "static": "static-audit.json",
+    "native": "native-report.json; qualified only when that report passed for candidateSha256"
+  },
+  "extraEntities": [
+    "passive-provider-chest"
+  ],
+  "collectors": [
+    {
+      "id": "BUF-1",
+      "item": "barrel",
+      "kind": "chest",
+      "entity": 63,
+      "tile": {
+        "x": 5,
+        "y": 14
+      },
+      "panel": 72,
+      "label": "EMPTY BARRELS 55/min: collect from the chest below",
+      "perMinute": 54.8,
+      "capacityBarrels": 480
+    }
+  ],
+  "fluidEdges": [
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      10
+    ],
+    [
+      1,
+      15
+    ],
+    [
+      1,
+      20
+    ],
+    [
+      2,
+      11
+    ],
+    [
+      2,
+      16
+    ],
+    [
+      3,
+      19
+    ],
+    [
+      3,
+      25
+    ],
+    [
+      5,
+      11
+    ],
+    [
+      5,
+      13
+    ],
+    [
+      5,
+      21
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      8,
+      27
+    ],
+    [
+      9,
+      10
+    ],
+    [
+      11,
+      12
+    ],
+    [
+      12,
+      28
+    ],
+    [
+      13,
+      14
+    ],
+    [
+      14,
+      30
+    ],
+    [
+      14,
+      31
+    ],
+    [
+      15,
+      29
+    ],
+    [
+      16,
+      17
+    ],
+    [
+      17,
+      18
+    ],
+    [
+      18,
+      32
+    ],
+    [
+      19,
+      20
+    ],
+    [
+      19,
+      26
+    ],
+    [
+      21,
+      22
+    ],
+    [
+      22,
+      34
+    ],
+    [
+      23,
+      33
+    ],
+    [
+      23,
+      36
+    ],
+    [
+      24,
+      25
+    ],
+    [
+      24,
+      35
+    ],
+    [
+      25,
+      26
+    ],
+    [
+      27,
+      28
+    ],
+    [
+      29,
+      30
+    ],
+    [
+      31,
+      32
+    ],
+    [
+      33,
+      34
+    ],
+    [
+      35,
+      36
+    ]
+  ],
+  "unusedPorts": [
+    {
+      "entity": 3,
+      "tiles": [
+        {
+          "x": 5,
+          "y": 3
+        },
+        {
+          "x": 5,
+          "y": 5
+        }
+      ]
+    },
+    {
+      "entity": 4,
+      "tiles": [
+        {
+          "x": 8,
+          "y": 15
+        }
+      ]
+    },
+    {
+      "entity": 6,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 13
+        }
+      ]
+    }
+  ],
+  "measured": {
+    "phases": {
+      "throttled": {
+        "warm-up": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "plastic-bar": 112.67
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 23.5,
+            "water-barrel": 31.3,
+            "coal": 57.9
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 56.5
+          }
+        },
+        "steady": {
+          "measuredMinutes": 15,
+          "outputsPerMinute": {
+            "plastic-bar": 115.2
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 23.6,
+            "water-barrel": 31.3,
+            "coal": 58
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 57.6
+          }
+        },
+        "exit blocked": {
+          "measuredMinutes": 5,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 0.8,
+            "water-barrel": 0,
+            "coal": 0
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 0.8
+          }
+        },
+        "release": {
+          "measuredMinutes": 7,
+          "outputsPerMinute": {
+            "plastic-bar": 120
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 24,
+            "water-barrel": 31.9,
+            "coal": 58
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 59.8
+          },
+          "recoverySeconds": {
+            "plastic-bar": 60
+          }
+        }
+      },
+      "crude-oil-barrel withheld": {
+        "crude-oil-barrel withheld": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 2.9,
+            "coal": 3.3
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 0
+          }
+        },
+        "crude-oil-barrel supplied": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 114.9
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 23.6,
+            "water-barrel": 31.3,
+            "coal": 57.5
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 56.6
+          },
+          "recoverySeconds": {
+            "plastic-bar": 73
+          }
+        }
+      },
+      "water-barrel withheld": {
+        "water-barrel withheld": {
+          "measuredMinutes": 20,
+          "outputsPerMinute": {
+            "plastic-bar": 0
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 4.5,
+            "water-barrel": 0,
+            "coal": 3.3
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 0
+          }
+        },
+        "water-barrel supplied": {
+          "measuredMinutes": 10,
+          "outputsPerMinute": {
+            "plastic-bar": 115.4
+          },
+          "inputsPerMinute": {
+            "crude-oil-barrel": 24,
+            "water-barrel": 31.3,
+            "coal": 57.7
+          },
+          "consumedPerMinute": {
+            "crude-oil-barrel": 0,
+            "water-barrel": 0,
+            "coal": 56.5
+          },
+          "recoverySeconds": {
+            "plastic-bar": 96
+          }
+        }
+      }
+    },
+    "steady": {
+      "throttled": {
+        "outputsPerMinute": {
+          "plastic-bar": 115.2
+        },
+        "inputsPerMinute": {
+          "crude-oil-barrel": 23.6,
+          "water-barrel": 31.3,
+          "coal": 58
+        }
+      }
+    },
+    "outputsPerMinute": {
+      "plastic-bar": 115.2
+    },
+    "inputsPerMinute": {
+      "crude-oil-barrel": 23.6,
+      "water-barrel": 31.3,
+      "coal": 58
+    }
+  },
+  "outputsPerMinute": {
+    "plastic-bar": 115.2
+  },
+  "inputsPerMinute": {
+    "crude-oil-barrel": 23.6,
+    "water-barrel": 31.3,
+    "coal": 58
+  }
+}

@@ -76,6 +76,8 @@ export function fixtureOf(manifest, bp, p, scenario) {
     machineBoxes: manifest.machineBoxes, machineFluids: manifest.machineFluids, fluidOf: manifest.fluidOf, fluidComponents: manifest.fluidComponents,
     inputs: manifest.inputPorts.map(x => ({ id: x.id, item: x.item, kind: x.kind === 'belt' ? 'belt' : 'pipe', entity: x.entity, externalContact: { x: x.externalContact.x + 0.5, y: x.externalContact.y + 0.5 } })),
     outputs: manifest.outputPorts.map(x => ({ id: x.id, item: x.item, kind: x.kind === 'belt' ? 'belt' : 'pipe', entity: x.entity, externalContact: { x: x.externalContact.x + 0.5, y: x.externalContact.y + 0.5 } })),
+    // Members that keep a by-product in a chest that the player's logistics empty: the harness empties it like an exit (see control.lua)
+    ...(manifest.collectors ? { collectors: manifest.collectors.map(x => ({ id: x.id, item: x.item, kind: 'chest', entity: x.entity })) } : {}),
     approaches: [...manifest.inputPorts, ...manifest.outputPorts].map(x => ({ id: x.id, tiles: x.approach.map(t => ({ x: t.x + 0.5, y: t.y + 0.5 })) })),
     power: { entry: manifest.power.entry, panel: manifest.power.panel, poles: manifest.power.poles, externalPole: { x: manifest.power.externalPole.x, y: manifest.power.externalPole.y }, ...(manifest.power.externalSource ? { externalSource: manifest.power.externalSource } : {}) },
     footprint: manifest.footprint,

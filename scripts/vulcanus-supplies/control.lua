@@ -218,13 +218,13 @@ local function verify_networks(t)
             if already and already ~= comp.id then ok = false; detail[#detail + 1] = {segment = seg, components = {already, comp.id}} end
             segmentOf[seg] = comp.id
           end
-          ids[seg] = true
+          ids[seg] = ids[seg] or {}; ids[seg][#ids[seg] + 1] = id
         end
       end
     end
     local segs = 0; for _ in pairs(ids) do segs = segs + 1 end
     -- A component is one segment unless it holds only machine boxes joined through undergrounds the game reports as one.
-    if segs > 1 then ok = false; detail[#detail + 1] = {component = comp.id, fluid = comp.fluid, segments = segs} end
+    if segs > 1 then ok = false; local members = {}; for seg, list in pairs(ids) do members[#members + 1] = table.concat(list, ',') end; detail[#detail + 1] = {component = comp.id, fluid = comp.fluid, segments = segs, members = members} end
   end
   record(t, 'the pipes, undergrounds and machine boxes form exactly the static fluid networks, one fluid each', ok, detail)
   local fixtureOk = true
@@ -339,6 +339,8 @@ script.on_init(function()
     if port.kind == 'pipe' then out.fixture = fixture(t, 'pipe', {port.externalContact.x + dx, port.externalContact.y + dy}) end
     t.outputs[#t.outputs + 1] = out
   end
+  -- A member may keep a by-product in a chest of the blueprint that the player's logistics empty (a passive provider chest): it is drawn like an exit.
+  for _, port in ipairs(M.collectors or {}) do t.outputs[#t.outputs + 1] = {port = port, id = port.id, item = port.item, kind = 'chest', carry = 0} end
   storage.run = t
   if T.build then
     -- Piecemeal construction: the ghosts stay; the tick handler revives them in the runner's order while the first phase runs.
@@ -427,6 +429,18 @@ local function drain(t, out, mode, tick, ph)
       end
     end
     if want then out.carry = out.carry - got end
+  elseif out.kind == 'chest' then
+    local chest = live(t, out.port.entity)
+    if not chest then return 0 end
+    local inventory = chest.get_inventory(defines.inventory.chest)
+    local count = 0
+    for _, c in pairs(inventory.get_contents()) do
+      if c.name ~= out.item then ph.foreign[#ph.foreign + 1] = c.name else count = count + c.count end
+    end
+    local want = count
+    if mode ~= 'all' then out.carry = math.min(8, out.carry + mode / PER_MINUTE); want = math.min(count, math.floor(out.carry)) end
+    if want > 0 then got = inventory.remove{name = out.item, count = want} end
+    if mode ~= 'all' then out.carry = out.carry - got end
   else
     local outside = out.fixture
     local contents = outside.get_fluid_contents()

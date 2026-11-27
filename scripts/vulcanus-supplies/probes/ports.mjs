@@ -21,6 +21,11 @@ const MEMBERS = {
     // recipes that between them use every pipe connection of the machine type
     reveal: { 'oil-refinery': ['advanced-oil-processing'], 'chemical-plant': ['heavy-oil-cracking'], 'assembling-machine-3': ['water-barrel', 'empty-water-barrel'] },
   },
+  'plastic-v2': {
+    use: [['oil-refinery', 'advanced-oil-processing'], ['chemical-plant', 'heavy-oil-cracking'], ['chemical-plant', 'light-oil-cracking'], ['chemical-plant', 'plastic-bar'], ['assembling-machine-3', 'empty-crude-oil-barrel'], ['assembling-machine-3', 'empty-water-barrel']],
+    add: ['oil-refinery|advanced-oil-processing', 'assembling-machine-3|empty-crude-oil-barrel', 'assembling-machine-3|empty-water-barrel'],   // the family table has the others
+    reveal: { 'oil-refinery': ['advanced-oil-processing'], 'chemical-plant': ['heavy-oil-cracking'], 'assembling-machine-3': ['water-barrel', 'empty-water-barrel'] },
+  },
 };
 const member = process.argv[2], spec = MEMBERS[member];
 assert(spec, 'usage: ports.mjs <member> [--write]');

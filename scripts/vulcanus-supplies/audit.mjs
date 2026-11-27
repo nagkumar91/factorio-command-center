@@ -69,7 +69,7 @@ export function auditBlueprint(object, m, p, slots) {
   if (!es.every(e => p.entities[e.name])) return { passed: false, checks, errors, checksTotal: checks.length };
   check('Unique entity IDs', ids.size === es.length);
   check(`Blueprint version is ${p.gameVersion}`, bp.version === blueprintVersion(p.gameVersion) && m.requiredGameVersion === p.gameVersion);
-  check('Only the entities the brief allows: oil refinery, chemical plant, assembling machine 3, fast and long-handed inserters, red belts and undergrounds, pipes, pipes-to-ground, substations, display panels', es.every(e => ALLOWED.includes(e.name)));
+  check('Only the entities the brief allows: oil refinery, chemical plant, assembling machine 3, fast and long-handed inserters, red belts and undergrounds, pipes, pipes-to-ground, substations, display panels', es.every(e => ALLOWED.concat(m.extraEntities || []).includes(e.name)));
   check('Power by substations only, no other pole', es.every(e => !/pole/.test(e.name)) && es.some(e => e.name === 'substation'));
   check('No modules, beacons, nonnormal quality, custom inserter reach, tiles or loose items', es.every(e => !e.items && !e.pickup_position && !e.drop_position && (!e.quality || e.quality === 'normal') && !e.override_stack_size) && !bp.tiles);
   check('Not a stack inserter, no bulk inserter', es.every(e => !/stack-inserter|bulk-inserter/.test(e.name)));
