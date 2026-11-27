@@ -1,0 +1,179 @@
+{
+  "passed": true,
+  "errors": [],
+  "checksTotal": 23,
+  "checks": [
+    {
+      "name": "string matches the manifest hash",
+      "passed": true
+    },
+    {
+      "name": "only whitelisted entities (no assembling machine, module, beacon, belt, robot, circuit wire)",
+      "passed": true,
+      "detail": [
+        "foundry",
+        "requester-chest",
+        "fast-inserter",
+        "passive-provider-chest",
+        "pipe",
+        "substation",
+        "display-panel"
+      ]
+    },
+    {
+      "name": "no entity carries modules, quality or items",
+      "passed": true
+    },
+    {
+      "name": "recipe is metallurgy, 3 carbide + 2 plate + 200 molten copper -> 1 pack in 10 s, Vulcanus pressure 4000 only",
+      "passed": true
+    },
+    {
+      "name": "one foundry with the recipe saved, facing north",
+      "passed": true
+    },
+    {
+      "name": "the foundry crafts the recipe category",
+      "passed": true
+    },
+    {
+      "name": "the foundry can make the target (24 crafts a minute x 1.5 = 36 packs)",
+      "passed": true,
+      "detail": {
+        "packsMax": 36,
+        "target": 16
+      }
+    },
+    {
+      "name": "per-minute figures follow the recipe at the target",
+      "passed": true,
+      "detail": {
+        "tungsten-carbide": 32,
+        "tungsten-plate": 21.333333333333332,
+        "molten-copper": 2133.333333333333
+      }
+    },
+    {
+      "name": "two requester chests, each one filter at normal quality with the pinned count, nothing else",
+      "passed": true,
+      "detail": [
+        {
+          "index": 1,
+          "name": "tungsten-carbide",
+          "quality": "normal",
+          "comparator": "=",
+          "count": 64
+        },
+        {
+          "index": 1,
+          "name": "tungsten-plate",
+          "quality": "normal",
+          "comparator": "=",
+          "count": 43
+        }
+      ]
+    },
+    {
+      "name": "requests are two minutes of use, rounded up (carbide 64, plate 43)",
+      "passed": true
+    },
+    {
+      "name": "one passive provider chest capped at one slot (one stack)",
+      "passed": true
+    },
+    {
+      "name": "three fast inserters: carbide chest -> foundry, plate chest -> foundry, foundry -> provider chest, one each",
+      "passed": true
+    },
+    {
+      "name": "every inserter hand size is pinned to 1 and none has a filter or circuit condition",
+      "passed": true
+    },
+    {
+      "name": "fluid rules: one network of molten copper, one pipe, no mixed or unconnected network",
+      "passed": true,
+      "detail": [
+        {
+          "id": 1,
+          "fluids": [
+            "molten-copper"
+          ],
+          "entities": [
+            1,
+            8
+          ],
+          "boxes": [
+            {
+              "entity": 1,
+              "box": 0,
+              "fluid": "molten-copper",
+              "flow": "input"
+            }
+          ],
+          "pipes": 4
+        }
+      ]
+    },
+    {
+      "name": "no used port left without a pipe; ports the recipe does not use face nothing",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "the foundry has one molten-copper input box; both output ports and the second input port stand free",
+      "passed": true
+    },
+    {
+      "name": "one substation covers every electric entity",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "no two entities share a tile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "five labelled panels, always shown: three entrances, the exit, the power entry",
+      "passed": true
+    },
+    {
+      "name": "every port and the power entry has its panel with the per-minute figure or the label",
+      "passed": true
+    },
+    {
+      "name": "IN-1 and IN-2 are requester chests and say their request; IN-3 is a pipe entrance; OUT-1 is the provider chest",
+      "passed": true
+    },
+    {
+      "name": "footprint matches the entities (9 x 6, 14 entities)",
+      "passed": true,
+      "detail": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 9,
+          "bottom": 6
+        },
+        "width": 9,
+        "height": 6,
+        "area": 54,
+        "includes": "all entities: the foundry, arms, chests, pipe, substation and panels; the robot network, the molten copper supply and the outside power are not counted",
+        "counts": {
+          "display-panel": 5,
+          "fast-inserter": 3,
+          "foundry": 1,
+          "passive-provider-chest": 1,
+          "pipe": 1,
+          "requester-chest": 2,
+          "substation": 1
+        },
+        "entities": 14
+      }
+    },
+    {
+      "name": "the pipe entrance faces the outside: its south side is free",
+      "passed": true
+    }
+  ]
+}

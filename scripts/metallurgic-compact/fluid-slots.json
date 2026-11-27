@@ -1,0 +1,222 @@
+{
+  "schema": 1,
+  "gameVersion": "2.1.25",
+  "derivedFrom": "scripts/vulcanus-circuits/fluid-slots.json (native probe, 2.1.25): the foundry|casting-iron table",
+  "note": "A foundry recipe with ONE fluid ingredient and an item product uses both input ports as one box (probe: casting-iron, same shape as casting-copper and metallurgic-science-pack). The table is copied with the fluid renamed to molten-copper; the native run of this blueprint reads the foundry fluid box and the pipe every tick to confirm it.",
+  "surface": "vulcanus",
+  "pressure": 4000,
+  "slots": {
+    "foundry|metallurgic-science-pack": {
+      "d0": [
+        {
+          "fluid": "molten-copper",
+          "flow": "input",
+          "targets": [
+            [
+              -1,
+              3
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "joined": [
+            true,
+            true
+          ]
+        }
+      ],
+      "d4": [
+        {
+          "fluid": "molten-copper",
+          "flow": "input",
+          "targets": [
+            [
+              -3,
+              -1
+            ],
+            [
+              -3,
+              1
+            ]
+          ],
+          "joined": [
+            true,
+            true
+          ]
+        }
+      ],
+      "d8": [
+        {
+          "fluid": "molten-copper",
+          "flow": "input",
+          "targets": [
+            [
+              1,
+              -3
+            ],
+            [
+              -1,
+              -3
+            ]
+          ],
+          "joined": [
+            true,
+            true
+          ]
+        }
+      ],
+      "d12": [
+        {
+          "fluid": "molten-copper",
+          "flow": "input",
+          "targets": [
+            [
+              3,
+              1
+            ],
+            [
+              3,
+              -1
+            ]
+          ],
+          "joined": [
+            true,
+            true
+          ]
+        }
+      ],
+      "d0M": [
+        {
+          "fluid": "molten-copper",
+          "flow": "input",
+          "targets": [
+            [
+              1,
+              3
+            ],
+            [
+              -1,
+              3
+            ]
+          ],
+          "joined": [
+            true,
+            true
+          ]
+        }
+      ],
+      "d4M": [
+        {
+          "fluid": "molten-copper",
+          "flow": "input",
+          "targets": [
+            [
+              -3,
+              1
+            ],
+            [
+              -3,
+              -1
+            ]
+          ],
+          "joined": [
+            true,
+            true
+          ]
+        }
+      ],
+      "d8M": [
+        {
+          "fluid": "molten-copper",
+          "flow": "input",
+          "targets": [
+            [
+              -1,
+              -3
+            ],
+            [
+              1,
+              -3
+            ]
+          ],
+          "joined": [
+            true,
+            true
+          ]
+        }
+      ],
+      "d12M": [
+        {
+          "fluid": "molten-copper",
+          "flow": "input",
+          "targets": [
+            [
+              3,
+              -1
+            ],
+            [
+              3,
+              1
+            ]
+          ],
+          "joined": [
+            true,
+            true
+          ]
+        }
+      ]
+    }
+  },
+  "flips": {
+    "foundry": {
+      "horizontal": {
+        "d0": "d0M",
+        "d4": "d12M",
+        "d8": "d8M",
+        "d12": "d4M",
+        "d0M": "d0",
+        "d4M": "d12",
+        "d8M": "d8",
+        "d12M": "d4"
+      },
+      "vertical": {
+        "d0": "d8M",
+        "d4": "d4M",
+        "d8": "d0M",
+        "d12": "d12M",
+        "d0M": "d8",
+        "d4M": "d4",
+        "d8M": "d0",
+        "d12M": "d12"
+      }
+    },
+    "assembling-machine-3": {
+      "horizontal": {
+        "d0": "d0",
+        "d4": "d12",
+        "d8": "d8",
+        "d12": "d4",
+        "d0M": "d0",
+        "d4M": "d12",
+        "d8M": "d8",
+        "d12M": "d4"
+      },
+      "vertical": {
+        "d0": "d8",
+        "d4": "d4",
+        "d8": "d0",
+        "d12": "d12",
+        "d0M": "d8",
+        "d4M": "d4",
+        "d8M": "d0",
+        "d12M": "d12"
+      }
+    },
+    "refused": [
+      "assembling-machine-3|advanced-circuit",
+      "assembling-machine-3|electronic-circuit"
+    ]
+  }
+}

@@ -1,0 +1,2550 @@
+{
+  "schema": 1,
+  "passed": true,
+  "failures": {
+    "generous": {},
+    "panel": {},
+    "withheld:IN-1": {},
+    "withheld:IN-2": {},
+    "withheld:IN-3": {}
+  },
+  "blueprintSha256": "e71c31efd8018efcbd509acf831345267b8733ed1bca46c693c3edab30adc407",
+  "prototypeSha256": "4b9944ff11e0a7b67035241e2ec4b917283dffcd2c5d2f757de208f6e0996955",
+  "fluidSlotsSha256": "2a950105590f73435e121d20e958f7241657157a920c95ce79f5725244e1c7c3",
+  "gameVersion": "2.1.25",
+  "activeMods": {
+    "base": "2.1.25",
+    "elevated-rails": "2.1.25",
+    "quality": "2.1.25",
+    "space-age": "2.1.25"
+  },
+  "nativeControlSha256": "7c879d1da6baeb1c2feb1e6897100e5d1b9c90240221b5e2db463bbe5e822248",
+  "runnerSha256": "ce5fd33286ca20d03805e1d1ba5e2a46bddce235cfca2416a15ef80f46c442ff",
+  "scenarioSha256": "dba8b6aba620cb398db0601cb1c1ff20a48c117cb151e4648eb5c7a4bbe7998b",
+  "nativeCommand": "node scripts/metallurgic-compact/native.mjs ",
+  "protocol": {
+    "seed": 21027,
+    "externalPowerWatts": 10000000,
+    "floorShare": 0.99,
+    "recoveryShare": 0.95,
+    "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+    "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+    "feed": "requester chests: items put into the chest, never above its request (generous: topped up at once; throttled: a credit of perMinute/3600 a tick); pipe: fluid put into one outside pipe at the entrance (generous: 1000 a tick; throttled: perMinute/3600 a tick plus the refused carry)",
+    "draw": "provider chest: every pack taken out every four ticks (all), or none"
+  },
+  "technologyClosure": [
+    "steam-power",
+    "electronics",
+    "automation-science-pack",
+    "steel-processing",
+    "logistic-science-pack",
+    "advanced-material-processing",
+    "automation",
+    "automation-2",
+    "concrete",
+    "engine",
+    "fluid-handling",
+    "oil-gathering",
+    "oil-processing",
+    "flammables",
+    "plastics",
+    "advanced-circuit",
+    "sulfur-processing",
+    "chemical-science-pack",
+    "advanced-oil-processing",
+    "rocket-fuel",
+    "processing-unit",
+    "lubricant",
+    "electric-engine",
+    "battery",
+    "robotics",
+    "logistic-robotics",
+    "low-density-structure",
+    "advanced-material-processing-2",
+    "rocket-silo",
+    "space-platform",
+    "space-science-pack",
+    "space-platform-thruster",
+    "planet-discovery-vulcanus",
+    "calcite-processing",
+    "tungsten-carbide",
+    "foundry",
+    "electric-mining-drill",
+    "big-mining-drill",
+    "tungsten-steel",
+    "metallurgic-science-pack",
+    "logistic-system",
+    "fast-inserter",
+    "construction-robotics",
+    "electric-energy-distribution-1",
+    "electric-energy-distribution-2",
+    "circuit-network"
+  ],
+  "footprint": {
+    "bounds": {
+      "left": 0,
+      "top": 0,
+      "right": 9,
+      "bottom": 6
+    },
+    "width": 9,
+    "height": 6,
+    "area": 54,
+    "includes": "all entities: the foundry, arms, chests, pipe, substation and panels; the robot network, the molten copper supply and the outside power are not counted",
+    "counts": {
+      "display-panel": 5,
+      "fast-inserter": 3,
+      "foundry": 1,
+      "passive-provider-chest": 1,
+      "pipe": 1,
+      "requester-chest": 2,
+      "substation": 1
+    },
+    "entities": 14
+  },
+  "wallSecondsTotal": 39.7,
+  "runs": {
+    "generous": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000
+          }
+        },
+        {
+          "name": "display panel visible and worded #10",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-carbide, requester chest, request 64 (2 min), 32/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #11",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-plate, requester chest, request 43 (2 min), 21.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #12",
+          "passed": true,
+          "detail": {
+            "text": "IN: molten-copper pipe 2,133.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #13",
+          "passed": true,
+          "detail": {
+            "text": "OUT: metallurgic-science-pack provider chest, one stack (200), 16/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #14",
+          "passed": true,
+          "detail": {
+            "text": "POWER: connect this substation"
+          }
+        },
+        {
+          "name": "every entity imported at its exact position and direction",
+          "passed": true,
+          "detail": {
+            "entities": 14
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 14
+          }
+        },
+        {
+          "name": "recipe preserved",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin",
+          "passed": true
+        },
+        {
+          "name": "cold foundry with no modules",
+          "passed": true
+        },
+        {
+          "name": "foundry crafting speed matches the pin",
+          "passed": true,
+          "detail": {
+            "speed": 4
+          }
+        },
+        {
+          "name": "foundry built-in productivity matches the pin",
+          "passed": true,
+          "detail": {
+            "bonus": 0.5
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "tungsten-carbide requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "tungsten-plate requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "foundry -> metallurgic-science-pack provider chest",
+          "passed": true
+        },
+        {
+          "name": "IN-1 requester chest requests 64 tungsten-carbide",
+          "passed": true,
+          "detail": {
+            "tungsten-carbide": {
+              "min": 64,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-1 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "IN-2 requester chest requests 43 tungsten-plate",
+          "passed": true,
+          "detail": {
+            "tungsten-plate": {
+              "min": 43,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-2 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "OUT-1 chest is a passive provider",
+          "passed": true
+        },
+        {
+          "name": "OUT-1 chest limited to one slot (the game reports the first blocked slot, 2)",
+          "passed": true,
+          "detail": {
+            "bar": 2,
+            "slots": 48
+          }
+        },
+        {
+          "name": "exactly one foundry fluid port stands on a pipe (the molten copper entrance); no other port faces anything",
+          "passed": true,
+          "detail": [
+            [
+              {
+                "flow": "input",
+                "target": "pipe",
+                "position": {
+                  "y": 1.5,
+                  "x": -0.5
+                }
+              },
+              {
+                "flow": "input",
+                "position": {
+                  "y": 1.5,
+                  "x": 1.5
+                }
+              }
+            ]
+          ]
+        },
+        {
+          "name": "warm-up: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "warm-up: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        },
+        {
+          "name": "steady: packs a minute at least 15.84",
+          "passed": true,
+          "detail": {
+            "measured": 36
+          }
+        },
+        {
+          "name": "steady: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "steady: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        },
+        {
+          "name": "exit blocked: packs drawn at most 0 in the phase",
+          "passed": true,
+          "detail": {
+            "drawn": 0
+          }
+        },
+        {
+          "name": "exit blocked: output chest ends exactly full at one stack (200)",
+          "passed": true,
+          "detail": {
+            "chest": 200
+          }
+        },
+        {
+          "name": "exit blocked: foundry crafted nothing in the last 5 minutes",
+          "passed": true,
+          "detail": {
+            "products": 1104
+          }
+        },
+        {
+          "name": "exit blocked: foundry ended with its output full",
+          "passed": true,
+          "detail": {
+            "status": "full_output"
+          }
+        },
+        {
+          "name": "exit blocked: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "exit blocked: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        },
+        {
+          "name": "release: packs a minute at least 15.84",
+          "passed": true,
+          "detail": {
+            "measured": 36
+          }
+        },
+        {
+          "name": "release: back to 95% of 16 a minute within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        },
+        {
+          "name": "release: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "release: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "e71c31efd8018efcbd509acf831345267b8733ed1bca46c693c3edab30adc407",
+      "prototypeSha256": "4b9944ff11e0a7b67035241e2ec4b917283dffcd2c5d2f757de208f6e0996955",
+      "configurationSha256": "c9d5f90a803b5b32c77828475924226971c2bf4d016575a46f383968c4d0fbfd",
+      "nativeControlSha256": "7c879d1da6baeb1c2feb1e6897100e5d1b9c90240221b5e2db463bbe5e822248",
+      "actualTicks": 180000,
+      "scenario": {
+        "name": "generous",
+        "description": "every entrance offered more than the foundry can use; the product exit emptied, then blocked until the chest is full, then released"
+      },
+      "protocol": {
+        "seed": 21027,
+        "externalPowerWatts": 10000000,
+        "floorShare": 0.99,
+        "recoveryShare": 0.95,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "requester chests: items put into the chest, never above its request (generous: topped up at once; throttled: a credit of perMinute/3600 a tick); pipe: fluid put into one outside pipe at the entrance (generous: 1000 a tick; throttled: perMinute/3600 a tick plus the refused carry)",
+        "draw": "provider chest: every pack taken out every four ticks (all), or none"
+      },
+      "phases": [
+        {
+          "name": "warm-up",
+          "ticks": 18000,
+          "minutes": 5,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-1": 86,
+            "IN-2": 57.4,
+            "IN-3": 5000
+          },
+          "drawnPerMinute": {
+            "measured": 35.6,
+            "minutesMeasured": 5
+          },
+          "status": {
+            "item_ingredient_shortage": 1,
+            "working": 299
+          },
+          "mixedSeconds": 0,
+          "chestMax": 1,
+          "chestFinal": 0,
+          "products": 178,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "drawnTotal": 178
+        },
+        {
+          "name": "steady",
+          "ticks": 72000,
+          "minutes": 20,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-3": 4800,
+            "IN-1": 72,
+            "IN-2": 48
+          },
+          "drawnPerMinute": {
+            "measured": 36,
+            "minutesMeasured": 20
+          },
+          "status": {
+            "working": 1200
+          },
+          "mixedSeconds": 0,
+          "chestMax": 1,
+          "chestFinal": 0,
+          "products": 720,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "drawnTotal": 720
+        },
+        {
+          "name": "exit blocked",
+          "ticks": 54000,
+          "minutes": 15,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-3": 320,
+            "IN-1": 4.2,
+            "IN-2": 2.8
+          },
+          "drawnPerMinute": {
+            "measured": 0,
+            "minutesMeasured": 10
+          },
+          "status": {
+            "working": 341,
+            "full_output": 559
+          },
+          "mixedSeconds": 0,
+          "chestMax": 200,
+          "chestFinal": 200,
+          "products": 206,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "drawnTotal": 0
+        },
+        {
+          "name": "release",
+          "ticks": 36000,
+          "minutes": 10,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-3": 4800,
+            "IN-1": 72,
+            "IN-2": 48
+          },
+          "drawnPerMinute": {
+            "measured": 36,
+            "minutesMeasured": 7
+          },
+          "status": {
+            "full_output": 1,
+            "item_ingredient_shortage": 1,
+            "working": 598
+          },
+          "mixedSeconds": 0,
+          "chestMax": 200,
+          "chestFinal": 0,
+          "products": 357,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "drawnTotal": 563,
+          "recovery": {
+            "target": 16,
+            "share": 0.95,
+            "secondsToReach": 60
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "tungsten-carbide requester chest -> foundry",
+          "inserter": 4,
+          "pickup": {
+            "y": -2.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": -2.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "tungsten-plate requester chest -> foundry",
+          "inserter": 5,
+          "pickup": {
+            "y": 0.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": 0.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "foundry -> metallurgic-science-pack provider chest",
+          "inserter": 6,
+          "pickup": {
+            "y": -0.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": -0.5,
+            "x": 4.69921875
+          }
+        }
+      ],
+      "foundryPorts": [
+        [
+          {
+            "flow": "input",
+            "target": "pipe",
+            "position": {
+              "y": 1.5,
+              "x": -0.5
+            }
+          },
+          {
+            "flow": "input",
+            "position": {
+              "y": 1.5,
+              "x": 1.5
+            }
+          }
+        ]
+      ],
+      "chestBar": 2,
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000
+      },
+      "blueprintEntityCount": 14,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 9,
+          "bottom": 6
+        },
+        "width": 9,
+        "height": 6,
+        "area": 54,
+        "includes": "all entities: the foundry, arms, chests, pipe, substation and panels; the robot network, the molten copper supply and the outside power are not counted",
+        "counts": {
+          "display-panel": 5,
+          "fast-inserter": 3,
+          "foundry": 1,
+          "passive-provider-chest": 1,
+          "pipe": 1,
+          "requester-chest": 2,
+          "substation": 1
+        },
+        "entities": 14
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "steel-processing",
+        "logistic-science-pack",
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "concrete",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "flammables",
+        "plastics",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-oil-processing",
+        "rocket-fuel",
+        "processing-unit",
+        "lubricant",
+        "electric-engine",
+        "battery",
+        "robotics",
+        "logistic-robotics",
+        "low-density-structure",
+        "advanced-material-processing-2",
+        "rocket-silo",
+        "space-platform",
+        "space-science-pack",
+        "space-platform-thruster",
+        "planet-discovery-vulcanus",
+        "calcite-processing",
+        "tungsten-carbide",
+        "foundry",
+        "electric-mining-drill",
+        "big-mining-drill",
+        "tungsten-steel",
+        "metallurgic-science-pack",
+        "logistic-system",
+        "fast-inserter",
+        "construction-robotics",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 5.022,
+        "benchmark": 18.713
+      },
+      "activeWallSeconds": 15.198,
+      "updatesPerSecond": 11844
+    },
+    "panel": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000
+          }
+        },
+        {
+          "name": "display panel visible and worded #10",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-carbide, requester chest, request 64 (2 min), 32/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #11",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-plate, requester chest, request 43 (2 min), 21.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #12",
+          "passed": true,
+          "detail": {
+            "text": "IN: molten-copper pipe 2,133.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #13",
+          "passed": true,
+          "detail": {
+            "text": "OUT: metallurgic-science-pack provider chest, one stack (200), 16/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #14",
+          "passed": true,
+          "detail": {
+            "text": "POWER: connect this substation"
+          }
+        },
+        {
+          "name": "every entity imported at its exact position and direction",
+          "passed": true,
+          "detail": {
+            "entities": 14
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 14
+          }
+        },
+        {
+          "name": "recipe preserved",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin",
+          "passed": true
+        },
+        {
+          "name": "cold foundry with no modules",
+          "passed": true
+        },
+        {
+          "name": "foundry crafting speed matches the pin",
+          "passed": true,
+          "detail": {
+            "speed": 4
+          }
+        },
+        {
+          "name": "foundry built-in productivity matches the pin",
+          "passed": true,
+          "detail": {
+            "bonus": 0.5
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "tungsten-carbide requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "tungsten-plate requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "foundry -> metallurgic-science-pack provider chest",
+          "passed": true
+        },
+        {
+          "name": "IN-1 requester chest requests 64 tungsten-carbide",
+          "passed": true,
+          "detail": {
+            "tungsten-carbide": {
+              "min": 64,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-1 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "IN-2 requester chest requests 43 tungsten-plate",
+          "passed": true,
+          "detail": {
+            "tungsten-plate": {
+              "min": 43,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-2 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "OUT-1 chest is a passive provider",
+          "passed": true
+        },
+        {
+          "name": "OUT-1 chest limited to one slot (the game reports the first blocked slot, 2)",
+          "passed": true,
+          "detail": {
+            "bar": 2,
+            "slots": 48
+          }
+        },
+        {
+          "name": "exactly one foundry fluid port stands on a pipe (the molten copper entrance); no other port faces anything",
+          "passed": true,
+          "detail": [
+            [
+              {
+                "flow": "input",
+                "target": "pipe",
+                "position": {
+                  "y": 1.5,
+                  "x": -0.5
+                }
+              },
+              {
+                "flow": "input",
+                "position": {
+                  "y": 1.5,
+                  "x": 1.5
+                }
+              }
+            ]
+          ]
+        },
+        {
+          "name": "warm-up: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "warm-up: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        },
+        {
+          "name": "steady: packs a minute at least 15.84",
+          "passed": true,
+          "detail": {
+            "measured": 16
+          }
+        },
+        {
+          "name": "steady: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "steady: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "e71c31efd8018efcbd509acf831345267b8733ed1bca46c693c3edab30adc407",
+      "prototypeSha256": "4b9944ff11e0a7b67035241e2ec4b917283dffcd2c5d2f757de208f6e0996955",
+      "configurationSha256": "5fcc08427ea96a0df6f564a4531845a91261ffc8ef19448a699ad6f4b3cb9324",
+      "nativeControlSha256": "7c879d1da6baeb1c2feb1e6897100e5d1b9c90240221b5e2db463bbe5e822248",
+      "actualTicks": 144000,
+      "scenario": {
+        "name": "panel",
+        "description": "every entrance offered exactly the figure on its panel"
+      },
+      "protocol": {
+        "seed": 21027,
+        "externalPowerWatts": 10000000,
+        "floorShare": 0.99,
+        "recoveryShare": 0.95,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "requester chests: items put into the chest, never above its request (generous: topped up at once; throttled: a credit of perMinute/3600 a tick); pipe: fluid put into one outside pipe at the entrance (generous: 1000 a tick; throttled: perMinute/3600 a tick plus the refused carry)",
+        "draw": "provider chest: every pack taken out every four ticks (all), or none"
+      },
+      "phases": [
+        {
+          "name": "warm-up",
+          "ticks": 36000,
+          "minutes": 10,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-1": 31.9,
+            "IN-2": 21.3,
+            "IN-3": 2133.3
+          },
+          "drawnPerMinute": {
+            "measured": 15.7,
+            "minutesMeasured": 10
+          },
+          "status": {
+            "item_ingredient_shortage": 334,
+            "working": 264,
+            "full_output": 2
+          },
+          "mixedSeconds": 0,
+          "chestMax": 1,
+          "chestFinal": 0,
+          "products": 159,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": 32,
+            "IN-2": 21.3,
+            "IN-3": 2133.3
+          },
+          "drawnTotal": 157
+        },
+        {
+          "name": "steady",
+          "ticks": 108000,
+          "minutes": 30,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-1": 32,
+            "IN-2": 21.3,
+            "IN-3": 2133.3
+          },
+          "drawnPerMinute": {
+            "measured": 16,
+            "minutesMeasured": 30
+          },
+          "status": {
+            "item_ingredient_shortage": 1000,
+            "working": 796,
+            "full_output": 4
+          },
+          "mixedSeconds": 0,
+          "chestMax": 1,
+          "chestFinal": 0,
+          "products": 478,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": 32,
+            "IN-2": 21.3,
+            "IN-3": 2133.3
+          },
+          "drawnTotal": 480
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "tungsten-carbide requester chest -> foundry",
+          "inserter": 4,
+          "pickup": {
+            "y": -2.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": -2.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "tungsten-plate requester chest -> foundry",
+          "inserter": 5,
+          "pickup": {
+            "y": 0.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": 0.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "foundry -> metallurgic-science-pack provider chest",
+          "inserter": 6,
+          "pickup": {
+            "y": -0.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": -0.5,
+            "x": 4.69921875
+          }
+        }
+      ],
+      "foundryPorts": [
+        [
+          {
+            "flow": "input",
+            "target": "pipe",
+            "position": {
+              "y": 1.5,
+              "x": -0.5
+            }
+          },
+          {
+            "flow": "input",
+            "position": {
+              "y": 1.5,
+              "x": 1.5
+            }
+          }
+        ]
+      ],
+      "chestBar": 2,
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000
+      },
+      "blueprintEntityCount": 14,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 9,
+          "bottom": 6
+        },
+        "width": 9,
+        "height": 6,
+        "area": 54,
+        "includes": "all entities: the foundry, arms, chests, pipe, substation and panels; the robot network, the molten copper supply and the outside power are not counted",
+        "counts": {
+          "display-panel": 5,
+          "fast-inserter": 3,
+          "foundry": 1,
+          "passive-provider-chest": 1,
+          "pipe": 1,
+          "requester-chest": 2,
+          "substation": 1
+        },
+        "entities": 14
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "steel-processing",
+        "logistic-science-pack",
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "concrete",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "flammables",
+        "plastics",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-oil-processing",
+        "rocket-fuel",
+        "processing-unit",
+        "lubricant",
+        "electric-engine",
+        "battery",
+        "robotics",
+        "logistic-robotics",
+        "low-density-structure",
+        "advanced-material-processing-2",
+        "rocket-silo",
+        "space-platform",
+        "space-science-pack",
+        "space-platform-thruster",
+        "planet-discovery-vulcanus",
+        "calcite-processing",
+        "tungsten-carbide",
+        "foundry",
+        "electric-mining-drill",
+        "big-mining-drill",
+        "tungsten-steel",
+        "metallurgic-science-pack",
+        "logistic-system",
+        "fast-inserter",
+        "construction-robotics",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 4.776,
+        "benchmark": 13.151
+      },
+      "activeWallSeconds": 9.016,
+      "updatesPerSecond": 15972
+    },
+    "withheld:IN-1": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000
+          }
+        },
+        {
+          "name": "display panel visible and worded #10",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-carbide, requester chest, request 64 (2 min), 32/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #11",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-plate, requester chest, request 43 (2 min), 21.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #12",
+          "passed": true,
+          "detail": {
+            "text": "IN: molten-copper pipe 2,133.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #13",
+          "passed": true,
+          "detail": {
+            "text": "OUT: metallurgic-science-pack provider chest, one stack (200), 16/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #14",
+          "passed": true,
+          "detail": {
+            "text": "POWER: connect this substation"
+          }
+        },
+        {
+          "name": "every entity imported at its exact position and direction",
+          "passed": true,
+          "detail": {
+            "entities": 14
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 14
+          }
+        },
+        {
+          "name": "recipe preserved",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin",
+          "passed": true
+        },
+        {
+          "name": "cold foundry with no modules",
+          "passed": true
+        },
+        {
+          "name": "foundry crafting speed matches the pin",
+          "passed": true,
+          "detail": {
+            "speed": 4
+          }
+        },
+        {
+          "name": "foundry built-in productivity matches the pin",
+          "passed": true,
+          "detail": {
+            "bonus": 0.5
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "tungsten-carbide requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "tungsten-plate requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "foundry -> metallurgic-science-pack provider chest",
+          "passed": true
+        },
+        {
+          "name": "IN-1 requester chest requests 64 tungsten-carbide",
+          "passed": true,
+          "detail": {
+            "tungsten-carbide": {
+              "min": 64,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-1 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "IN-2 requester chest requests 43 tungsten-plate",
+          "passed": true,
+          "detail": {
+            "tungsten-plate": {
+              "min": 43,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-2 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "OUT-1 chest is a passive provider",
+          "passed": true
+        },
+        {
+          "name": "OUT-1 chest limited to one slot (the game reports the first blocked slot, 2)",
+          "passed": true,
+          "detail": {
+            "bar": 2,
+            "slots": 48
+          }
+        },
+        {
+          "name": "exactly one foundry fluid port stands on a pipe (the molten copper entrance); no other port faces anything",
+          "passed": true,
+          "detail": [
+            [
+              {
+                "flow": "input",
+                "target": "pipe",
+                "position": {
+                  "y": 1.5,
+                  "x": -0.5
+                }
+              },
+              {
+                "flow": "input",
+                "position": {
+                  "y": 1.5,
+                  "x": 1.5
+                }
+              }
+            ]
+          ]
+        },
+        {
+          "name": "withheld: packs drawn at most 0 in the phase",
+          "passed": true,
+          "detail": {
+            "drawn": 0
+          }
+        },
+        {
+          "name": "withheld: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "withheld: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        },
+        {
+          "name": "supplied: packs a minute at least 15.84",
+          "passed": true,
+          "detail": {
+            "measured": 36
+          }
+        },
+        {
+          "name": "supplied: back to 95% of 16 a minute within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        },
+        {
+          "name": "supplied: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "supplied: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "e71c31efd8018efcbd509acf831345267b8733ed1bca46c693c3edab30adc407",
+      "prototypeSha256": "4b9944ff11e0a7b67035241e2ec4b917283dffcd2c5d2f757de208f6e0996955",
+      "configurationSha256": "f07d5cff9287ae00d1e76dd21591ccf1c886fb0b879dd8679ebad2523758e428",
+      "nativeControlSha256": "7c879d1da6baeb1c2feb1e6897100e5d1b9c90240221b5e2db463bbe5e822248",
+      "actualTicks": 126000,
+      "scenario": {
+        "name": "withheld:IN-1",
+        "description": "IN-1 (tungsten-carbide) withheld from a cold start for 20 minutes, then supplied; the other entrances offered more than needed"
+      },
+      "protocol": {
+        "seed": 21027,
+        "externalPowerWatts": 10000000,
+        "floorShare": 0.99,
+        "recoveryShare": 0.95,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "requester chests: items put into the chest, never above its request (generous: topped up at once; throttled: a credit of perMinute/3600 a tick); pipe: fluid put into one outside pipe at the entrance (generous: 1000 a tick; throttled: perMinute/3600 a tick plus the refused carry)",
+        "draw": "provider chest: every pack taken out every four ticks (all), or none"
+      },
+      "phases": [
+        {
+          "name": "withheld",
+          "ticks": 72000,
+          "minutes": 20,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-2": 2.35,
+            "IN-3": 50
+          },
+          "drawnPerMinute": {
+            "measured": 0,
+            "minutesMeasured": 20
+          },
+          "status": {
+            "item_ingredient_shortage": 1200
+          },
+          "mixedSeconds": 0,
+          "chestMax": 0,
+          "chestFinal": 0,
+          "products": 0,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "none",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "drawnTotal": 0
+        },
+        {
+          "name": "supplied",
+          "ticks": 54000,
+          "minutes": 15,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-1": 72,
+            "IN-3": 4800,
+            "IN-2": 48
+          },
+          "drawnPerMinute": {
+            "measured": 36,
+            "minutesMeasured": 10
+          },
+          "status": {
+            "item_ingredient_shortage": 1,
+            "working": 899
+          },
+          "mixedSeconds": 0,
+          "chestMax": 1,
+          "chestFinal": 0,
+          "products": 538,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "drawnTotal": 538,
+          "recovery": {
+            "target": 16,
+            "share": 0.95,
+            "secondsToReach": 60
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "tungsten-carbide requester chest -> foundry",
+          "inserter": 4,
+          "pickup": {
+            "y": -2.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": -2.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "tungsten-plate requester chest -> foundry",
+          "inserter": 5,
+          "pickup": {
+            "y": 0.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": 0.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "foundry -> metallurgic-science-pack provider chest",
+          "inserter": 6,
+          "pickup": {
+            "y": -0.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": -0.5,
+            "x": 4.69921875
+          }
+        }
+      ],
+      "foundryPorts": [
+        [
+          {
+            "flow": "input",
+            "target": "pipe",
+            "position": {
+              "y": 1.5,
+              "x": -0.5
+            }
+          },
+          {
+            "flow": "input",
+            "position": {
+              "y": 1.5,
+              "x": 1.5
+            }
+          }
+        ]
+      ],
+      "chestBar": 2,
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000
+      },
+      "blueprintEntityCount": 14,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 9,
+          "bottom": 6
+        },
+        "width": 9,
+        "height": 6,
+        "area": 54,
+        "includes": "all entities: the foundry, arms, chests, pipe, substation and panels; the robot network, the molten copper supply and the outside power are not counted",
+        "counts": {
+          "display-panel": 5,
+          "fast-inserter": 3,
+          "foundry": 1,
+          "passive-provider-chest": 1,
+          "pipe": 1,
+          "requester-chest": 2,
+          "substation": 1
+        },
+        "entities": 14
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "steel-processing",
+        "logistic-science-pack",
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "concrete",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "flammables",
+        "plastics",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-oil-processing",
+        "rocket-fuel",
+        "processing-unit",
+        "lubricant",
+        "electric-engine",
+        "battery",
+        "robotics",
+        "logistic-robotics",
+        "low-density-structure",
+        "advanced-material-processing-2",
+        "rocket-silo",
+        "space-platform",
+        "space-science-pack",
+        "space-platform-thruster",
+        "planet-discovery-vulcanus",
+        "calcite-processing",
+        "tungsten-carbide",
+        "foundry",
+        "electric-mining-drill",
+        "big-mining-drill",
+        "tungsten-steel",
+        "metallurgic-science-pack",
+        "logistic-system",
+        "fast-inserter",
+        "construction-robotics",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 5.252,
+        "benchmark": 14.007
+      },
+      "activeWallSeconds": 9.887,
+      "updatesPerSecond": 12744
+    },
+    "withheld:IN-2": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000
+          }
+        },
+        {
+          "name": "display panel visible and worded #10",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-carbide, requester chest, request 64 (2 min), 32/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #11",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-plate, requester chest, request 43 (2 min), 21.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #12",
+          "passed": true,
+          "detail": {
+            "text": "IN: molten-copper pipe 2,133.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #13",
+          "passed": true,
+          "detail": {
+            "text": "OUT: metallurgic-science-pack provider chest, one stack (200), 16/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #14",
+          "passed": true,
+          "detail": {
+            "text": "POWER: connect this substation"
+          }
+        },
+        {
+          "name": "every entity imported at its exact position and direction",
+          "passed": true,
+          "detail": {
+            "entities": 14
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 14
+          }
+        },
+        {
+          "name": "recipe preserved",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin",
+          "passed": true
+        },
+        {
+          "name": "cold foundry with no modules",
+          "passed": true
+        },
+        {
+          "name": "foundry crafting speed matches the pin",
+          "passed": true,
+          "detail": {
+            "speed": 4
+          }
+        },
+        {
+          "name": "foundry built-in productivity matches the pin",
+          "passed": true,
+          "detail": {
+            "bonus": 0.5
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "tungsten-carbide requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "tungsten-plate requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "foundry -> metallurgic-science-pack provider chest",
+          "passed": true
+        },
+        {
+          "name": "IN-1 requester chest requests 64 tungsten-carbide",
+          "passed": true,
+          "detail": {
+            "tungsten-carbide": {
+              "min": 64,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-1 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "IN-2 requester chest requests 43 tungsten-plate",
+          "passed": true,
+          "detail": {
+            "tungsten-plate": {
+              "min": 43,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-2 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "OUT-1 chest is a passive provider",
+          "passed": true
+        },
+        {
+          "name": "OUT-1 chest limited to one slot (the game reports the first blocked slot, 2)",
+          "passed": true,
+          "detail": {
+            "bar": 2,
+            "slots": 48
+          }
+        },
+        {
+          "name": "exactly one foundry fluid port stands on a pipe (the molten copper entrance); no other port faces anything",
+          "passed": true,
+          "detail": [
+            [
+              {
+                "flow": "input",
+                "target": "pipe",
+                "position": {
+                  "y": 1.5,
+                  "x": -0.5
+                }
+              },
+              {
+                "flow": "input",
+                "position": {
+                  "y": 1.5,
+                  "x": 1.5
+                }
+              }
+            ]
+          ]
+        },
+        {
+          "name": "withheld: packs drawn at most 0 in the phase",
+          "passed": true,
+          "detail": {
+            "drawn": 0
+          }
+        },
+        {
+          "name": "withheld: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "withheld: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        },
+        {
+          "name": "supplied: packs a minute at least 15.84",
+          "passed": true,
+          "detail": {
+            "measured": 36
+          }
+        },
+        {
+          "name": "supplied: back to 95% of 16 a minute within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        },
+        {
+          "name": "supplied: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "supplied: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "e71c31efd8018efcbd509acf831345267b8733ed1bca46c693c3edab30adc407",
+      "prototypeSha256": "4b9944ff11e0a7b67035241e2ec4b917283dffcd2c5d2f757de208f6e0996955",
+      "configurationSha256": "b65e66d87a9c9a9a4db7326d9ebc8e3b00949bf7047dc0ec3a2325a1811a1fec",
+      "nativeControlSha256": "7c879d1da6baeb1c2feb1e6897100e5d1b9c90240221b5e2db463bbe5e822248",
+      "actualTicks": 126000,
+      "scenario": {
+        "name": "withheld:IN-2",
+        "description": "IN-2 (tungsten-plate) withheld from a cold start for 20 minutes, then supplied; the other entrances offered more than needed"
+      },
+      "protocol": {
+        "seed": 21027,
+        "externalPowerWatts": 10000000,
+        "floorShare": 0.99,
+        "recoveryShare": 0.95,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "requester chests: items put into the chest, never above its request (generous: topped up at once; throttled: a credit of perMinute/3600 a tick); pipe: fluid put into one outside pipe at the entrance (generous: 1000 a tick; throttled: perMinute/3600 a tick plus the refused carry)",
+        "draw": "provider chest: every pack taken out every four ticks (all), or none"
+      },
+      "phases": [
+        {
+          "name": "withheld",
+          "ticks": 72000,
+          "minutes": 20,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-1": 3.5,
+            "IN-3": 50
+          },
+          "drawnPerMinute": {
+            "measured": 0,
+            "minutesMeasured": 20
+          },
+          "status": {
+            "item_ingredient_shortage": 1200
+          },
+          "mixedSeconds": 0,
+          "chestMax": 0,
+          "chestFinal": 0,
+          "products": 0,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "generous",
+            "IN-2": "none",
+            "IN-3": "generous"
+          },
+          "drawnTotal": 0
+        },
+        {
+          "name": "supplied",
+          "ticks": 54000,
+          "minutes": 15,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-2": 48,
+            "IN-3": 4800,
+            "IN-1": 72
+          },
+          "drawnPerMinute": {
+            "measured": 36,
+            "minutesMeasured": 10
+          },
+          "status": {
+            "working": 900
+          },
+          "mixedSeconds": 0,
+          "chestMax": 1,
+          "chestFinal": 0,
+          "products": 538,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "drawnTotal": 538,
+          "recovery": {
+            "target": 16,
+            "share": 0.95,
+            "secondsToReach": 60
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "tungsten-carbide requester chest -> foundry",
+          "inserter": 4,
+          "pickup": {
+            "y": -2.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": -2.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "tungsten-plate requester chest -> foundry",
+          "inserter": 5,
+          "pickup": {
+            "y": 0.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": 0.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "foundry -> metallurgic-science-pack provider chest",
+          "inserter": 6,
+          "pickup": {
+            "y": -0.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": -0.5,
+            "x": 4.69921875
+          }
+        }
+      ],
+      "foundryPorts": [
+        [
+          {
+            "flow": "input",
+            "target": "pipe",
+            "position": {
+              "y": 1.5,
+              "x": -0.5
+            }
+          },
+          {
+            "flow": "input",
+            "position": {
+              "y": 1.5,
+              "x": 1.5
+            }
+          }
+        ]
+      ],
+      "chestBar": 2,
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000
+      },
+      "blueprintEntityCount": 14,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 9,
+          "bottom": 6
+        },
+        "width": 9,
+        "height": 6,
+        "area": 54,
+        "includes": "all entities: the foundry, arms, chests, pipe, substation and panels; the robot network, the molten copper supply and the outside power are not counted",
+        "counts": {
+          "display-panel": 5,
+          "fast-inserter": 3,
+          "foundry": 1,
+          "passive-provider-chest": 1,
+          "pipe": 1,
+          "requester-chest": 2,
+          "substation": 1
+        },
+        "entities": 14
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "steel-processing",
+        "logistic-science-pack",
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "concrete",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "flammables",
+        "plastics",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-oil-processing",
+        "rocket-fuel",
+        "processing-unit",
+        "lubricant",
+        "electric-engine",
+        "battery",
+        "robotics",
+        "logistic-robotics",
+        "low-density-structure",
+        "advanced-material-processing-2",
+        "rocket-silo",
+        "space-platform",
+        "space-science-pack",
+        "space-platform-thruster",
+        "planet-discovery-vulcanus",
+        "calcite-processing",
+        "tungsten-carbide",
+        "foundry",
+        "electric-mining-drill",
+        "big-mining-drill",
+        "tungsten-steel",
+        "metallurgic-science-pack",
+        "logistic-system",
+        "fast-inserter",
+        "construction-robotics",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 5.083,
+        "benchmark": 11.393
+      },
+      "activeWallSeconds": 7.225,
+      "updatesPerSecond": 17439
+    },
+    "withheld:IN-3": {
+      "schema": 1,
+      "passed": true,
+      "failures": {},
+      "checks": [
+        {
+          "name": "surface is the Vulcanus planet with its own surface properties",
+          "passed": true,
+          "detail": {
+            "pressure": 4000
+          }
+        },
+        {
+          "name": "display panel visible and worded #10",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-carbide, requester chest, request 64 (2 min), 32/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #11",
+          "passed": true,
+          "detail": {
+            "text": "IN: tungsten-plate, requester chest, request 43 (2 min), 21.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #12",
+          "passed": true,
+          "detail": {
+            "text": "IN: molten-copper pipe 2,133.3/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #13",
+          "passed": true,
+          "detail": {
+            "text": "OUT: metallurgic-science-pack provider chest, one stack (200), 16/min"
+          }
+        },
+        {
+          "name": "display panel visible and worded #14",
+          "passed": true,
+          "detail": {
+            "text": "POWER: connect this substation"
+          }
+        },
+        {
+          "name": "every entity imported at its exact position and direction",
+          "passed": true,
+          "detail": {
+            "entities": 14
+          }
+        },
+        {
+          "name": "no entity beyond the blueprint",
+          "passed": true,
+          "detail": {
+            "found": 14
+          }
+        },
+        {
+          "name": "recipe preserved",
+          "passed": true
+        },
+        {
+          "name": "recipe enabled by the researched closure alone",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe ingredients match the pin",
+          "passed": true
+        },
+        {
+          "name": "runtime recipe products match the pin",
+          "passed": true
+        },
+        {
+          "name": "recipe time matches the pin",
+          "passed": true
+        },
+        {
+          "name": "cold foundry with no modules",
+          "passed": true
+        },
+        {
+          "name": "foundry crafting speed matches the pin",
+          "passed": true,
+          "detail": {
+            "speed": 4
+          }
+        },
+        {
+          "name": "foundry built-in productivity matches the pin",
+          "passed": true,
+          "detail": {
+            "bonus": 0.5
+          }
+        },
+        {
+          "name": "inserter capacity bonus is zero for this force",
+          "passed": true
+        },
+        {
+          "name": "tungsten-carbide requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "tungsten-plate requester chest -> foundry",
+          "passed": true
+        },
+        {
+          "name": "foundry -> metallurgic-science-pack provider chest",
+          "passed": true
+        },
+        {
+          "name": "IN-1 requester chest requests 64 tungsten-carbide",
+          "passed": true,
+          "detail": {
+            "tungsten-carbide": {
+              "min": 64,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-1 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "IN-2 requester chest requests 43 tungsten-plate",
+          "passed": true,
+          "detail": {
+            "tungsten-plate": {
+              "min": 43,
+              "quality": "normal",
+              "comparator": "="
+            }
+          }
+        },
+        {
+          "name": "IN-2 chest is a requester",
+          "passed": true,
+          "detail": {
+            "mode": "requester"
+          }
+        },
+        {
+          "name": "OUT-1 chest is a passive provider",
+          "passed": true
+        },
+        {
+          "name": "OUT-1 chest limited to one slot (the game reports the first blocked slot, 2)",
+          "passed": true,
+          "detail": {
+            "bar": 2,
+            "slots": 48
+          }
+        },
+        {
+          "name": "exactly one foundry fluid port stands on a pipe (the molten copper entrance); no other port faces anything",
+          "passed": true,
+          "detail": [
+            [
+              {
+                "flow": "input",
+                "target": "pipe",
+                "position": {
+                  "y": 1.5,
+                  "x": -0.5
+                }
+              },
+              {
+                "flow": "input",
+                "position": {
+                  "y": 1.5,
+                  "x": 1.5
+                }
+              }
+            ]
+          ]
+        },
+        {
+          "name": "withheld: packs drawn at most 0 in the phase",
+          "passed": true,
+          "detail": {
+            "drawn": 0
+          }
+        },
+        {
+          "name": "withheld: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "withheld: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        },
+        {
+          "name": "supplied: packs a minute at least 15.84",
+          "passed": true,
+          "detail": {
+            "measured": 36
+          }
+        },
+        {
+          "name": "supplied: back to 95% of 16 a minute within 300 s",
+          "passed": true,
+          "detail": {
+            "seconds": 60
+          }
+        },
+        {
+          "name": "supplied: no foreign fluid",
+          "passed": true
+        },
+        {
+          "name": "supplied: power on all the time",
+          "passed": true,
+          "detail": {
+            "seconds": 0
+          }
+        }
+      ],
+      "gameVersion": "2.1.25",
+      "activeMods": {
+        "base": "2.1.25",
+        "elevated-rails": "2.1.25",
+        "quality": "2.1.25",
+        "space-age": "2.1.25"
+      },
+      "blueprintSha256": "e71c31efd8018efcbd509acf831345267b8733ed1bca46c693c3edab30adc407",
+      "prototypeSha256": "4b9944ff11e0a7b67035241e2ec4b917283dffcd2c5d2f757de208f6e0996955",
+      "configurationSha256": "22783276d38f14c7230db3018e29afcd6a78cc519e4289ec1ec9f9376644ee40",
+      "nativeControlSha256": "7c879d1da6baeb1c2feb1e6897100e5d1b9c90240221b5e2db463bbe5e822248",
+      "actualTicks": 126000,
+      "scenario": {
+        "name": "withheld:IN-3",
+        "description": "IN-3 (molten-copper) withheld from a cold start for 20 minutes, then supplied; the other entrances offered more than needed"
+      },
+      "protocol": {
+        "seed": 21027,
+        "externalPowerWatts": 10000000,
+        "floorShare": 0.99,
+        "recoveryShare": 0.95,
+        "surface": "vulcanus (game.planets.vulcanus.create_surface, ground set to volcanic-ash-flats, all natural entities removed)",
+        "research": "exactly manifest.technologyClosure, nothing else; inserter capacity bonus zero",
+        "feed": "requester chests: items put into the chest, never above its request (generous: topped up at once; throttled: a credit of perMinute/3600 a tick); pipe: fluid put into one outside pipe at the entrance (generous: 1000 a tick; throttled: perMinute/3600 a tick plus the refused carry)",
+        "draw": "provider chest: every pack taken out every four ticks (all), or none"
+      },
+      "phases": [
+        {
+          "name": "withheld",
+          "ticks": 72000,
+          "minutes": 20,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-1": 3.5,
+            "IN-2": 2.35
+          },
+          "drawnPerMinute": {
+            "measured": 0,
+            "minutesMeasured": 20
+          },
+          "status": {
+            "item_ingredient_shortage": 1,
+            "fluid_ingredient_shortage": 1199
+          },
+          "mixedSeconds": 0,
+          "chestMax": 0,
+          "chestFinal": 0,
+          "products": 0,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "none"
+          },
+          "drawnTotal": 0
+        },
+        {
+          "name": "supplied",
+          "ticks": 54000,
+          "minutes": 15,
+          "endedBy": "limit",
+          "fedPerMinute": {
+            "IN-3": 4800,
+            "IN-1": 72,
+            "IN-2": 48
+          },
+          "drawnPerMinute": {
+            "measured": 36,
+            "minutesMeasured": 10
+          },
+          "status": {
+            "working": 900
+          },
+          "mixedSeconds": 0,
+          "chestMax": 1,
+          "chestFinal": 0,
+          "products": 538,
+          "noPowerSeconds": 0,
+          "feedModes": {
+            "IN-1": "generous",
+            "IN-2": "generous",
+            "IN-3": "generous"
+          },
+          "drawnTotal": 538,
+          "recovery": {
+            "target": 16,
+            "share": 0.95,
+            "secondsToReach": 60
+          }
+        }
+      ],
+      "routeEvidence": [
+        {
+          "label": "tungsten-carbide requester chest -> foundry",
+          "inserter": 4,
+          "pickup": {
+            "y": -2.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": -2.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "tungsten-plate requester chest -> foundry",
+          "inserter": 5,
+          "pickup": {
+            "y": 0.5,
+            "x": -3.5
+          },
+          "drop": {
+            "y": 0.5,
+            "x": -1.30078125
+          }
+        },
+        {
+          "label": "foundry -> metallurgic-science-pack provider chest",
+          "inserter": 6,
+          "pickup": {
+            "y": -0.5,
+            "x": 2.5
+          },
+          "drop": {
+            "y": -0.5,
+            "x": 4.69921875
+          }
+        }
+      ],
+      "foundryPorts": [
+        [
+          {
+            "flow": "input",
+            "target": "pipe",
+            "position": {
+              "y": 1.5,
+              "x": -0.5
+            }
+          },
+          {
+            "flow": "input",
+            "position": {
+              "y": 1.5,
+              "x": 1.5
+            }
+          }
+        ]
+      ],
+      "chestBar": 2,
+      "surface": {
+        "name": "vulcanus",
+        "pressure": 4000
+      },
+      "blueprintEntityCount": 14,
+      "fixtureEntityCount": 3,
+      "footprint": {
+        "bounds": {
+          "left": 0,
+          "top": 0,
+          "right": 9,
+          "bottom": 6
+        },
+        "width": 9,
+        "height": 6,
+        "area": 54,
+        "includes": "all entities: the foundry, arms, chests, pipe, substation and panels; the robot network, the molten copper supply and the outside power are not counted",
+        "counts": {
+          "display-panel": 5,
+          "fast-inserter": 3,
+          "foundry": 1,
+          "passive-provider-chest": 1,
+          "pipe": 1,
+          "requester-chest": 2,
+          "substation": 1
+        },
+        "entities": 14
+      },
+      "technologyClosure": [
+        "steam-power",
+        "electronics",
+        "automation-science-pack",
+        "steel-processing",
+        "logistic-science-pack",
+        "advanced-material-processing",
+        "automation",
+        "automation-2",
+        "concrete",
+        "engine",
+        "fluid-handling",
+        "oil-gathering",
+        "oil-processing",
+        "flammables",
+        "plastics",
+        "advanced-circuit",
+        "sulfur-processing",
+        "chemical-science-pack",
+        "advanced-oil-processing",
+        "rocket-fuel",
+        "processing-unit",
+        "lubricant",
+        "electric-engine",
+        "battery",
+        "robotics",
+        "logistic-robotics",
+        "low-density-structure",
+        "advanced-material-processing-2",
+        "rocket-silo",
+        "space-platform",
+        "space-science-pack",
+        "space-platform-thruster",
+        "planet-discovery-vulcanus",
+        "calcite-processing",
+        "tungsten-carbide",
+        "foundry",
+        "electric-mining-drill",
+        "big-mining-drill",
+        "tungsten-steel",
+        "metallurgic-science-pack",
+        "logistic-system",
+        "fast-inserter",
+        "construction-robotics",
+        "electric-energy-distribution-1",
+        "electric-energy-distribution-2",
+        "circuit-network"
+      ],
+      "elapsedSeconds": {
+        "create": 6.35,
+        "benchmark": 14.098
+      },
+      "activeWallSeconds": 10.037,
+      "updatesPerSecond": 12554
+    }
+  },
+  "measured": {
+    "outputsPerMinute": {
+      "metallurgic-science-pack": {
+        "panelFigures": 16,
+        "offeredMore": 36
+      }
+    },
+    "inputsPerMinute": {
+      "IN-1": {
+        "item": "tungsten-carbide",
+        "panelFigure": 32,
+        "tookAtPanelFigures": 32,
+        "tookOfferedMore": 72
+      },
+      "IN-2": {
+        "item": "tungsten-plate",
+        "panelFigure": 21.3,
+        "tookAtPanelFigures": 21.3,
+        "tookOfferedMore": 48
+      },
+      "IN-3": {
+        "item": "molten-copper",
+        "panelFigure": 2133.3,
+        "tookAtPanelFigures": 2133.3,
+        "tookOfferedMore": 4800
+      }
+    },
+    "foundryStatusPanel": {
+      "item_ingredient_shortage": 1000,
+      "working": 796,
+      "full_output": 4
+    },
+    "foundryStatusGenerous": {
+      "working": 1200
+    }
+  }
+}
